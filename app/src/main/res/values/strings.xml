@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">EBacSens</string>
+
+    <string-array name="arrCity" translatable="false">
+        <item>{\"idCity\" : 1,\"name\" : \"Hà Nội\"}</item>
+        <!--        <item>{\"idCity\" : 2,\"name\" : \"Hà Giang\"}</item>-->
+        <!--        <item>{\"idCity\" : 4,\"name\" : \"Cao Bằng\"}</item>-->
+        <!--        <item>{\"idCity\" : 6,\"name\" : \"Bắc Kạn\"}</item>-->
+        <!--        <item>{\"idCity\" : 8,\"name\" : \"Tuyên Quang\"}</item>-->
+        <!--        <item>{\"idCity\" : 10,\"name\" : \"Lào Cai\"}</item>-->
+        <!--        <item>{\"idCity\" : 11,\"name\" : \"Điện Biên\"}</item>-->
+        <!--        <item>{\"idCity\" : 12,\"name\" : \"Lai Châu\"}</item>-->
+        <!--        <item>{\"idCity\" : 14,\"name\" : \"Sơn La\"}</item>-->
+        <!--        <item>{\"idCity\" : 15,\"name\" : \"Yên Bái\"}</item>-->
+        <!--        <item>{\"idCity\" : 17,\"name\" : \"Hoà Bình\"}</item>-->
+        <item>{\"idCity\" : 19,\"name\" : \"Thái Nguyên\"}</item>
+        <!--        <item>{\"idCity\" : 20,\"name\" : \"Lạng Sơn\"}</item>-->
+        <!--        <item>{\"idCity\" : 22,\"name\" : \"Quảng Ninh\"}</item>-->
+        <!--        <item>{\"idCity\" : 24,\"name\" : \"Bắc Giang\"}</item>-->
+        <!--        <item>{\"idCity\" : 25,\"name\" : \"Phú Thọ\"}</item>-->
+        <!--        <item>{\"idCity\" : 26,\"name\" : \"Vĩnh Phúc\"}</item>-->
+        <!--        <item>{\"idCity\" : 27,\"name\" : \"Bắc Ninh\"}</item>-->
+        <!--        <item>{\"idCity\" : 30,\"name\" : \"Hải Dương\"}</item>-->
+        <item>{\"idCity\" : 31,\"name\" : \"Hải Phòng\"}</item>
+        <!--        <item>{\"idCity\" : 33,\"name\" : \"Hưng Yên\"}</item>-->
+        <!--        <item>{\"idCity\" : 34,\"name\" : \"Thái Bình\"}</item>-->
+        <!--        <item>{\"idCity\" : 35,\"name\" : \"Hà Nam\"}</item>-->
+        <!--        <item>{\"idCity\" : 36,\"name\" : \"Nam Định\"}</item>-->
+        <!--        <item>{\"idCity\" : 37,\"name\" : \"Ninh Bình\"}</item>-->
+        <!--        <item>{\"idCity\" : 38,\"name\" : \"Thanh Hóa\"}</item>-->
+        <!--        <item>{\"idCity\" : 40,\"name\" : \"Nghệ An\"}</item>-->
+        <!--        <item>{\"idCity\" : 42,\"name\" : \"Hà Tĩnh\"}</item>-->
+        <!--        <item>{\"idCity\" : 44,\"name\" : \"Quảng Bình\"}</item>-->
+        <!--        <item>{\"idCity\" : 45,\"name\" : \"Quảng Trị\"}</item>-->
+        <!--        <item>{\"idCity\" : 46,\"name\" : \"Thừa Thiên Huế\"}</item>-->
+        <!--        <item>{\"idCity\" : 48,\"name\" : \"Đà Nẵng\"}</item>-->
+        <!--        <item>{\"idCity\" : 49,\"name\" : \"Quảng Nam\"}</item>-->
+        <!--        <item>{\"idCity\" : 51,\"name\" : \"Quảng Ngãi\"}</item>-->
+        <!--        <item>{\"idCity\" : 52,\"name\" : \"Bình Định\"}</item>-->
+        <!--        <item>{\"idCity\" : 54,\"name\" : \"Phú Yên\"}</item>-->
+        <!--        <item>{\"idCity\" : 56,\"name\" : \"Khánh Hòa\"}</item>-->
+        <!--        <item>{\"idCity\" : 58,\"name\" : \"Ninh Thuận\"}</item>-->
+        <!--        <item>{\"idCity\" : 60,\"name\" : \"Bình Thuận\"}</item>-->
+        <!--        <item>{\"idCity\" : 62,\"name\" : \"Kon Tum\"}</item>-->
+        <!--        <item>{\"idCity\" : 64,\"name\" : \"Gia Lai\"}</item>-->
+        <!--        <item>{\"idCity\" : 66,\"name\" : \"Đắk Lắk\"}</item>-->
+        <!--        <item>{\"idCity\" : 67,\"name\" : \"Đắk Nông\"}</item>-->
+        <!--        <item>{\"idCity\" : 68,\"name\" : \"Lâm Đồng\"}</item>-->
+        <!--        <item>{\"idCity\" : 70,\"name\" : \"Bình Phước\"}</item>-->
+        <!--        <item>{\"idCity\" : 72,\"name\" : \"Tây Ninh\"}</item>-->
+        <!--        <item>{\"idCity\" : 74,\"name\" : \"Bình Dương\"}</item>-->
+        <!--        <item>{\"idCity\" : 75,\"name\" : \"Đồng Nai\"}</item>-->
+        <!--        <item>{\"idCity\" : 77,\"name\" : \"Bà Rịa - Vũng Tàu\"}</item>-->
+        <item>{\"idCity\" : 79,\"name\" : \"Hồ Chí Minh\"}</item>
+        <!--        <item>{\"idCity\" : 80,\"name\" : \"Long An\"}</item>-->
+        <!--        <item>{\"idCity\" : 82,\"name\" : \"Tiền Giang\"}</item>-->
+        <!--        <item>{\"idCity\" : 83,\"name\" : \"Bến Tre\"}</item>-->
+        <!--        <item>{\"idCity\" : 84,\"name\" : \"Trà Vinh\"}</item>-->
+        <!--        <item>{\"idCity\" : 86,\"name\" : \"Vĩnh Long\"}</item>-->
+        <!--        <item>{\"idCity\" : 87,\"name\" : \"Đồng Tháp\"}</item>-->
+        <!--        <item>{\"idCity\" : 89,\"name\" : \"An Giang\"}</item>-->
+        <!--        <item>{\"idCity\" : 91,\"name\" : \"Kiên Giang\"}</item>-->
+        <!--        <item>{\"idCity\" : 92,\"name\" : \"Cần Thơ\"}</item>-->
+        <!--        <item>{\"idCity\" : 93,\"name\" : \"Hậu Giang\"}</item>-->
+        <!--        <item>{\"idCity\" : 94,\"name\" : \"Sóc Trăng\"}</item>-->
+        <!--        <item>{\"idCity\" : 95,\"name\" : \"Bạc Liêu\"}</item>-->
+        <!--        <item>{\"idCity\" : 96,\"name\" : \"Cà Mau\"}</item>-->
+
+    </string-array>
+
+</resources>
