@@ -120,13 +120,13 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
         rcvMenuDrawLayout.addItemDecoration(new VerticalSpaceItemDecoration(20));
         rcvMenuDrawLayout.setLayoutManager(new LinearLayoutManager(this));
         arrMenuDraw = new ArrayList<>();
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , true));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false));
+        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , true , true));
+        arrMenuDraw.add(new Sensor("Cảm biến độ ẩm" , false , false));
+        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
+        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
+        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
+        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
+        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
         adapteRCVMenuDraw = new AdapteRCVMenuDraw(this , arrMenuDraw , this);
         rcvMenuDrawLayout.setAdapter(adapteRCVMenuDraw);
     }
@@ -137,6 +137,15 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
 
     @Override
     public void onClickRCVMenuDraw(int position) {
+        for (int i = 0 ; i < arrMenuDraw.size();i++){
+            if (arrMenuDraw.get(i).isSelected()){
+                arrMenuDraw.get(i).setSelected(false);
+                adapteRCVMenuDraw.notifyItemChanged(i);
+            }
+        }
+        arrMenuDraw.get(position).setSelected(true);
+        adapteRCVMenuDraw.notifyItemChanged(position);
+
         txtSensorName.setText(arrMenuDraw.get(position).getName());
         drawerLayout.closeDrawer(GravityCompat.START);
     }

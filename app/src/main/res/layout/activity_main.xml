@@ -60,28 +60,43 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <RelativeLayout
         android:layout_gravity="start"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:background="@color/bg_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10ssp"
-            android:text="Các cảm biến" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_menu_drawer"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@android:color/darker_gray" />
+            android:layout_above="@+id/btn_add_sensor"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10ssp"
+                android:text="Các cảm biến"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_menu_drawer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_sensor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_10ssp"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_12ssp"
+            android:background="@drawable/square_border_primary"
+            android:text="( + ) Add sensor" />
+    </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

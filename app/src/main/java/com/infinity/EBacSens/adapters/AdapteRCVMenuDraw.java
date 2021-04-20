@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,6 @@ public class AdapteRCVMenuDraw extends RecyclerView.Adapter<RecyclerView.ViewHol
         return new ViewHodler(view);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
@@ -50,7 +50,7 @@ public class AdapteRCVMenuDraw extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         viewHodler.btnToggle.setText(arrItem.get(position).isToggle() ? "Hoạt động" : "Off");
         viewHodler.btnToggle.setBackground(arrItem.get(position).isToggle() ? context.getResources().getDrawable(R.drawable.circle_bg_button_active) : context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
-
+        viewHodler.container.setBackgroundColor(arrItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
         viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVMenuDraw(position));
     }
 
@@ -63,11 +63,13 @@ public class AdapteRCVMenuDraw extends RecyclerView.Adapter<RecyclerView.ViewHol
     static class ViewHodler extends RecyclerView.ViewHolder {
         TextView txtName;
         Button btnToggle;
+        RelativeLayout container;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.item_rcv_menu_draw_txt_name);
             btnToggle = itemView.findViewById(R.id.item_rcv_menu_draw_btn_toggle);
+            container = itemView.findViewById(R.id.item_rcv_menu_draw_continer);
         }
     }
 }
