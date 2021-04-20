@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
         (tabLayout.getTabAt(3)).setCustomView(R.layout.custom_icon_tab_4_main);
 
         rcvMenuDrawLayout = findViewById(R.id.rcv_menu_drawer);
+        rcvMenuDrawLayout.setHasFixedSize(true);
         rcvMenuDrawLayout.addItemDecoration(new VerticalSpaceItemDecoration(20));
         rcvMenuDrawLayout.setLayoutManager(new LinearLayoutManager(this));
         arrMenuDraw = new ArrayList<>();
