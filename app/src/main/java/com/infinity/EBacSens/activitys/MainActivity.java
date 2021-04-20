@@ -1,5 +1,6 @@
 package com.infinity.EBacSens.activitys;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -7,10 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,12 +49,42 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
 
     private TextView txtSensorName;
 
+    BluetoothAdapter bluetoothAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addController();
         addEvents();
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+    }
+
+    private void discoverBluetooth(){
+        bluetoothAdapter.startDiscovery();
+        Log.e("AAAA" , "start");
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.e("AAAA_N" , device.getAddress()+" 1");
+                Log.e("AAAA_add" , device.getName()+" 1");
+            }
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(broadcastReceiver , intentFilter);
+
     }
 
     private void addEvents() {
@@ -149,5 +189,9 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
 
         txtSensorName.setText(arrMenuDraw.get(position).getName());
         drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public void tesst(View view) {
+        discoverBluetooth();
     }
 }

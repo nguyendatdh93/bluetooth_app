@@ -4,16 +4,21 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,6 +51,7 @@ import com.infinity.EBacSens.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Fragment1 extends Fragment {
 
@@ -53,6 +60,10 @@ public class Fragment1 extends Fragment {
     private Context context;
 
     private Spinner spnCategory;
+
+    private ListView listView;
+    private ArrayList<String> mDeviceList = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -66,6 +77,9 @@ public class Fragment1 extends Fragment {
     private void addEvents() {
 
     }
+
+
+
 
     private void addController() {
         spnCategory = view.findViewById(R.id.fragment_1_spn_category);
