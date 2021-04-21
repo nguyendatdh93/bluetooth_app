@@ -31,6 +31,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,6 +49,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.activitys.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +61,7 @@ public class Fragment1 extends Fragment {
     private Activity activity;
     private Context context;
 
-    private Spinner spnCategory;
-
-    private ListView listView;
-    private ArrayList<String> mDeviceList = new ArrayList<>();
-
+    private EditText edtNameDevice;
 
     @Nullable
     @Override
@@ -78,36 +76,9 @@ public class Fragment1 extends Fragment {
 
     }
 
-
-
-
     private void addController() {
-        spnCategory = view.findViewById(R.id.fragment_1_spn_category);
-
-        List<String> list = new ArrayList<>();
-        list.add("Java");
-        list.add("Android");
-        list.add("PHP");
-        list.add("C#");
-        list.add("ASP.NET");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item,list);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-
-        spnCategory.setAdapter(adapter);
-        spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
+        edtNameDevice = view.findViewById(R.id.fragment_1_edt_name_device);
+        edtNameDevice.setText(MainActivity.device.getName() == null ? MainActivity.device.getAddress() : MainActivity.device.getName());
     }
 
 

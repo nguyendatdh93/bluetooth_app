@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
@@ -27,11 +28,8 @@ public class MainActivity extends AppCompatActivity  {
     private DBManager dbManager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private DrawerLayout drawerLayout;
 
-    private TextView txtSensorName;
-
-    BluetoothAdapter bluetoothAdapter;
+    public static BluetoothDevice device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,33 +37,6 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         addController();
         addEvents();
-
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    }
-
-    private void discoverBluetooth(){
-        bluetoothAdapter.startDiscovery();
-        Log.e("AAAA" , "start");
-    }
-
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)){
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                Log.e("AAAA_N" , device.getAddress()+" 1");
-                Log.e("AAAA_add" , device.getName()+" 1");
-            }
-        }
-    };
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(broadcastReceiver , intentFilter);
-
     }
 
     private void addEvents() {
@@ -120,9 +91,6 @@ public class MainActivity extends AppCompatActivity  {
     private void addController() {
         viewPager = findViewById(R.id.view_pager_main);
         tabLayout = findViewById(R.id.tab_layout_main);
-        drawerLayout = findViewById(R.id.drw_layout);
-        txtSensorName = findViewById(R.id.txt_name_sensor);
-
         tabLayout.addTab(tabLayout.newTab().setText("Tab1"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab2"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab3"));
@@ -137,15 +105,12 @@ public class MainActivity extends AppCompatActivity  {
         (tabLayout.getTabAt(2)).setCustomView(R.layout.custom_icon_tab_3_main);
         (tabLayout.getTabAt(3)).setCustomView(R.layout.custom_icon_tab_4_main);
 
+        Intent i = getIntent();
+        device = i.getParcelableExtra("device");
 
     }
 
-    public void onNavigator(View view) {
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-
-
-    public void abc(View view) {
-        discoverBluetooth();
+    public void onBack(View view) {
+        finish();
     }
 }

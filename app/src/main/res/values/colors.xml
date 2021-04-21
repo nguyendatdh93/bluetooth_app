@@ -15,4 +15,5 @@
     <color name="grey">#efefef</color>
     <color name="bg_menu">#cedfef</color>
     <color name="menu_active">#a7caea</color>
+    <color name="orange">#FF9800</color>
 </resources>

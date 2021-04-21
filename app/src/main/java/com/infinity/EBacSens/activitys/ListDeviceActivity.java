@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -21,6 +23,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
+import com.infinity.EBacSens.model_objects.FollowSensor;
 import com.infinity.EBacSens.model_objects.Sensor;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 import com.infinity.EBacSens.views.ViewRCVDevicePaired;
@@ -33,7 +36,8 @@ import java.util.Set;
 public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevicePaired, ViewRCVDeviceOnline {
 
     private RecyclerView rcvDevicePaired;
-    private ArrayList<Sensor> arrDevicePaired;
+    private ArrayList<BluetoothDevice> arrDevicePaired;
+    private ArrayList<FollowSensor> arrFollowItem;
     private AdapteRCVDevicePaired adapteRCVDevicePaired;
 
     ArrayList<BluetoothDevice> arrDeviceOnline;
@@ -66,7 +70,9 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice curDevice : pairedDevices) {
                     devices.add(curDevice);
-                    arrDevicePaired.add(new Sensor(curDevice.getName(), curDevice.getAddress(), false, false));
+                    //arrDevicePaired.add(new Sensor(curDevice.getName(), curDevice.getAddress(), false, false));
+                    arrDevicePaired.add(curDevice);
+                    arrFollowItem.add(new FollowSensor(false , false));
                     adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
                 }
             }
@@ -107,7 +113,8 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         rcvDevicePaired.setHasFixedSize(true);
         rcvDevicePaired.setLayoutManager(new LinearLayoutManager(this));
         arrDevicePaired = new ArrayList<>();
-        adapteRCVDevicePaired = new AdapteRCVDevicePaired(this, arrDevicePaired, this);
+        arrFollowItem = new ArrayList<>();
+        adapteRCVDevicePaired = new AdapteRCVDevicePaired(this, arrDevicePaired , arrFollowItem, this);
         rcvDevicePaired.setAdapter(adapteRCVDevicePaired);
 
         arrDeviceOnline = new ArrayList<>();
@@ -117,17 +124,26 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
     @Override
     public void onClickRCVDevicePaired(int position) {
-        for (int i = 0; i < arrDevicePaired.size(); i++) {
-            if (arrDevicePaired.get(i).isSelected()) {
-                arrDevicePaired.get(i).setSelected(false);
-                adapteRCVDevicePaired.notifyItemChanged(i);
-            }
-        }
-        arrDevicePaired.get(position).setSelected(true);
-        adapteRCVDevicePaired.notifyItemChanged(position);
+        Intent i = new Intent(this , MainActivity.class);
+        i.putExtra("device", arrDevicePaired.get(position));
+        startActivity(i);
+//        for (int i = 0; i < arrDevicePaired.size(); i++) {
+//            if (arrDevicePaired.get(i).isSelected()) {
+//                arrDevicePaired.get(i).setSelected(false);
+//                adapteRCVDevicePaired.notifyItemChanged(i);
+//            }
+//        }
+//        arrDevicePaired.get(position).setSelected(true);
+//        adapteRCVDevicePaired.notifyItemChanged(position);
 
-//        txtSensorName.setText(arrMenuDraw.get(position).getName());
-//        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onUnpairRCVDevicePaired(int position) {
+        unpairDevice(arrDevicePaired.get(position));
+        arrDevicePaired.remove(position);
+        arrFollowItem.remove(position);
+        adapteRCVDevicePaired.notifyItemRemoved(position);
     }
 
     @Override
@@ -152,19 +168,22 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
                     if (device.getAddress().equals(arrDevicePaired.get(i).getAddress())) {
-                        arrDevicePaired.get(i).setToggle(true);
+                        arrFollowItem.get(i).setToggle(true);
                         adapteRCVDevicePaired.notifyItemChanged(i);
                         break;
                     }
                 }
 
-                for (int i = 0; i < arrDevicePaired.size(); i++) {
-                    if (device.getAddress().equals(arrDevicePaired.get(i).getAddress())) {
-                        arrDeviceOnline.remove(arrDeviceOnline.size()-1);
-                        adapteRCVDeviceOnline.notifyItemRemoved(arrDeviceOnline.size()-1);
-                        break;
-                    }
-                }
+                // not show device online when paired
+//                for (int i = 0; i < arrDevicePaired.size(); i++) {
+//                    if (device.getAddress().equals(arrDevicePaired.get(i).getAddress())) {
+//                        arrDeviceOnline.remove(arrDeviceOnline.size()-1);
+//                        if (adapteRCVDeviceOnline != null) {
+//                            adapteRCVDeviceOnline.notifyItemRemoved(arrDeviceOnline.size()-1);
+//                        }
+//                        break;
+//                    }
+//                }
             }
 
             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
@@ -173,7 +192,8 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    arrDevicePaired.add(new Sensor(device.getName(), device.getAddress(), false, false));
+                    arrDevicePaired.add(device);
+                    arrFollowItem.add(new FollowSensor(false , false));
                     adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
                     Toast.makeText(context, "paired", Toast.LENGTH_SHORT).show();
                 } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
@@ -198,6 +218,8 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         adapteRCVDeviceOnline = new AdapteRCVDeviceOnline(dialogListDeviceOnline.getContext(), arrDeviceOnline, this);
         rcvDeviceOnline.setAdapter(adapteRCVDeviceOnline);
         dialogListDeviceOnline.show();
+        Window window = dialogListDeviceOnline.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
     @Override

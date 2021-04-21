@@ -12,7 +12,7 @@
         android:textStyle="bold"
         android:singleLine="true"
         android:gravity="center"
-        android:text="Trang chủ"
+        android:text="Result"
         android:ellipsize="middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,15 +47,13 @@ public class Fragment4 extends Fragment {
 
     private LineChart lineChart ;
 
-    private RecyclerView rcvDate;
-    private ArrayList<Date> arrDate;
-    private AdapteRCVDate adapteRCVDate;
-
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
     private AdapteRCVResult adapteRCVResult;
 
     private Button btnExportCSV;
+
+    private CheckBox ckbBaseRedLine;
 
     @Nullable
     @Override
@@ -66,13 +66,21 @@ public class Fragment4 extends Fragment {
 
     private void addEvents() {
         btnExportCSV.setOnClickListener(v -> exportFileCSV());
+        ckbBaseRedLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                lineChart.setData(generateDataLine(1 , isChecked));
+                lineChart.invalidate();
+            }
+        });
     }
 
     private void addController() {
         lineChart = view.findViewById(R.id.fragment_4_chart);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
+        ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
 
-        lineChart.setData(generateDataLine(1));
+        lineChart.setData(generateDataLine(1 , false));
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
@@ -90,22 +98,9 @@ public class Fragment4 extends Fragment {
         yAxis.setLabelCount(5,true);
         xAxis.enableAxisLineDashedLine(10,10,0);
 
-        rcvDate = view.findViewById(R.id.fragment_4_rcv_date);
-        rcvDate.setHasFixedSize(true);
-        rcvDate.addItemDecoration(new VerticalSpaceItemDecoration(20));
-        rcvDate.setLayoutManager(new LinearLayoutManager(context));
-        arrDate = new ArrayList<>();
-        arrDate.add(new Date("2021/10/09 18:30:03" , true));
-        arrDate.add(new Date("2021/10/09 18:30:03" , false));
-        arrDate.add(new Date("2021/10/09 18:30:03" , false));
-        arrDate.add(new Date("2021/10/09 18:30:03" , false));
-        arrDate.add(new Date("2021/10/09 18:30:03" , false));
-        arrDate.add(new Date("2021/10/09 18:30:03" , false));
-        adapteRCVDate = new AdapteRCVDate(context , arrDate);
-        rcvDate.setAdapter(adapteRCVDate);
-
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
         rcvResult.setHasFixedSize(true);
+        rcvResult.setNestedScrollingEnabled(false);
         rcvResult.addItemDecoration(new VerticalSpaceItemDecoration(20));
         rcvResult.setLayoutManager(new LinearLayoutManager(context));
         arrResult = new ArrayList<>();
@@ -141,7 +136,7 @@ public class Fragment4 extends Fragment {
         }
     }
 
-    private LineData generateDataLine(int cnt) {
+    private LineData generateDataLine(int cnt , boolean baseline) {
 
         ArrayList<Entry> values1 = new ArrayList<>();
 
@@ -156,24 +151,28 @@ public class Fragment4 extends Fragment {
         d1.setDrawCircles(false);
         d1.setDrawCircleHole(false);
 
-        ArrayList<Entry> values2 = new ArrayList<>();
-
-        values2.add(new Entry(0, 30));
-        for (int i = 5 ; i < values1.size() ; i+=5){
-            values2.add(new Entry(i,  (int) (Math.random() * 65) + 80));
-        }
-        values2.add(new Entry(29,  60));
-
-        LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (1)");
-        d2.setLineWidth(1f);
-        d2.setColor(context.getResources().getColor(R.color.red));
-        d2.setDrawValues(false);
-        d2.setDrawCircles(false);
-        d2.setDrawCircleHole(false);
-
         ArrayList<ILineDataSet> sets = new ArrayList<>();
+
         sets.add(d1);
-        sets.add(d2);
+
+        if (baseline){
+            ArrayList<Entry> values2 = new ArrayList<>();
+
+            values2.add(new Entry(0, 30));
+            for (int i = 5 ; i < values1.size() ; i+=5){
+                values2.add(new Entry(i,  (int) (Math.random() * 65) + 80));
+            }
+            values2.add(new Entry(29,  60));
+
+            LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (1)");
+            d2.setLineWidth(1f);
+            d2.setColor(context.getResources().getColor(R.color.red));
+            d2.setDrawValues(false);
+            d2.setDrawCircles(false);
+            d2.setDrawCircleHole(false);
+
+            sets.add(d2);
+        }
 
         return new LineData(sets);
     }
