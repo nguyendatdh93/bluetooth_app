@@ -2,22 +2,16 @@ package com.infinity.EBacSens.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,27 +23,18 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapteRCVDate;
-import com.infinity.EBacSens.adapters.AdapteRCVMenuDraw;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
-import com.infinity.EBacSens.model_objects.ChartItem;
 import com.infinity.EBacSens.model_objects.Date;
-import com.infinity.EBacSens.model_objects.LineChartItem;
 import com.infinity.EBacSens.model_objects.Result;
-import com.infinity.EBacSens.model_objects.Sensor;
 import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
 import com.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Fragment4 extends Fragment {

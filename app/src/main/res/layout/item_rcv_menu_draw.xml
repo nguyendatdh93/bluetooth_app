@@ -12,17 +12,17 @@
         android:layout_centerVertical="true"
         android:textSize="@dimen/_11ssp"
         android:layout_marginEnd="@dimen/_5ssp"
-        android:layout_toStartOf="@+id/item_rcv_menu_draw_btn_toggle" />
+        android:layout_toStartOf="@+id/item_rcv_menu_draw_txt_toggle" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/item_rcv_menu_draw_btn_toggle"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/item_rcv_menu_draw_txt_toggle"
+        android:layout_width="@dimen/_80ssp"
         android:paddingStart="@dimen/_5ssp"
         android:paddingEnd="@dimen/_5ssp"
         android:layout_height="@dimen/_20ssp"
         android:layout_alignParentEnd="true"
         android:textSize="@dimen/_11ssp"
-        android:textAllCaps="false"
+        android:gravity="center"
         android:layout_centerVertical="true"
         android:background="@drawable/circle_bg_button_not_active"
         android:textColor="@color/toggle_color" />

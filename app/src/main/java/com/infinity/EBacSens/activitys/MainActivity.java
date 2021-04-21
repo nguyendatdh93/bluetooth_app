@@ -1,33 +1,26 @@
 package com.infinity.EBacSens.activitys;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.adapters.AdapteRCVMenuDraw;
+import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
 import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.model_objects.Sensor;
@@ -36,16 +29,12 @@ import com.infinity.EBacSens.views.ViewRCVMenuDrawListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawListener {
+public class MainActivity extends AppCompatActivity  {
 
     private DBManager dbManager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private DrawerLayout drawerLayout;
-
-    private RecyclerView rcvMenuDrawLayout;
-    private ArrayList<Sensor> arrMenuDraw;
-    private AdapteRCVMenuDraw adapteRCVMenuDraw;
 
     private TextView txtSensorName;
 
@@ -59,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
         addEvents();
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
     }
 
     private void discoverBluetooth(){
@@ -156,42 +144,15 @@ public class MainActivity extends AppCompatActivity implements ViewRCVMenuDrawLi
         (tabLayout.getTabAt(2)).setCustomView(R.layout.custom_icon_tab_3_main);
         (tabLayout.getTabAt(3)).setCustomView(R.layout.custom_icon_tab_4_main);
 
-        rcvMenuDrawLayout = findViewById(R.id.rcv_menu_drawer);
-        rcvMenuDrawLayout.setHasFixedSize(true);
-        rcvMenuDrawLayout.addItemDecoration(new VerticalSpaceItemDecoration(20));
-        rcvMenuDrawLayout.setLayoutManager(new LinearLayoutManager(this));
-        arrMenuDraw = new ArrayList<>();
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , true , true));
-        arrMenuDraw.add(new Sensor("Cảm biến độ ẩm" , false , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
-        arrMenuDraw.add(new Sensor("Cảm biến nhiệt độ" , false , false));
-        adapteRCVMenuDraw = new AdapteRCVMenuDraw(this , arrMenuDraw , this);
-        rcvMenuDrawLayout.setAdapter(adapteRCVMenuDraw);
+
     }
 
     public void onNavigator(View view) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    @Override
-    public void onClickRCVMenuDraw(int position) {
-        for (int i = 0 ; i < arrMenuDraw.size();i++){
-            if (arrMenuDraw.get(i).isSelected()){
-                arrMenuDraw.get(i).setSelected(false);
-                adapteRCVMenuDraw.notifyItemChanged(i);
-            }
-        }
-        arrMenuDraw.get(position).setSelected(true);
-        adapteRCVMenuDraw.notifyItemChanged(position);
 
-        txtSensorName.setText(arrMenuDraw.get(position).getName());
-        drawerLayout.closeDrawer(GravityCompat.START);
-    }
-
-    public void tesst(View view) {
+    public void abc(View view) {
         discoverBluetooth();
     }
 }

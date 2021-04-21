@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <Button
-        android:onClick="tesst"
+        android:onClick="abc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <RelativeLayout

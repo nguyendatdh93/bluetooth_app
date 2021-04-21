@@ -2,6 +2,7 @@ package com.infinity.EBacSens.model_objects;
 
 public class Sensor {
     private String name;
+    private String address;
     private boolean toggle;
     private boolean selected;
 
@@ -11,6 +12,14 @@ public class Sensor {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public boolean isToggle() {
@@ -29,8 +38,9 @@ public class Sensor {
         this.selected = selected;
     }
 
-    public Sensor(String name, boolean toggle, boolean selected) {
+    public Sensor(String name, String address, boolean toggle, boolean selected) {
         this.name = name;
+        this.address = address;
         this.toggle = toggle;
         this.selected = selected;
     }
