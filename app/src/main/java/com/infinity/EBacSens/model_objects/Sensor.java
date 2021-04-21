@@ -1,5 +1,7 @@
 package com.infinity.EBacSens.model_objects;
 
+import android.bluetooth.BluetoothDevice;
+
 public class Sensor {
     private String name;
     private String address;

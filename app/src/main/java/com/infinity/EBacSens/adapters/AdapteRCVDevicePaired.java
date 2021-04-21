@@ -1,15 +1,9 @@
 package com.infinity.EBacSens.adapters;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.model_objects.Sensor;
-import com.infinity.EBacSens.views.ViewRCVMenuDrawListener;
+import com.infinity.EBacSens.views.ViewRCVDevicePaired;
 
 import java.util.ArrayList;
 
@@ -25,9 +19,9 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
 
     private ArrayList<Sensor> arrItem;
     private Context context;
-    private ViewRCVMenuDrawListener callback;
+    private ViewRCVDevicePaired callback;
 
-    public AdapteRCVDevicePaired(Context context , ArrayList<Sensor> arrItem , ViewRCVMenuDrawListener callback) {
+    public AdapteRCVDevicePaired(Context context , ArrayList<Sensor> arrItem , ViewRCVDevicePaired callback) {
         this.arrItem = arrItem;
         this.context = context;
         this.callback = callback;
@@ -37,7 +31,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public ViewHodler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.item_rcv_menu_draw, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_rcv_device_paired, parent, false);
         return new ViewHodler(view);
     }
 
@@ -51,7 +45,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         viewHodler.txtToggle.setText(arrItem.get(position).isToggle() ? "Hoạt động" : "Off");
         viewHodler.txtToggle.setBackground(arrItem.get(position).isToggle() ? context.getResources().getDrawable(R.drawable.circle_bg_button_active) : context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
         viewHodler.container.setBackgroundColor(arrItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
-        viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVMenuDraw(position));
+        viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
     }
 
     @Override

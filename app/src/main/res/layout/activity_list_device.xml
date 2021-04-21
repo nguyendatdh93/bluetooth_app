@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10ssp"
-            android:text="List device"
+            android:text="List device paired"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
             android:textStyle="bold" />

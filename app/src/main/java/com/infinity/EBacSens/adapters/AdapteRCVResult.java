@@ -10,9 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.model_objects.Date;
 import com.infinity.EBacSens.model_objects.Result;
-import com.infinity.EBacSens.views.ViewRCVMenuDrawListener;
 
 import java.util.ArrayList;
 

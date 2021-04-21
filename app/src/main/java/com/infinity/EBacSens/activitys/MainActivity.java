@@ -3,7 +3,6 @@ package com.infinity.EBacSens.activitys;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.bluetooth.BluetoothAdapter;
@@ -20,14 +19,8 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
 import com.infinity.EBacSens.data_sqllite.DBManager;
-import com.infinity.EBacSens.model_objects.Sensor;
-import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
-import com.infinity.EBacSens.views.ViewRCVMenuDrawListener;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  {
 

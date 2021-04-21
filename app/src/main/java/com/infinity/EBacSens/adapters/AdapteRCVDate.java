@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.model_objects.Date;
-import com.infinity.EBacSens.model_objects.Sensor;
-import com.infinity.EBacSens.views.ViewRCVMenuDrawListener;
+import com.infinity.EBacSens.views.ViewRCVDevicePaired;
 
 import java.util.ArrayList;
 
@@ -22,7 +19,7 @@ public class AdapteRCVDate extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private ArrayList<Date> arrItem;
     private Context context;
-    private ViewRCVMenuDrawListener callback;
+    private ViewRCVDevicePaired callback;
 
     public AdapteRCVDate(Context context , ArrayList<Date> arrItem) {
         this.arrItem = arrItem;

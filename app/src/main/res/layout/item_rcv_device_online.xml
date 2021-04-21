@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_rcv_menu_draw_continer"
+    android:padding="@dimen/_10ssp">
+
+    <TextView
+        android:id="@+id/item_rcv_menu_draw_txt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/_11ssp"
+        android:layout_marginEnd="@dimen/_5ssp"
+        android:layout_toStartOf="@+id/item_rcv_menu_draw_btn_connect" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/item_rcv_menu_draw_btn_connect"
+        android:text="Pair"
+        android:layout_width="@dimen/_80ssp"
+        android:paddingStart="@dimen/_5ssp"
+        android:paddingEnd="@dimen/_5ssp"
+        android:layout_height="@dimen/_20ssp"
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/_11ssp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_bg_button_active"
+        android:textColor="@color/toggle_text_active" />
+</RelativeLayout>
