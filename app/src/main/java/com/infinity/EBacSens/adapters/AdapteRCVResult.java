@@ -37,6 +37,10 @@ public class AdapteRCVResult extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ViewHodler viewHodler = (ViewHodler) holder;
 
         viewHodler.txtName.setText(arrItem.get(position).getName());
+        viewHodler.txtResult.setText(arrItem.get(position).getResult());
+        viewHodler.txtHeightTop.setText(arrItem.get(position).getHeightTop());
+        viewHodler.txtBGuA.setText(arrItem.get(position).getBguA());
+        viewHodler.txtError.setText(arrItem.get(position).getError());
     }
 
     @Override
@@ -46,11 +50,15 @@ public class AdapteRCVResult extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
-        TextView txtName;
+        TextView txtName , txtResult , txtHeightTop , txtBGuA , txtError;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.item_rcv_result_txt_name);
+            txtResult = itemView.findViewById(R.id.item_rcv_result_txt_result);
+            txtHeightTop = itemView.findViewById(R.id.item_rcv_result_txt_height_top);
+            txtBGuA = itemView.findViewById(R.id.item_rcv_result_txt_bgua);
+            txtError = itemView.findViewById(R.id.item_rcv_result_txt_error);
         }
     }
 }

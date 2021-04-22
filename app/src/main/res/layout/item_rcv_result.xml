@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_rcv_menu_draw_continer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/item_rcv_menu_draw_continer"
     android:orientation="horizontal"
     android:weightSum="5">
 
     <TextView
         android:id="@+id/item_rcv_result_txt_name"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11ssp"/>
+        android:layout_weight="1"
+        android:textSize="@dimen/_11ssp" />
 
     <TextView
-        android:text="12"
+        android:id="@+id/item_rcv_result_txt_result"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11ssp"/>
+        android:layout_weight="1"
+        android:text="12"
+        android:textSize="@dimen/_11ssp" />
+
     <TextView
-        android:text="12"
+        android:id="@+id/item_rcv_result_txt_height_top"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11ssp"/>
+        android:layout_weight="1"
+        android:text="12"
+        android:textSize="@dimen/_11ssp" />
+
     <TextView
-        android:text="12"
+        android:id="@+id/item_rcv_result_txt_bgua"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11ssp"/>
+        android:layout_weight="1"
+        android:text="12"
+        android:textSize="@dimen/_11ssp" />
+
     <TextView
-        android:text="12"
+        android:id="@+id/item_rcv_result_txt_error"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11ssp"/>
+        android:layout_weight="1"
+        android:text="12"
+        android:textSize="@dimen/_11ssp" />
 </LinearLayout>

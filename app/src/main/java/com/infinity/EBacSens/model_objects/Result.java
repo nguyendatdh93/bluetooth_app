@@ -2,7 +2,10 @@ package com.infinity.EBacSens.model_objects;
 
 public class Result {
     private String name;
-    private float a,b,c,d;
+    private String result;
+    private String heightTop;
+    private String bguA;
+    private String error;
 
     public String getName() {
         return name;
@@ -12,43 +15,43 @@ public class Result {
         this.name = name;
     }
 
-    public float getA() {
-        return a;
+    public String getResult() {
+        return result;
     }
 
-    public void setA(float a) {
-        this.a = a;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public float getB() {
-        return b;
+    public String getHeightTop() {
+        return heightTop;
     }
 
-    public void setB(float b) {
-        this.b = b;
+    public void setHeightTop(String heightTop) {
+        this.heightTop = heightTop;
     }
 
-    public float getC() {
-        return c;
+    public String getBguA() {
+        return bguA;
     }
 
-    public void setC(float c) {
-        this.c = c;
+    public void setBguA(String bguA) {
+        this.bguA = bguA;
     }
 
-    public float getD() {
-        return d;
+    public String getError() {
+        return error;
     }
 
-    public void setD(float d) {
-        this.d = d;
+    public void setError(String error) {
+        this.error = error;
     }
 
-    public Result(String name, float a, float b, float c, float d) {
+    public Result(String name, String result, String heightTop, String bguA, String error) {
         this.name = name;
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+        this.result = result;
+        this.heightTop = heightTop;
+        this.bguA = bguA;
+        this.error = error;
     }
 }

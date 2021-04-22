@@ -23,6 +23,8 @@ import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
 import com.infinity.EBacSens.data_sqllite.DBManager;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity  {
 
     private DBManager dbManager;
@@ -48,36 +50,14 @@ public class MainActivity extends AppCompatActivity  {
 
             @Override
             public void onPageSelected(int position) {
-                TextView tvhome, tvstore, tvevent, tvuser;
+                TextView[] arrTxtTitle = new TextView[4];
+                arrTxtTitle[0] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(0)).getCustomView()).findViewById(R.id.txt_title_fragment_1);
+                arrTxtTitle[1] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(1)).getCustomView()).findViewById(R.id.txt_title_fragment_2);
+                arrTxtTitle[2] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(2)).getCustomView()).findViewById(R.id.txt_title_fragment_3);
+                arrTxtTitle[3] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(3)).getCustomView()).findViewById(R.id.txt_title_fragment_4);
 
-                tvhome = tabLayout.getTabAt(0).getCustomView().findViewById(R.id.txt_title_fragment_1);
-                tvstore = tabLayout.getTabAt(1).getCustomView().findViewById(R.id.txt_title_fragment_2);
-                tvevent = tabLayout.getTabAt(2).getCustomView().findViewById(R.id.txt_title_fragment_3);
-                tvuser = tabLayout.getTabAt(3).getCustomView().findViewById(R.id.txt_title_fragment_4);
-
-                if (position == 0) {
-                    tvhome.setTextColor(Color.WHITE);
-                    tvevent.setTextColor(Color.BLACK);
-                    tvstore.setTextColor(Color.BLACK);
-                    tvuser.setTextColor(Color.BLACK);
-                }
-                if (position == 1) {
-                    tvstore.setTextColor(Color.WHITE);
-                    tvhome.setTextColor(Color.BLACK);
-                    tvevent.setTextColor(Color.BLACK);
-                    tvuser.setTextColor(Color.BLACK);
-                }
-                if (position == 2) {
-                    tvevent.setTextColor(Color.WHITE);
-                    tvhome.setTextColor(Color.BLACK);
-                    tvstore.setTextColor(Color.BLACK);
-                    tvuser.setTextColor(Color.BLACK);
-                }
-                if (position == 3) {
-                    tvuser.setTextColor(Color.WHITE);
-                    tvhome.setTextColor(Color.BLACK);
-                    tvevent.setTextColor(Color.BLACK);
-                    tvstore.setTextColor(Color.BLACK);
+                for (int i = 0 ; i < arrTxtTitle.length ; i++){
+                    arrTxtTitle[i].setTextColor(i == position ? Color.WHITE : Color.BLACK);
                 }
             }
 

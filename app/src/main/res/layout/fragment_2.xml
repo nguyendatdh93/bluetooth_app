@@ -21,7 +21,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên thiết bị"
+                android:hint="Name device"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -37,7 +37,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ngày"
+                android:hint="Datetime"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Ngày"
+                android:hint="Method"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Ngày"
+                android:hint="Auto turn off(0-60MIN)"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_color"
-                android:text="abc"
+                android:text="Write"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
 
@@ -94,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey"
-                android:text="abc"
+                android:text="Read"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>

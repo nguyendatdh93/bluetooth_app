@@ -1,19 +1,27 @@
 package com.infinity.EBacSens.fragments;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,7 +39,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.activitys.ListDeviceActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
@@ -54,14 +65,17 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
     private LineChart lineChart;
     private SeekBar skbProgress;
+    private Button btnExportCSV, btnHistoryMeasure;
+    private CheckBox ckbBaseRedLine;
+    private TextView txtProcess;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
     private AdapteRCVResult adapteRCVResult;
 
-    private Button btnExportCSV, btnHistoryMeasure;
-
-    private CheckBox ckbBaseRedLine;
+    private AutoCompleteTextView acpDatetime;
+    private List<String> arrDatetime;
+    private ArrayAdapter<String> adapterDatetime;
 
     private ArrayList<Measure> arrMeasure;
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
@@ -76,23 +90,21 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
     }
 
     private void addEvents() {
-        btnExportCSV.setOnClickListener(v -> exportFileCSV());
+        btnExportCSV.setOnClickListener(v -> showDialogHistoryMeasure());
         ckbBaseRedLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                lineChart.setData(generateDataLine(1, isChecked));
+                lineChart.setData(generateDataLine(isChecked));
                 lineChart.invalidate();
             }
         });
 
-        btnHistoryMeasure.setOnClickListener(v -> showDialogHistoryMeasure());
+        //btnHistoryMeasure.setOnClickListener(v -> );
     }
 
     private void showDialogHistoryMeasure() {
         Dialog dialogHistoryMeasure = new Dialog(context);
         dialogHistoryMeasure.setContentView(R.layout.dialog_history_measure);
-
-        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
 
         RecyclerView rcvHistoryMeasure = dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_rcv);
         rcvHistoryMeasure.setHasFixedSize(true);
@@ -110,6 +122,13 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
         adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrMeasure, this);
         rcvHistoryMeasure.setAdapter(adapterRCVHistoryMeasure);
+
+        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
+        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_export).setOnClickListener(v -> {
+            dialogHistoryMeasure.cancel();
+            exportFileCSV(arrMeasure);
+        });
+
         dialogHistoryMeasure.show();
         Window window = dialogHistoryMeasure.getWindow();
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -121,8 +140,11 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
+        skbProgress.setPadding(0, 0, 0, 0);
+        acpDatetime = view.findViewById(R.id.fragment_4_acp_name_device);
+        txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
 
-        lineChart.setData(generateDataLine(1, false));
+        lineChart.setData(generateDataLine(true));
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
@@ -151,39 +173,93 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
         rcvResult.addItemDecoration(new VerticalSpaceItemDecoration(20));
         rcvResult.setLayoutManager(new LinearLayoutManager(context));
         arrResult = new ArrayList<>();
-        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
-        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
-        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
-        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
-        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
+        arrResult.add(new Result("HC-05", "270", "109.08", "1.57", "0"));
+        arrResult.add(new Result("Red line", "810", "12.09", "1.20", "0"));
 
         adapteRCVResult = new AdapteRCVResult(context, arrResult);
         rcvResult.setAdapter(adapteRCVResult);
+
+        arrDatetime = new ArrayList<>();
+        arrDatetime.add("2021/04/09 18:05:05");
+        arrDatetime.add("2021/04/10 18:05:05");
+        arrDatetime.add("2021/04/11 18:05:05");
+
+        adapterDatetime = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrDatetime);
+        acpDatetime.setAdapter(adapterDatetime);
     }
 
-    private void exportFileCSV() {
-        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyCsvFile.csv"); // Here csv file name is MyCsvFile.csv
-        CSVWriter writer = null;
-        try {
-            writer = new CSVWriter(new FileWriter(csv));
+    private void exportFileCSV(ArrayList<Measure> arrMeasure) {
+        PermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
 
-            List<String[]> data = new ArrayList<String[]>();
-            data.add(new String[]{"Country", "Capital"});
-            data.add(new String[]{"India", "New Delhi"});
-            data.add(new String[]{"United States", "Washington D.C"});
-            data.add(new String[]{"Germany", "Berlin"});
+                new AsyncTask<ArrayList<Measure>, Integer, String>() {
 
-            writer.writeAll(data); // data is adding to csv
+                    @Override
+                    protected String doInBackground(ArrayList<Measure>... arrayLists) {
 
-            writer.close();
-            Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(activity, "failed", Toast.LENGTH_SHORT).show();
-        }
+                        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyCsvFile.csv"); // Here csv file name is MyCsvFile.csv
+                        CSVWriter writer = null;
+                        try {
+                            writer = new CSVWriter(new FileWriter(csv));
+
+                            List<String[]> data = new ArrayList<String[]>();
+                            data.add(new String[]{"Name", "Datetime", "Result"});
+                            for (int i = 0; i < arrMeasure.size(); i++) {
+                                data.add(new String[]{arrMeasure.get(i).getName(), arrMeasure.get(i).getDatetime(), arrMeasure.get(i).getResult()});
+                            }
+
+                            for (int i = 0; i < data.size(); i++) {
+                                writer.writeNext(data.get(i));
+                                int percent = i*100/arrMeasure.size();
+                                publishProgress(percent);
+                            }
+
+                            writer.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        skbProgress.setProgress(0);
+                        txtProcess.setVisibility(View.VISIBLE);
+                        txtProcess.setText("Exporting...");
+                        txtProcess.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        skbProgress.setProgress(100);
+                        txtProcess.setText("Done!");
+                        txtProcess.setTextColor(context.getResources().getColor(R.color.green));
+                        Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    protected void onProgressUpdate(Integer... values) {
+                        super.onProgressUpdate(values);
+                        skbProgress.setProgress(values[0]);
+                        txtProcess.setText(values[0]+"");
+                    }
+                }.execute(arrMeasure);
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(activity, "denied", Toast.LENGTH_SHORT).show();
+            }
+        };
+        TedPermission.with(context).setPermissionListener(permissionListener).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
+
     }
 
-    private LineData generateDataLine(int cnt, boolean baseline) {
+    private LineData generateDataLine(boolean baseline) {
 
         ArrayList<Entry> values1 = new ArrayList<>();
 
@@ -191,7 +267,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
             values1.add(new Entry(i, (int) (Math.random() * 65) + 100));
         }
 
-        LineDataSet d1 = new LineDataSet(values1, "New DataSet " + cnt + ", (1)");
+        LineDataSet d1 = new LineDataSet(values1, "");
         d1.setLineWidth(1f);
         d1.setColor(context.getResources().getColor(R.color.green));
         d1.setDrawValues(false);
@@ -211,7 +287,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
             }
             values2.add(new Entry(29, 60));
 
-            LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (1)");
+            LineDataSet d2 = new LineDataSet(values2, "");
             d2.setLineWidth(1f);
             d2.setColor(context.getResources().getColor(R.color.red));
             d2.setDrawValues(false);

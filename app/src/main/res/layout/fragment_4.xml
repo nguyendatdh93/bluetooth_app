@@ -26,7 +26,7 @@
                     android:id="@+id/fragment_4_txt_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Các lần đo"
+                    android:text="List"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15ssp"
                     android:textStyle="bold" />
@@ -36,13 +36,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20ssp"
-                    android:hint="Time"
+                    android:hint="List"
                     android:orientation="horizontal"
                     android:textSize="@dimen/_10ssp">
 
                     <AutoCompleteTextView
-                        android:id="@+id/fragment_1_acp_name_device"
+                        android:id="@+id/fragment_4_acp_name_device"
                         android:layout_width="match_parent"
+                        android:completionThreshold="1"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_11ssp" />
 
@@ -54,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10ssp"
                     android:background="@color/primary_color"
-                    android:text="abc"
+                    android:text="Update data newest"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11ssp" />
 
@@ -64,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Chart"
+                android:text="Graph"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
@@ -117,7 +120,8 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/_10ssp"
                     android:button="@drawable/custom_checkbox"
-                    android:text="Show red line"
+                    android:text="Show baseline"
+                    android:checked="true"
                     android:textColor="@color/primary_color"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>
@@ -126,18 +130,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
-                android:gravity="center"
+                android:weightSum="5"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Đo lường:"
+                        android:text="Datetime measure:"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -149,15 +154,16 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_marginStart="@dimen/_5ssp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_30ssp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Đo lường:"
+                        android:text="Count measure:"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -191,13 +197,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:padding="@dimen/_10ssp"
                     android:weightSum="5">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="a"
+                        android:text="Name"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -206,7 +213,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="a"
+                        android:text="Result"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -215,7 +222,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="a"
+                        android:text="Height Top"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -224,7 +231,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="a"
+                        android:text="BG[uA]"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -233,7 +240,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="a"
+                        android:text="Error"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -243,8 +250,7 @@
                     android:id="@+id/fragment_4_rcv_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/_10ssp"
-                    android:paddingTop="@dimen/_10ssp" />
+                    android:padding="@dimen/_10ssp" />
             </LinearLayout>
 
             <LinearLayout
@@ -252,7 +258,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:layout_marginBottom="@dimen/_10ssp"
-                android:gravity="center|start"
                 android:orientation="horizontal">
 
                 <TextView
@@ -263,16 +268,33 @@
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatSeekBar
-                    android:id="@+id/fragment_4_skb_progress"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxHeight="@dimen/_20ssp"
-                    android:minHeight="@dimen/_20ssp"
-                    android:clickable="false"
-                    android:thumb="@color/white"
-                    android:progressDrawable="@drawable/custom_seekbar_progress"
-                    android:progressTint="@color/green"/>
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/fragment_4_skb_progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="@dimen/_20ssp"
+                        android:minHeight="@dimen/_20ssp"
+                        android:clickable="false"
+                        android:layout_marginStart="@dimen/_5ssp"
+                        android:thumb="@color/white"
+                        android:progressDrawable="@drawable/custom_seekbar_progress"
+                        android:progressTint="@color/green"/>
+
+                    <TextView
+                        android:id="@+id/fragment_4_txt_progress"
+                        android:gravity="end"
+                        android:textSize="@dimen/_12ssp"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:textColor="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -280,7 +302,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_color"
-                android:text="CSV"
+                android:text="Export CSV"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>
