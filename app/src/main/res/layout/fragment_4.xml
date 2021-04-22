@@ -116,16 +116,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/_10ssp"
-                    android:text="Show red line"
                     android:button="@drawable/custom_checkbox"
+                    android:text="Show red line"
                     android:textColor="@color/primary_color"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/_10ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -149,9 +149,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginStart="@dimen/_30ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_30ssp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -240,11 +240,11 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:paddingTop="@dimen/_10ssp"
-                    android:paddingVertical="@dimen/_10ssp"
                     android:id="@+id/fragment_4_rcv_result"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_10ssp"
+                    android:paddingTop="@dimen/_10ssp" />
             </LinearLayout>
 
             <LinearLayout
@@ -258,7 +258,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="abc"
+                    android:text="Progessing:"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />

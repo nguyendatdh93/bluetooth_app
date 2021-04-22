@@ -135,6 +135,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         arrDevicePaired.remove(position);
         arrFollowItem.remove(position);
         adapteRCVDevicePaired.notifyItemRemoved(position);
+        adapteRCVDevicePaired.notifyItemRangeChanged(position, arrDevicePaired.size());
     }
 
     @Override

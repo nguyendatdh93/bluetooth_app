@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.model_objects.Measure;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
+import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 
 import java.util.ArrayList;
 
@@ -22,10 +23,12 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
 
     private ArrayList<Measure> arrItem;
     private Context context;
+    private ViewRCVHistoryMeasure callback;
 
-    public AdapterRCVHistoryMeasure(Context context , ArrayList<Measure> arrItem ) {
+    public AdapterRCVHistoryMeasure(Context context, ArrayList<Measure> arrItem, ViewRCVHistoryMeasure callback) {
         this.arrItem = arrItem;
         this.context = context;
+        this.callback = callback;
     }
 
     @NonNull
@@ -39,9 +42,10 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
-
         viewHodler.txtName.setText(arrItem.get(position).getName());
-
+        viewHodler.txtTime.setText(arrItem.get(position).getDatetime());
+        viewHodler.txtResult.setText(arrItem.get(position).getResult());
+        viewHodler.btnDelete.setOnClickListener(v -> callback.onDeleteRCVHistoryMeasure(position));
     }
 
     @Override
@@ -51,12 +55,14 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
-        TextView txtName;
+        TextView txtName , txtTime , txtResult;
         Button btnDelete;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.item_rcv_history_measure_txt_name);
+            txtTime = itemView.findViewById(R.id.item_rcv_history_measure_txt_time);
+            txtResult = itemView.findViewById(R.id.item_rcv_history_measure_txt_result);
             btnDelete = itemView.findViewById(R.id.item_rcv_history_measure_btn_delete);
         }
     }

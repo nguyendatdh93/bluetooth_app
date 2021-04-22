@@ -37,6 +37,7 @@
             android:paddingStart="@dimen/_5ssp">
 
             <TextView
+                android:id="@+id/item_rcv_history_measure_txt_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -72,6 +73,7 @@
             android:textSize="@dimen/_11ssp" />
 
         <TextView
+            android:id="@+id/item_rcv_history_measure_txt_result"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"

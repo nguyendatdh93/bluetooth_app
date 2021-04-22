@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,7 @@ import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.model_objects.Measure;
 import com.infinity.EBacSens.model_objects.Result;
 import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
+import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
@@ -43,21 +45,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment4 extends Fragment {
+public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
     private View view;
     private Activity activity;
     private Context context;
 
-    private LineChart lineChart ;
+    private LineChart lineChart;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
     private AdapteRCVResult adapteRCVResult;
 
-    private Button btnExportCSV , btnHistoryMeasure;
+    private Button btnExportCSV, btnHistoryMeasure;
 
     private CheckBox ckbBaseRedLine;
+
+    private ArrayList<Measure> arrMeasure;
+    private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
     @Nullable
     @Override
@@ -73,7 +78,7 @@ public class Fragment4 extends Fragment {
         ckbBaseRedLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                lineChart.setData(generateDataLine(1 , isChecked));
+                lineChart.setData(generateDataLine(1, isChecked));
                 lineChart.invalidate();
             }
         });
@@ -81,21 +86,27 @@ public class Fragment4 extends Fragment {
         btnHistoryMeasure.setOnClickListener(v -> showDialogHistoryMeasure());
     }
 
-    private void showDialogHistoryMeasure(){
+    private void showDialogHistoryMeasure() {
         Dialog dialogHistoryMeasure = new Dialog(context);
         dialogHistoryMeasure.setContentView(R.layout.dialog_history_measure);
 
         dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
 
         RecyclerView rcvHistoryMeasure = dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_rcv);
-        rcvHistoryMeasure.setLayoutManager(new LinearLayoutManager(dialogHistoryMeasure.getContext()));
+        rcvHistoryMeasure.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        rcvHistoryMeasure.setLayoutManager(linearLayoutManager);
 
-        ArrayList<Measure> arrMeasure = new ArrayList<>();
-        arrMeasure.add(new Measure("","",""));
-        arrMeasure.add(new Measure("","",""));
-        arrMeasure.add(new Measure("","",""));
+        rcvHistoryMeasure.addItemDecoration(new DividerItemDecoration(context,
+                DividerItemDecoration.VERTICAL));
+        arrMeasure = new ArrayList<>();
+        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
 
-        AdapterRCVHistoryMeasure adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrMeasure);
+        adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrMeasure, this);
         rcvHistoryMeasure.setAdapter(adapterRCVHistoryMeasure);
         dialogHistoryMeasure.show();
         Window window = dialogHistoryMeasure.getWindow();
@@ -108,7 +119,7 @@ public class Fragment4 extends Fragment {
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
 
-        lineChart.setData(generateDataLine(1 , false));
+        lineChart.setData(generateDataLine(1, false));
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
@@ -137,13 +148,13 @@ public class Fragment4 extends Fragment {
         rcvResult.addItemDecoration(new VerticalSpaceItemDecoration(20));
         rcvResult.setLayoutManager(new LinearLayoutManager(context));
         arrResult = new ArrayList<>();
-        arrResult.add(new Result("Sensor" , 1,1,1,0));
-        arrResult.add(new Result("Sensor" , 1,1,1,0));
-        arrResult.add(new Result("Sensor" , 1,1,1,0));
-        arrResult.add(new Result("Sensor" , 1,1,1,0));
-        arrResult.add(new Result("Sensor" , 1,1,1,0));
+        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
+        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
+        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
+        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
+        arrResult.add(new Result("Sensor", 1, 1, 1, 0));
 
-        adapteRCVResult = new AdapteRCVResult(context , arrResult);
+        adapteRCVResult = new AdapteRCVResult(context, arrResult);
         rcvResult.setAdapter(adapteRCVResult);
     }
 
@@ -169,7 +180,7 @@ public class Fragment4 extends Fragment {
         }
     }
 
-    private LineData generateDataLine(int cnt , boolean baseline) {
+    private LineData generateDataLine(int cnt, boolean baseline) {
 
         ArrayList<Entry> values1 = new ArrayList<>();
 
@@ -188,14 +199,14 @@ public class Fragment4 extends Fragment {
 
         sets.add(d1);
 
-        if (baseline){
+        if (baseline) {
             ArrayList<Entry> values2 = new ArrayList<>();
 
             values2.add(new Entry(0, 30));
-            for (int i = 5 ; i < values1.size() ; i+=5){
-                values2.add(new Entry(i,  (int) (Math.random() * 65) + 80));
+            for (int i = 5; i < values1.size(); i += 5) {
+                values2.add(new Entry(i, (int) (Math.random() * 65) + 80));
             }
-            values2.add(new Entry(29,  60));
+            values2.add(new Entry(29, 60));
 
             LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (1)");
             d2.setLineWidth(1f);
@@ -216,6 +227,24 @@ public class Fragment4 extends Fragment {
         super.onAttach(context);
         this.context = context;
         activity = (Activity) context;
+    }
+
+    @Override
+    public void onDeleteRCVHistoryMeasure(int position) {
+        Dialog dialogYesNo = new Dialog(context);
+        dialogYesNo.setContentView(R.layout.dialog_yes_no);
+
+        dialogYesNo.findViewById(R.id.dialog_yes_no_btn_no).setOnClickListener(v -> dialogYesNo.cancel());
+        dialogYesNo.findViewById(R.id.dialog_yes_no_btn_yes).setOnClickListener(v -> {
+            arrMeasure.remove(position);
+            adapterRCVHistoryMeasure.notifyItemRemoved(position);
+            adapterRCVHistoryMeasure.notifyItemRangeChanged(position, arrMeasure.size());
+            dialogYesNo.cancel();
+        });
+
+        dialogYesNo.show();
+        Window window = dialogYesNo.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 }
 
