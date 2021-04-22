@@ -1,15 +1,18 @@
 package com.infinity.EBacSens.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,9 +30,10 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.adapters.AdapteRCVDate;
+import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
-import com.infinity.EBacSens.model_objects.Date;
+import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
+import com.infinity.EBacSens.model_objects.Measure;
 import com.infinity.EBacSens.model_objects.Result;
 import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
 import com.opencsv.CSVWriter;
@@ -51,7 +55,7 @@ public class Fragment4 extends Fragment {
     private ArrayList<Result> arrResult;
     private AdapteRCVResult adapteRCVResult;
 
-    private Button btnExportCSV;
+    private Button btnExportCSV , btnHistoryMeasure;
 
     private CheckBox ckbBaseRedLine;
 
@@ -73,30 +77,59 @@ public class Fragment4 extends Fragment {
                 lineChart.invalidate();
             }
         });
+
+        btnHistoryMeasure.setOnClickListener(v -> showDialogHistoryMeasure());
+    }
+
+    private void showDialogHistoryMeasure(){
+        Dialog dialogHistoryMeasure = new Dialog(context);
+        dialogHistoryMeasure.setContentView(R.layout.dialog_history_measure);
+
+        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
+
+        RecyclerView rcvHistoryMeasure = dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_rcv);
+        rcvHistoryMeasure.setLayoutManager(new LinearLayoutManager(dialogHistoryMeasure.getContext()));
+
+        ArrayList<Measure> arrMeasure = new ArrayList<>();
+        arrMeasure.add(new Measure("","",""));
+        arrMeasure.add(new Measure("","",""));
+        arrMeasure.add(new Measure("","",""));
+
+        AdapterRCVHistoryMeasure adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrMeasure);
+        rcvHistoryMeasure.setAdapter(adapterRCVHistoryMeasure);
+        dialogHistoryMeasure.show();
+        Window window = dialogHistoryMeasure.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
     private void addController() {
         lineChart = view.findViewById(R.id.fragment_4_chart);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
+        btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
 
         lineChart.setData(generateDataLine(1 , false));
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
+
         lineChart.getAxisRight().setDrawLabels(false);
-        lineChart.getAxisRight().setDrawAxisLine(false);
+        //lineChart.getAxisRight().setDrawAxisLine(false);
         lineChart.getLegend().setEnabled(false);
-        lineChart.getAxisRight().setDrawGridLines(false);
+//        lineChart.getAxisRight().setDrawGridLines(false);
+//        lineChart.getAxisLeft().setDrawGridLines(false);
+
         lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getXAxis().setDrawGridLines(false);
+
         XAxis xAxis = lineChart.getXAxis();
         YAxis yAxis = lineChart.getAxisLeft();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         //yAxis.setLabelCount(5);
-        xAxis.setLabelCount(7,true);
-        yAxis.setLabelCount(5,true);
-        xAxis.enableAxisLineDashedLine(10,10,0);
+//        xAxis.setLabelCount(7,true);
+//        yAxis.setLabelCount(5,true);
+        //xAxis.enableAxisLineDashedLine(10,10,0);
 
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
         rcvResult.setHasFixedSize(true);

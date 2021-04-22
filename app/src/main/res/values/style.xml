@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="android:background">@drawable/text_input_background</item>
+        <!-- ... other customizations ... -->
+    </style>
+
+    <style name="FloatingHintTextStyle" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/primary_color</item>
+    </style>
+
+</resources>

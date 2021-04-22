@@ -32,23 +32,24 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:hint="Tên thiết bị"
+                    android:layout_marginTop="@dimen/_20ssp"
+                    android:hint="Time"
+                    android:orientation="horizontal"
                     android:textSize="@dimen/_10ssp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
+                        android:id="@+id/fragment_1_acp_name_device"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Device"
                         android:textSize="@dimen/_11ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/fragment_4_btn"
+                    android:id="@+id/fragment_4_btn_history_measure"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10ssp"
@@ -75,16 +76,6 @@
                 android:layout_marginTop="@dimen/_10ssp"
                 android:background="@drawable/shadow"
                 android:orientation="vertical">
-
-                <CheckBox
-                    android:id="@+id/fragment_4_ckb_base_red_line"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/_5ssp"
-                    android:text="Show red line"
-                    android:textColor="@color/primary_color"
-                    android:textSize="@dimen/_11ssp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -118,6 +109,17 @@
                     </LinearLayout>
                 </LinearLayout>
 
+
+                <CheckBox
+                    android:id="@+id/fragment_4_ckb_base_red_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_10ssp"
+                    android:text="Show red line"
+                    android:button="@drawable/custom_checkbox"
+                    android:textColor="@color/primary_color"
+                    android:textSize="@dimen/_11ssp" />
             </LinearLayout>
 
             <LinearLayout
@@ -238,6 +240,8 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:paddingTop="@dimen/_10ssp"
+                    android:paddingVertical="@dimen/_10ssp"
                     android:id="@+id/fragment_4_rcv_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

@@ -30,6 +30,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,7 +62,7 @@ public class Fragment1 extends Fragment {
     private Activity activity;
     private Context context;
 
-    private EditText edtNameDevice;
+    private AutoCompleteTextView edtNameDevice;
 
     @Nullable
     @Override
@@ -77,8 +78,11 @@ public class Fragment1 extends Fragment {
     }
 
     private void addController() {
-        edtNameDevice = view.findViewById(R.id.fragment_1_edt_name_device);
-        edtNameDevice.setText(MainActivity.device.getName() == null ? MainActivity.device.getAddress() : MainActivity.device.getName());
+        edtNameDevice = view.findViewById(R.id.fragment_1_acp_name_device);
+        if (MainActivity.device != null){
+            edtNameDevice.setText(MainActivity.device.getName() == null ? MainActivity.device.getAddress() : MainActivity.device.getName());
+        }
+
     }
 
 

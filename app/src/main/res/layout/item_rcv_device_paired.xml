@@ -26,6 +26,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/item_rcv_device_paired_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/_10ssp">

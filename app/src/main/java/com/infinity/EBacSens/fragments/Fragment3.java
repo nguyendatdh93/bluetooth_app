@@ -22,7 +22,7 @@ public class Fragment3 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_1, container, false);
+        view = inflater.inflate(R.layout.fragment_3, container, false);
         addController();
         addEvents();
         return view;

@@ -52,7 +52,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         viewHodler.txtToggle.setText(arrFollowItem.get(position).isToggle() ? "Hoạt động" : "Off");
         viewHodler.txtToggle.setBackground(arrFollowItem.get(position).isToggle() ? context.getResources().getDrawable(R.drawable.circle_bg_button_active) : context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
         viewHodler.container.setBackgroundColor(arrFollowItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
-        viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
+        viewHodler.containerView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
         viewHodler.btnUnpair.setOnClickListener(v -> callback.onUnpairRCVDevicePaired(position));
         viewHodler.container.setShowMode(SwipeLayout.ShowMode.PullOut);
     }
@@ -67,6 +67,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         TextView txtName, txtToggle;
         Button btnUnpair;
         SwipeLayout container;
+        RelativeLayout containerView;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +75,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
             txtToggle = itemView.findViewById(R.id.item_rcv_menu_draw_txt_toggle);
             container = itemView.findViewById(R.id.item_rcv_menu_draw_continer);
             btnUnpair = itemView.findViewById(R.id.item_rcv_device_paired_btn_unpair);
+            containerView = itemView.findViewById(R.id.item_rcv_device_paired_container_view);
         }
     }
 }

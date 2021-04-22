@@ -127,15 +127,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         Intent i = new Intent(this , MainActivity.class);
         i.putExtra("device", arrDevicePaired.get(position));
         startActivity(i);
-//        for (int i = 0; i < arrDevicePaired.size(); i++) {
-//            if (arrDevicePaired.get(i).isSelected()) {
-//                arrDevicePaired.get(i).setSelected(false);
-//                adapteRCVDevicePaired.notifyItemChanged(i);
-//            }
-//        }
-//        arrDevicePaired.get(position).setSelected(true);
-//        adapteRCVDevicePaired.notifyItemChanged(position);
-
     }
 
     @Override
