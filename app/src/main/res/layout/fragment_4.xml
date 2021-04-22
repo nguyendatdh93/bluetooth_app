@@ -263,11 +263,16 @@
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    android:id="@+id/fragment_4_skb_progress"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_marginStart="@dimen/_5ssp"
-                    android:background="@color/green" />
+                    android:layout_height="wrap_content"
+                    android:maxHeight="@dimen/_20ssp"
+                    android:minHeight="@dimen/_20ssp"
+                    android:clickable="false"
+                    android:thumb="@color/white"
+                    android:progressDrawable="@drawable/custom_seekbar_progress"
+                    android:progressTint="@color/green"/>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton

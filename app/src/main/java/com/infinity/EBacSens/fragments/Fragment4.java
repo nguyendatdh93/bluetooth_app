@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
     private Context context;
 
     private LineChart lineChart;
+    private SeekBar skbProgress;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
@@ -118,6 +120,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
+        skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
 
         lineChart.setData(generateDataLine(1, false));
         Description description = new Description();

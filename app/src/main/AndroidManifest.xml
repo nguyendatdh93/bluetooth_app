@@ -17,14 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EBacSens">
         <activity android:name=".activitys.ListDeviceActivity">
+
+        </activity>
+        <activity android:name=".activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".activitys.MainActivity">
-
         </activity>
 
         <provider
