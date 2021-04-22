@@ -5,7 +5,15 @@
     android:id="@+id/item_rcv_menu_draw_continer"
     android:padding="@dimen/_10ssp">
 
+    <ImageView
+        android:id="@+id/view_left"
+        android:layout_width="@dimen/_20ssp"
+        android:layout_height="@dimen/_20ssp"
+        android:src="@drawable/online_52px" />
+
     <TextView
+        android:layout_toEndOf="@id/view_left"
+        android:layout_marginStart="@dimen/_5ssp"
         android:id="@+id/item_rcv_menu_draw_txt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

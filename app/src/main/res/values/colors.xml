@@ -9,7 +9,7 @@
     <color name="primary_color_not_active">#cee4f7</color>
     <color name="toggle_active">#a7f0ba</color>
     <color name="toggle_text_active">#24a148</color>
-    <color name="toggle_text_not_active">#cccccc</color>
+    <color name="toggle_text_not_active">#444444</color>
     <color name="toggle_not_active">#f4f4f4</color>
     <color name="toggle_color">#cfcfcf</color>
     <color name="grey">#efefef</color>

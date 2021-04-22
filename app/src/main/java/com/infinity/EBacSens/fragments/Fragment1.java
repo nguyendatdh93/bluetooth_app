@@ -63,6 +63,7 @@ public class Fragment1 extends Fragment {
     private Context context;
 
     private AutoCompleteTextView edtNameDevice;
+    private TextView txtInfor1;
 
     @Nullable
     @Override
@@ -79,6 +80,7 @@ public class Fragment1 extends Fragment {
 
     private void addController() {
         edtNameDevice = view.findViewById(R.id.fragment_1_acp_name_device);
+        txtInfor1 = view.findViewById(R.id.fragment_1_txt_infor_1);
         if (MainActivity.device != null){
             edtNameDevice.setText(MainActivity.device.getName() == null ? MainActivity.device.getAddress() : MainActivity.device.getName());
         }

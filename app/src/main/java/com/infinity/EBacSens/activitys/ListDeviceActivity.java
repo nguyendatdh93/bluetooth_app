@@ -184,7 +184,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     arrDevicePaired.add(device);
-                    arrFollowItem.add(new FollowSensor(false , false));
+                    arrFollowItem.add(new FollowSensor(true , false));
                     adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
                     Toast.makeText(context, "paired", Toast.LENGTH_SHORT).show();
                 } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
@@ -204,6 +204,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         Dialog dialogListDeviceOnline = new Dialog(this);
         dialogListDeviceOnline.setContentView(R.layout.dialog_list_device_online);
 
+        dialogListDeviceOnline.findViewById(R.id.dialog_list_device_online_btn_close).setOnClickListener(v -> dialogListDeviceOnline.cancel());
         RecyclerView rcvDeviceOnline = dialogListDeviceOnline.findViewById(R.id.dialog_list_device_online_rcv);
         rcvDeviceOnline.setLayoutManager(new LinearLayoutManager(dialogListDeviceOnline.getContext()));
         adapteRCVDeviceOnline = new AdapteRCVDeviceOnline(dialogListDeviceOnline.getContext(), arrDeviceOnline, this);
