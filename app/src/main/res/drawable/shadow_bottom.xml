@@ -14,7 +14,7 @@
             <gradient
                 android:endColor="@color/white"
                 android:startColor="#EFEFEF"
-                android:angle="-135"/>
+                android:angle="-90"/>
         </shape>
     </item>
 </layer-list>
