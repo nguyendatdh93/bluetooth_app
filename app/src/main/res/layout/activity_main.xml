@@ -28,7 +28,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,17 +37,23 @@
             android:id="@+id/tab_layout_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingTop="@dimen/_3ssp"
-            android:paddingBottom="@dimen/_3ssp"
+            android:paddingBottom="@dimen/_5ssp"
             app:tabBackground="@drawable/tab_color_selector"
             app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed" />
+            app:tabMode="scrollable" />
+
+        <LinearLayout
+            android:id="@+id/view"
+            android:layout_below="@+id/tab_layout_main"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_10ssp"
+            android:background="@drawable/shadow_bottom"
+            android:orientation="vertical"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager_main"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/tab_layout_main" />
+            android:layout_below="@+id/view" />
     </RelativeLayout>
 </RelativeLayout>

@@ -6,7 +6,7 @@
     android:padding="@dimen/_10ssp">
 
     <ScrollView
-        android:paddingTop="@dimen/_20ssp"
+        android:paddingTop="@dimen/_10ssp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
