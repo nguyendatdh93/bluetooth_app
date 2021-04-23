@@ -52,10 +52,18 @@ import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
 import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 import com.opencsv.CSVWriter;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
@@ -91,12 +99,9 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
     private void addEvents() {
         btnExportCSV.setOnClickListener(v -> showDialogHistoryMeasure());
-        ckbBaseRedLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                lineChart.setData(generateDataLine(isChecked));
-                lineChart.invalidate();
-            }
+        ckbBaseRedLine.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            lineChart.setData(generateDataLine(isChecked));
+            lineChart.invalidate();
         });
 
         //btnHistoryMeasure.setOnClickListener(v -> );
@@ -192,62 +197,51 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
+                skbProgress.setProgress(0);
+                txtProcess.setVisibility(View.VISIBLE);
+                txtProcess.setText("Exporting...");
+                txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
-                new AsyncTask<ArrayList<Measure>, Integer, String>() {
+                Observable.create(emitter -> {
+                    String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyCsvFile.csv"); // Here csv file name is MyCsvFile.csv
+                    CSVWriter writer;
+                    try {
+                        writer = new CSVWriter(new FileWriter(csv));
 
-                    @Override
-                    protected String doInBackground(ArrayList<Measure>... arrayLists) {
-
-                        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyCsvFile.csv"); // Here csv file name is MyCsvFile.csv
-                        CSVWriter writer = null;
-                        try {
-                            writer = new CSVWriter(new FileWriter(csv));
-
-                            List<String[]> data = new ArrayList<String[]>();
-                            data.add(new String[]{"Name", "Datetime", "Result"});
-                            for (int i = 0; i < arrMeasure.size(); i++) {
-                                data.add(new String[]{arrMeasure.get(i).getName(), arrMeasure.get(i).getDatetime(), arrMeasure.get(i).getResult()});
-                            }
-
-                            for (int i = 0; i < data.size(); i++) {
-                                writer.writeNext(data.get(i));
-                                int percent = i*100/arrMeasure.size();
-                                publishProgress(percent);
-                            }
-
-                            writer.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        List<String[]> data = new ArrayList<String[]>();
+                        data.add(new String[]{"Name", "Datetime", "Result"});
+                        for (int i = 0; i < arrMeasure.size(); i++) {
+                            data.add(new String[]{arrMeasure.get(i).getName(), arrMeasure.get(i).getDatetime(), arrMeasure.get(i).getResult()});
                         }
 
-                        return null;
-                    }
+                        for (int i = 0; i < data.size(); i++) {
+                            writer.writeNext(data.get(i));
+                            int percent = i * 100 / arrMeasure.size();
+                            int[] ii = {percent};
+                            emitter.onNext(ii);
+                        }
 
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        skbProgress.setProgress(0);
-                        txtProcess.setVisibility(View.VISIBLE);
-                        txtProcess.setText("Exporting...");
-                        txtProcess.setTextColor(context.getResources().getColor(R.color.black));
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        super.onPostExecute(s);
-                        skbProgress.setProgress(100);
-                        txtProcess.setText("Done!");
-                        txtProcess.setTextColor(context.getResources().getColor(R.color.green));
-                        Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(Integer... values) {
-                        super.onProgressUpdate(values);
-                        skbProgress.setProgress(values[0]);
-                        txtProcess.setText(values[0]+"");
-                    }
-                }.execute(arrMeasure);
+                    emitter.onComplete();
+                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(o -> {
+                    // update progress
+                    int[] i = (int[]) o;
+                    skbProgress.setProgress(i[0]);
+                    txtProcess.setText(i[0] + "%");
+                }, t -> {
+                    // on error
+                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    txtProcess.setText( t.getMessage());
+                }, () -> {
+                    // progress tamom shod
+                    skbProgress.setProgress(100);
+                    txtProcess.setText("Done!");
+                    txtProcess.setTextColor(context.getResources().getColor(R.color.green));
+                    Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override

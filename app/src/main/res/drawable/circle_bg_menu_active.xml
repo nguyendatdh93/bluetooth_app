@@ -11,8 +11,8 @@
         android:color="@color/primary_color" />
 
     <corners
-        android:bottomLeftRadius="@dimen/_10ssp"
-        android:topLeftRadius="@dimen/_10ssp"
-        android:topRightRadius="@dimen/_10ssp"
-        android:bottomRightRadius="@dimen/_10ssp"/>
+        android:bottomLeftRadius="@dimen/_20ssp"
+        android:topLeftRadius="@dimen/_20ssp"
+        android:topRightRadius="@dimen/_20ssp"
+        android:bottomRightRadius="@dimen/_20ssp"/>
 </shape>

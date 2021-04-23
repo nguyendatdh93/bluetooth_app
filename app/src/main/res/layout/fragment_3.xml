@@ -13,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_10ssp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/_10ssp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -682,97 +682,98 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
-                android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp">
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:padding="@dimen/_11ssp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10ssp"
                     android:background="@drawable/square_border_grey"
-                    android:textSize="@dimen/_10ssp"
-                    android:hint="Name"
-                    android:orientation="vertical">
+                    android:hint="Cloud"
+                    android:paddingBottom="@dimen/_10ssp"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10ssp">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:layout_marginTop="@dimen/_20ssp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20ssp"
                         android:background="@color/grey"
-                        android:text="abc"
+                        android:text="Save setting measure"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
+
                     <androidx.appcompat.widget.AppCompatButton
-                        android:layout_marginTop="@dimen/_20ssp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20ssp"
                         android:background="@color/grey"
-                        android:text="abc"
+                        android:text="Receive setting measure"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10ssp"
+                    android:background="@color/white"
                     android:paddingStart="@dimen/_5ssp"
                     android:paddingEnd="@dimen/_5ssp"
-                    android:layout_marginStart="@dimen/_10ssp"
                     android:text="Options"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
-                    android:background="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp">
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:padding="@dimen/_11ssp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10ssp"
                     android:background="@drawable/square_border_grey"
-                    android:textSize="@dimen/_10ssp"
-                    android:hint="Name"
-                    android:orientation="vertical">
+                    android:hint="Tools"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10ssp">
 
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:layout_marginTop="@dimen/_20ssp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20ssp"
                         android:background="@color/primary_color"
-                        android:text="abc"
+                        android:text="Write"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
+
                     <androidx.appcompat.widget.AppCompatButton
-                        android:layout_marginTop="@dimen/_20ssp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20ssp"
                         android:background="@color/grey"
-                        android:text="abc"
+                        android:text="Read"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10ssp"
+                    android:background="@color/white"
                     android:paddingStart="@dimen/_5ssp"
                     android:paddingEnd="@dimen/_5ssp"
-                    android:layout_marginStart="@dimen/_10ssp"
                     android:text="Options"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
-                    android:background="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 

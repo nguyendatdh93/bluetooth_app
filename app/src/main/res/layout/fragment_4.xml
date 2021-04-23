@@ -8,6 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_10ssp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -47,6 +48,7 @@
                         android:completionThreshold="1"
                         android:imeOptions="actionDone"
                         android:singleLine="true"
+                        android:inputType="number"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_11ssp" />
 
