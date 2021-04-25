@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:mask="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:padding="@dimen/_10ssp">
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_marginTop="@dimen/_10ssp"
@@ -16,15 +15,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
             android:orientation="vertical">
-
-
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name device"
+                android:hint="@string/measuring_instrument_job_alias_up_to_8_alphanumeric_characters"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -36,21 +34,23 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginTop="@dimen/_20ssp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Datetime"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/datetime"
                 android:textSize="@dimen/_10ssp">
 
-                <com.santalu.maskara.widget.MaskEditText
-                    android:id="@+id/input"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_2_edt_datetime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    app:mask="____/__/__ __:__:__"
-                    app:maskCharacter="_"
-                    app:maskStyle="completable" />
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Method"
+                android:hint="@string/baseline_point_detection_method"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Auto turn off(0-60MIN)"
+                android:hint="@string/auto_power_off_0_60_min"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_color"
-                android:text="Write"
+                android:text="@string/write"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
 
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey"
-                android:text="Read"
+                android:text="@string/read"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>

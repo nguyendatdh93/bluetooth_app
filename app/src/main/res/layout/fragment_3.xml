@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bassic"
+                android:text="@string/bassic"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
@@ -29,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name"
+                android:hint="@string/setting_name_up_to_8_alphanumeric_characters"
+                app:hintAnimationEnabled="false"
                 android:orientation="horizontal"
                 android:textSize="@dimen/_10ssp">
 
@@ -37,6 +39,7 @@
                     android:id="@+id/fragment_1_acp_name_device"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -45,15 +48,17 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/number_of_microorganisms_measured_1_5"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_1_edt_name_device"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Các lần đo"
+                android:text="@string/bassic"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
@@ -72,13 +77,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/current_range"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -88,13 +94,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/equilibrium_potential_1"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -104,13 +112,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/equilibrium_time_1"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -120,13 +130,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/equilibrium_potential_2"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -136,13 +148,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/equilibrium_time_2"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/equilibrium_potential_3"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -152,13 +184,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/equilibrium_time_3"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -168,13 +201,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/equilibrium_potential_4"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/equilibrium_time_4"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -184,13 +237,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/equilibrium_potential_5"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -199,14 +254,16 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/equilibrium_time_5"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -215,23 +272,188 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:inputType="number"
+                    android:text="0"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/end_potential"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/pulse_amplitude"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/Δe"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/pulse_width"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/pulse_period"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/base_current_Ib_sample_time_lower_limit"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/base_current_Ib_sample_time_upper_limit"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/faraday_If_current_sample_time_lower_limit"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:hint="@string/faraday_If_current_sample_time_upper_limit"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Các lần đo"
+                android:text="@string/peak_detection"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
@@ -240,23 +462,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Lần đo 1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
+                android:text="@string/microorganism_1"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/object_name_to_be_measured_up_to_5_alphanumeric_characters"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -266,13 +489,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e1_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -282,13 +507,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e2_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -298,13 +525,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e3_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -314,13 +543,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e4_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/location_selectbox_up_down"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -329,23 +578,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Lần đo 1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
+                android:text="@string/microorganism_2"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/object_name_to_be_measured_up_to_5_alphanumeric_characters"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -355,13 +605,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e1_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -371,13 +623,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e2_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -387,13 +641,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e3_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -403,13 +659,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e4_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/location_selectbox_up_down"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -418,23 +694,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Lần đo 1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
+                android:text="@string/microorganism_3"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/object_name_to_be_measured_up_to_5_alphanumeric_characters"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -444,13 +721,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e1_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -460,13 +739,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e2_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -476,13 +757,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e3_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -492,13 +775,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e4_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/location_selectbox_up_down"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -507,23 +810,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Lần đo 1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
+                android:text="@string/microorganism_4"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/object_name_to_be_measured_up_to_5_alphanumeric_characters"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -533,13 +837,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e1_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -549,13 +855,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e2_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -565,13 +873,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e3_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -581,13 +891,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e4_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/location_selectbox_up_down"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -596,23 +926,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Lần đo 1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
+                android:text="@string/microorganism_4"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hintAnimationEnabled="false"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                android:hint="@string/object_name_to_be_measured_up_to_5_alphanumeric_characters"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="Name"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -622,13 +953,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e1_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -638,13 +971,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e2_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -654,13 +989,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e3_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -670,16 +1007,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:hint="Name Device"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/e4_baseline_search_start_potential"
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Device"
+                    android:text="0"
+                    android:inputType="number"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                app:hintAnimationEnabled="false"
+                android:hint="@string/location_selectbox_up_down"
+                android:textSize="@dimen/_10ssp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:inputType="number"
+                    android:textSize="@dimen/_11ssp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

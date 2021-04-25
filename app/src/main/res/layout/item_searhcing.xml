@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_rcv_menu_draw_continer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        style="@style/SpinKitView.Wave"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20ssp"
+        app:SpinKit_Color="@color/primary_color"
+        android:layout_centerInParent="true" />
+</RelativeLayout>

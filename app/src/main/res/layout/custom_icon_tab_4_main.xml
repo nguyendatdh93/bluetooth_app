@@ -18,7 +18,7 @@
         android:ellipsize="middle"
         android:gravity="center"
         android:singleLine="true"
-        android:text="Result"
+        android:text="@string/result"
         android:textColor="@color/black"
         android:textSize="@dimen/_11ssp"
         android:textStyle="bold" />

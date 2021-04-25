@@ -2,8 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/_10ssp">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:paddingTop="@dimen/_10ssp"
@@ -14,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10ssp"
-                android:hint="Port using"
+                android:hint="@string/com_port_used"
                 android:orientation="horizontal">
 
                 <AutoCompleteTextView
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
                 android:background="@color/green"
-                android:text="Check connection"
+                android:text="@string/connection_test"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
 
@@ -63,7 +63,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="Status:"
+                    android:text="@string/connection_test_success"
                     android:textColor="@color/green" />
             </LinearLayout>
 
@@ -92,19 +92,19 @@
                         android:id="@+id/fragment_1_txt_infor_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Deveces infor:" />
+                        android:text="model:ebacSens" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
-                        android:text="Deveces infor:" />
+                        android:text="VER.A.0.14" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
-                        android:text="Deveces infor:" />
+                        android:text="SERIAL:0003" />
 
                 </LinearLayout>
 
@@ -115,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_color"
-                android:text="Connect"
+                android:text="@string/connect"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
 
@@ -124,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_cancel"
-                android:text="Disconnect"
+                android:text="@string/disconnect"
                 android:textColor="@color/red"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>

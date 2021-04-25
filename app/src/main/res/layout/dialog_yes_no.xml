@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingTop="@dimen/_10ssp"
     android:paddingBottom="@dimen/_10ssp"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/dialog_yes_no_txt_title"
         android:padding="@dimen/_10ssp"
         android:gravity="center"
         android:textSize="@dimen/_15ssp"
         android:textColor="@color/black"
-        android:text="Are you sure want to delete ?"
+        android:text="@string/do_you_want_to_delete_this_measurement_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -28,7 +29,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:background="@color/grey"
-            android:text="no"
+            android:text="@string/no"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -39,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/bg_cancel"
-            android:text="yes"
+            android:text="@string/yes"
             android:textColor="@color/red"
             android:textSize="@dimen/_11ssp" />
 

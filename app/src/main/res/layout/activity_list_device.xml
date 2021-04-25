@@ -15,10 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10ssp"
-            android:text="List device paired"
+            android:text="@string/list_of_measuring_instruments"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_status_bluetooth"
+            android:padding="@dimen/_10ssp"
+            android:text="Please turn on bluetooth!"
+            android:textSize="@dimen/_12ssp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_device_paired"
@@ -35,5 +43,6 @@
         android:layout_margin="16dp"
         android:contentDescription="action"
         android:onClick="onShowDeviceOnline"
+        app:tint="@color/white"
         android:src="@drawable/ic_baseline_add_24" />
 </RelativeLayout>

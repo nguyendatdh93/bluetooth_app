@@ -5,7 +5,6 @@
     android:padding="@dimen/_10ssp">
 
     <LinearLayout
-        android:layout_above="@id/dialog_history_measure_btn_export"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -20,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="History measure"
+            android:text="@string/list_of_saved_measurement_settings"
             android:textColor="@color/black"
             android:textSize="@dimen/_15ssp"
             android:textStyle="bold" />
@@ -31,17 +30,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/dialog_history_measure_btn_export"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10ssp"
-        android:background="@color/primary_color"
-        android:text="Export now"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_11ssp" />
 
 </RelativeLayout>

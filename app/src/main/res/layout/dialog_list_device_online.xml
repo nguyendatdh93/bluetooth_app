@@ -6,6 +6,8 @@
 
     <ImageButton
         android:id="@+id/dialog_list_device_online_btn_close"
+        android:layout_marginEnd="@dimen/_5ssp"
+        android:layout_marginTop="@dimen/_5ssp"
         android:layout_width="@dimen/_25ssp"
         android:layout_height="@dimen/_25ssp"
         android:layout_gravity="end"

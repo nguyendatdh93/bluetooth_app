@@ -28,7 +28,7 @@
                     android:id="@+id/fragment_4_txt_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="List"
+                    android:text="@string/list"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15ssp"
                     android:textStyle="bold" />
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20ssp"
-                    android:hint="List"
+                    android:hint="@string/list"
                     android:orientation="horizontal"
                     android:textSize="@dimen/_10ssp">
 
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10ssp"
                     android:background="@color/primary_color"
-                    android:text="Update data newest"
+                    android:text="@string/latest_data_update"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11ssp" />
 
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Graph"
+                android:text="@string/graph"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
@@ -123,7 +123,7 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/_10ssp"
                     android:button="@drawable/custom_checkbox"
-                    android:text="Show baseline"
+                    android:text="@string/baseline_display"
                     android:checked="true"
                     android:textColor="@color/primary_color"
                     android:textSize="@dimen/_11ssp" />
@@ -145,7 +145,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Datetime measure:"
+                        android:text="@string/measurement_date_and_time"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -166,7 +166,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Count measure:"
+                        android:text="@string/measurement_number"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -183,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="Result"
+                android:text="@string/result"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
@@ -207,7 +207,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Name"
+                        android:text="@string/name"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -216,7 +216,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Result"
+                        android:text="@string/peak_potential"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -225,7 +225,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Height Top"
+                        android:text="@string/peak_height"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -243,7 +243,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Error"
+                        android:text="@string/error"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -266,7 +266,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Progessing:"
+                    android:text="@string/progress"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
@@ -305,7 +305,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_color"
-                android:text="Export CSV"
+                android:text="@string/CSV_output"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>

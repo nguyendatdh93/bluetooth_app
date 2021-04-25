@@ -18,7 +18,7 @@
         android:ellipsize="middle"
         android:gravity="center"
         android:singleLine="true"
-        android:text="Setting connect"
+        android:text="@string/communication_settings"
         android:textColor="@color/white"
         android:textSize="@dimen/_11ssp"
         android:textStyle="bold" />

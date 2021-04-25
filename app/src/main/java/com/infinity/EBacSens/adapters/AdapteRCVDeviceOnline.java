@@ -23,6 +23,8 @@ public class AdapteRCVDeviceOnline extends RecyclerView.Adapter<RecyclerView.Vie
     private Context context;
     private ViewRCVDeviceOnline callback;
 
+    private int TYPE_VIEW_HOLDER = 0 , TYPE_VIEW_SEARCHING = 1;
+
     public AdapteRCVDeviceOnline(Context context , ArrayList<BluetoothDevice> arrItem , ViewRCVDeviceOnline callback) {
         this.arrItem = arrItem;
         this.context = context;
@@ -31,30 +33,35 @@ public class AdapteRCVDeviceOnline extends RecyclerView.Adapter<RecyclerView.Vie
 
     @NonNull
     @Override
-    public ViewHodler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.item_rcv_device_online, parent, false);
-        return new ViewHodler(view);
+        if (viewType == TYPE_VIEW_HOLDER){
+            View view = layoutInflater.inflate(R.layout.item_rcv_device_online, parent, false);
+            return new ViewHodler(view);
+        }else {
+            View view = layoutInflater.inflate(R.layout.item_searhcing, parent, false);
+            return new ViewSẻaching(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ViewHodler viewHodler = (ViewHodler) holder;
-
-        viewHodler.txtName.setText(arrItem.get(position).getName() == null ? arrItem.get(position).getAddress() : arrItem.get(position).getName());
-        //viewHodler.txtToggle.setTextColor(arrItem.get(position).isToggle() ? context.getResources().getColor(R.color.toggle_text_active) :  context.getResources().getColor(R.color.toggle_text_not_active));
-
-        //viewHodler.txtToggle.setText(arrItem.get(position).isToggle() ? "Hoạt động" : "Off");
-        //viewHodler.txtToggle.setBackground(arrItem.get(position).isToggle() ? context.getResources().getDrawable(R.drawable.circle_bg_button_active) : context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
-        //viewHodler.container.setBackgroundColor(arrItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
-        viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVDeviceOnline(position));
-        viewHodler.btnConnnect.setOnClickListener(v -> callback.onClickRCVDeviceOnline(position));
+        if (holder.getItemViewType() == TYPE_VIEW_HOLDER){
+            ViewHodler viewHodler = (ViewHodler) holder;
+            viewHodler.txtName.setText(arrItem.get(position).getName() == null ? arrItem.get(position).getAddress() : arrItem.get(position).getName());
+            viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVDeviceOnline(position));
+            viewHodler.btnConnnect.setOnClickListener(v -> callback.onClickRCVDeviceOnline(position));
+        }
     }
 
     @Override
     public int getItemCount() {
         return arrItem.size();
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return arrItem.get(position) == null ? TYPE_VIEW_SEARCHING : TYPE_VIEW_HOLDER;
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
@@ -67,6 +74,13 @@ public class AdapteRCVDeviceOnline extends RecyclerView.Adapter<RecyclerView.Vie
             txtName = itemView.findViewById(R.id.item_rcv_menu_draw_txt_name);
             btnConnnect = itemView.findViewById(R.id.item_rcv_menu_draw_btn_connect);
             container = itemView.findViewById(R.id.item_rcv_menu_draw_continer);
+        }
+    }
+
+    static class ViewSẻaching extends RecyclerView.ViewHolder {
+
+        public ViewSẻaching(@NonNull View itemView) {
+            super(itemView);
         }
     }
 }

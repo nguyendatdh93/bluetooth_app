@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,6 +48,7 @@ import com.infinity.EBacSens.activitys.ListDeviceActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.Measure;
 import com.infinity.EBacSens.model_objects.Result;
 import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
@@ -55,6 +58,7 @@ import com.opencsv.CSVWriter;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +77,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
     private LineChart lineChart;
     private SeekBar skbProgress;
-    private Button btnExportCSV, btnHistoryMeasure;
+    private Button btnExportCSV;
     private CheckBox ckbBaseRedLine;
     private TextView txtProcess;
 
@@ -119,20 +123,15 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
         rcvHistoryMeasure.addItemDecoration(new DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL));
         arrMeasure = new ArrayList<>();
-        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021/10/09 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021-10-09 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021-10-10 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021-10-11 18:00:06", "102"));
+        arrMeasure.add(new Measure("Sensor", "2021-10-12 18:00:06", "102"));
 
         adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrMeasure, this);
         rcvHistoryMeasure.setAdapter(adapterRCVHistoryMeasure);
 
         dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
-        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_export).setOnClickListener(v -> {
-            dialogHistoryMeasure.cancel();
-            exportFileCSV(arrMeasure);
-        });
 
         dialogHistoryMeasure.show();
         Window window = dialogHistoryMeasure.getWindow();
@@ -142,7 +141,6 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
     private void addController() {
         lineChart = view.findViewById(R.id.fragment_4_chart);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
-        btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
         skbProgress.setPadding(0, 0, 0, 0);
@@ -203,12 +201,19 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
                 txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
                 Observable.create(emitter -> {
-                    String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyCsvFile.csv"); // Here csv file name is MyCsvFile.csv
+                    File folder = new File(Environment.getExternalStorageDirectory() +
+                            File.separator + "EBacSens");
+                    boolean success;
+                    if (!folder.exists()) {
+                        success = folder.mkdirs();
+                    }
+
+                    String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/EBacSens/ExportResult_" + Protector.getCurrentTime() + ".csv"); // Here csv file name is MyCsvFile.csv
                     CSVWriter writer;
                     try {
                         writer = new CSVWriter(new FileWriter(csv));
 
-                        List<String[]> data = new ArrayList<String[]>();
+                        List<String[]> data = new ArrayList<>();
                         data.add(new String[]{"Name", "Datetime", "Result"});
                         for (int i = 0; i < arrMeasure.size(); i++) {
                             data.add(new String[]{arrMeasure.get(i).getName(), arrMeasure.get(i).getDatetime(), arrMeasure.get(i).getResult()});

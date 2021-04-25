@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
 import com.infinity.EBacSens.data_sqllite.DBManager;
+import com.infinity.EBacSens.model_objects.Sensor;
 
 import java.util.Objects;
 
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity  {
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
-    public static BluetoothDevice device;
+    public static Sensor device;
+    private TextView txtNameDevice;
+    private int offset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,11 @@ public class MainActivity extends AppCompatActivity  {
 
             @Override
             public void onPageSelected(int position) {
+                if (offset < position){
+                    offset = position;
+                    viewPager.setOffscreenPageLimit(offset);
+                }
+
                 TextView[] arrTxtTitle = new TextView[4];
                 LinearLayout[] arrlinearLayout = new LinearLayout[4];
                 arrTxtTitle[0] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(0)).getCustomView()).findViewById(R.id.txt_title_fragment_1);
@@ -79,7 +87,10 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void addController() {
+        device = (Sensor) getIntent().getSerializableExtra("device");
+
         viewPager = findViewById(R.id.view_pager_main);
+        txtNameDevice = findViewById(R.id.txt_name_sensor);
         tabLayout = findViewById(R.id.tab_layout_main);
         tabLayout.addTab(tabLayout.newTab().setText("Tab1"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab2"));
@@ -87,7 +98,6 @@ public class MainActivity extends AppCompatActivity  {
         tabLayout.addTab(tabLayout.newTab().setText("Tab4"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         AdapterPagerMain adapterPagerMain = new AdapterPagerMain(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapterPagerMain);
         tabLayout.setupWithViewPager(viewPager);
         Objects.requireNonNull(tabLayout.getTabAt(0)).setCustomView(R.layout.custom_icon_tab_1_main);
@@ -95,9 +105,9 @@ public class MainActivity extends AppCompatActivity  {
         Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(R.layout.custom_icon_tab_3_main);
         Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(R.layout.custom_icon_tab_4_main);
 
-        Intent i = getIntent();
-        device = i.getParcelableExtra("device");
-
+        if (device != null){
+            txtNameDevice.setText(device.getSetname());
+        }
     }
 
     public void onBack(View view) {
