@@ -2,40 +2,27 @@ package com.infinity.EBacSens.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
-import com.infinity.EBacSens.data_sqllite.DBManager;
-import com.infinity.EBacSens.model_objects.Sensor;
+import com.infinity.EBacSens.model_objects.SensorInfor;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  {
 
-    private DBManager dbManager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
-    public static Sensor device;
+    public static SensorInfor device;
     private TextView txtNameDevice;
     private int offset = 0;
 
@@ -87,7 +74,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void addController() {
-        device = (Sensor) getIntent().getSerializableExtra("device");
+        device = (SensorInfor) getIntent().getSerializableExtra("device");
 
         viewPager = findViewById(R.id.view_pager_main);
         txtNameDevice = findViewById(R.id.txt_name_sensor);
@@ -106,7 +93,7 @@ public class MainActivity extends AppCompatActivity  {
         Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(R.layout.custom_icon_tab_4_main);
 
         if (device != null){
-            txtNameDevice.setText(device.getSetname());
+            txtNameDevice.setText(device.getName());
         }
     }
 

@@ -8,13 +8,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/_10ssp"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/_10ssp">
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_10ssp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10ssp"
             android:orientation="vertical"
             android:padding="@dimen/_10ssp">
 
@@ -45,11 +45,11 @@
                     <AutoCompleteTextView
                         android:id="@+id/fragment_4_acp_name_device"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:completionThreshold="1"
                         android:imeOptions="actionDone"
-                        android:singleLine="true"
                         android:inputType="number"
-                        android:layout_height="wrap_content"
+                        android:singleLine="true"
                         android:textSize="@dimen/_11ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -76,108 +76,133 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/fragment_4_container_chart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:background="@drawable/shadow"
-                android:orientation="vertical">
-
+                android:orientation="vertical"
+                android:padding="@dimen/_5ssp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="5">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:rotation="-90"
-                        android:text="Delta[uA]" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/title_graph"
+                        android:text="@string/graph"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:gravity="center|top"
+                        android:textColor="@color/white"
+                        android:padding="@dimen/_5ssp"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="@string/measurement_result_quantity"
+                        android:background="@color/title_graph"
+                        android:padding="@dimen/_5ssp"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
 
-                        <com.github.mikephil.charting.charts.LineChart
-                            android:id="@+id/fragment_4_chart"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_200sdp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/level"
+                        android:background="@color/title_graph"
+                        android:padding="@dimen/_5ssp"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5ssp"
-                            android:layout_marginBottom="@dimen/_5ssp"
-                            android:gravity="center"
-                            android:text="[mV]" />
-                    </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/description"
+                        android:padding="@dimen/_5ssp"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-
-                <CheckBox
-                    android:id="@+id/fragment_4_ckb_base_red_line"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_4_rcv_graph"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/_10ssp"
-                    android:button="@drawable/custom_checkbox"
-                    android:text="@string/baseline_display"
-                    android:checked="true"
-                    android:textColor="@color/primary_color"
-                    android:textSize="@dimen/_11ssp" />
+                    android:layout_marginTop="@dimen/_1ssp"
+                    android:background="@drawable/shadow" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10ssp"
-                android:weightSum="5"
-                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/fragment_4_container_chart"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_10ssp"-->
+            <!--                android:background="@drawable/shadow"-->
+            <!--                android:orientation="vertical">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/measurement_date_and_time"
-                        android:textSize="@dimen/_12ssp" />
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="horizontal">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5ssp"
-                        android:text="2021/18/04 18:00:00"
-                        android:textSize="@dimen/_11ssp" />
-                </LinearLayout>
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_gravity="center"-->
+            <!--                        android:rotation="-90"-->
+            <!--                        android:text="Delta[uA]" />-->
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_marginStart="@dimen/_5ssp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:orientation="vertical">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/measurement_number"
-                        android:textSize="@dimen/_12ssp" />
+            <!--                        <com.github.mikephil.charting.charts.LineChart-->
+            <!--                            android:id="@+id/fragment_4_chart"-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="@dimen/_200sdp" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5ssp"
-                        android:text="002"
-                        android:textSize="@dimen/_11ssp" />
-                </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_marginTop="@dimen/_5ssp"-->
+            <!--                            android:layout_marginBottom="@dimen/_5ssp"-->
+            <!--                            android:gravity="center"-->
+            <!--                            android:text="[mV]" />-->
+            <!--                    </LinearLayout>-->
+            <!--                </LinearLayout>-->
 
-            </LinearLayout>
+
+            <!--                <CheckBox-->
+            <!--                    android:id="@+id/fragment_4_ckb_base_red_line"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="end"-->
+            <!--                    android:layout_marginEnd="@dimen/_10ssp"-->
+            <!--                    android:button="@drawable/custom_checkbox"-->
+            <!--                    android:text="@string/baseline_display"-->
+            <!--                    android:checked="true"-->
+            <!--                    android:textColor="@color/primary_color"-->
+            <!--                    android:textSize="@dimen/_11ssp" />-->
+            <!--            </LinearLayout>-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -200,15 +225,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/_10ssp"
                     android:weightSum="5">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="@color/title_graph"
                         android:text="@string/name"
-                        android:textColor="@color/black"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
+                        android:padding="@dimen/_5ssp"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
@@ -217,7 +245,11 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@string/peak_potential"
-                        android:textColor="@color/black"
+                        android:background="@color/title_graph"
+                        android:padding="@dimen/_5ssp"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:gravity="center|top"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
@@ -226,7 +258,11 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@string/peak_height"
-                        android:textColor="@color/black"
+                        android:background="@color/title_graph"
+                        android:padding="@dimen/_5ssp"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
@@ -235,7 +271,11 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="BG[uA]"
-                        android:textColor="@color/black"
+                        android:padding="@dimen/_5ssp"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
@@ -244,16 +284,20 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@string/error"
-                        android:textColor="@color/black"
+                        android:background="@color/title_graph"
+                        android:padding="@dimen/_5ssp"
+                        android:gravity="center|top"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="@dimen/_1ssp"
                     android:id="@+id/fragment_4_rcv_result"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_10ssp" />
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
@@ -275,27 +319,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <androidx.appcompat.widget.AppCompatSeekBar
                         android:id="@+id/fragment_4_skb_progress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5ssp"
+                        android:clickable="false"
                         android:maxHeight="@dimen/_20ssp"
                         android:minHeight="@dimen/_20ssp"
-                        android:clickable="false"
-                        android:layout_marginStart="@dimen/_5ssp"
-                        android:thumb="@color/white"
                         android:progressDrawable="@drawable/custom_seekbar_progress"
-                        android:progressTint="@color/green"/>
+                        android:progressTint="@color/green"
+                        android:thumb="@color/white" />
 
                     <TextView
                         android:id="@+id/fragment_4_txt_progress"
-                        android:gravity="end"
-                        android:textSize="@dimen/_12ssp"
-                        android:visibility="gone"
-                        android:layout_marginTop="@dimen/_5ssp"
-                        android:textColor="@color/black"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:gravity="end"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>

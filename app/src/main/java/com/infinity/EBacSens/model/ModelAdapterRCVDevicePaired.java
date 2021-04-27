@@ -5,14 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.infinity.EBacSens.model_objects.DataSensorAPI;
-import com.infinity.EBacSens.model_objects.Sensor;
+import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.retrofit2.DataClient;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +30,7 @@ public class ModelAdapterRCVDevicePaired {
             @Override
             public void onResponse(@NonNull Call<DataSensorAPI> call, @NonNull Response<DataSensorAPI> response) {
                 if (response.body() != null && response.body().getSensors() != null){
-                    ArrayList<Sensor> sensors = (ArrayList<Sensor>) response.body().getSensors();
+                    ArrayList<SensorInfor> sensors = (ArrayList<SensorInfor>) response.body().getSensors();
                     modelAdapterRCVDevicePairedListener.onGetData(sensors);
                 }else {
                     modelAdapterRCVDevicePairedListener.onGetData(null);

@@ -8,7 +8,7 @@
     android:weightSum="5">
 
     <TextView
-        android:id="@+id/item_rcv_result_txt_name"
+        android:id="@+id/item_rcv_graph_txt_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_1ssp"
@@ -18,7 +18,18 @@
         android:textSize="@dimen/_11ssp" />
 
     <TextView
-        android:id="@+id/item_rcv_result_txt_result"
+        android:id="@+id/item_rcv_graph_txt_result"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_1ssp"
+        android:layout_weight="2"
+        android:background="@color/grey"
+        android:gravity="center|top"
+        android:text="12"
+        android:textSize="@dimen/_11ssp" />
+
+    <TextView
+        android:id="@+id/item_rcv_graph_txt_level"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_1ssp"
@@ -29,29 +40,7 @@
         android:textSize="@dimen/_11ssp" />
 
     <TextView
-        android:id="@+id/item_rcv_result_txt_height_top"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/_1ssp"
-        android:layout_weight="1"
-        android:background="@color/grey"
-        android:gravity="center|top"
-        android:text="12"
-        android:textSize="@dimen/_11ssp" />
-
-    <TextView
-        android:id="@+id/item_rcv_result_txt_bgua"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/_1ssp"
-        android:layout_weight="1"
-        android:background="@color/grey"
-        android:gravity="center|top"
-        android:text="12"
-        android:textSize="@dimen/_11ssp" />
-
-    <TextView
-        android:id="@+id/item_rcv_result_txt_error"
+        android:id="@+id/item_rcv_graph_txt_desciption"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_1ssp"

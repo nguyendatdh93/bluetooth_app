@@ -5,20 +5,20 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class DataSensorAPI {
+public class DataSensorSettingAPI {
     @SerializedName("data")
     @Expose
-    List<SensorInfor> sensors;
+    List<SensorSetting> sensors;
 
-    public List<SensorInfor> getSensors() {
+    public List<SensorSetting> getSensors() {
         return sensors;
     }
 
-    public void setSensors(List<SensorInfor> sensors) {
+    public void setSensors(List<SensorSetting> sensors) {
         this.sensors = sensors;
     }
 
-    public DataSensorAPI(List<SensorInfor> sensors) {
+    public DataSensorSettingAPI(List<SensorSetting> sensors) {
         this.sensors = sensors;
     }
 }

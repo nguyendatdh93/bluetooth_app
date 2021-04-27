@@ -9,4 +9,9 @@
         <item name="android:textColor">@color/primary_color</item>
     </style>
 
+    <style name="SplashscreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_flash_screen</item>
+
+        <item name="colorPrimaryDark">@color/grey</item>
+    </style>
 </resources>

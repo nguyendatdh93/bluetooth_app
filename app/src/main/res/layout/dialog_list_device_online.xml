@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10ssp"
-        android:text="List device Online"
+        android:text="@string/list_device_online"
         android:textColor="@color/black"
         android:textSize="@dimen/_15ssp"
         android:textStyle="bold" />

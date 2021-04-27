@@ -24,7 +24,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/item_rcv_menu_draw_btn_connect"
-        android:text="Pair"
+        android:text="@string/connect"
         android:layout_width="@dimen/_80ssp"
         android:paddingStart="@dimen/_5ssp"
         android:paddingEnd="@dimen/_5ssp"

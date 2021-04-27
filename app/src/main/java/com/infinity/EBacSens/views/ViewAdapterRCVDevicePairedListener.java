@@ -1,11 +1,11 @@
 package com.infinity.EBacSens.views;
 
-import com.infinity.EBacSens.model_objects.Sensor;
+import com.infinity.EBacSens.model_objects.SensorInfor;
 
 import java.util.ArrayList;
 
 public interface ViewAdapterRCVDevicePairedListener {
-    void onGetData(ArrayList<Sensor> arrayList);
+    void onGetData(ArrayList<SensorInfor> arrayList);
     void onLoaded();
     void onLoadMore();
     void onSuccessDeleteSettingSensor(int position);

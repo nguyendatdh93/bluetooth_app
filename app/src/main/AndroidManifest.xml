@@ -19,21 +19,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/my_backup_rules"
         android:theme="@style/Theme.EBacSens">
-        <activity android:name=".activitys.ListDeviceActivity">
+        <activity android:name=".activitys.ListDeviceActivity"/>
+        <activity android:name=".activitys.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity
+            android:name=".activitys.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.MainActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
-        </activity>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.infinity.EBacSens.fileprovider"

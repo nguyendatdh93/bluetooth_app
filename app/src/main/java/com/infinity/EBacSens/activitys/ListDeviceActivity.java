@@ -1,6 +1,7 @@
 package com.infinity.EBacSens.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,48 +27,47 @@ import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.FollowSensor;
-import com.infinity.EBacSens.model_objects.Sensor;
+import com.infinity.EBacSens.model_objects.SensorInfor;
+import com.infinity.EBacSens.presenter.PresenterFragment3;
+import com.infinity.EBacSens.presenter.PresenterListDevice;
+import com.infinity.EBacSens.retrofit2.APIUtils;
+import com.infinity.EBacSens.views.ViewListDeviceListener;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 import com.infinity.EBacSens.views.ViewRCVDevicePaired;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevicePaired, ViewRCVDeviceOnline {
+public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevicePaired, ViewRCVDeviceOnline , ViewListDeviceListener {
 
     private RecyclerView rcvDevicePaired;
-    //private ArrayList<BluetoothDevice> arrDevicePaired;
-    private ArrayList<Sensor> arrDevicePaired;
+    private ArrayList<SensorInfor> arrDevicePaired;
     private ArrayList<FollowSensor> arrFollowItem;
     private AdapteRCVDevicePaired adapteRCVDevicePaired;
 
     private ArrayList<BluetoothDevice> arrDeviceOnline;
     private AdapteRCVDeviceOnline adapteRCVDeviceOnline;
 
-    private ArrayList<BluetoothDevice> devices;
     private BluetoothAdapter mBluetoothAdapter;
 
     private TextView txtStatusBluetooth;
+    private TextView txtDialogProcessingTitle;
+    private Dialog dialogProcessing;
 
     private IntentFilter intentFilter;
     private IntentFilter intentFilter2;
     private IntentFilter intentFilter3;
+
+    private PresenterListDevice presenterListDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_device);
         addController();
-        addEvent();
-    }
-
-
-    private void addEvent() {
-//        getPairedDevices();
-//        getOnlineDevice();
     }
 
     private void getPairedDevices() {
@@ -122,6 +122,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     }
 
     private void addController() {
+        presenterListDevice = new PresenterListDevice(this);
         intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         intentFilter2 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         intentFilter3 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -155,6 +156,25 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         }
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        initDialogProcessing();
+    }
+
+    private void initDialogProcessing(){
+        dialogProcessing = new Dialog(this);
+        dialogProcessing.setContentView(R.layout.dialog_processing);
+        dialogProcessing.setCancelable(false);
+        txtDialogProcessingTitle = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
+    }
+
+    private void showDialogProcessing(){
+        dialogProcessing.show();
+    }
+
+    private void cancelDialogProcessing(){
+        if (dialogProcessing != null){
+            dialogProcessing.cancel();
+        }
     }
 
     @Override
@@ -171,8 +191,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 //        arrFollowItem.remove(position);
 //        adapteRCVDevicePaired.notifyItemRemoved(position);
 //        adapteRCVDevicePaired.notifyItemRangeChanged(position, arrDevicePaired.size());
-
-
     }
 
     @Override
@@ -214,39 +232,38 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                     adapteRCVDeviceOnline.notifyItemInserted(arrDeviceOnline.size() - 2);
                 }
 
-//                for (int i = 0; i < arrDevicePaired.size(); i++) {
-//                    if (device.getAddress().equals(arrDevicePaired.get(i).getAddress())) {
-//                        arrFollowItem.get(i).setToggle(true);
-//                        adapteRCVDevicePaired.notifyItemChanged(i);
-//                        break;
-//                    }
-//                }
+                for (int i = 0; i < arrDevicePaired.size(); i++) {
+                    if (device.getAddress().equals(arrDevicePaired.get(i).getMacDevice())) {
+                        arrFollowItem.get(i).setToggle(true);
+                        adapteRCVDevicePaired.notifyItemChanged(i);
+                        break;
+                    }
+                }
 
                 // not show device online when paired
-//                for (int i = 0; i < arrDevicePaired.size(); i++) {
-//                    if (device.getAddress().equals(arrDevicePaired.get(i).getAddress())) {
-//                        arrDeviceOnline.remove(arrDeviceOnline.size()-1);
-//                        if (adapteRCVDeviceOnline != null) {
-//                            adapteRCVDeviceOnline.notifyItemRemoved(arrDeviceOnline.size()-1);
-//                        }
-//                        break;
-//                    }
-//                }
+                for (int i = 0; i < arrDevicePaired.size(); i++) {
+                    if (device.getAddress().equals(arrDevicePaired.get(i).getMacDevice())) {
+                        arrDeviceOnline.remove(arrDeviceOnline.size()-2);
+                        if (adapteRCVDeviceOnline != null) {
+                            adapteRCVDeviceOnline.notifyItemRemoved(arrDeviceOnline.size()-2);
+                        }
+                        break;
+                    }
+                }
             }
 
             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
-//                final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
-//                final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
-//
-//                if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
-//                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                    arrDevicePaired.add(device);
-//                    arrFollowItem.add(new FollowSensor(true , false));
-//                    adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
-//                    Toast.makeText(context, "paired", Toast.LENGTH_SHORT).show();
-//                } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
-//                    Toast.makeText(context, "Unpaired", Toast.LENGTH_SHORT).show();
-//                }
+                final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
+                final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
+
+                if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    Toast.makeText(context, "paired", Toast.LENGTH_SHORT).show();
+                    txtDialogProcessingTitle.setText("Storing to cloud ...");
+                    presenterListDevice.receivedStoreSensor(APIUtils.token , device.getName() , Protector.getCurrentTime() , device.getAddress());
+                }else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
+                    Toast.makeText(context, "Unpaired", Toast.LENGTH_SHORT).show();
+                }
             }
 
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
@@ -327,12 +344,13 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
     @Override
     public void onClickRCVDeviceOnline(int position) {
+        showDialogProcessing();
+        txtDialogProcessingTitle.setText("Paring...");
         BluetoothDevice device = arrDeviceOnline.get(position);
 
         if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
             unpairDevice(device);
         } else {
-            Toast.makeText(this, "Pairing", Toast.LENGTH_SHORT).show();
             pairDevice(device);
         }
     }
@@ -342,7 +360,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
             Method method = device.getClass().getMethod("createBond", (Class[]) null);
             method.invoke(device, (Object[]) null);
         } catch (Exception e) {
-            e.printStackTrace();
+            cancelDialogProcessing();
         }
     }
 
@@ -354,5 +372,20 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         } catch (Exception e) {
             e.printStackTrace();
         }
+        cancelDialogProcessing();
+    }
+
+    @Override
+    public void onSuccessStoreSensor(SensorInfor sensorInfor) {
+        arrDevicePaired.add(sensorInfor);
+        arrFollowItem.add(new FollowSensor(true , false));
+        adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
+        cancelDialogProcessing();
+    }
+
+    @Override
+    public void onFailStoreSensor(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        cancelDialogProcessing();
     }
 }

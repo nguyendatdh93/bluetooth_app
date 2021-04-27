@@ -2,10 +2,8 @@ package com.infinity.EBacSens.presenter;
 
 import com.infinity.EBacSens.model.ModelAdapterRCVDevicePaired;
 import com.infinity.EBacSens.model.ModelAdapterRCVDevicePairedListener;
-import com.infinity.EBacSens.model_objects.Sensor;
+import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.views.ViewAdapterRCVDevicePairedListener;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -28,7 +26,7 @@ public class PresenterAdapterRCVDevicePaired implements ModelAdapterRCVDevicePai
     }
 
     @Override
-    public void onGetData(ArrayList<Sensor> arrayList){
+    public void onGetData(ArrayList<SensorInfor> arrayList){
         callback.onLoaded();
         callback.onGetData(arrayList);
     }

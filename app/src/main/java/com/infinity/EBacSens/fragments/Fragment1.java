@@ -82,7 +82,7 @@ public class Fragment1 extends Fragment {
         edtNameDevice = view.findViewById(R.id.fragment_1_acp_name_device);
         txtInfor1 = view.findViewById(R.id.fragment_1_txt_infor_1);
         if (MainActivity.device != null){
-            edtNameDevice.setText(MainActivity.device.getSetname());
+            edtNameDevice.setText(MainActivity.device.getName());
         }
 
     }

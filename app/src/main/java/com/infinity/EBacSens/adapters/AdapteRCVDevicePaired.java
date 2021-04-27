@@ -1,6 +1,5 @@
 package com.infinity.EBacSens.adapters;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.swipe.SwipeLayout;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.model_objects.FollowSensor;
-import com.infinity.EBacSens.model_objects.Sensor;
+import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.presenter.PresenterAdapterRCVDevicePaired;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.views.ViewAdapterRCVDevicePairedListener;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 
 public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ViewAdapterRCVDevicePairedListener {
 
-    private ArrayList<Sensor> arrItem;
+    private ArrayList<SensorInfor> arrItem;
     private ArrayList<FollowSensor> arrFollowItem;
     private Context context;
     private ViewRCVDevicePaired callback;
@@ -40,7 +39,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
 
     private PresenterAdapterRCVDevicePaired presenterAdapterRCVDevicePaired;
 
-    public AdapteRCVDevicePaired(Context context, ArrayList<Sensor> arrItem, ArrayList<FollowSensor> arrFollowItem, ViewRCVDevicePaired callback) {
+    public AdapteRCVDevicePaired(Context context, ArrayList<SensorInfor> arrItem, ArrayList<FollowSensor> arrFollowItem, ViewRCVDevicePaired callback) {
         this.arrItem = arrItem;
         this.arrFollowItem = arrFollowItem;
         this.context = context;
@@ -60,23 +59,21 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
             View view = LayoutInflater.from(context).inflate(R.layout.item_searhcing, parent, false);
             return new ViewholderLoading(view);
         }
-
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             ViewHodler viewHodler = (ViewHodler) holder;
-            viewHodler.txtName.setText(arrItem.get(position).getSetname());
+            viewHodler.txtName.setText(arrItem.get(position).getName());
             viewHodler.txtToggle.setTextColor(arrFollowItem.get(position).isToggle() ? context.getResources().getColor(R.color.toggle_text_active) : context.getResources().getColor(R.color.toggle_text_not_active));
 
-            viewHodler.txtToggle.setText(arrFollowItem.get(position).isToggle() ? "Hoạt động" : "Off");
+            viewHodler.txtToggle.setText(arrFollowItem.get(position).isToggle() ? context.getResources().getString(R.string.connected) : "Off");
             viewHodler.txtToggle.setBackground(arrFollowItem.get(position).isToggle() ? context.getResources().getDrawable(R.drawable.circle_bg_button_active) : context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
-            viewHodler.container.setBackgroundColor(arrFollowItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
+            //viewHodler.container.setBackgroundColor(arrFollowItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
             viewHodler.containerView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
             //viewHodler.btnUnpair.setOnClickListener(v -> callback.onUnpairRCVDevicePaired(position));
-            viewHodler.btnUnpair.setOnClickListener(v -> presenterAdapterRCVDevicePaired.receivedDeleteSettingSensor(APIUtils.token , arrItem.get(position).getSensorID() , position));
+            viewHodler.btnUnpair.setOnClickListener(v -> presenterAdapterRCVDevicePaired.receivedDeleteSettingSensor(APIUtils.token , arrItem.get(position).getId() , position));
             viewHodler.container.setShowMode(SwipeLayout.ShowMode.PullOut);
         }
     }
@@ -96,9 +93,9 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onGetData(ArrayList<Sensor> arrayList) {
+    public void onGetData(ArrayList<SensorInfor> arrayList) {
         if (arrayList != null && arrayList.size() > 0) {
-            for (Sensor item : arrayList) {
+            for (SensorInfor item : arrayList) {
                 arrItem.add(item);
                 arrFollowItem.add(new FollowSensor(false , false));
                 notifyItemInserted(arrItem.size() - 1);
@@ -122,7 +119,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
     public void onLoadMore() {
         if (!onLoadMore && !onLoadEnd) {
             onLoadMore = true;
-            arrItem.add(new Sensor(-1, -1, null, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, null, null, null));
+            arrItem.add(new SensorInfor(-1, null, null, null , null , null ));
             notifyItemInserted(arrItem.size() - 1);
             presenterAdapterRCVDevicePaired.receivedGetData(limit, offset);
         }
