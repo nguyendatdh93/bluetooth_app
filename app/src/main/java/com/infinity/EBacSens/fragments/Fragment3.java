@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,6 +119,30 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
                 setContentSensorSetting(position);
             }
         });
+
+        edtBacs.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (Protector.tryParseInt(edtBacs.getText().toString()) > 5){
+                    edtBacs.setText("1");
+                }
+                arrBacSetting.clear();
+                for (int i = 0 ; i < Protector.tryParseInt(edtBacs.getText().toString()) ; i++){
+                    arrBacSetting.add(new BacSetting("" , 1 , 1 , 1 , 1 , 1));
+                }
+                adapteRCVBacSetting.notifyDataSetChanged();
+            }
+        });
     }
 
     private void addController() {
@@ -156,6 +182,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
         acpTxtName.setAdapter(adapterAcpName);
 
         arrBacSetting = new ArrayList<>();
+        arrBacSetting.add(new BacSetting("" , 1 , 1 , 1 , 1 , 1));
         adapteRCVBacSetting = new AdapteRCVBacSetting(context , arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
         initDialogProcessing();

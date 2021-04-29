@@ -74,6 +74,7 @@
     <string name="measuring_instrument" translatable="false">計測器</string>
     <string name="connected" translatable="false">接続中</string>
     <string name="list_device_online" translatable="false">デバイスをオンラインで一覧表示</string>
+
 <!--    <string name="list_of_measuring_instruments" translatable="false">list_of_measuring_instruments</string>-->
 <!--    <string name="communication_settings" translatable="false">communication_settings</string>-->
 <!--    <string name="measuring_instrument_settings" translatable="false">measuring_instrument_settings</string>-->
