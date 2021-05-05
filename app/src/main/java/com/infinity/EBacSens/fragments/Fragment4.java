@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,15 +47,25 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.ListDeviceActivity;
+import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVGraph;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.Graph;
-import com.infinity.EBacSens.model_objects.Measure;
+import com.infinity.EBacSens.model_objects.MeasureMeasbas;
+import com.infinity.EBacSens.model_objects.MeasureMeasdets;
+import com.infinity.EBacSens.model_objects.MeasureMeasparas;
+import com.infinity.EBacSens.model_objects.MeasureMeasress;
 import com.infinity.EBacSens.model_objects.Result;
+import com.infinity.EBacSens.model_objects.SensorMeasure;
+import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
+import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
+import com.infinity.EBacSens.presenter.PresenterFragment4;
+import com.infinity.EBacSens.retrofit2.APIUtils;
+import com.infinity.EBacSens.views.ViewFragment4Listener;
 import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 import com.opencsv.CSVWriter;
 
@@ -71,17 +83,16 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
+public class Fragment4 extends Fragment implements ViewFragment4Listener {
 
     private View view;
     private Activity activity;
     private Context context;
 
-    //private LineChart lineChart;
     private SeekBar skbProgress;
-    private Button btnExportCSV , btnHistoryMeasure;
-    //private CheckBox ckbBaseRedLine;
+    private Button btnExportCSV, btnHistoryMeasure;
     private TextView txtProcess;
+    private Spinner spnDatetime;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
@@ -91,12 +102,16 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
     private ArrayList<Graph> arrGraph;
     private AdapteRCVGraph adapteRCVGraph;
 
-    private AutoCompleteTextView acpDatetime;
     private List<String> arrDatetime;
     private ArrayAdapter<String> adapterDatetime;
 
-    private ArrayList<Measure> arrMeasure;
+    private ArrayList<SensorMeasure> arrMeasure;
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
+
+    private Dialog dialogProcessing;
+
+    private List<SensorMeasurePage.MeasurePage> arrMeasurePage;
+    private PresenterFragment4 presenterFragment4;
 
     @Nullable
     @Override
@@ -109,75 +124,36 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
     private void addEvents() {
         btnExportCSV.setOnClickListener(v -> {
-            exportFileCSV(arrMeasure);
+            //exportFileCSV(arrMeasure);
         });
-//        ckbBaseRedLine.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//            lineChart.setData(generateDataLine(isChecked));
-//            lineChart.invalidate();
-//        });
 
-        btnHistoryMeasure.setOnClickListener(v -> showDialogHistoryMeasure());
-    }
+        btnHistoryMeasure.setOnClickListener(v -> {
+            showDialogProcessing();
+            presenterFragment4.receivedGetMeasurePage(APIUtils.token , MainActivity.device.getId() , 1 , 0);
+        });
 
-    private void showDialogHistoryMeasure() {
-        Dialog dialogHistoryMeasure = new Dialog(context);
-        dialogHistoryMeasure.setContentView(R.layout.dialog_history_measure);
+        spnDatetime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                showDialogProcessing();
+                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getMeasureId());
+            }
 
-        RecyclerView rcvHistoryMeasure = dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_rcv);
-        rcvHistoryMeasure.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        rcvHistoryMeasure.setLayoutManager(linearLayoutManager);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-        rcvHistoryMeasure.addItemDecoration(new DividerItemDecoration(context,
-                DividerItemDecoration.VERTICAL));
-        arrMeasure = new ArrayList<>();
-        arrMeasure.add(new Measure("Sensor", "2021-10-09 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021-10-10 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021-10-11 18:00:06", "102"));
-        arrMeasure.add(new Measure("Sensor", "2021-10-12 18:00:06", "102"));
-
-        adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrMeasure, this);
-        rcvHistoryMeasure.setAdapter(adapterRCVHistoryMeasure);
-
-        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
-
-        dialogHistoryMeasure.show();
-        Window window = dialogHistoryMeasure.getWindow();
-        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            }
+        });
     }
 
     private void addController() {
-        //lineChart = view.findViewById(R.id.fragment_4_chart);
+        presenterFragment4 = new PresenterFragment4(this);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
-        //ckbBaseRedLine = view.findViewById(R.id.fragment_4_ckb_base_red_line);
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
         skbProgress.setPadding(0, 0, 0, 0);
-        acpDatetime = view.findViewById(R.id.fragment_4_acp_name_device);
         txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
-
-//        lineChart.setData(generateDataLine(true));
-//        Description description = new Description();
-//        description.setText("");
-//        lineChart.setDescription(description);
-//
-//        lineChart.getAxisRight().setDrawLabels(false);
-//        //lineChart.getAxisRight().setDrawAxisLine(false);
-//        lineChart.getLegend().setEnabled(false);
-////        lineChart.getAxisRight().setDrawGridLines(false);
-////        lineChart.getAxisLeft().setDrawGridLines(false);
-//
-//        lineChart.getAxisLeft().setDrawGridLines(false);
-//        lineChart.getXAxis().setDrawGridLines(false);
-//
-//        XAxis xAxis = lineChart.getXAxis();
-//        YAxis yAxis = lineChart.getAxisLeft();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        //yAxis.setLabelCount(5);
-//        xAxis.setLabelCount(7,true);
-//        yAxis.setLabelCount(5,true);
-        //xAxis.enableAxisLineDashedLine(10,10,0);
+        spnDatetime = view.findViewById(R.id.fragment_4_spn_date_time);
 
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
         rcvResult.setHasFixedSize(true);
@@ -195,25 +171,58 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
         rcvGraph.setNestedScrollingEnabled(false);
         rcvGraph.setLayoutManager(new LinearLayoutManager(context));
         arrGraph = new ArrayList<>();
-        arrGraph.add(new Graph(100, 1, "Description"));
-        arrGraph.add(new Graph(100, 1, "Description"));
-        arrGraph.add(new Graph(100, 1, "Description"));
-        arrGraph.add(new Graph(100, 1, "Description"));
-        arrGraph.add(new Graph(100, 1, "Description"));
+        //arrGraph.add(new Graph(100, 1, "Description"));
 
         adapteRCVGraph = new AdapteRCVGraph(context, arrGraph);
         rcvGraph.setAdapter(adapteRCVGraph);
 
         arrDatetime = new ArrayList<>();
-        arrDatetime.add("2021/04/09 18:05:05");
-        arrDatetime.add("2021/04/10 18:05:05");
-        arrDatetime.add("2021/04/11 18:05:05");
 
         adapterDatetime = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrDatetime);
-        acpDatetime.setAdapter(adapterDatetime);
+        spnDatetime.setAdapter(adapterDatetime);
+        arrMeasure = new ArrayList<>();
+        arrMeasurePage = new ArrayList<>();
+
+        List<Integer> integers = new ArrayList<>();
+        for (int i = 1 ; i <= 10 ; i++){
+            integers.add(i);
+        }
+
+//        arrMeasure.add(new SensorMeasure(4,
+//                2,
+//                "2021-05-04 08:38:22",
+//                48,
+//                "2021-05-04T07:49:22.000000Z",
+//                "2021-05-04T07:49:22.000000Z",
+//                new MeasureMeasbas(4, 4, "2021-05-04 09:18:24", 29, "2021-05-04T07:49:24.000000Z", "2021-05-04T07:49:24.000000Z"),
+//                new MeasureMeasdets(4 , 4 , "[1,2,3,4,5,6,7,8,9,10]" , "2021-05-04T07:49:24.000000Z" , "2021-05-04T07:49:24.000000Z" , integers ),
+//                new MeasureMeasparas(4 , 4 , "{\"setname\":\"name1\",\"bacs\":5,\"crng\":1,\"eqp1\":857}" , "2021-05-04T07:49:24.000000Z" , "2021-05-04T07:49:24.000000Z" , new MeasureMeasparas.CastedSettings("name1" , 5 , 1 , 875)),
+//                new MeasureMeasress(4 , 4 , "name4_1" , 4 , 98 , 86 , 0 , "2021-05-04T07:49:24.000000Z" , "2021-05-04T07:49:24.000000Z")));
+        for (int i = 0 ; i < arrMeasure.size() ; i++){
+            arrDatetime.add(arrMeasure.get(i).getDatetime());
+        }
+        adapterDatetime.notifyDataSetChanged();
+
+        initDialogProcessing();
     }
 
-    private void exportFileCSV(ArrayList<Measure> arrMeasure) {
+    private void initDialogProcessing(){
+        dialogProcessing = new Dialog(context);
+        dialogProcessing.setContentView(R.layout.dialog_processing);
+        dialogProcessing.setCancelable(false);
+    }
+
+    private void showDialogProcessing(){
+        dialogProcessing.show();
+    }
+
+    private void cancelDialogProcessing(){
+        if (dialogProcessing != null){
+            dialogProcessing.cancel();
+        }
+    }
+
+    private void exportFileCSV(ArrayList<SensorMeasure> arrMeasure) {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -238,7 +247,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
                         List<String[]> data = new ArrayList<>();
                         data.add(new String[]{"Name", "Datetime", "Result"});
                         for (int i = 0; i < arrMeasure.size(); i++) {
-                            data.add(new String[]{arrMeasure.get(i).getName(), arrMeasure.get(i).getDatetime(), arrMeasure.get(i).getResult()});
+                            //data.add(new String[]{arrMeasure.get(i).getName(), arrMeasure.get(i).getDatetime(), arrMeasure.get(i).getResult()});
                         }
 
                         for (int i = 0; i < data.size(); i++) {
@@ -261,7 +270,7 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
                     txtProcess.setText(i[0] + "%");
                 }, t -> {
                     // on error
-                    txtProcess.setText( t.getMessage());
+                    txtProcess.setText(t.getMessage());
                 }, () -> {
                     // progress tamom shod
                     skbProgress.setProgress(100);
@@ -280,48 +289,6 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
 
     }
 
-    private LineData generateDataLine(boolean baseline) {
-
-        ArrayList<Entry> values1 = new ArrayList<>();
-
-        for (int i = 0; i < 30; i++) {
-            values1.add(new Entry(i, (int) (Math.random() * 65) + 100));
-        }
-
-        LineDataSet d1 = new LineDataSet(values1, "");
-        d1.setLineWidth(1f);
-        d1.setColor(context.getResources().getColor(R.color.green));
-        d1.setDrawValues(false);
-        d1.setDrawCircles(false);
-        d1.setDrawCircleHole(false);
-
-        ArrayList<ILineDataSet> sets = new ArrayList<>();
-
-        sets.add(d1);
-
-        if (baseline) {
-            ArrayList<Entry> values2 = new ArrayList<>();
-
-            values2.add(new Entry(0, 30));
-            for (int i = 5; i < values1.size(); i += 5) {
-                values2.add(new Entry(i, (int) (Math.random() * 65) + 80));
-            }
-            values2.add(new Entry(29, 60));
-
-            LineDataSet d2 = new LineDataSet(values2, "");
-            d2.setLineWidth(1f);
-            d2.setColor(context.getResources().getColor(R.color.red));
-            d2.setDrawValues(false);
-            d2.setDrawCircles(false);
-            d2.setDrawCircleHole(false);
-
-            sets.add(d2);
-        }
-
-        return new LineData(sets);
-    }
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -330,21 +297,29 @@ public class Fragment4 extends Fragment implements ViewRCVHistoryMeasure {
     }
 
     @Override
-    public void onDeleteRCVHistoryMeasure(int position) {
-        Dialog dialogYesNo = new Dialog(context);
-        dialogYesNo.setContentView(R.layout.dialog_yes_no);
+    public void onGetDataMeasurePage(List<SensorMeasurePage.MeasurePage> measurePages) {
+        if (measurePages != null){
+            arrMeasurePage.clear();
+            arrDatetime.clear();
+            arrMeasurePage.addAll(measurePages);
+            for (int i = 0 ; i < measurePages.size() ; i++){
+                arrDatetime.add(measurePages.get(i).getDatetime());
+            }
+            adapterDatetime.notifyDataSetChanged();
+        }
+        cancelDialogProcessing();
+    }
 
-        dialogYesNo.findViewById(R.id.dialog_yes_no_btn_no).setOnClickListener(v -> dialogYesNo.cancel());
-        dialogYesNo.findViewById(R.id.dialog_yes_no_btn_yes).setOnClickListener(v -> {
-            arrMeasure.remove(position);
-            adapterRCVHistoryMeasure.notifyItemRemoved(position);
-            adapterRCVHistoryMeasure.notifyItemRangeChanged(position, arrMeasure.size());
-            dialogYesNo.cancel();
-        });
-
-        dialogYesNo.show();
-        Window window = dialogYesNo.getWindow();
-        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    @Override
+    public void onGetDataMeasureDetail(SensorMeasureDetail sensorMeasureDetail) {
+        arrGraph.clear();
+        arrGraph.add(new Graph(
+                sensorMeasureDetail.getSensorMeasure().getMeasureMeasress().getName() ,
+                (sensorMeasureDetail.getSensorMeasure().getMeasureMeasress().getDltc() / sensorMeasureDetail.getSensorMeasure().getMeasureMeasress().getPkpot()),
+                1,
+                "Decription"));
+        adapteRCVGraph.notifyDataSetChanged();
+        cancelDialogProcessing();
     }
 }
 

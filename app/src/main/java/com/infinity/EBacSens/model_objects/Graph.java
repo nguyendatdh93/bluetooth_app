@@ -1,9 +1,19 @@
 package com.infinity.EBacSens.model_objects;
 
 public class Graph {
+
+    private String name;
     private int result;
     private int level;
     private String description;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getResult() {
         return result;
@@ -29,7 +39,8 @@ public class Graph {
         this.description = description;
     }
 
-    public Graph(int result, int level, String description) {
+    public Graph(String name, int result, int level, String description) {
+        this.name = name;
         this.result = result;
         this.level = level;
         this.description = description;

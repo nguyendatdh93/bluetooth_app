@@ -10,16 +10,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +30,7 @@ import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVBacSetting;
 import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
+import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.FollowSensor;
@@ -36,12 +40,13 @@ import com.infinity.EBacSens.presenter.PresenterAdapterRCVDevicePaired;
 import com.infinity.EBacSens.presenter.PresenterFragment3;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.views.ViewFragment3Listener;
+import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Fragment3 extends Fragment implements ViewFragment3Listener {
+public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewRCVHistoryMeasure {
 
     private View view;
     private Activity activity;
@@ -52,14 +57,15 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
     private EditText edtCrng, edtBacs , edtEqp1 , edtEqt1, edtEqp2 , edtEqt2, edtEqp3 , edtEqt3, edtEqp4 , edtEqt4, edtEqp5 , edtEqt5 , edtStp , edtEnp, edtPp , edtDlte, edtPwd , edtPtm, edtIbst , edtIben, edtIfst , edtIfen;
 
     private List<String> arrAcpName;
-    private List<SensorSetting> arrSensorSetting;
-    private ArrayAdapter<String> adapterAcpName;
+    private ArrayList<SensorSetting> arrSensorSetting;
 
     private RecyclerView rcvBacSetting;
     private ArrayList<BacSetting> arrBacSetting;
     private AdapteRCVBacSetting adapteRCVBacSetting;
 
-    private Dialog dialogProcessing;
+    private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
+
+    private Dialog dialogProcessing , dialogHistoryMeasure;
 
     private PresenterFragment3 presenterFragment3;
 
@@ -79,6 +85,158 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
         });
 
         btnSaveSettingMeasure.setOnClickListener(v -> {
+            if (acpTxtName.getText().toString().length() == 0){
+                acpTxtName.setError("The 設定名 field is required");
+                return;
+            }
+
+            if (edtBacs.getText().toString().length() == 0){
+                acpTxtName.setError("The 微生物測定数 field is required");
+                return;
+            }
+
+            if (edtCrng.getText().toString().length() == 0){
+                acpTxtName.setError("The CRNG field is required");
+                return;
+            }
+
+            if (edtEqp1.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡電位 field is required");
+                return;
+            }
+
+            if (edtEqt1.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡時間 field is required");
+                return;
+            }
+
+            if (edtEqp2.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡電位 field is required");
+                return;
+            }
+
+            if (edtEqt2.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡時間 field is required");
+                return;
+            }
+
+            if (edtEqp3.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡電位 field is required");
+                return;
+            }
+
+            if (edtEqt3.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡時間 field is required");
+                return;
+            }
+
+            if (edtEqp4.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡電位 field is required");
+                return;
+            }
+
+            if (edtEqt4.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡時間 field is required");
+                return;
+            }
+
+            if (edtEqp5.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡電位 field is required");
+                return;
+            }
+
+            if (edtEqt5.getText().toString().length() == 0){
+                acpTxtName.setError("The 平衡時間 field is required");
+                return;
+            }
+
+            if (edtStp.getText().toString().length() == 0){
+                acpTxtName.setError("The 開始電位 field is required");
+                return;
+            }
+
+            if (edtEnp.getText().toString().length() == 0){
+                acpTxtName.setError("The 終了電位 field is required");
+                return;
+            }
+
+            if (edtPp.getText().toString().length() == 0){
+                acpTxtName.setError("The パルス振幅 field is required");
+                return;
+            }
+
+            if (edtDlte.getText().toString().length() == 0){
+                acpTxtName.setError("The ΔE field is required");
+                return;
+            }
+
+            if (edtPwd.getText().toString().length() == 0){
+                acpTxtName.setError("The パルス幅 field is required");
+                return;
+            }
+
+            if (edtPtm.getText().toString().length() == 0){
+                acpTxtName.setError("The パルス期間 field is required");
+                return;
+            }
+
+            if (edtIbst.getText().toString().length() == 0){
+                acpTxtName.setError("The ベース電流(Ib)サンプル時間下限 field is required");
+                return;
+            }
+
+            if (edtIben.getText().toString().length() == 0){
+                acpTxtName.setError("The ベース電流(Ib)サンプル時間上限 field is required");
+                return;
+            }
+
+            if (edtIfst.getText().toString().length() == 0){
+                acpTxtName.setError("The ファラデー(If)電流サンプル時間下限 field is required");
+                return;
+            }
+
+            if (edtIfen.getText().toString().length() == 0){
+                acpTxtName.setError("The ファラデー(If)電流サンプル時間上限 field is required");
+                return;
+            }
+
+            if (edtPwd.getText().toString().length() < 10){
+                acpTxtName.setError("The パルス幅 must be at least 10");
+                return;
+            }
+
+            if (edtPtm.getText().toString().length() < 10){
+                acpTxtName.setError("The パルス期間 must be at least 10");
+                return;
+            }
+
+            if (Protector.tryParseInt(edtPp.getText().toString()) == 0){
+                acpTxtName.setError("The パルス振幅 must be at least 1");
+                return;
+            }
+
+            if (Protector.tryParseInt(edtDlte.getText().toString()) == 0){
+                acpTxtName.setError("The ΔE must be at least 1");
+                return;
+            }
+
+            if (Protector.tryParseInt(edtIben.getText().toString()) == 0){
+                acpTxtName.setError("The ベース電流(Ib)サンプル時間上限 must be at least 1");
+                return;
+            }
+
+            if (Protector.tryParseInt(edtIfst.getText().toString()) == 0){
+                acpTxtName.setError("The ファラデー(If)電流サンプル時間下限 must be at least 1");
+                return;
+            }
+
+            if (Protector.tryParseInt(edtIfen.getText().toString()) == 0){
+                acpTxtName.setError("The ファラデー(If)電流サンプル時間上限 must be at least 1");
+                return;
+            }
+
+
+
             SensorSetting sensorSetting = new SensorSetting();
             sensorSetting.setSetname(acpTxtName.getText().toString());
             sensorSetting.setBacs(Protector.tryParseInt(edtBacs.getText().toString()));
@@ -103,14 +261,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
             sensorSetting.setIben(Protector.tryParseInt(edtIben.getText().toString()));
             sensorSetting.setIfst(Protector.tryParseInt(edtIfst.getText().toString()));
             sensorSetting.setIfen(Protector.tryParseInt(edtIfen.getText().toString()));
-
-            List<BacSetting> arrBacSetting = new ArrayList<>();
             sensorSetting.setBacSetting(arrBacSetting);
-            sensorSetting.getBacSetting().add(new BacSetting("bac0" , 1 , 1 , 1 , 1 , 1 ));
-            sensorSetting.getBacSetting().add(new BacSetting("bac1" , 1 , 1 , 1 , 1 , 1 ));
-
             showDialogProcessing();
-            presenterFragment3.receivedUpdateSettingMeasure(APIUtils.token, MainActivity.device.getId() , sensorSetting);
+            presenterFragment3.receivedSaveSettingMeasure(APIUtils.token, MainActivity.device.getId() , sensorSetting);
         });
 
         acpTxtName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -178,13 +331,14 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
         edtIfen = view.findViewById(R.id.fragment_3_edt_ifen);
 
         arrAcpName = new ArrayList<>();
-        adapterAcpName = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrAcpName);
-        acpTxtName.setAdapter(adapterAcpName);
 
         arrBacSetting = new ArrayList<>();
-        arrBacSetting.add(new BacSetting("" , 1 , 1 , 1 , 1 , 1));
+        arrBacSetting.add(new BacSetting("abc" , 1 , 1 , 1 , 1 , 1));
         adapteRCVBacSetting = new AdapteRCVBacSetting(context , arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
+
+        arrSensorSetting = new ArrayList<>();
+
         initDialogProcessing();
     }
 
@@ -258,19 +412,62 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener {
     }
 
     @Override
-    public void onGetSettingSensor(List<SensorSetting> sensorSetting) {
-        arrSensorSetting = sensorSetting;
-        if (sensorSetting != null && sensorSetting.size() > 0) {
-            // add to acpName
-            adapterAcpName.clear();
-            for (int i = 0 ; i < sensorSetting.size();i++){
-                adapterAcpName.add(sensorSetting.get(i).getSetname());
-            }
-            adapterAcpName.notifyDataSetChanged();
-            setContentSensorSetting(arrSensorSetting.size()-1);
+    public void onGetSettingSensor(ArrayList<SensorSetting> sensorSetting) {
+        if (sensorSetting != null){
+            arrSensorSetting.clear();
+            arrSensorSetting.addAll(sensorSetting);
         }
-
+        showDialogHistoryMeasure();
         cancelDialogProcessing();
+
+    }
+
+    private void showDialogHistoryMeasure() {
+        dialogHistoryMeasure = new Dialog(context);
+        dialogHistoryMeasure.setContentView(R.layout.dialog_history_measure);
+
+        RecyclerView rcvHistoryMeasure = dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_rcv);
+        rcvHistoryMeasure.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        rcvHistoryMeasure.setLayoutManager(linearLayoutManager);
+
+        rcvHistoryMeasure.addItemDecoration(new DividerItemDecoration(context,
+                DividerItemDecoration.VERTICAL));
+
+        adapterRCVHistoryMeasure = new AdapterRCVHistoryMeasure(dialogHistoryMeasure.getContext(), arrSensorSetting, this);
+        rcvHistoryMeasure.setAdapter(adapterRCVHistoryMeasure);
+
+        dialogHistoryMeasure.findViewById(R.id.dialog_history_measure_btn_close).setOnClickListener(v -> dialogHistoryMeasure.cancel());
+
+        dialogHistoryMeasure.show();
+        Window window = dialogHistoryMeasure.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void onDeleteRCVHistoryMeasure(int position) {
+        Dialog dialogYesNo = new Dialog(context);
+        dialogYesNo.setContentView(R.layout.dialog_yes_no);
+
+        dialogYesNo.findViewById(R.id.dialog_yes_no_btn_no).setOnClickListener(v -> dialogYesNo.cancel());
+        dialogYesNo.findViewById(R.id.dialog_yes_no_btn_yes).setOnClickListener(v -> {
+            arrSensorSetting.remove(position);
+            adapterRCVHistoryMeasure.notifyItemRemoved(position);
+            adapterRCVHistoryMeasure.notifyItemRangeChanged(position, arrSensorSetting.size());
+            dialogYesNo.cancel();
+        });
+
+        dialogYesNo.show();
+        Window window = dialogYesNo.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    public void onUseRCVHistoryMeasure(int position) {
+        setContentSensorSetting(position);
+        if (dialogHistoryMeasure != null){
+            dialogHistoryMeasure.cancel();
+        }
     }
 }
 

@@ -3,22 +3,23 @@ package com.infinity.EBacSens.model_objects;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataSensorSettingAPI {
     @SerializedName("data")
     @Expose
-    List<SensorSetting> sensors;
+    ArrayList<SensorSetting> sensors;
 
-    public List<SensorSetting> getSensors() {
+    public ArrayList<SensorSetting> getSensors() {
         return sensors;
     }
 
-    public void setSensors(List<SensorSetting> sensors) {
+    public void setSensors(ArrayList<SensorSetting> sensors) {
         this.sensors = sensors;
     }
 
-    public DataSensorSettingAPI(List<SensorSetting> sensors) {
+    public DataSensorSettingAPI(ArrayList<SensorSetting> sensors) {
         this.sensors = sensors;
     }
 }

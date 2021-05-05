@@ -37,7 +37,7 @@ public class AdapteRCVGraph extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
 
-        viewHodler.txtName.setText( context.getResources().getString(R.string.microorganism) + " " + (position+1));
+        viewHodler.txtName.setText(arrItem.get(position).getName());
         viewHodler.txtResult.setText(String.valueOf(arrItem.get(position).getResult()));
         viewHodler.txtLevel.setText(String.valueOf(arrItem.get(position).getLevel()));
         viewHodler.txtDescription.setText(arrItem.get(position).getDescription());

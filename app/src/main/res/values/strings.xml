@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">EBacSens</string>
 
+    <string-array name="arrNameMeasure" translatable="false">
+        <item>SAVE (W)</item>
+        <item>VER (R)</item>
+        <item>SER (R)</item>
+        <item>DATETIME (R/W)</item>
+        <item>LIST (R)</item>
+        <item>MEASBAS (R)</item>
+        <item>MEASPARA (R)</item>
+        <item>MEASRES (R)</item>
+        <item>MEASDET (R)</item>
+    </string-array>
+
     <string name="list_of_measuring_instruments" translatable="false">計測器一覧</string>
     <string name="communication_settings" translatable="false">通信設定</string>
     <string name="measuring_instrument_settings" translatable="false">計測器設定</string>
@@ -74,78 +86,9 @@
     <string name="measuring_instrument" translatable="false">計測器</string>
     <string name="connected" translatable="false">接続中</string>
     <string name="list_device_online" translatable="false">デバイスをオンラインで一覧表示</string>
-
-<!--    <string name="list_of_measuring_instruments" translatable="false">list_of_measuring_instruments</string>-->
-<!--    <string name="communication_settings" translatable="false">communication_settings</string>-->
-<!--    <string name="measuring_instrument_settings" translatable="false">measuring_instrument_settings</string>-->
-<!--    <string name="measurement_settings" translatable="false">measurement_settings</string>-->
-<!--    <string name="result" translatable="false">result</string>-->
-<!--    <string name="com_port_used" translatable="false">com_port_used</string>-->
-<!--    <string name="connection_test" translatable="false">connection_test</string>-->
-<!--    <string name="connection_test_success" translatable="false">connection_test_success</string>-->
-<!--    <string name="connect" translatable="false">connect</string>-->
-<!--    <string name="disconnect" translatable="false">disconnect</string>-->
-<!--    <string name="measuring_instrument_job_alias_up_to_8_alphanumeric_characters" translatable="false">measuring_instrument_job_alias_up_to_8_alphanumeric_characters</string>-->
-<!--    <string name="datetime" translatable="false">datetime</string>-->
-<!--    <string name="baseline_point_detection_method" translatable="false">baseline_point_detection_method</string>-->
-<!--    <string name="auto_power_off_0_60_min" translatable="false">auto_power_off_0_60_min</string>-->
-<!--    <string name="write" translatable="false">write</string>-->
-<!--    <string name="read" translatable="false">read</string>-->
-<!--    <string name="basic" translatable="false">basic</string>-->
-<!--    <string name="setting_name_up_to_8_alphanumeric_characters" translatable="false">setting_name_up_to_8_alphanumeric_characters</string>-->
-<!--    <string name="number_of_microorganisms_measured_1_5" translatable="false">number_of_microorganisms_measured_1_5</string>-->
-<!--    <string name="current_range" translatable="false">current_range</string>-->
-<!--    <string name="equilibrium_potential_1" translatable="false">equilibrium_potential_1</string>-->
-<!--    <string name="equilibrium_potential_2" translatable="false">equilibrium_potential_2</string>-->
-<!--    <string name="equilibrium_potential_3" translatable="false">equilibrium_potential_3</string>-->
-<!--    <string name="equilibrium_potential_4" translatable="false">equilibrium_potential_4</string>-->
-<!--    <string name="equilibrium_potential_5" translatable="false">equilibrium_potential_5</string>-->
-<!--    <string name="equilibrium_time_1" translatable="false">equilibrium_time_1</string>-->
-<!--    <string name="equilibrium_time_2" translatable="false">equilibrium_time_2</string>-->
-<!--    <string name="equilibrium_time_3" translatable="false">equilibrium_time_3</string>-->
-<!--    <string name="equilibrium_time_4" translatable="false">equilibrium_time_4</string>-->
-<!--    <string name="equilibrium_time_5" translatable="false">equilibrium_time_5</string>-->
-<!--    <string name="start_potential" translatable="false">start_potential</string>-->
-<!--    <string name="end_potential" translatable="false">end_potential</string>-->
-<!--    <string name="pulse_amplitude" translatable="false">pulse_amplitude</string>-->
-<!--    <string name="Δe" translatable="false">ΔE</string>-->
-<!--    <string name="pulse_width" translatable="false">pulse_width</string>-->
-<!--    <string name="pulse_period" translatable="false">pulse_period</string>-->
-<!--    <string name="base_current_Ib_sample_time_lower_limit" translatable="false">base_current_Ib_sample_time_lower_limit</string>-->
-<!--    <string name="base_current_Ib_sample_time_upper_limit" translatable="false">base_current_Ib_sample_time_upper_limit</string>-->
-<!--    <string name="faraday_If_current_sample_time_lower_limit" translatable="false">faraday_If_current_sample_time_lower_limit</string>-->
-<!--    <string name="faraday_If_current_sample_time_upper_limit" translatable="false">faraday_If_current_sample_time_upper_limit</string>-->
-<!--    <string name="peak_detection" translatable="false">peak_detection</string>-->
-<!--    <string name="microorganism" translatable="false">microorganism</string>-->
-<!--    <string name="object_name_to_be_measured_up_to_5_alphanumeric_characters" translatable="false">object_name_to_be_measured_up_to_5_alphanumeric_characters</string>-->
-<!--    <string name="e1_baseline_search_start_potential" translatable="false">e1_baseline_search_start_potential</string>-->
-<!--    <string name="e2_baseline_search_start_potential" translatable="false">e2_baseline_search_start_potential</string>-->
-<!--    <string name="e3_baseline_search_start_potential" translatable="false">e3_baseline_search_start_potential</string>-->
-<!--    <string name="e4_baseline_search_start_potential" translatable="false">e4_baseline_search_start_potential</string>-->
-<!--    <string name="location_selectbox_up_down" translatable="false">location_selectbox_up_down</string>-->
-<!--    <string name="list" translatable="false">list</string>-->
-<!--    <string name="graph" translatable="false">graph</string>-->
-<!--    <string name="latest_data_update" translatable="false">latest_data_update</string>-->
-<!--    <string name="baseline_display" translatable="false">baseline_display</string>-->
-<!--    <string name="measurement_date_and_time" translatable="false">measurement_date_and_time:</string>-->
-<!--    <string name="measurement_number" translatable="false">measurement_number:</string>-->
-<!--    <string name="name" translatable="false">name</string>-->
-<!--    <string name="peak_potential" translatable="false">peak_potential</string>-->
-<!--    <string name="peak_height" translatable="false">peak_height</string>-->
-<!--    <string name="error" translatable="false">error</string>-->
-<!--    <string name="progress" translatable="false">progress</string>-->
-<!--    <string name="CSV_output" translatable="false">CSV_output</string>-->
-<!--    <string name="list_of_saved_measurement_settings" translatable="false">list_of_saved_measurement_settings</string>-->
-<!--    <string name="do_you_want_to_delete_this_measurement_setting" translatable="false">do_you_want_to_delete_this_measurement_setting？</string>-->
-<!--    <string name="no" translatable="false">no</string>-->
-<!--    <string name="yes" translatable="false">yes</string>-->
-<!--    <string name="measurement_result_quantity" translatable="false">Measurement result (quantity)</string>-->
-<!--    <string name="level" translatable="false">Level</string>-->
-<!--    <string name="description" translatable="false">Description</string>-->
-<!--    <string name="cloud" translatable="false">Cloud</string>-->
-<!--    <string name="save_measurement_settings" translatable="false">save_measurement_settings</string>-->
-<!--    <string name="read_from_the_measurement_setting_list" translatable="false">read_from_the_measurement_setting_list</string>-->
-<!--    <string name="measuring_instrument" translatable="false">measuring_instrument</string>-->
-<!--    <string name="connected" translatable="false">connected</string>-->
-<!--    <string name="list_device_online" translatable="false">list_device_online</string>-->
+    <string name="use" translatable="false">使用</string>
+    <string name="delete" translatable="false">削除</string>
+    <string name="action" translatable="false">操作</string>
+    <string name="microbiological_determination_number" translatable="false">微生物測定数</string>
+    <string name="creation_date_and_time" translatable="false">作成日時</string>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -33,26 +34,38 @@
                     android:textSize="@dimen/_15ssp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20ssp"
-                    android:hint="@string/list"
-                    android:orientation="horizontal"
-                    android:textSize="@dimen/_10ssp">
+                    android:layout_marginTop="@dimen/_20ssp">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/fragment_4_acp_name_device"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:completionThreshold="1"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textSize="@dimen/_11ssp" />
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:background="@drawable/square_border_grey"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_10ssp">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/fragment_4_spn_date_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:background="@color/white"
+                        android:paddingStart="@dimen/_5ssp"
+                        android:paddingEnd="@dimen/_5ssp"
+                        android:text="@string/datetime"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/fragment_4_btn_history_measure"
@@ -82,6 +95,7 @@
                 android:background="@drawable/shadow"
                 android:orientation="vertical"
                 android:padding="@dimen/_5ssp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,25 +105,25 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
                         android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="@string/graph"
-                        android:layout_margin="@dimen/_1ssp"
-                        android:gravity="center|top"
                         android:textColor="@color/white"
-                        android:padding="@dimen/_5ssp"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="2"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="@string/measurement_result_quantity"
-                        android:background="@color/title_graph"
-                        android:padding="@dimen/_5ssp"
-                        android:gravity="center|top"
-                        android:layout_margin="@dimen/_1ssp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -117,12 +131,12 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="@string/level"
-                        android:background="@color/title_graph"
-                        android:padding="@dimen/_5ssp"
-                        android:gravity="center|top"
-                        android:layout_margin="@dimen/_1ssp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -130,12 +144,12 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
-                        android:text="@string/description"
-                        android:padding="@dimen/_5ssp"
                         android:background="@color/title_graph"
                         android:gravity="center|top"
-                        android:layout_margin="@dimen/_1ssp"
+                        android:padding="@dimen/_5ssp"
+                        android:text="@string/description"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -230,25 +244,25 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
                         android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="@string/name"
-                        android:gravity="center|top"
-                        android:layout_margin="@dimen/_1ssp"
                         android:textColor="@color/white"
-                        android:padding="@dimen/_5ssp"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="@string/peak_potential"
-                        android:background="@color/title_graph"
-                        android:padding="@dimen/_5ssp"
-                        android:layout_margin="@dimen/_1ssp"
-                        android:gravity="center|top"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -256,12 +270,12 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="@string/peak_height"
-                        android:background="@color/title_graph"
-                        android:padding="@dimen/_5ssp"
-                        android:gravity="center|top"
-                        android:layout_margin="@dimen/_1ssp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -269,12 +283,12 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1ssp"
                         android:layout_weight="1"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
                         android:text="BG[uA]"
-                        android:padding="@dimen/_5ssp"
-                        android:background="@color/title_graph"
-                        android:gravity="center|top"
-                        android:layout_margin="@dimen/_1ssp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -282,22 +296,22 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/error"
-                        android:background="@color/title_graph"
-                        android:padding="@dimen/_5ssp"
-                        android:gravity="center|top"
                         android:layout_margin="@dimen/_1ssp"
+                        android:layout_weight="1"
+                        android:background="@color/title_graph"
+                        android:gravity="center|top"
+                        android:padding="@dimen/_5ssp"
+                        android:text="@string/error"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="@dimen/_1ssp"
                     android:id="@+id/fragment_4_rcv_result"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_1ssp" />
             </LinearLayout>
 
             <LinearLayout

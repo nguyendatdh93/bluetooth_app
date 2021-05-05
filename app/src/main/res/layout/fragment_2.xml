@@ -19,19 +19,20 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/_10ssp"
                 android:hint="@string/measuring_instrument_job_alias_up_to_8_alphanumeric_characters"
-                android:textSize="@dimen/_10ssp">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/fragment_2_acp_name_measure"
                     android:imeOptions="actionDone"
                     android:singleLine="true"
-                    android:text="Device"
-                    android:textSize="@dimen/_11ssp" />
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_height="wrap_content"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,6 +66,7 @@
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_2_edt_peakmode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -83,6 +85,7 @@
                 android:textSize="@dimen/_10ssp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_2_edt_power_off_min"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -94,6 +97,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_2_btn_write"
                 android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,6 +107,7 @@
                 android:textSize="@dimen/_11ssp" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_2_btn_read"
                 android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

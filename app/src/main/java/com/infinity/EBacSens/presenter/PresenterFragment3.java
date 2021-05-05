@@ -22,8 +22,8 @@ public class PresenterFragment3 implements ModelFragmeant3Listener {
         this.callback = callback;
     }
 
-    public void receivedUpdateSettingMeasure(String token , int idSensor , SensorSetting sensorSetting){
-        modelFragment3.handleUpdateSettingMeasure(token , idSensor , sensorSetting);
+    public void receivedSaveSettingMeasure(String token , int idSensor , SensorSetting sensorSetting){
+        modelFragment3.handleSaveSettingMeasure(token , idSensor , sensorSetting);
     }
 
     public void receivedReceiveSettingMeasure(String token , int idSensor){
@@ -41,7 +41,7 @@ public class PresenterFragment3 implements ModelFragmeant3Listener {
     }
 
     @Override
-    public void onGetSettingSensor(List<SensorSetting> sensorSetting) {
+    public void onGetSettingSensor(ArrayList<SensorSetting> sensorSetting) {
         callback.onGetSettingSensor(sensorSetting);
     }
 

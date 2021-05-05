@@ -19,6 +19,14 @@ public class SensorInfor implements Serializable {
     @Expose
     private String name;
 
+    @SerializedName("peakmode")
+    @Expose
+    private int peakmode;
+
+    @SerializedName("powoffmin")
+    @Expose
+    private int powoffmin;
+
     @SerializedName("datetime")
     @Expose
     private String datetime;
@@ -55,6 +63,22 @@ public class SensorInfor implements Serializable {
         this.name = name;
     }
 
+    public int getPeakmode() {
+        return peakmode;
+    }
+
+    public void setPeakmode(int peakmode) {
+        this.peakmode = peakmode;
+    }
+
+    public int getPowoffmin() {
+        return powoffmin;
+    }
+
+    public void setPowoffmin(int powoffmin) {
+        this.powoffmin = powoffmin;
+    }
+
     public String getDatetime() {
         return datetime;
     }
@@ -79,10 +103,12 @@ public class SensorInfor implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public SensorInfor(int id, String macDevice, String name, String datetime, String createdAt, String updatedAt) {
+    public SensorInfor(int id, String macDevice, String name, int peakmode, int powoffmin, String datetime, String createdAt, String updatedAt) {
         this.id = id;
         this.macDevice = macDevice;
         this.name = name;
+        this.peakmode = peakmode;
+        this.powoffmin = powoffmin;
         this.datetime = datetime;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

@@ -75,4 +75,9 @@
     <string name="measuring_instrument" translatable="false">計測器</string>
     <string name="connected" translatable="false">接続中</string>
     <string name="list_device_online" translatable="false">デバイスをオンラインで一覧表示</string>
+    <string name="use" translatable="false">使用</string>
+    <string name="delete" translatable="false">削除</string>
+    <string name="action" translatable="false">操作</string>
+    <string name="microbiological_determination_number" translatable="false">微生物測定数</string>
+    <string name="creation_date_and_time" translatable="false">作成日時</string>
 </resources>

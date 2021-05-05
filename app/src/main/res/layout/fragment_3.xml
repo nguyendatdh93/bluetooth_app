@@ -39,6 +39,7 @@
                     android:id="@+id/fragment_3_acp_name_device"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLength="8"
                     android:imeOptions="actionDone"
                     android:singleLine="true"
                     android:textSize="@dimen/_11ssp" />
@@ -334,7 +335,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_pp"
-                    android:text="0"
+                    android:text="1"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -353,7 +354,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_dlte"
-                    android:text="0"
+                    android:text="1"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -372,7 +373,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_pwd"
-                    android:text="0"
+                    android:text="10"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -391,7 +392,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/fragment_3_edt_ptm"
                     android:inputType="number"
-                    android:text="0"
+                    android:text="10"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -410,7 +411,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_ibst"
-                    android:text="0"
+                    android:text="1"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -429,7 +430,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_iben"
-                    android:text="0"
+                    android:text="1"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -448,7 +449,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_ifst"
-                    android:text="0"
+                    android:text="1"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -467,7 +468,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:id="@+id/fragment_3_edt_ifen"
-                    android:text="0"
+                    android:text="1"
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>

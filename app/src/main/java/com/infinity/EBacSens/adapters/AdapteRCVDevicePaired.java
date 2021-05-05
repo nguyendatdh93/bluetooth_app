@@ -119,7 +119,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
     public void onLoadMore() {
         if (!onLoadMore && !onLoadEnd) {
             onLoadMore = true;
-            arrItem.add(new SensorInfor(-1, null, null, null , null , null ));
+            arrItem.add(new SensorInfor(-1, null, null, -1 , -1 , null , null , null));
             notifyItemInserted(arrItem.size() - 1);
             presenterAdapterRCVDevicePaired.receivedGetData(limit, offset);
         }

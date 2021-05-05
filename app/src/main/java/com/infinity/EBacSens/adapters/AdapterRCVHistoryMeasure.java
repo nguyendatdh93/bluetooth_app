@@ -13,7 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.model_objects.Measure;
+import com.infinity.EBacSens.model_objects.SensorMeasure;
+import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 
@@ -21,11 +22,11 @@ import java.util.ArrayList;
 
 public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Measure> arrItem;
+    private ArrayList<SensorSetting> arrItem;
     private Context context;
     private ViewRCVHistoryMeasure callback;
 
-    public AdapterRCVHistoryMeasure(Context context, ArrayList<Measure> arrItem, ViewRCVHistoryMeasure callback) {
+    public AdapterRCVHistoryMeasure(Context context, ArrayList<SensorSetting> arrItem, ViewRCVHistoryMeasure callback) {
         this.arrItem = arrItem;
         this.context = context;
         this.callback = callback;
@@ -42,21 +43,22 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
-        viewHodler.txtName.setText(arrItem.get(position).getName());
-        viewHodler.txtTime.setText(arrItem.get(position).getDatetime());
-        viewHodler.txtResult.setText(arrItem.get(position).getResult());
+        viewHodler.txtName.setText(arrItem.get(position).getSetname());
+        viewHodler.txtTime.setText(arrItem.get(position).getUpdatedAt());
+        //viewHodler.txtResult.setText(arrItem.get(position).get());
+        viewHodler.txtResult.setText("123");
         viewHodler.btnDelete.setOnClickListener(v -> callback.onDeleteRCVHistoryMeasure(position));
+        viewHodler.btnUse.setOnClickListener(v -> callback.onUseRCVHistoryMeasure(position));
     }
 
     @Override
     public int getItemCount() {
         return arrItem.size();
-
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
         TextView txtName , txtTime , txtResult;
-        Button btnDelete;
+        Button btnDelete , btnUse;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +66,7 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
             txtTime = itemView.findViewById(R.id.item_rcv_history_measure_txt_time);
             txtResult = itemView.findViewById(R.id.item_rcv_history_measure_txt_result);
             btnDelete = itemView.findViewById(R.id.item_rcv_history_measure_btn_delete);
+            btnUse = itemView.findViewById(R.id.item_rcv_history_measure_btn_use);
         }
     }
 }

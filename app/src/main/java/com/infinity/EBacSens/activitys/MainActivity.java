@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity  {
     private TabLayout tabLayout;
 
     public static SensorInfor device;
+    public static boolean toggle;
     private TextView txtNameDevice;
     private int offset = 0;
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private void addController() {
         device = (SensorInfor) getIntent().getSerializableExtra("device");
+        toggle = getIntent().getBooleanExtra("active" , false);
 
         viewPager = findViewById(R.id.view_pager_main);
         txtNameDevice = findViewById(R.id.txt_name_sensor);

@@ -9,5 +9,5 @@ import java.util.List;
 public interface ModelFragmeant3Listener {
     void onSuccessUpdateSettingSensor();
     void onFailUpdateSettingSensor(String error);
-    void onGetSettingSensor(List<SensorSetting> sensorSetting);
+    void onGetSettingSensor(ArrayList<SensorSetting> sensorSetting);
 }

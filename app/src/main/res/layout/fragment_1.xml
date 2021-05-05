@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/container_fragment_1">
 
     <ScrollView
         android:paddingTop="@dimen/_10ssp"
@@ -35,6 +36,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_1_btn_test_connect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
@@ -59,6 +61,7 @@
                     android:text="Status:" />
 
                 <TextView
+                    android:id="@+id/fragment_1_txt_status_connection"
                     android:layout_marginStart="@dimen/_5ssp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -111,6 +114,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_1_btn_connect"
                 android:layout_marginTop="@dimen/_30ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,6 +124,7 @@
                 android:textSize="@dimen/_11ssp" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_1_btn_disconnect"
                 android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

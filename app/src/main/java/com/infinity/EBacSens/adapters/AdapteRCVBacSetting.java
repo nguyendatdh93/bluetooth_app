@@ -40,7 +40,7 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
         viewHodler.txtIndex.setText(context.getResources().getString(R.string.microorganism) + " " + (position+1));
-        viewHodler.txtBacName.setText(String.valueOf(arrItem.get(position).getBacName()));
+        viewHodler.txtBacName.setText(arrItem.get(position).getBacName());
         viewHodler.txtE1.setText(String.valueOf(arrItem.get(position).getE1()));
         viewHodler.txtE2.setText(String.valueOf(arrItem.get(position).getE2()));
         viewHodler.txtE3.setText(String.valueOf(arrItem.get(position).getE3()));
