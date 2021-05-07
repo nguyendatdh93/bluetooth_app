@@ -21,7 +21,7 @@ public class PresenterAdapterRCVDevicePaired implements ModelAdapterRCVDevicePai
         modelAdapterRCVDevicePaired.handleGetData(limit , offset);
     }
 
-    public void receivedDeleteSettingSensor(String token , long idSensor , int position){
+    public void receivedDeleteSettingSensor(String token , int idSensor , int position){
         modelAdapterRCVDevicePaired.handleDeleteSettingSensor(token , idSensor , position);
     }
 

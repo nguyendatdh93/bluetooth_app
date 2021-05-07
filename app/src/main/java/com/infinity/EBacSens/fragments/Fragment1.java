@@ -20,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelUuid;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -60,26 +61,30 @@ import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.retrofit2.APIUtils;
+import com.infinity.EBacSens.task.ConnectThread;
+import com.infinity.EBacSens.views.ViewConnectThread;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class Fragment1 extends Fragment {
+import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
+import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
+
+public class Fragment1 extends Fragment implements ViewConnectThread {
 
     private View view;
     private Activity activity;
     private Context context;
 
-    private BluetoothAdapter mBluetoothAdapter;
-
     private RelativeLayout container;
-    private AutoCompleteTextView edtNameDevice;
-    private TextView txtInfor1 , txtStatusConnection;
-    private Button btnTestConnect , btnConnect , btnDisconnect;
+    private TextView txtInfor1, txtInfor2, txtInfor3, txtStatusConnection;
+    private Button btnTestConnect, btnConnect, btnDisconnect;
 
     private TextView txtDialogProcessingTitle;
     private Dialog dialogProcessing;
@@ -87,6 +92,8 @@ public class Fragment1 extends Fragment {
     private ArrayList<BluetoothDevice> arrDevicePaired;
 
     private IntentFilter intentFilter;
+
+    private ConnectThread connectThread;
 
     @Nullable
     @Override
@@ -97,48 +104,84 @@ public class Fragment1 extends Fragment {
         return view;
     }
 
+    private void connectSensor() {
+        if (MainActivity.device.getMacDevice() != null && mBluetoothAdapter != null) {
+            try {
+                if (connectThread != null){
+                    connectThread.cancel();
+                }
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
+                showDialogProcessing();
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        if (connectThread != null) {
+                            connectThread.connect();
+                        }
+                    }
+                };
+                thread.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void addEvents() {
         btnTestConnect.setOnClickListener(v -> {
-            if (MainActivity.toggle){
-                showSuccessMessage(context.getResources().getString(R.string.connection_test_success));
-            }else {
-                showErrorMessage("Not connection");
+            boolean connection = false;
+            for (int i = 0; i < arrDevicePaired.size(); i++) {
+                if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
+                    connection = true;
+                }
+            }
+            if (connection && mBluetoothAdapter != null) {
+                connectSensor();
+            } else {
+                if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
+                    txtDialogProcessingTitle.setText("Paring...");
+                    showDialogProcessing();
+                    pairDevice(device);
+                } else {
+                    showErrorMessage("Device not support Bluetooth");
+                }
             }
         });
 
         btnConnect.setOnClickListener(v -> {
             boolean connection = false;
-            for (int i = 0 ; i < arrDevicePaired.size() ; i++){
-                if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())){
+            for (int i = 0; i < arrDevicePaired.size(); i++) {
+                if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
                     connection = true;
                 }
             }
-            if (connection){
-                showSuccessMessage(context.getResources().getString(R.string.connection_test_success));
-            }else {
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                txtDialogProcessingTitle.setText("Paring...");
-                showDialogProcessing();
-                pairDevice(device);
+            if (connection && mBluetoothAdapter != null) {
+                connectSensor();
+            } else {
+                if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
+                    txtDialogProcessingTitle.setText("Paring...");
+                    showDialogProcessing();
+                    pairDevice(device);
+                } else {
+                    showErrorMessage("Device not support Bluetooth");
+                }
             }
         });
 
         btnDisconnect.setOnClickListener(v -> {
-            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-            unpairDevice(device);
-            showErrorMessage("Unpaired");
+            if (connectThread != null) {
+                connectThread.cancel();
+            }
+            txtStatusConnection.setText("Disconnected");
+            txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
+            txtInfor1.setText("");
+            txtInfor2.setText("");
+            txtInfor3.setText("");
+            showErrorMessage("Disconnected");
+            MainActivity.device.setStatusConnect(-1);
         });
-    }
-
-    private void unpairDevice(BluetoothDevice device) {
-        try {
-            Method method = device.getClass().getMethod("removeBond", (Class[]) null);
-            method.invoke(device, (Object[]) null);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        cancelDialogProcessing();
     }
 
     private void pairDevice(BluetoothDevice device) {
@@ -182,18 +225,18 @@ public class Fragment1 extends Fragment {
         intentFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
 
         container = view.findViewById(R.id.container_fragment_1);
-        edtNameDevice = view.findViewById(R.id.fragment_1_acp_name_device);
         txtInfor1 = view.findViewById(R.id.fragment_1_txt_infor_1);
+        txtInfor2 = view.findViewById(R.id.fragment_1_txt_infor_2);
+        txtInfor3 = view.findViewById(R.id.fragment_1_txt_infor_3);
         txtStatusConnection = view.findViewById(R.id.fragment_1_txt_status_connection);
-        if (MainActivity.device != null){
-            edtNameDevice.setText(MainActivity.device.getName());
-            txtInfor1.setText(MainActivity.device.getName());
-        }
 
-        if (MainActivity.toggle){
+        if (MainActivity.device.getStatusConnect() == -1) {
+            txtStatusConnection.setTextColor(context.getResources().getColor(R.color.yellow));
+            txtStatusConnection.setText("Ready to connect");
+        } else if (MainActivity.device.getStatusConnect() == 1) {
             txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
-            txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
-        }else {
+            txtStatusConnection.setText("Connected");
+        } else {
             txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
             txtStatusConnection.setText("Not connection");
         }
@@ -203,25 +246,25 @@ public class Fragment1 extends Fragment {
         btnDisconnect = view.findViewById(R.id.fragment_1_btn_disconnect);
 
         arrDevicePaired = new ArrayList<>();
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
 
         initDialogProcessing();
         getPairedDevices();
     }
 
-    private void initDialogProcessing(){
+    private void initDialogProcessing() {
         dialogProcessing = new Dialog(context);
         dialogProcessing.setContentView(R.layout.dialog_processing);
         dialogProcessing.setCancelable(false);
         txtDialogProcessingTitle = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
     }
 
-    private void showDialogProcessing(){
+    private void showDialogProcessing() {
         dialogProcessing.show();
     }
 
-    private void cancelDialogProcessing(){
-        if (dialogProcessing != null){
+    private void cancelDialogProcessing() {
+        if (dialogProcessing != null) {
             dialogProcessing.cancel();
         }
     }
@@ -236,11 +279,15 @@ public class Fragment1 extends Fragment {
                 final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     showSuccessMessage("Paired");
                     cancelDialogProcessing();
-                }else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
+                    if (mBluetoothAdapter != null) {
+                        connectSensor();
+                    }
+                } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
                     cancelDialogProcessing();
-                }else if (state == BluetoothDevice.BOND_NONE){
+                } else if (state == BluetoothDevice.BOND_NONE) {
                     cancelDialogProcessing();
                 }
             }
@@ -265,5 +312,51 @@ public class Fragment1 extends Fragment {
         this.context = context;
         activity = (Activity) context;
     }
-}
 
+    @Override
+    public void onGetData(String value) {
+        // get data from sensor
+        Log.e("Connection", value != null ? value : "null");
+    }
+
+    @Override
+    public void onConnected() {
+        cancelDialogProcessing();
+        if (connectThread != null) {
+            connectThread.run();
+        }
+        MainActivity.device.setStatusConnect(1);
+    }
+
+    @Override
+    public void onError(String error) {
+        cancelDialogProcessing();
+        showErrorMessage(error);
+        txtStatusConnection.setText("Disconnected");
+        txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
+        txtInfor1.setText("");
+        txtInfor2.setText("");
+        txtInfor3.setText("");
+        showErrorMessage("Disconnected");
+        MainActivity.device.setStatusConnect(-1);
+    }
+
+    @Override
+    public void onRuned() {
+        cancelDialogProcessing();
+
+        if (connectThread != null) {
+            // write data to sensor
+            connectThread.write("*R,IDNAME");
+            connectThread.write("*R,VER");
+            connectThread.write("*R,SER");
+
+            // test result
+            txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
+            txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
+            txtInfor1.setText("MODEL:EbacSens");
+            txtInfor2.setText("Ver.a.014");
+            txtInfor3.setText("Serial:0003");
+        }
+    }
+}

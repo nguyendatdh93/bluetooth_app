@@ -39,6 +39,17 @@ public class SensorInfor implements Serializable {
     @Expose
     private String updatedAt;
 
+    // 0 = not connect , 1 == connected , -1 ready to connect
+    private int statusConnect;
+
+    public int getStatusConnect() {
+        return statusConnect;
+    }
+
+    public void setStatusConnect(int statusConnect) {
+        this.statusConnect = statusConnect;
+    }
+
     public int getId() {
         return id;
     }

@@ -44,7 +44,7 @@ public class ModelAdapterRCVDevicePaired {
         });
     }
 
-    public void handleDeleteSettingSensor(String token , long idSensor , int position){
+    public void handleDeleteSettingSensor(String token , int idSensor , int position){
         DataClient dataClient = APIUtils.getData();
         final Call<String> callback = dataClient.deleteSettingSensor(token , idSensor);
         callback.enqueue(new Callback<String>() {

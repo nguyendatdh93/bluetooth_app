@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ViewAdapterRCVDevicePairedListener {
 
     private ArrayList<SensorInfor> arrItem;
-    private ArrayList<FollowSensor> arrFollowItem;
     private Context context;
     private ViewRCVDevicePaired callback;
 
@@ -39,9 +38,8 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
 
     private PresenterAdapterRCVDevicePaired presenterAdapterRCVDevicePaired;
 
-    public AdapteRCVDevicePaired(Context context, ArrayList<SensorInfor> arrItem, ArrayList<FollowSensor> arrFollowItem, ViewRCVDevicePaired callback) {
+    public AdapteRCVDevicePaired(Context context, ArrayList<SensorInfor> arrItem, ViewRCVDevicePaired callback) {
         this.arrItem = arrItem;
-        this.arrFollowItem = arrFollowItem;
         this.context = context;
         this.callback = callback;
 
@@ -66,11 +64,20 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             ViewHodler viewHodler = (ViewHodler) holder;
             viewHodler.txtName.setText(arrItem.get(position).getName());
-            viewHodler.txtToggle.setTextColor(arrFollowItem.get(position).isToggle() ? context.getResources().getColor(R.color.toggle_text_active) : context.getResources().getColor(R.color.toggle_text_not_active));
+            if (arrItem.get(position).getStatusConnect() == -1){
+                viewHodler.txtToggle.setTextColor(context.getResources().getColor(R.color.toggle_text_ready_connect));
+                viewHodler.txtToggle.setText(context.getResources().getString(R.string.ready_to_connected));
+                viewHodler.txtToggle.setBackground(context.getResources().getDrawable(R.drawable.circle_bg_button_ready_connect));
+            }else if (arrItem.get(position).getStatusConnect() == 1){
+                viewHodler.txtToggle.setTextColor(context.getResources().getColor(R.color.toggle_text_active));
+                viewHodler.txtToggle.setText(context.getResources().getString(R.string.connected));
+                viewHodler.txtToggle.setBackground(context.getResources().getDrawable(R.drawable.circle_bg_button_active));
+            }else {
+                viewHodler.txtToggle.setTextColor(context.getResources().getColor(R.color.toggle_text_not_active));
+                viewHodler.txtToggle.setText("Off");
+                viewHodler.txtToggle.setBackground(context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
+            }
 
-            viewHodler.txtToggle.setText(arrFollowItem.get(position).isToggle() ? context.getResources().getString(R.string.connected) : "Off");
-            viewHodler.txtToggle.setBackground(arrFollowItem.get(position).isToggle() ? context.getResources().getDrawable(R.drawable.circle_bg_button_active) : context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
-            //viewHodler.container.setBackgroundColor(arrFollowItem.get(position).isSelected() ? context.getResources().getColor(R.color.menu_active) : context.getResources().getColor(R.color.bg_menu));
             viewHodler.containerView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
             //viewHodler.btnUnpair.setOnClickListener(v -> callback.onUnpairRCVDevicePaired(position));
             viewHodler.btnUnpair.setOnClickListener(v -> presenterAdapterRCVDevicePaired.receivedDeleteSettingSensor(APIUtils.token , arrItem.get(position).getId() , position));
@@ -97,7 +104,6 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         if (arrayList != null && arrayList.size() > 0) {
             for (SensorInfor item : arrayList) {
                 arrItem.add(item);
-                arrFollowItem.add(new FollowSensor(false , false));
                 notifyItemInserted(arrItem.size() - 1);
             }
             offset += limit;

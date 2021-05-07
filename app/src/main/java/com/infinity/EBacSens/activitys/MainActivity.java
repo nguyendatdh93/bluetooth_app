@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.bluetooth.BluetoothAdapter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -19,11 +20,12 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  {
 
+    public static BluetoothAdapter mBluetoothAdapter;
+
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
     public static SensorInfor device;
-    public static boolean toggle;
     private TextView txtNameDevice;
     private int offset = 0;
 
@@ -75,8 +77,8 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void addController() {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         device = (SensorInfor) getIntent().getSerializableExtra("device");
-        toggle = getIntent().getBooleanExtra("active" , false);
 
         viewPager = findViewById(R.id.view_pager_main);
         txtNameDevice = findViewById(R.id.txt_name_sensor);

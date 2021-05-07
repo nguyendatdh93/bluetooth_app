@@ -5,6 +5,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class BacSetting {
 
+    @SerializedName("id")
+    @Expose
+    private int id;
+
+    @SerializedName("sensor_setting_id")
+    @Expose
+    private int sensor_setting_id;
+
     @SerializedName("bacname")
     @Expose
     private String bacName;
@@ -29,21 +37,29 @@ public class BacSetting {
     @Expose
     private int pkp;
 
-    @SerializedName("sensor_setting_id")
+    @SerializedName("created_at")
     @Expose
-    private int sensorSettingId;
+    private String createdAt;
 
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
 
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
+    public int getId() {
+        return id;
+    }
 
-    @SerializedName("id")
-    @Expose
-    private int id;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSensor_setting_id() {
+        return sensor_setting_id;
+    }
+
+    public void setSensor_setting_id(int sensor_setting_id) {
+        this.sensor_setting_id = sensor_setting_id;
+    }
 
     public String getBacName() {
         return bacName;
@@ -93,14 +109,6 @@ public class BacSetting {
         this.pkp = pkp;
     }
 
-    public int getSensorSettingId() {
-        return sensorSettingId;
-    }
-
-    public void setSensorSettingId(int sensorSettingId) {
-        this.sensorSettingId = sensorSettingId;
-    }
-
     public String getUpdatedAt() {
         return updatedAt;
     }
@@ -117,23 +125,16 @@ public class BacSetting {
         this.createdAt = createdAt;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public BacSetting(int id, int sensor_setting_id, String bacName, int e1, int e2, int e3, int e4, int pkp, String updatedAt, String createdAt) {
         this.id = id;
-    }
-
-    public BacSetting() {
-    }
-
-    public BacSetting(String bacName, int e1, int e2, int e3, int e4, int pkp) {
+        this.sensor_setting_id = sensor_setting_id;
         this.bacName = bacName;
         this.e1 = e1;
         this.e2 = e2;
         this.e3 = e3;
         this.e4 = e4;
         this.pkp = pkp;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
     }
 }

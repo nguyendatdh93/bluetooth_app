@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container_fragment_3"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
@@ -26,7 +27,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
@@ -35,8 +36,8 @@
                 android:orientation="horizontal"
                 android:textSize="@dimen/_10ssp">
 
-                <AutoCompleteTextView
-                    android:id="@+id/fragment_3_acp_name_device"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_3_edt_name_measure"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="8"
@@ -552,6 +553,7 @@
 
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/fragment_3_btn_write"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20ssp"
@@ -561,6 +563,7 @@
                         android:textSize="@dimen/_11ssp" />
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/fragment_3_btn_read"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20ssp"

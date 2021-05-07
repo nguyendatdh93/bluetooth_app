@@ -1,5 +1,7 @@
 package com.infinity.EBacSens.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;

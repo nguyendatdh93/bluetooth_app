@@ -33,6 +33,22 @@ public class MeasureMeasress {
     @Expose
     private int err;
 
+    @SerializedName("blpsx")
+    @Expose
+    private String blpsx;
+
+    @SerializedName("blpsy")
+    @Expose
+    private String blpsy;
+
+    @SerializedName("blpex")
+    @Expose
+    private String blpex;
+
+    @SerializedName("blpey")
+    @Expose
+    private String blpey;
+
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -97,6 +113,38 @@ public class MeasureMeasress {
         this.err = err;
     }
 
+    public String getBlpsx() {
+        return blpsx;
+    }
+
+    public void setBlpsx(String blpsx) {
+        this.blpsx = blpsx;
+    }
+
+    public String getBlpsy() {
+        return blpsy;
+    }
+
+    public void setBlpsy(String blpsy) {
+        this.blpsy = blpsy;
+    }
+
+    public String getBlpex() {
+        return blpex;
+    }
+
+    public void setBlpex(String blpex) {
+        this.blpex = blpex;
+    }
+
+    public String getBlpey() {
+        return blpey;
+    }
+
+    public void setBlpey(String blpey) {
+        this.blpey = blpey;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -113,7 +161,7 @@ public class MeasureMeasress {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasress(int id, int sensorMeasureId, String name, int pkpot, int dltc, int bgc, int err, String createdAt, String updatedAt) {
+    public MeasureMeasress(int id, int sensorMeasureId, String name, int pkpot, int dltc, int bgc, int err, String blpsx, String blpsy, String blpex, String blpey, String createdAt, String updatedAt) {
         this.id = id;
         this.sensorMeasureId = sensorMeasureId;
         this.name = name;
@@ -121,6 +169,10 @@ public class MeasureMeasress {
         this.dltc = dltc;
         this.bgc = bgc;
         this.err = err;
+        this.blpsx = blpsx;
+        this.blpsy = blpsy;
+        this.blpex = blpex;
+        this.blpey = blpey;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

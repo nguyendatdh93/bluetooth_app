@@ -2,6 +2,7 @@ package com.infinity.EBacSens.retrofit2;
 
 import com.infinity.EBacSens.model_objects.DataSensorAPI;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
+import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
@@ -16,6 +17,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -28,8 +30,8 @@ public interface DataClient {
     @GET("api/sensor")
     Call<DataSensorAPI> getAllSensorPaired(@Header("token") String token);
 
-    @GET("api/sensor/{idSensor}/settings")
-    Call<DataSensorSettingAPI> getSettingSensor(@Header("token") String token , @Path("idSensor") int idSensor);
+    @GET("api/setting")
+    Call<DataSensorSettingAPI> getSettingSensor(@Header("token") String token);
 
     @GET("api/sensor/{idSensor}/measure")
     Call<SensorMeasurePage> getMeasurePage(@Header("token") String token , @Path("idSensor") int idSensor, @Query("page") int page, @Query("ful") int ful);
@@ -38,7 +40,7 @@ public interface DataClient {
     Call<SensorMeasureDetail> getDetailMeasure(@Header("token") String token , @Path("idMeasure") int idMeasure);
 
     @DELETE("api/sensor/setting/{idSensor}")
-    Call<String> deleteSettingSensor(@Header("token") String token , @Path("idSensor") long idSensor);
+    Call<String> deleteSettingSensor(@Header("token") String token , @Path("idSensor") int idSensor);
 
     @POST("api/sensor/store")
     @FormUrlEncoded
@@ -49,11 +51,10 @@ public interface DataClient {
             @Field("mac_device") String mac_device
     );
 
-    @POST("api/sensor/{idSensor}/setting")
+    @POST("api/setting")
     @FormUrlEncoded
-    Call<DataSensorSettingAPI> saveSettingSensor(
+    Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
-            @Path("idSensor") int idSensor,
             @Field("setname") String setname,
             @Field("bacs") int bacs,
             @Field("crng") int crng,
@@ -87,9 +88,8 @@ public interface DataClient {
 
     @POST("api/sensor/{idSensor}/setting")
     @FormUrlEncoded
-    Call<DataSensorSettingAPI> saveSettingSensor(
+    Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
-            @Path("idSensor") int idSensor,
             @Field("setname") String setname,
             @Field("bacs") int bacs,
             @Field("crng") int crng,
@@ -129,9 +129,8 @@ public interface DataClient {
 
     @POST("api/sensor/{idSensor}/setting")
     @FormUrlEncoded
-    Call<DataSensorSettingAPI> saveSettingSensor(
+    Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
-            @Path("idSensor") int idSensor,
             @Field("setname") String setname,
             @Field("bacs") int bacs,
             @Field("crng") int crng,
@@ -177,9 +176,8 @@ public interface DataClient {
 
     @POST("api/sensor/{idSensor}/setting")
     @FormUrlEncoded
-    Call<DataSensorSettingAPI> saveSettingSensor(
+    Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
-            @Path("idSensor") int idSensor,
             @Field("setname") String setname,
             @Field("bacs") int bacs,
             @Field("crng") int crng,
@@ -229,9 +227,16 @@ public interface DataClient {
             @Field("bac[3][pkp]") int bac3pkp
     );
 
+
     @POST("api/sensor/{idSensor}/setting")
     @FormUrlEncoded
-    Call<DataSensorSettingAPI> saveSettingSensor(
+    Call<ErrorSensorSetting> saveSettingSensor(
+            @Header("token") String token,
+            @Field("setname") String setname);
+
+    @POST("api/sensor/{idSensor}/setting")
+    @FormUrlEncoded
+    Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
             @Path("idSensor") int idSensor,
             @Field("setname") String setname,

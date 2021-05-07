@@ -6,7 +6,6 @@
     android:id="@+id/container_fragment_1">
 
     <ScrollView
-        android:paddingTop="@dimen/_10ssp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -17,37 +16,9 @@
             android:padding="@dimen/_10ssp"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_10ssp"
-                android:hint="@string/com_port_used"
-                android:orientation="horizontal">
-
-                <AutoCompleteTextView
-                    android:id="@+id/fragment_1_acp_name_device"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
-                    android:layout_width="match_parent"
-                    android:textSize="@dimen/_11ssp"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/fragment_1_btn_test_connect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20ssp"
-                android:background="@color/green"
-                android:text="@string/connection_test"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
-
             <LinearLayout
                 android:background="@color/grey"
-                android:layout_marginTop="@dimen/_30ssp"
+                android:layout_marginTop="@dimen/_10ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -66,7 +37,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="@string/connection_test_success"
                     android:textColor="@color/green" />
             </LinearLayout>
 
@@ -95,27 +65,39 @@
                         android:id="@+id/fragment_1_txt_infor_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="model:ebacSens" />
+                        android:text="" />
 
                     <TextView
+                        android:id="@+id/fragment_1_txt_infor_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
-                        android:text="VER.A.0.14" />
+                        android:text="" />
 
                     <TextView
+                        android:id="@+id/fragment_1_txt_infor_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5ssp"
-                        android:text="SERIAL:0003" />
+                        android:text="" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_1_btn_test_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:background="@color/green"
+                android:text="@string/connection_test"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11ssp" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/fragment_1_btn_connect"
-                android:layout_marginTop="@dimen/_30ssp"
+                android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_color"

@@ -4,13 +4,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#42be65</color>
+    <color name="yellow">#FFC107</color>
     <color name="red">#fa4d56</color>
     <color name="bg_cancel">#ffe8e8</color>
     <color name="primary_color_not_active">#cee4f7</color>
     <color name="toggle_active">#a7f0ba</color>
     <color name="toggle_text_active">#24a148</color>
+    <color name="toggle_text_ready_connect">#fab005</color>
     <color name="toggle_text_not_active">#444444</color>
     <color name="toggle_not_active">#f4f4f4</color>
+    <color name="toggle_ready_connect">#ffec99</color>
     <color name="toggle_color">#cfcfcf</color>
     <color name="grey">#efefef</color>
     <color name="bg_menu">#cedfef</color>

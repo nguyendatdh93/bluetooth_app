@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:mask="http://schemas.android.com/tools"
+    android:id="@+id/container_fragment_2"
     android:orientation="vertical">
 
     <ScrollView
@@ -19,15 +19,15 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10ssp"
                 android:hint="@string/measuring_instrument_job_alias_up_to_8_alphanumeric_characters"
                 android:orientation="horizontal">
 
-                <AutoCompleteTextView
-                    android:id="@+id/fragment_2_acp_name_measure"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragment_2_edt_name_measure"
                     android:imeOptions="actionDone"
                     android:singleLine="true"
                     android:layout_width="match_parent"

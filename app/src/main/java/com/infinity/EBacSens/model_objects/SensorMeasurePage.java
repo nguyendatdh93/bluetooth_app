@@ -3,23 +3,24 @@ package com.infinity.EBacSens.model_objects;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SensorMeasurePage {
 
     @SerializedName("data")
     @Expose
-    private List<MeasurePage> measurePages;
+    private ArrayList<MeasurePage> measurePages;
 
-    public List<MeasurePage> getMeasurePages() {
+    public ArrayList<MeasurePage> getMeasurePages() {
         return measurePages;
     }
 
-    public void setMeasurePages(List<MeasurePage> measurePages) {
+    public void setMeasurePages(ArrayList<MeasurePage> measurePages) {
         this.measurePages = measurePages;
     }
 
-    public SensorMeasurePage(List<MeasurePage> measurePages) {
+    public SensorMeasurePage(ArrayList<MeasurePage> measurePages) {
         this.measurePages = measurePages;
     }
 
@@ -36,9 +37,9 @@ public class SensorMeasurePage {
         @Expose
         private String datetime;
 
-        @SerializedName("measure_id")
+        @SerializedName("no")
         @Expose
-        private int measureId;
+        private String no;
 
         @SerializedName("created_at")
         @Expose
@@ -72,12 +73,12 @@ public class SensorMeasurePage {
             this.datetime = datetime;
         }
 
-        public int getMeasureId() {
-            return measureId;
+        public String getNo() {
+            return no;
         }
 
-        public void setMeasureId(int measureId) {
-            this.measureId = measureId;
+        public void setNo(String no) {
+            this.no = no;
         }
 
         public String getCreatedAt() {
@@ -96,11 +97,11 @@ public class SensorMeasurePage {
             this.updatedAt = updatedAt;
         }
 
-        public MeasurePage(int id, int sensorId, String datetime, int measureId, String createdAt, String updatedAt) {
+        public MeasurePage(int id, int sensorId, String datetime, String no, String createdAt, String updatedAt) {
             this.id = id;
             this.sensorId = sensorId;
             this.datetime = datetime;
-            this.measureId = measureId;
+            this.no = no;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
         }

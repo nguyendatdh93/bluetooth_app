@@ -3,7 +3,9 @@ package com.infinity.EBacSens.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +30,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVBacSetting;
@@ -33,30 +38,38 @@ import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
+import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
+import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.model_objects.FollowSensor;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.presenter.PresenterAdapterRCVDevicePaired;
 import com.infinity.EBacSens.presenter.PresenterFragment3;
 import com.infinity.EBacSens.retrofit2.APIUtils;
+import com.infinity.EBacSens.task.ConnectThread;
+import com.infinity.EBacSens.views.ViewConnectThread;
 import com.infinity.EBacSens.views.ViewFragment3Listener;
 import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewRCVHistoryMeasure {
+import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
+import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
+
+public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure , ViewConnectThread {
 
     private View view;
     private Activity activity;
     private Context context;
+    private RelativeLayout container;
 
-    private Button btnReceiveSettingMeasure , btnSaveSettingMeasure;
-    private AutoCompleteTextView acpTxtName;
-    private EditText edtCrng, edtBacs , edtEqp1 , edtEqt1, edtEqp2 , edtEqt2, edtEqp3 , edtEqt3, edtEqp4 , edtEqt4, edtEqp5 , edtEqt5 , edtStp , edtEnp, edtPp , edtDlte, edtPwd , edtPtm, edtIbst , edtIben, edtIfst , edtIfen;
+    private Button btnReceiveSettingMeasure, btnSaveSettingMeasure , btnRead , btnWrite;
+    private EditText edtNameMEasure, edtCrng, edtBacs, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
 
-    private List<String> arrAcpName;
     private ArrayList<SensorSetting> arrSensorSetting;
 
     private RecyclerView rcvBacSetting;
@@ -65,9 +78,12 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
 
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
-    private Dialog dialogProcessing , dialogHistoryMeasure;
+    private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
 
     private PresenterFragment3 presenterFragment3;
+
+    private int statusButton;
+    private ConnectThread connectThread;
 
     @Nullable
     @Override
@@ -81,164 +97,12 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
     private void addEvents() {
         btnReceiveSettingMeasure.setOnClickListener(v -> {
             showDialogProcessing();
-            presenterFragment3.receivedReceiveSettingMeasure(APIUtils.token, MainActivity.device.getId());
+            presenterFragment3.receivedReceiveSettingMeasure(APIUtils.token);
         });
 
         btnSaveSettingMeasure.setOnClickListener(v -> {
-            if (acpTxtName.getText().toString().length() == 0){
-                acpTxtName.setError("The 設定名 field is required");
-                return;
-            }
-
-            if (edtBacs.getText().toString().length() == 0){
-                acpTxtName.setError("The 微生物測定数 field is required");
-                return;
-            }
-
-            if (edtCrng.getText().toString().length() == 0){
-                acpTxtName.setError("The CRNG field is required");
-                return;
-            }
-
-            if (edtEqp1.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡電位 field is required");
-                return;
-            }
-
-            if (edtEqt1.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡時間 field is required");
-                return;
-            }
-
-            if (edtEqp2.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡電位 field is required");
-                return;
-            }
-
-            if (edtEqt2.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡時間 field is required");
-                return;
-            }
-
-            if (edtEqp3.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡電位 field is required");
-                return;
-            }
-
-            if (edtEqt3.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡時間 field is required");
-                return;
-            }
-
-            if (edtEqp4.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡電位 field is required");
-                return;
-            }
-
-            if (edtEqt4.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡時間 field is required");
-                return;
-            }
-
-            if (edtEqp5.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡電位 field is required");
-                return;
-            }
-
-            if (edtEqt5.getText().toString().length() == 0){
-                acpTxtName.setError("The 平衡時間 field is required");
-                return;
-            }
-
-            if (edtStp.getText().toString().length() == 0){
-                acpTxtName.setError("The 開始電位 field is required");
-                return;
-            }
-
-            if (edtEnp.getText().toString().length() == 0){
-                acpTxtName.setError("The 終了電位 field is required");
-                return;
-            }
-
-            if (edtPp.getText().toString().length() == 0){
-                acpTxtName.setError("The パルス振幅 field is required");
-                return;
-            }
-
-            if (edtDlte.getText().toString().length() == 0){
-                acpTxtName.setError("The ΔE field is required");
-                return;
-            }
-
-            if (edtPwd.getText().toString().length() == 0){
-                acpTxtName.setError("The パルス幅 field is required");
-                return;
-            }
-
-            if (edtPtm.getText().toString().length() == 0){
-                acpTxtName.setError("The パルス期間 field is required");
-                return;
-            }
-
-            if (edtIbst.getText().toString().length() == 0){
-                acpTxtName.setError("The ベース電流(Ib)サンプル時間下限 field is required");
-                return;
-            }
-
-            if (edtIben.getText().toString().length() == 0){
-                acpTxtName.setError("The ベース電流(Ib)サンプル時間上限 field is required");
-                return;
-            }
-
-            if (edtIfst.getText().toString().length() == 0){
-                acpTxtName.setError("The ファラデー(If)電流サンプル時間下限 field is required");
-                return;
-            }
-
-            if (edtIfen.getText().toString().length() == 0){
-                acpTxtName.setError("The ファラデー(If)電流サンプル時間上限 field is required");
-                return;
-            }
-
-            if (edtPwd.getText().toString().length() < 10){
-                acpTxtName.setError("The パルス幅 must be at least 10");
-                return;
-            }
-
-            if (edtPtm.getText().toString().length() < 10){
-                acpTxtName.setError("The パルス期間 must be at least 10");
-                return;
-            }
-
-            if (Protector.tryParseInt(edtPp.getText().toString()) == 0){
-                acpTxtName.setError("The パルス振幅 must be at least 1");
-                return;
-            }
-
-            if (Protector.tryParseInt(edtDlte.getText().toString()) == 0){
-                acpTxtName.setError("The ΔE must be at least 1");
-                return;
-            }
-
-            if (Protector.tryParseInt(edtIben.getText().toString()) == 0){
-                acpTxtName.setError("The ベース電流(Ib)サンプル時間上限 must be at least 1");
-                return;
-            }
-
-            if (Protector.tryParseInt(edtIfst.getText().toString()) == 0){
-                acpTxtName.setError("The ファラデー(If)電流サンプル時間下限 must be at least 1");
-                return;
-            }
-
-            if (Protector.tryParseInt(edtIfen.getText().toString()) == 0){
-                acpTxtName.setError("The ファラデー(If)電流サンプル時間上限 must be at least 1");
-                return;
-            }
-
-
-
             SensorSetting sensorSetting = new SensorSetting();
-            sensorSetting.setSetname(acpTxtName.getText().toString());
+            sensorSetting.setSetname(edtNameMEasure.getText().toString());
             sensorSetting.setBacs(Protector.tryParseInt(edtBacs.getText().toString()));
             sensorSetting.setCrng(Protector.tryParseInt(edtCrng.getText().toString()));
             sensorSetting.setEqp1(Protector.tryParseInt(edtEqp1.getText().toString()));
@@ -261,16 +125,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
             sensorSetting.setIben(Protector.tryParseInt(edtIben.getText().toString()));
             sensorSetting.setIfst(Protector.tryParseInt(edtIfst.getText().toString()));
             sensorSetting.setIfen(Protector.tryParseInt(edtIfen.getText().toString()));
-            sensorSetting.setBacSetting(arrBacSetting);
+            sensorSetting.setBacSettings(arrBacSetting);
             showDialogProcessing();
-            presenterFragment3.receivedSaveSettingMeasure(APIUtils.token, MainActivity.device.getId() , sensorSetting);
-        });
-
-        acpTxtName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setContentSensorSetting(position);
-            }
+            presenterFragment3.receivedSaveSettingMeasure(APIUtils.token, MainActivity.device.getId(), sensorSetting);
         });
 
         edtBacs.addTextChangedListener(new TextWatcher() {
@@ -286,23 +143,44 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (Protector.tryParseInt(edtBacs.getText().toString()) > 5){
+                if (Protector.tryParseInt(edtBacs.getText().toString()) > 5) {
                     edtBacs.setText("1");
                 }
                 arrBacSetting.clear();
-                for (int i = 0 ; i < Protector.tryParseInt(edtBacs.getText().toString()) ; i++){
-                    arrBacSetting.add(new BacSetting("" , 1 , 1 , 1 , 1 , 1));
+                for (int i = 0; i < Protector.tryParseInt(edtBacs.getText().toString()); i++) {
+                    arrBacSetting.add(new BacSetting(-1 , -1 , null, 1, 1, 1, 1, 1 , null , null));
                 }
                 adapteRCVBacSetting.notifyDataSetChanged();
+            }
+        });
+
+        btnWrite.setOnClickListener(v -> {
+            statusButton = 1;
+            if (mBluetoothAdapter != null) {
+                connectSensor();
+            }else {
+                showErrorMessage("Device not support Bluetooth");
+            }
+        });
+
+        btnRead.setOnClickListener(v -> {
+            statusButton = 0;
+            if (mBluetoothAdapter != null) {
+                connectSensor();
+            }else {
+                showErrorMessage("Device not support Bluetooth");
             }
         });
     }
 
     private void addController() {
         presenterFragment3 = new PresenterFragment3(this);
+        container = view.findViewById(R.id.container_fragment_3);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
         btnSaveSettingMeasure = view.findViewById(R.id.fragment_3_btn_save_setting_measure);
-        acpTxtName = view.findViewById(R.id.fragment_3_acp_name_device);
+        btnRead = view.findViewById(R.id.fragment_3_btn_read);
+        btnWrite = view.findViewById(R.id.fragment_3_btn_write);
+        edtNameMEasure = view.findViewById(R.id.fragment_3_edt_name_measure);
         rcvBacSetting = view.findViewById(R.id.fragment_3_rcv_bac_setting);
         rcvBacSetting.setHasFixedSize(true);
         rcvBacSetting.setNestedScrollingEnabled(false);
@@ -330,16 +208,37 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
         edtIfst = view.findViewById(R.id.fragment_3_edt_ifst);
         edtIfen = view.findViewById(R.id.fragment_3_edt_ifen);
 
-        arrAcpName = new ArrayList<>();
-
         arrBacSetting = new ArrayList<>();
-        arrBacSetting.add(new BacSetting("abc" , 1 , 1 , 1 , 1 , 1));
-        adapteRCVBacSetting = new AdapteRCVBacSetting(context , arrBacSetting);
+        arrBacSetting.add(new BacSetting(-1 , -1 ,null, 1, 1, 1, 1, 1 , null , null));
+        adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
 
         arrSensorSetting = new ArrayList<>();
 
         initDialogProcessing();
+    }
+
+    private void connectSensor() {
+        if (MainActivity.device.getMacDevice() != null && mBluetoothAdapter != null) {
+            try {
+                if (connectThread != null){
+                    connectThread.cancel();
+                }
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
+                showDialogProcessing();
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        if (connectThread != null) {
+                            connectThread.connect();
+                        }
+                    }
+                };
+                thread.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initDialogProcessing() {
@@ -358,9 +257,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
         }
     }
 
-    private void setContentSensorSetting(int position){
-        if (arrSensorSetting != null && arrSensorSetting.size() > position){
-            acpTxtName.setText(arrSensorSetting.get(position).getSetname());
+    private void setContentSensorSetting(int position) {
+        if (arrSensorSetting != null && arrSensorSetting.size() > position) {
+            edtNameMEasure.setText(arrSensorSetting.get(position).getSetname());
             edtCrng.setText(String.valueOf(arrSensorSetting.get(position).getCrng()));
             edtBacs.setText(String.valueOf(arrSensorSetting.get(position).getBacs()));
             edtEqp1.setText(String.valueOf(arrSensorSetting.get(position).getEqp1()));
@@ -384,12 +283,23 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
             edtIfst.setText(String.valueOf(arrSensorSetting.get(position).getIfst()));
             edtIfen.setText(String.valueOf(arrSensorSetting.get(position).getIfen()));
 
-            if (arrSensorSetting.get(position).getBacSetting() != null){
+            if (arrSensorSetting.get(position).getBacSettings() != null) {
+                edtBacs.setText(String.valueOf(arrSensorSetting.get(position).getBacSettings().size()));
                 arrBacSetting.clear();
-                arrBacSetting.addAll(arrSensorSetting.get(position).getBacSetting());
+                arrBacSetting.addAll(arrSensorSetting.get(position).getBacSettings());
                 adapteRCVBacSetting.notifyDataSetChanged();
             }
         }
+    }
+
+    private void showSuccessMessage(String message) {
+        Snackbar snackbar = Snackbar
+                .make(container, message, Snackbar.LENGTH_LONG);
+        View view = snackbar.getView();
+        view.setBackgroundColor(Color.GREEN);
+        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
+        textView.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 
     @Override
@@ -402,24 +312,351 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
     @Override
     public void onSuccessUpdateSettingSensor() {
         cancelDialogProcessing();
-        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show();
+        showSuccessMessage("Success");
     }
 
     @Override
-    public void onFailUpdateSettingSensor(String error) {
+    public void onFailUpdateSettingSensor(ErrorSensorSetting errorSensorSetting) {
         cancelDialogProcessing();
-        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+        if (errorSensorSetting != null && errorSensorSetting.getErrors() != null) {
+            if (errorSensorSetting.getErrors().getSetname() != null && errorSensorSetting.getErrors().getSetname().size() > 0) {
+                edtNameMEasure.setError(errorSensorSetting.getErrors().getSetname().get(0));
+                edtNameMEasure.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBacs() != null && errorSensorSetting.getErrors().getBacs().size() > 0) {
+                edtBacs.setError(errorSensorSetting.getErrors().getBacs().get(0));
+                edtBacs.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getCrng() != null && errorSensorSetting.getErrors().getCrng().size() > 0) {
+                edtCrng.setError(errorSensorSetting.getErrors().getCrng().get(0));
+                edtCrng.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqp1() != null && errorSensorSetting.getErrors().getEqp1().size() > 0) {
+                edtEqp1.setError(errorSensorSetting.getErrors().getEqp1().get(0));
+                edtEqp1.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqt1() != null && errorSensorSetting.getErrors().getEqt1().size() > 0) {
+                edtEqt1.setError(errorSensorSetting.getErrors().getEqt1().get(0));
+                edtEqt1.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqp2() != null && errorSensorSetting.getErrors().getEqp2().size() > 0) {
+                edtEqp2.setError(errorSensorSetting.getErrors().getEqp2().get(0));
+                edtEqp2.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqt2() != null && errorSensorSetting.getErrors().getEqt2().size() > 0) {
+                edtEqt2.setError(errorSensorSetting.getErrors().getEqt2().get(0));
+                edtEqt2.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqp3() != null && errorSensorSetting.getErrors().getEqp3().size() > 0) {
+                edtEqp3.setError(errorSensorSetting.getErrors().getEqp3().get(0));
+                edtEqp3.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqt3() != null && errorSensorSetting.getErrors().getEqt3().size() > 0) {
+                edtEqt3.setError(errorSensorSetting.getErrors().getEqt3().get(0));
+                edtEqt3.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqp4() != null && errorSensorSetting.getErrors().getEqp4().size() > 0) {
+                edtEqp4.setError(errorSensorSetting.getErrors().getEqp4().get(0));
+                edtEqp4.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqt4() != null && errorSensorSetting.getErrors().getEqt4().size() > 0) {
+                edtEqt4.setError(errorSensorSetting.getErrors().getEqt4().get(0));
+                edtEqt4.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqp5() != null && errorSensorSetting.getErrors().getEqp5().size() > 0) {
+                edtEqp5.setError(errorSensorSetting.getErrors().getEqp5().get(0));
+                edtEqp5.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEqt5() != null && errorSensorSetting.getErrors().getEqt5().size() > 0) {
+                edtEqt5.setError(errorSensorSetting.getErrors().getEqt5().get(0));
+                edtEqt5.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getStp() != null && errorSensorSetting.getErrors().getStp().size() > 0) {
+                edtStp.setError(errorSensorSetting.getErrors().getStp().get(0));
+                edtStp.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getEnp() != null && errorSensorSetting.getErrors().getEnp().size() > 0) {
+                edtEnp.setError(errorSensorSetting.getErrors().getEnp().get(0));
+                edtEnp.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getPp() != null && errorSensorSetting.getErrors().getPp().size() > 0) {
+                edtPp.setError(errorSensorSetting.getErrors().getPp().get(0));
+                edtPp.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getDlte() != null && errorSensorSetting.getErrors().getDlte().size() > 0) {
+                edtDlte.setError(errorSensorSetting.getErrors().getDlte().get(0));
+                edtDlte.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getPwd() != null && errorSensorSetting.getErrors().getPwd().size() > 0) {
+                edtPwd.setError(errorSensorSetting.getErrors().getPwd().get(0));
+                edtPwd.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getPtm() != null && errorSensorSetting.getErrors().getPtm().size() > 0) {
+                edtPtm.setError(errorSensorSetting.getErrors().getPtm().get(0));
+                edtPtm.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getIbst() != null && errorSensorSetting.getErrors().getIbst().size() > 0) {
+                edtIbst.setError(errorSensorSetting.getErrors().getIbst().get(0));
+                edtIbst.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getIben() != null && errorSensorSetting.getErrors().getIben().size() > 0) {
+                edtIben.setError(errorSensorSetting.getErrors().getIben().get(0));
+                edtIben.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getIfst() != null && errorSensorSetting.getErrors().getIfst().size() > 0) {
+                edtIfst.setError(errorSensorSetting.getErrors().getIfst().get(0));
+                edtIfst.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getIfen() != null && errorSensorSetting.getErrors().getIfen().size() > 0) {
+                edtIfen.setError(errorSensorSetting.getErrors().getIfen().get(0));
+                edtIfen.requestFocus();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0bacname() != null && errorSensorSetting.getErrors().getBac0bacname().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0bacname().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1bacname() != null && errorSensorSetting.getErrors().getBac1bacname().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1bacname().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2bacname() != null && errorSensorSetting.getErrors().getBac2bacname().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2bacname().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3bacname() != null && errorSensorSetting.getErrors().getBac3bacname().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3bacname().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4bacname() != null && errorSensorSetting.getErrors().getBac4bacname().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4bacname().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e1() != null && errorSensorSetting.getErrors().getBac0e1().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e1().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e2() != null && errorSensorSetting.getErrors().getBac0e2().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e2().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e3() != null && errorSensorSetting.getErrors().getBac0e3().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e3().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e4() != null && errorSensorSetting.getErrors().getBac0e4().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e4().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e5() != null && errorSensorSetting.getErrors().getBac0e5().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e5().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e1() != null && errorSensorSetting.getErrors().getBac1e1().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e1().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e2() != null && errorSensorSetting.getErrors().getBac1e2().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e2().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e3() != null && errorSensorSetting.getErrors().getBac1e3().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e3().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e4() != null && errorSensorSetting.getErrors().getBac1e4().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e4().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e5() != null && errorSensorSetting.getErrors().getBac1e5().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e5().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e1() != null && errorSensorSetting.getErrors().getBac2e1().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e1().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e2() != null && errorSensorSetting.getErrors().getBac2e2().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e2().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e3() != null && errorSensorSetting.getErrors().getBac2e3().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e3().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e4() != null && errorSensorSetting.getErrors().getBac2e4().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e4().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e5() != null && errorSensorSetting.getErrors().getBac2e5().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e5().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e1() != null && errorSensorSetting.getErrors().getBac3e1().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e1().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e2() != null && errorSensorSetting.getErrors().getBac3e2().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e2().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e3() != null && errorSensorSetting.getErrors().getBac3e3().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e3().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e4() != null && errorSensorSetting.getErrors().getBac3e4().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e4().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e5() != null && errorSensorSetting.getErrors().getBac3e5().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e5().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4e1() != null && errorSensorSetting.getErrors().getBac4e1().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e1().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4e2() != null && errorSensorSetting.getErrors().getBac4e2().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e2().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4e3() != null && errorSensorSetting.getErrors().getBac4e3().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e3().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4e4() != null && errorSensorSetting.getErrors().getBac4e4().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e4().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4e5() != null && errorSensorSetting.getErrors().getBac4e5().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e5().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0pkp() != null && errorSensorSetting.getErrors().getBac0pkp().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0pkp().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1pkp() != null && errorSensorSetting.getErrors().getBac1pkp().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1pkp().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2pkp() != null && errorSensorSetting.getErrors().getBac2pkp().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2pkp().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3pkp() != null && errorSensorSetting.getErrors().getBac3pkp().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3pkp().get(0), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac4pkp() != null && errorSensorSetting.getErrors().getBac4pkp().size() > 0) {
+                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4pkp().get(0), Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     @Override
     public void onGetSettingSensor(ArrayList<SensorSetting> sensorSetting) {
-        if (sensorSetting != null){
+        if (sensorSetting != null) {
             arrSensorSetting.clear();
             arrSensorSetting.addAll(sensorSetting);
         }
         showDialogHistoryMeasure();
         cancelDialogProcessing();
+    }
 
+    @Override
+    public void onSuccessDeleteSettingSensor(int position) {
+        arrSensorSetting.remove(position);
+        adapterRCVHistoryMeasure.notifyItemRemoved(position);
+        adapterRCVHistoryMeasure.notifyItemRangeChanged(position, arrSensorSetting.size());
+        dialogYesNo.cancel();
+        cancelDialogProcessing();
+    }
+
+    @Override
+    public void onFailDeleteSettingSensor(String error) {
+        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
+        cancelDialogProcessing();
     }
 
     private void showDialogHistoryMeasure() {
@@ -444,17 +681,25 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
+    private void showErrorMessage(String message) {
+        Snackbar snackbar = Snackbar
+                .make(container, message, Snackbar.LENGTH_LONG);
+        View view = snackbar.getView();
+        view.setBackgroundColor(Color.RED);
+        TextView textView = view.findViewById(R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
     @Override
     public void onDeleteRCVHistoryMeasure(int position) {
-        Dialog dialogYesNo = new Dialog(context);
+        dialogYesNo = new Dialog(context);
         dialogYesNo.setContentView(R.layout.dialog_yes_no);
 
         dialogYesNo.findViewById(R.id.dialog_yes_no_btn_no).setOnClickListener(v -> dialogYesNo.cancel());
         dialogYesNo.findViewById(R.id.dialog_yes_no_btn_yes).setOnClickListener(v -> {
-            arrSensorSetting.remove(position);
-            adapterRCVHistoryMeasure.notifyItemRemoved(position);
-            adapterRCVHistoryMeasure.notifyItemRangeChanged(position, arrSensorSetting.size());
-            dialogYesNo.cancel();
+            showDialogProcessing();
+            presenterFragment3.receivedDeleteSettingMeasure(APIUtils.token, MainActivity.device.getId(), position);
         });
 
         dialogYesNo.show();
@@ -465,8 +710,40 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener , ViewR
     @Override
     public void onUseRCVHistoryMeasure(int position) {
         setContentSensorSetting(position);
-        if (dialogHistoryMeasure != null){
+        if (dialogHistoryMeasure != null) {
             dialogHistoryMeasure.cancel();
+        }
+    }
+
+    @Override
+    public void onGetData(String value) {
+        // get data from sensor
+        Log.e("Connection", value != null ? value : "null");
+    }
+
+    @Override
+    public void onConnected() {
+        cancelDialogProcessing();
+        if (connectThread != null) {
+            connectThread.run();
+        }
+        MainActivity.device.setStatusConnect(1);
+    }
+
+    @Override
+    public void onError(String error) {
+        cancelDialogProcessing();
+        showErrorMessage(error);
+    }
+
+    @Override
+    public void onRuned() {
+        cancelDialogProcessing();
+        if (connectThread != null) {
+            connectThread.write("*" + (statusButton == 1 ? "R" : 0 ) + ",IDNAME"+ edtNameMEasure.getText().toString());
+
+            // test result
+            edtNameMEasure.setText("Name ex response");
         }
     }
 }

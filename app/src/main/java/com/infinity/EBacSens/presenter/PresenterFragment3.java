@@ -4,6 +4,8 @@ import com.infinity.EBacSens.model.ModelAdapterRCVDevicePaired;
 import com.infinity.EBacSens.model.ModelAdapterRCVDevicePairedListener;
 import com.infinity.EBacSens.model.ModelFragmeant3Listener;
 import com.infinity.EBacSens.model.ModelFragment3;
+import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
+import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.views.ViewAdapterRCVDevicePairedListener;
@@ -26,8 +28,12 @@ public class PresenterFragment3 implements ModelFragmeant3Listener {
         modelFragment3.handleSaveSettingMeasure(token , idSensor , sensorSetting);
     }
 
-    public void receivedReceiveSettingMeasure(String token , int idSensor){
-        modelFragment3.handleReceiveSettingMeasure(token , idSensor );
+    public void receivedDeleteSettingMeasure(String token , int idSensor , int position){
+        modelFragment3.handleDeleteSettingMeasure(token , idSensor , position);
+    }
+
+    public void receivedReceiveSettingMeasure(String token){
+        modelFragment3.handleReceiveSettingMeasure(token);
     }
 
     @Override
@@ -36,13 +42,23 @@ public class PresenterFragment3 implements ModelFragmeant3Listener {
     }
 
     @Override
-    public void onFailUpdateSettingSensor(String error) {
-        callback.onFailUpdateSettingSensor(error);
+    public void onFailUpdateSettingSensor(ErrorSensorSetting errorSensorSetting) {
+        callback.onFailUpdateSettingSensor(errorSensorSetting);
     }
 
     @Override
     public void onGetSettingSensor(ArrayList<SensorSetting> sensorSetting) {
         callback.onGetSettingSensor(sensorSetting);
+    }
+
+    @Override
+    public void onSuccessDeleteSettingSensor(int position) {
+        callback.onSuccessDeleteSettingSensor(position);
+    }
+
+    @Override
+    public void onFailDeleteSettingSensor(String error) {
+        callback.onFailDeleteSettingSensor(error);
     }
 
 }

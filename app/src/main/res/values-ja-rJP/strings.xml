@@ -74,6 +74,7 @@
     <string name="read_from_the_measurement_setting_list" translatable="false">測定設定一覧から読み込み</string>
     <string name="measuring_instrument" translatable="false">計測器</string>
     <string name="connected" translatable="false">接続中</string>
+    <string name="ready_to_connected" translatable="false">接続可能</string>
     <string name="list_device_online" translatable="false">デバイスをオンラインで一覧表示</string>
     <string name="use" translatable="false">使用</string>
     <string name="delete" translatable="false">削除</string>

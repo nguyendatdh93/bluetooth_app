@@ -48,7 +48,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
     private RecyclerView rcvDevicePaired;
     private ArrayList<SensorInfor> arrDevicePaired;
-    private ArrayList<FollowSensor> arrFollowItem;
     private AdapteRCVDevicePaired adapteRCVDevicePaired;
 
     private ArrayList<BluetoothDevice> arrDeviceOnline;
@@ -59,8 +58,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     private RelativeLayout container;
     private TextView txtStatusBluetooth;
     private TextView txtDialogProcessingTitle;
-    private Dialog dialogProcessing;
-
+    private Dialog dialogProcessing , dialogListDeviceOnline;
     private IntentFilter intentFilter;
     private IntentFilter intentFilter2;
     private IntentFilter intentFilter3;
@@ -114,8 +112,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         rcvDevicePaired.setHasFixedSize(true);
         rcvDevicePaired.setLayoutManager(new LinearLayoutManager(this));
         arrDevicePaired = new ArrayList<>();
-        arrFollowItem = new ArrayList<>();
-        adapteRCVDevicePaired = new AdapteRCVDevicePaired(this, arrDevicePaired , arrFollowItem, this);
+        adapteRCVDevicePaired = new AdapteRCVDevicePaired(this, arrDevicePaired , this);
         rcvDevicePaired.setAdapter(adapteRCVDevicePaired);
         adapteRCVDevicePaired.onLoadMore();
         rcvDevicePaired.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -129,7 +126,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         });
 
         arrDeviceOnline = new ArrayList<>();
-        arrDeviceOnline.clear();
         arrDeviceOnline.add(null);
         if (adapteRCVDeviceOnline != null){
             adapteRCVDeviceOnline.notifyDataSetChanged();
@@ -161,7 +157,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     public void onClickRCVDevicePaired(int position) {
         Intent i = new Intent(this , MainActivity.class);
         i.putExtra("device", arrDevicePaired.get(position));
-        i.putExtra("active", arrFollowItem.get(position).isToggle());
         startActivity(i);
     }
 
@@ -215,7 +210,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
                     if (device.getAddress().equals(arrDevicePaired.get(i).getMacDevice())) {
-                        arrFollowItem.get(i).setToggle(true);
+                        arrDevicePaired.get(i).setStatusConnect(-1);
                         adapteRCVDevicePaired.notifyItemChanged(i);
                         break;
                     }
@@ -325,7 +320,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
             return;
         }
 
-        Dialog dialogListDeviceOnline = new Dialog(this);
+        dialogListDeviceOnline = new Dialog(this);
         dialogListDeviceOnline.setContentView(R.layout.dialog_list_device_online);
 
         dialogListDeviceOnline.findViewById(R.id.dialog_list_device_online_btn_close).setOnClickListener(v -> dialogListDeviceOnline.cancel());
@@ -358,6 +353,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         } catch (Exception e) {
             cancelDialogProcessing();
         }
+
     }
 
     private void unpairDevice(BluetoothDevice device) {
@@ -372,11 +368,21 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapteRCVDevicePaired != null){
+            adapteRCVDevicePaired.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onSuccessStoreSensor(SensorInfor sensorInfor) {
         arrDevicePaired.add(sensorInfor);
-        arrFollowItem.add(new FollowSensor(true , false));
         adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
         cancelDialogProcessing();
+        if (dialogListDeviceOnline != null){
+            dialogListDeviceOnline.cancel();
+        }
     }
 
     @Override

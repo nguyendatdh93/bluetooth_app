@@ -15,9 +15,9 @@ public class MeasureMeasparas {
     @Expose
     private int sensorMeasureId;
 
-    @SerializedName("rawdmp")
+    @SerializedName("settings")
     @Expose
-    private String rawdmp;
+    private String settings;
 
     @SerializedName("created_at")
     @Expose
@@ -47,12 +47,12 @@ public class MeasureMeasparas {
         this.sensorMeasureId = sensorMeasureId;
     }
 
-    public String getRawdmp() {
-        return rawdmp;
+    public String getSettings() {
+        return settings;
     }
 
-    public void setRawdmp(String rawdmp) {
-        this.rawdmp = rawdmp;
+    public void setSettings(String settings) {
+        this.settings = settings;
     }
 
     public String getCreatedAt() {
@@ -79,10 +79,10 @@ public class MeasureMeasparas {
         this.castedSettings = castedSettings;
     }
 
-    public MeasureMeasparas(int id, int sensorMeasureId, String rawdmp, String createdAt, String updatedAt, CastedSettings castedSettings) {
+    public MeasureMeasparas(int id, int sensorMeasureId, String settings, String createdAt, String updatedAt, CastedSettings castedSettings) {
         this.id = id;
         this.sensorMeasureId = sensorMeasureId;
-        this.rawdmp = rawdmp;
+        this.settings = settings;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.castedSettings = castedSettings;

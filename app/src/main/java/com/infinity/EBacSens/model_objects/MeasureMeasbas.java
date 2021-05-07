@@ -17,6 +17,10 @@ public class MeasureMeasbas {
     @Expose
     private String datetime;
 
+    @SerializedName("num")
+    @Expose
+    private int num;
+
     @SerializedName("pastaerr")
     @Expose
     private int pastaerr;
@@ -53,6 +57,14 @@ public class MeasureMeasbas {
         this.datetime = datetime;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     public int getPastaerr() {
         return pastaerr;
     }
@@ -77,10 +89,11 @@ public class MeasureMeasbas {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasbas(int id, int sensorMeasureId, String datetime, int pastaerr, String createdAt, String updatedAt) {
+    public MeasureMeasbas(int id, int sensorMeasureId, String datetime, int num, int pastaerr, String createdAt, String updatedAt) {
         this.id = id;
         this.sensorMeasureId = sensorMeasureId;
         this.datetime = datetime;
+        this.num = num;
         this.pastaerr = pastaerr;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

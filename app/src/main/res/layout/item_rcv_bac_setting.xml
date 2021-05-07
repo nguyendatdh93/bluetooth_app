@@ -30,8 +30,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_rcv_bac_setting_txt_bac_name"
-                android:text="0"
+                android:id="@+id/item_rcv_bac_setting_edt_bac_name"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:textSize="@dimen/_11ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -48,7 +49,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_rcv_bac_setting_txt_e1"
+                android:id="@+id/item_rcv_bac_setting_edt_e1"
                 android:text="0"
                 android:inputType="number"
                 android:textSize="@dimen/_11ssp" />
@@ -67,7 +68,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_rcv_bac_setting_txt_e2"
+                android:id="@+id/item_rcv_bac_setting_edt_e2"
                 android:text="0"
                 android:inputType="number"
                 android:textSize="@dimen/_11ssp" />
@@ -86,7 +87,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_rcv_bac_setting_txt_e3"
+                android:id="@+id/item_rcv_bac_setting_edt_e3"
                 android:text="0"
                 android:inputType="number"
                 android:textSize="@dimen/_11ssp" />
@@ -105,7 +106,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_rcv_bac_setting_txt_e4"
+                android:id="@+id/item_rcv_bac_setting_edt_e4"
                 android:text="0"
                 android:inputType="number"
                 android:textSize="@dimen/_11ssp" />
@@ -124,7 +125,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_rcv_bac_setting_txt_pkp"
+                android:id="@+id/item_rcv_bac_setting_edt_pkp"
                 android:text="0"
                 android:inputType="number"
                 android:textSize="@dimen/_11ssp" />

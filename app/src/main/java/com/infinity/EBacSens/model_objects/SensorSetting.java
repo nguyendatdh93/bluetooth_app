@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SensorSetting implements Serializable {
@@ -120,9 +121,9 @@ public class SensorSetting implements Serializable {
     @Expose
     private String createdAt;
 
-    @SerializedName("bac_settings")
+    @SerializedName("bac")
     @Expose
-    private List<BacSetting> bacSetting;
+    private ArrayList<BacSetting> bacSettings;
 
     public int getId() {
         return id;
@@ -348,18 +349,18 @@ public class SensorSetting implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public List<BacSetting> getBacSetting() {
-        return bacSetting;
+    public ArrayList<BacSetting> getBacSettings() {
+        return bacSettings;
     }
 
-    public void setBacSetting(List<BacSetting> bacSetting) {
-        this.bacSetting = bacSetting;
+    public void setBacSettings(ArrayList<BacSetting> bacSettings) {
+        this.bacSettings = bacSettings;
     }
 
     public SensorSetting() {
     }
 
-    public SensorSetting(int id, String setname, int bacs, int crng, int eqp1, int eqt1, int eqp2, int eqt2, int eqp3, int eqt3, int eqp4, int eqt4, int eqp5, int eqt5, int stp, int enp, int pp, int dlte, int pwd, int ptm, int ibst, int iben, int ifst, int ifen, int sensorId, String deletedAt, String updatedAt, String createdAt, List<BacSetting> bacSetting) {
+    public SensorSetting(int id, String setname, int bacs, int crng, int eqp1, int eqt1, int eqp2, int eqt2, int eqp3, int eqt3, int eqp4, int eqt4, int eqp5, int eqt5, int stp, int enp, int pp, int dlte, int pwd, int ptm, int ibst, int iben, int ifst, int ifen, int sensorId, String deletedAt, String updatedAt, String createdAt, ArrayList<BacSetting> bacSettings) {
         this.id = id;
         this.setname = setname;
         this.bacs = bacs;
@@ -388,6 +389,6 @@ public class SensorSetting implements Serializable {
         this.deletedAt = deletedAt;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
-        this.bacSetting = bacSetting;
+        this.bacSettings = bacSettings;
     }
 }

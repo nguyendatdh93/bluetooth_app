@@ -3,6 +3,8 @@ package com.infinity.EBacSens.model_objects;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class SensorMeasure {
 
     @SerializedName("id")
@@ -17,9 +19,9 @@ public class SensorMeasure {
     @Expose
     private String datetime;
 
-    @SerializedName("measure_id")
+    @SerializedName("no")
     @Expose
-    private int measureId;
+    private String no;
 
     @SerializedName("created_at")
     @Expose
@@ -35,7 +37,7 @@ public class SensorMeasure {
 
     @SerializedName("measure_measdet")
     @Expose
-    private MeasureMeasdets measureMeasdets;
+    private ArrayList<MeasureMeasdets> measureMeasdets;
 
     @SerializedName("measure_measpara")
     @Expose
@@ -43,7 +45,7 @@ public class SensorMeasure {
 
     @SerializedName("measure_measres")
     @Expose
-    private MeasureMeasress measureMeasress;
+    private ArrayList<MeasureMeasress> measureMeasresses;
 
     public int getId() {
         return id;
@@ -69,12 +71,12 @@ public class SensorMeasure {
         this.datetime = datetime;
     }
 
-    public int getMeasureId() {
-        return measureId;
+    public String getNo() {
+        return no;
     }
 
-    public void setMeasureId(int measureId) {
-        this.measureId = measureId;
+    public void setNo(String no) {
+        this.no = no;
     }
 
     public String getCreatedAt() {
@@ -101,11 +103,11 @@ public class SensorMeasure {
         this.measureMeasbas = measureMeasbas;
     }
 
-    public MeasureMeasdets getMeasureMeasdets() {
+    public ArrayList<MeasureMeasdets> getMeasureMeasdets() {
         return measureMeasdets;
     }
 
-    public void setMeasureMeasdets(MeasureMeasdets measureMeasdets) {
+    public void setMeasureMeasdets(ArrayList<MeasureMeasdets> measureMeasdets) {
         this.measureMeasdets = measureMeasdets;
     }
 
@@ -117,24 +119,24 @@ public class SensorMeasure {
         this.measureMeasparas = measureMeasparas;
     }
 
-    public MeasureMeasress getMeasureMeasress() {
-        return measureMeasress;
+    public ArrayList<MeasureMeasress> getMeasureMeasresses() {
+        return measureMeasresses;
     }
 
-    public void setMeasureMeasress(MeasureMeasress measureMeasress) {
-        this.measureMeasress = measureMeasress;
+    public void setMeasureMeasresses(ArrayList<MeasureMeasress> measureMeasresses) {
+        this.measureMeasresses = measureMeasresses;
     }
 
-    public SensorMeasure(int id, int sensorId, String datetime, int measureId, String createdAt, String updatedAt, MeasureMeasbas measureMeasbas, MeasureMeasdets measureMeasdets, MeasureMeasparas measureMeasparas, MeasureMeasress measureMeasress) {
+    public SensorMeasure(int id, int sensorId, String datetime, String no, String createdAt, String updatedAt, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasdets> measureMeasdets, MeasureMeasparas measureMeasparas, ArrayList<MeasureMeasress> measureMeasresses) {
         this.id = id;
         this.sensorId = sensorId;
         this.datetime = datetime;
-        this.measureId = measureId;
+        this.no = no;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.measureMeasbas = measureMeasbas;
         this.measureMeasdets = measureMeasdets;
         this.measureMeasparas = measureMeasparas;
-        this.measureMeasress = measureMeasress;
+        this.measureMeasresses = measureMeasresses;
     }
 }
