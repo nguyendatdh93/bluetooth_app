@@ -269,7 +269,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             success = folder.mkdirs();
                         }
 
-                        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/EBacSens/ExportResult_" + Protector.getCurrentTime() + ".csv"); // Here csv file name is MyCsvFile.csv
+                        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/EBacSens/ExportResult_" + Protector.getCurrentTime().replace(":" , "-") + ".csv"); // Here csv file name is MyCsvFile.csv
                         CSVWriter writer;
                         try {
                             writer = new CSVWriter(new FileWriter(csv));

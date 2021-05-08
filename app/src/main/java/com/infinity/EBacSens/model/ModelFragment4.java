@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
@@ -35,6 +36,7 @@ public class ModelFragment4 {
             @Override
             public void onFailure(@NonNull Call<SensorMeasurePage> call, @NonNull Throwable t) {
                 modelFragmeant4Listener.onGetDataMeasurePage(null);
+                Protector.appendLog(t.getMessage());
             }
         });
     }
@@ -51,6 +53,7 @@ public class ModelFragment4 {
             @Override
             public void onFailure(@NonNull Call<SensorMeasureDetail> call, @NonNull Throwable t) {
                 modelFragmeant4Listener.onGetDataMeasureDetail(null);
+                Protector.appendLog(t.getMessage());
             }
         });
     }

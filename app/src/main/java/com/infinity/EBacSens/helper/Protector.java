@@ -1,11 +1,15 @@
 package com.infinity.EBacSens.helper;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.retrofit2.RetrofitClient;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.text.DateFormat;
@@ -19,7 +23,7 @@ import retrofit2.Response;
 
 public class Protector {
     public static String getCurrentTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss" , Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         Date date = new Date();
         return dateFormat.format(date);
     }
@@ -32,15 +36,38 @@ public class Protector {
         }
     }
 
-    public static ErrorSensorSetting parseErrorSensorSetting (Response<?> response){
-        Converter<ResponseBody, ErrorSensorSetting> converter = RetrofitClient.retrofit.responseBodyConverter(ErrorSensorSetting.class , new Annotation[0]);
+    public static ErrorSensorSetting parseErrorSensorSetting(Response<?> response) {
+        Converter<ResponseBody, ErrorSensorSetting> converter = RetrofitClient.retrofit.responseBodyConverter(ErrorSensorSetting.class, new Annotation[0]);
         ErrorSensorSetting errorResponse;
-        try{
+        try {
             errorResponse = converter.convert(response.errorBody());
-        }catch (IOException e){
+        } catch (IOException e) {
             return new ErrorSensorSetting();
         }
         return errorResponse;
     }
 
+    public static void appendLog(String text) {
+        if (text != null){
+            File logFile = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "EBacSens/log.file");
+
+            if (!logFile.exists()) {
+                try {
+                    boolean sucess = logFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                //BufferedWriter for performance, true to set append to file flag
+                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+                buf.append(text);
+                buf.newLine();
+                buf.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
