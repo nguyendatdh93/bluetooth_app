@@ -145,10 +145,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             public void afterTextChanged(Editable s) {
                 if (Protector.tryParseInt(edtBacs.getText().toString()) > 5) {
                     edtBacs.setText("1");
+                    return;
                 }
                 arrBacSetting.clear();
                 for (int i = 0; i < Protector.tryParseInt(edtBacs.getText().toString()); i++) {
-                    arrBacSetting.add(new BacSetting(-1 , -1 , null, 1, 1, 1, 1, 1 , null , null));
+                    arrBacSetting.add(new BacSetting(-1 , -1 , "", 1, 1, 1, 1, 1 , "" , ""));
                 }
                 adapteRCVBacSetting.notifyDataSetChanged();
             }
@@ -458,178 +459,130 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             }
 
             if (errorSensorSetting.getErrors().getBac0bacname() != null && errorSensorSetting.getErrors().getBac0bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(0 , errorSensorSetting.getErrors().getBac0bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1bacname() != null && errorSensorSetting.getErrors().getBac1bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(1 , errorSensorSetting.getErrors().getBac1bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2bacname() != null && errorSensorSetting.getErrors().getBac2bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(2 , errorSensorSetting.getErrors().getBac2bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3bacname() != null && errorSensorSetting.getErrors().getBac3bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(3 , errorSensorSetting.getErrors().getBac3bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4bacname() != null && errorSensorSetting.getErrors().getBac4bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(4 , errorSensorSetting.getErrors().getBac4bacname().get(0));
                 return;
             }
 
-            if (errorSensorSetting.getErrors().getBac0e1() != null && errorSensorSetting.getErrors().getBac0e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if (errorSensorSetting.getErrors().getBac0e1() != null && errorSensorSetting.getErrors().getBac0e1().size() > 0) {
+//                adapteRCVBacSetting.alertE1(0 , errorSensorSetting.getErrors().getBac0e1().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac1e1() != null && errorSensorSetting.getErrors().getBac1e1().size() > 0) {
+//                adapteRCVBacSetting.alertE1(1 , errorSensorSetting.getErrors().getBac1e1().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac2e1() != null && errorSensorSetting.getErrors().getBac2e1().size() > 0) {
+//                adapteRCVBacSetting.alertE1(2 , errorSensorSetting.getErrors().getBac2e1().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac3e1() != null && errorSensorSetting.getErrors().getBac3e1().size() > 0) {
+//                adapteRCVBacSetting.alertE1(3 , errorSensorSetting.getErrors().getBac3e1().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac4e1() != null && errorSensorSetting.getErrors().getBac4e1().size() > 0) {
+//                adapteRCVBacSetting.alertE1(4 , errorSensorSetting.getErrors().getBac4e1().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac0e2() != null && errorSensorSetting.getErrors().getBac0e2().size() > 0) {
+//                adapteRCVBacSetting.alertE1(0 , errorSensorSetting.getErrors().getBac0e2().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac1e2() != null && errorSensorSetting.getErrors().getBac1e2().size() > 0) {
+//                adapteRCVBacSetting.alertE1(1 , errorSensorSetting.getErrors().getBac1e2().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac2e2() != null && errorSensorSetting.getErrors().getBac2e2().size() > 0) {
+//                adapteRCVBacSetting.alertE1(2 , errorSensorSetting.getErrors().getBac2e2().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac3e2() != null && errorSensorSetting.getErrors().getBac3e2().size() > 0) {
+//                adapteRCVBacSetting.alertE1(3 , errorSensorSetting.getErrors().getBac3e2().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac4e2() != null && errorSensorSetting.getErrors().getBac4e2().size() > 0) {
+//                adapteRCVBacSetting.alertE1(4 , errorSensorSetting.getErrors().getBac4e2().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac0e3() != null && errorSensorSetting.getErrors().getBac0e3().size() > 0) {
+//                adapteRCVBacSetting.alertE1(0 , errorSensorSetting.getErrors().getBac0e3().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac1e3() != null && errorSensorSetting.getErrors().getBac1e3().size() > 0) {
+//                adapteRCVBacSetting.alertE1(1 , errorSensorSetting.getErrors().getBac1e3().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac2e3() != null && errorSensorSetting.getErrors().getBac2e3().size() > 0) {
+//                adapteRCVBacSetting.alertE1(2 , errorSensorSetting.getErrors().getBac2e3().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac3e3() != null && errorSensorSetting.getErrors().getBac3e3().size() > 0) {
+//                adapteRCVBacSetting.alertE1(3 , errorSensorSetting.getErrors().getBac3e3().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac4e3() != null && errorSensorSetting.getErrors().getBac4e3().size() > 0) {
+//                adapteRCVBacSetting.alertE1(4 , errorSensorSetting.getErrors().getBac4e3().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac0e4() != null && errorSensorSetting.getErrors().getBac0e4().size() > 0) {
+//                adapteRCVBacSetting.alertE1(0 , errorSensorSetting.getErrors().getBac0e4().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac1e4() != null && errorSensorSetting.getErrors().getBac1e4().size() > 0) {
+//                adapteRCVBacSetting.alertE1(1 , errorSensorSetting.getErrors().getBac1e4().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac2e4() != null && errorSensorSetting.getErrors().getBac2e4().size() > 0) {
+//                adapteRCVBacSetting.alertE1(2 , errorSensorSetting.getErrors().getBac2e4().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac3e4() != null && errorSensorSetting.getErrors().getBac3e4().size() > 0) {
+//                adapteRCVBacSetting.alertE1(3 , errorSensorSetting.getErrors().getBac3e4().get(0));
+//                return;
+//            }
+//
+//            if (errorSensorSetting.getErrors().getBac4e4() != null && errorSensorSetting.getErrors().getBac4e4().size() > 0) {
+//                adapteRCVBacSetting.alertE1(4 , errorSensorSetting.getErrors().getBac4e4().get(0));
+//                return;
+//            }
 
-            if (errorSensorSetting.getErrors().getBac0e2() != null && errorSensorSetting.getErrors().getBac0e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e3() != null && errorSensorSetting.getErrors().getBac0e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e4() != null && errorSensorSetting.getErrors().getBac0e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e5() != null && errorSensorSetting.getErrors().getBac0e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e5().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e1() != null && errorSensorSetting.getErrors().getBac1e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e2() != null && errorSensorSetting.getErrors().getBac1e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e3() != null && errorSensorSetting.getErrors().getBac1e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e4() != null && errorSensorSetting.getErrors().getBac1e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e5() != null && errorSensorSetting.getErrors().getBac1e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e5().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e1() != null && errorSensorSetting.getErrors().getBac2e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e2() != null && errorSensorSetting.getErrors().getBac2e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e3() != null && errorSensorSetting.getErrors().getBac2e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e4() != null && errorSensorSetting.getErrors().getBac2e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e5() != null && errorSensorSetting.getErrors().getBac2e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e5().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e1() != null && errorSensorSetting.getErrors().getBac3e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e2() != null && errorSensorSetting.getErrors().getBac3e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e3() != null && errorSensorSetting.getErrors().getBac3e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e4() != null && errorSensorSetting.getErrors().getBac3e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e5() != null && errorSensorSetting.getErrors().getBac3e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e5().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4e1() != null && errorSensorSetting.getErrors().getBac4e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4e2() != null && errorSensorSetting.getErrors().getBac4e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4e3() != null && errorSensorSetting.getErrors().getBac4e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4e4() != null && errorSensorSetting.getErrors().getBac4e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4e5() != null && errorSensorSetting.getErrors().getBac4e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e5().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0pkp() != null && errorSensorSetting.getErrors().getBac0pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0pkp().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1pkp() != null && errorSensorSetting.getErrors().getBac1pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1pkp().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2pkp() != null && errorSensorSetting.getErrors().getBac2pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2pkp().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3pkp() != null && errorSensorSetting.getErrors().getBac3pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3pkp().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4pkp() != null && errorSensorSetting.getErrors().getBac4pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4pkp().get(0), Toast.LENGTH_SHORT).show();
-            }
 
         }
     }

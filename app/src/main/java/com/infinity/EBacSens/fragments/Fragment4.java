@@ -153,6 +153,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         spnDatetime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                skbProgress.setProgress(0);
+                txtProcess.setVisibility(View.GONE);
                 positionCSV = position;
                 showDialogProcessing();
                 presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getSensorId());
