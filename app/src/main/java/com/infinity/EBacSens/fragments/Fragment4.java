@@ -102,7 +102,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private SeekBar skbProgress;
     private Button btnExportCSV, btnHistoryMeasure;
     private TextView txtProcess;
-    private Spinner spnDatetime;
+    private AutoCompleteTextView acpDatetime;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
@@ -150,18 +150,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             }
         });
 
-        spnDatetime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                positionCSV = position;
-                showDialogProcessing();
-                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getSensorId());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+        acpDatetime.setOnItemClickListener((parent, view, position, id) -> {
+            skbProgress.setProgress(0);
+            txtProcess.setVisibility(View.GONE);
+            positionCSV = position;
+            showDialogProcessing();
+            presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getSensorId());
         });
 
         showDialogProcessing();
@@ -176,15 +170,13 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
         skbProgress.setPadding(0, 0, 0, 0);
         txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
-        spnDatetime = view.findViewById(R.id.fragment_4_spn_date_time);
+        acpDatetime = view.findViewById(R.id.fragment_4_acp_date_time);
 
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
         rcvResult.setHasFixedSize(true);
         rcvResult.setNestedScrollingEnabled(false);
         rcvResult.setLayoutManager(new LinearLayoutManager(context));
         arrResult = new ArrayList<>();
-        arrResult.add(new Result("HC-05", "270", "109.08", "1.57", "0"));
-        arrResult.add(new Result("Red line", "810", "12.09", "1.20", "0"));
 
         adapteRCVResult = new AdapteRCVResult(context, arrResult);
         rcvResult.setAdapter(adapteRCVResult);
@@ -201,11 +193,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         arrDatetime = new ArrayList<>();
 
         adapterDatetime = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrDatetime);
-        spnDatetime.setAdapter(adapterDatetime);
+        acpDatetime.setAdapter(adapterDatetime);
         arrMeasure = new ArrayList<>();
         arrMeasurePage = new ArrayList<>();
-
-        adapterDatetime.notifyDataSetChanged();
 
         initDialogProcessing();
     }
@@ -230,6 +220,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else {
+            showErrorMessage("Device not have mac address");
         }
     }
 
@@ -267,17 +259,17 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             success = folder.mkdirs();
                         }
 
-                        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/EBacSens/ExportResult_" + Protector.getCurrentTime() + ".csv"); // Here csv file name is MyCsvFile.csv
+                        String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/EBacSens/ExportResult_" + Protector.getCurrentTime().replace(":" , "-") + ".csv"); // Here csv file name is MyCsvFile.csv
                         CSVWriter writer;
                         try {
                             writer = new CSVWriter(new FileWriter(csv));
 
                             List<String[]> data = new ArrayList<>();
-                            data.add(new String[]{"測定日時" + sensorMeasure.getDatetime()});
-                            data.add(new String[]{"データ番号,014"});
-                            data.add(new String[]{"設定名,Test3"});
-                            data.add(new String[]{"測定数,5"});
-                            data.add(new String[]{"レンジ,3mA"});
+                            data.add(new String[]{"測定日時" , sensorMeasure.getDatetime()});
+                            data.add(new String[]{"データ番号" , }); // prmid
+                            data.add(new String[]{"設定名" , String.valueOf(sensorMeasure.getMeasureMeasparas().getCastedSettings().getSetName())});
+                            data.add(new String[]{"測定数" , String.valueOf(sensorMeasure.getMeasureMeasparas().getCastedSettings().getBacs())});
+                            data.add(new String[]{"レンジ" , String.valueOf(sensorMeasure.getMeasureMeasparas().getCastedSettings().getCrng())});
                             data.add(new String[]{"平衡電位1,1000"});
                             data.add(new String[]{"平衡時間1,30"});
                             data.add(new String[]{"平衡電位2,1000"});
@@ -288,9 +280,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             data.add(new String[]{"平衡時間4,0"});
                             data.add(new String[]{"平衡電位5,1000"});
                             data.add(new String[]{"平衡時間5,0"});
-                            data.add(new String[]{"開始電位,1000"});
-                            data.add(new String[]{"終了電位,0"});
-                            data.add(new String[]{"パルス振幅,1000"});
+                            data.add(new String[]{"開始電位,1000"});// stp
+                            data.add(new String[]{"終了電位,0"}); // enp
+                            data.add(new String[]{"パルス振幅,1000"}); // pp
                             data.add(new String[]{"ΔE,1000"});
                             data.add(new String[]{"パルス幅,999"});
                             data.add(new String[]{"パルス期間,1000"});
@@ -298,28 +290,17 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             data.add(new String[]{"ベース電流サンプル時間上限,1"});
                             data.add(new String[]{"ファラデー電流サンプル時間下限,8"});
                             data.add(new String[]{"ファラデー電流サンプル時間上限,9"});
+//                            for (int i = 0 ; i < sensorMeasure.getMeasureMeasresses().size() ; i++){
+//                                data.add(new String[]{"微生物1" , sensorMeasure.getMeasureMeasresses().get(i).getName()});
+//                            }
                             data.add(new String[]{"微生物1,obj1"});
                             data.add(new String[]{"E1ベースライン検索開始電位,0"});
                             data.add(new String[]{"E2ベースライン検索開始電位,0"});
                             data.add(new String[]{"E3ベースライン検索終了電位,0"});
                             data.add(new String[]{"E4ベースライン検索終了電位,0"});
                             data.add(new String[]{"ピーク位置,上"});
-                            data.add(new String[]{"微生物2,obj2"});
-                            data.add(new String[]{"E1ベースライン検索開始電位,0"});
-                            data.add(new String[]{"E2ベースライン検索開始電位,0"});
-                            data.add(new String[]{"E3ベースライン検索終了電位,0"});
-                            data.add(new String[]{"E4ベースライン検索終了電位,0"});
-                            data.add(new String[]{"ピーク位置,上"});
-                            data.add(new String[]{"測定対象物名,obj1,obj2,obj3,"});
-                            data.add(new String[]{"ピーク電位,----,----,----,----,----,"});
-                            data.add(new String[]{"ピーク高さ,----.-,----.-,----.-,----.-,----.-,"});
-                            data.add(new String[]{"バックグランド,----.-,----.-,----.-,----.-,----.-,"});
-                            data.add(new String[]{"ベースラインポイント1 X,----,----,----,----,----,"});
-                            data.add(new String[]{"ベースラインポイント1 Y,----.-,----.-,----.-,----.-,----.-,"});
-                            data.add(new String[]{"ベースラインポイント2 X,----,----,----,----,----,"});
-                            data.add(new String[]{"ベースラインポイント2 Y,----.-,----.-,----.-,----.-,----.-,"});
-                            data.add(new String[]{"エラー番号,1,1,1,1,1,"});
-                            data.add(new String[]{"No,E(mV),DeltaI(uA),Eb,Ib,Ef,If"});
+
+                            //data.add(new String[]{"測定対象物名" , "obj1"});
 
                             for (int i = 0; i < data.size(); i++) {
                                 writer.writeNext(data.get(i));
@@ -403,6 +384,14 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrDatetime.add(measurePages.get(i).getDatetime());
             }
             adapterDatetime.notifyDataSetChanged();
+            if (arrDatetime.size() > 0){
+                acpDatetime.setText(arrDatetime.get(0));
+                skbProgress.setProgress(0);
+                txtProcess.setVisibility(View.GONE);
+                positionCSV = 0;
+                showDialogProcessing();
+                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getSensorId());
+            }
         }
         cancelDialogProcessing();
     }
@@ -410,18 +399,41 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     @Override
     public void onGetDataMeasureDetail(SensorMeasureDetail sensorMeasureDetail) {
         arrGraph.clear();
+        arrResult.clear();
         if (sensorMeasureDetail != null && sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses() != null) {
             sensorMeasureExport = sensorMeasureDetail.getSensorMeasure();
             for (int i = 0; i < sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().size(); i++) {
                 arrGraph.add(new Graph(
-                        sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getName(),
-                        (sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getDltc() / sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot()),
-                        sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getBgc(),
-                        "Decription"));
+                        sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getName(),
+                        (sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc() / sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot()),
+                        level((sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc() / sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot())),
+                        "ピーク高さ／ピーク電位"));
+                arrResult.add(new Result(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getName(),
+                        String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getPkpot()),
+                        String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc()),
+                        String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getBgc()),
+                        String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getErr())
+                        ));
+
             }
         }
         adapteRCVGraph.notifyDataSetChanged();
+        adapteRCVResult.notifyDataSetChanged();
         cancelDialogProcessing();
+    }
+
+    private int level(int val){
+        if (val <= 1000){
+            return 1;
+        }else if (val <= 2000){
+            return 2;
+        }else if (val <= 3000){
+            return 3;
+        }else if (val <= 4000){
+            return 4;
+        }else {
+            return 5;
+        }
     }
 
     private void showErrorMessage(String message) {
@@ -492,6 +504,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             txtProcess.setVisibility(View.VISIBLE);
             txtProcess.setText("Done!");
             txtProcess.setTextColor(context.getResources().getColor(R.color.green));
+
+            // save to cloud compare by datetime
+
+
         }
     }
 }

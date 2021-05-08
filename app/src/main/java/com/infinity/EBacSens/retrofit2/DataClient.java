@@ -86,7 +86,7 @@ public interface DataClient {
             @Field("bac[0][pkp]") int bac0pkp
     );
 
-    @POST("api/sensor/{idSensor}/setting")
+    @POST("api/setting")
     @FormUrlEncoded
     Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
@@ -127,7 +127,7 @@ public interface DataClient {
             @Field("bac[1][pkp]") int bac1pkp
     );
 
-    @POST("api/sensor/{idSensor}/setting")
+    @POST("api/setting")
     @FormUrlEncoded
     Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
@@ -174,7 +174,7 @@ public interface DataClient {
             @Field("bac[2][pkp]") int bac2pkp
     );
 
-    @POST("api/sensor/{idSensor}/setting")
+    @POST("api/setting")
     @FormUrlEncoded
     Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
@@ -234,11 +234,10 @@ public interface DataClient {
             @Header("token") String token,
             @Field("setname") String setname);
 
-    @POST("api/sensor/{idSensor}/setting")
+    @POST("api/setting")
     @FormUrlEncoded
     Call<ErrorSensorSetting> saveSettingSensor(
             @Header("token") String token,
-            @Path("idSensor") int idSensor,
             @Field("setname") String setname,
             @Field("bacs") int bacs,
             @Field("crng") int crng,

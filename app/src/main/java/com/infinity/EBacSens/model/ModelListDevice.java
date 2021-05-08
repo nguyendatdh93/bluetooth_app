@@ -2,6 +2,7 @@ package com.infinity.EBacSens.model;
 
 import androidx.annotation.NonNull;
 
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorSetting;
@@ -36,6 +37,7 @@ public class ModelListDevice {
             @Override
             public void onFailure(@NonNull Call<SensorInfor> call, @NonNull Throwable t) {
                 modelListDeviceListener.onFailStoreSensor(t.getMessage());
+                Protector.appendLog(t.getMessage());
             }
         });
     }

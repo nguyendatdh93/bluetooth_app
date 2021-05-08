@@ -28,7 +28,20 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<BacSetting> arrItem;
     private Context context;
 
-    public AdapteRCVBacSetting(Context context , ArrayList<BacSetting> arrItem) {
+    private boolean alertName = false;
+    private String errorName;
+    private boolean alertE1 = false;
+    private String errorE1;
+    private boolean alertE2 = false;
+    private String errorE2;
+    private boolean alertE3 = false;
+    private String errorE3;
+    private boolean alertE4 = false;
+    private String errorE4;
+    private boolean alertSelectBox = false;
+    private String errorSelectBox;
+
+    public AdapteRCVBacSetting(Context context, ArrayList<BacSetting> arrItem) {
         this.arrItem = arrItem;
         this.context = context;
     }
@@ -44,13 +57,49 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
-        viewHodler.txtIndex.setText(context.getResources().getString(R.string.microorganism) + " " + (position+1));
+        viewHodler.txtIndex.setText(context.getResources().getString(R.string.microorganism) + " " + (position + 1));
         viewHodler.edtBacName.setText(arrItem.get(position).getBacName());
         viewHodler.edtE1.setText(String.valueOf(arrItem.get(position).getE1()));
         viewHodler.edtE2.setText(String.valueOf(arrItem.get(position).getE2()));
         viewHodler.edtE3.setText(String.valueOf(arrItem.get(position).getE3()));
         viewHodler.edtE4.setText(String.valueOf(arrItem.get(position).getE4()));
         viewHodler.edtPkp.setText(String.valueOf(arrItem.get(position).getPkp()));
+
+        if (alertName) {
+            alertName = false;
+            viewHodler.edtBacName.setError(errorName);
+            viewHodler.edtBacName.requestFocus();
+        }
+
+        if (alertE1) {
+            alertE1 = false;
+            viewHodler.edtE1.setError(errorE1);
+            viewHodler.edtE1.requestFocus();
+        }
+
+        if (alertE2) {
+            alertE2 = false;
+            viewHodler.edtE2.setError(errorE2);
+            viewHodler.edtE2.requestFocus();
+        }
+
+        if (alertE3) {
+            alertE3 = false;
+            viewHodler.edtE3.setError(errorE3);
+            viewHodler.edtE3.requestFocus();
+        }
+
+        if (alertE4) {
+            alertE4 = false;
+            viewHodler.edtE4.setError(errorE4);
+            viewHodler.edtE4.requestFocus();
+        }
+
+        if (alertSelectBox) {
+            alertSelectBox = false;
+            viewHodler.edtPkp.setError(errorSelectBox);
+            viewHodler.edtPkp.requestFocus();
+        }
 
         viewHodler.edtBacName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -65,7 +114,9 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                arrItem.get(position).setBacName(viewHodler.edtBacName.getText().toString());
+                if (position < arrItem.size()) {
+                    arrItem.get(position).setBacName(viewHodler.edtBacName.getText().toString());
+                }
             }
         });
 
@@ -82,7 +133,9 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                arrItem.get(position).setE1(Protector.tryParseInt(viewHodler.edtE1.getText().toString()));
+                if (position < arrItem.size()) {
+                    arrItem.get(position).setE1(Protector.tryParseInt(viewHodler.edtE1.getText().toString()));
+                }
             }
         });
 
@@ -99,7 +152,9 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                arrItem.get(position).setE2(Protector.tryParseInt(viewHodler.edtE2.getText().toString()));
+                if (position < arrItem.size()) {
+                    arrItem.get(position).setE2(Protector.tryParseInt(viewHodler.edtE2.getText().toString()));
+                }
             }
         });
 
@@ -116,7 +171,9 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                arrItem.get(position).setE3(Protector.tryParseInt(viewHodler.edtE3.getText().toString()));
+                if (position < arrItem.size()) {
+                    arrItem.get(position).setE3(Protector.tryParseInt(viewHodler.edtE3.getText().toString()));
+                }
             }
         });
 
@@ -133,7 +190,9 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                arrItem.get(position).setE4(Protector.tryParseInt(viewHodler.edtE4.getText().toString()));
+                if (position < arrItem.size()) {
+                    arrItem.get(position).setE4(Protector.tryParseInt(viewHodler.edtE4.getText().toString()));
+                }
             }
         });
 
@@ -150,7 +209,10 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                arrItem.get(position).setPkp(Protector.tryParseInt(viewHodler.edtPkp.getText().toString()));
+                if (position < arrItem.size()) {
+                    arrItem.get(position).setPkp(Protector.tryParseInt(viewHodler.edtPkp.getText().toString()));
+                }
+
             }
         });
     }
@@ -162,7 +224,7 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
     static class ViewHodler extends RecyclerView.ViewHolder {
         TextView txtIndex;
-        EditText edtE1 , edtE2 , edtE3 , edtE4 , edtPkp , edtBacName;
+        EditText edtE1, edtE2, edtE3, edtE4, edtPkp, edtBacName;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
@@ -174,5 +236,41 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
             edtE4 = itemView.findViewById(R.id.item_rcv_bac_setting_edt_e4);
             edtPkp = itemView.findViewById(R.id.item_rcv_bac_setting_edt_pkp);
         }
+    }
+
+    public void alertName(int position, String error) {
+        alertName = true;
+        errorName = error;
+        notifyItemChanged(position);
+    }
+
+    public void alertE1(int position, String error) {
+        alertE1 = true;
+        errorE1 = error;
+        notifyItemChanged(position);
+    }
+
+    public void alertE2(int position, String error) {
+        alertE2 = true;
+        errorE2 = error;
+        notifyItemChanged(position);
+    }
+
+    public void alertE3(int position, String error) {
+        alertE3 = true;
+        errorE3 = error;
+        notifyItemChanged(position);
+    }
+
+    public void alertE4(int position, String error) {
+        alertE4 = true;
+        errorE4 = error;
+        notifyItemChanged(position);
+    }
+
+    public void alertSelectBox(int position, String error) {
+        alertSelectBox = true;
+        errorSelectBox = error;
+        notifyItemChanged(position);
     }
 }

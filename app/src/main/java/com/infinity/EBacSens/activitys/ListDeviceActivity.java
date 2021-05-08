@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -39,10 +41,18 @@ import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.views.ViewListDeviceListener;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 import com.infinity.EBacSens.views.ViewRCVDevicePaired;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevicePaired, ViewRCVDeviceOnline , ViewListDeviceListener {
 
@@ -69,7 +79,23 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_device);
+        addPerMissionLogfile();
         addController();
+    }
+
+    private void addPerMissionLogfile() {
+        PermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+
+            }
+        };
+        TedPermission.with(this).setPermissionListener(permissionListener).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
     }
 
     private void getOnlineDevice() {

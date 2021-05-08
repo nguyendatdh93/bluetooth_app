@@ -120,10 +120,6 @@ public class ErrorSaveSetting {
     @Expose
     private ArrayList<String> bac0e4;
 
-    @SerializedName("bac.0.e5")
-    @Expose
-    private ArrayList<String> bac0e5;
-
     @SerializedName("bac.0.pkp")
     @Expose
     private ArrayList<String> bac0pkp;
@@ -147,10 +143,6 @@ public class ErrorSaveSetting {
     @SerializedName("bac.1.e4")
     @Expose
     private ArrayList<String> bac1e4;
-
-    @SerializedName("bac.1.e5")
-    @Expose
-    private ArrayList<String> bac1e5;
 
     @SerializedName("bac.1.pkp")
     @Expose
@@ -176,10 +168,6 @@ public class ErrorSaveSetting {
     @Expose
     private ArrayList<String> bac2e4;
 
-    @SerializedName("bac.2.e5")
-    @Expose
-    private ArrayList<String> bac2e5;
-
     @SerializedName("bac.2.pkp")
     @Expose
     private ArrayList<String> bac2pkp;
@@ -204,10 +192,6 @@ public class ErrorSaveSetting {
     @Expose
     private ArrayList<String> bac3e4;
 
-    @SerializedName("bac.3.e5")
-    @Expose
-    private ArrayList<String> bac3e5;
-
     @SerializedName("bac.3.pkp")
     @Expose
     private ArrayList<String> bac3pkp;
@@ -231,10 +215,6 @@ public class ErrorSaveSetting {
     @SerializedName("bac.4.e4")
     @Expose
     private ArrayList<String> bac4e4;
-
-    @SerializedName("bac.4.e5")
-    @Expose
-    private ArrayList<String> bac4e5;
 
     @SerializedName("bac.4.pkp")
     @Expose
@@ -464,14 +444,6 @@ public class ErrorSaveSetting {
         this.bac0e4 = bac0e4;
     }
 
-    public ArrayList<String> getBac0e5() {
-        return bac0e5;
-    }
-
-    public void setBac0e5(ArrayList<String> bac0e5) {
-        this.bac0e5 = bac0e5;
-    }
-
     public ArrayList<String> getBac0pkp() {
         return bac0pkp;
     }
@@ -518,14 +490,6 @@ public class ErrorSaveSetting {
 
     public void setBac1e4(ArrayList<String> bac1e4) {
         this.bac1e4 = bac1e4;
-    }
-
-    public ArrayList<String> getBac1e5() {
-        return bac1e5;
-    }
-
-    public void setBac1e5(ArrayList<String> bac1e5) {
-        this.bac1e5 = bac1e5;
     }
 
     public ArrayList<String> getBac1pkp() {
@@ -576,14 +540,6 @@ public class ErrorSaveSetting {
         this.bac2e4 = bac2e4;
     }
 
-    public ArrayList<String> getBac2e5() {
-        return bac2e5;
-    }
-
-    public void setBac2e5(ArrayList<String> bac2e5) {
-        this.bac2e5 = bac2e5;
-    }
-
     public ArrayList<String> getBac2pkp() {
         return bac2pkp;
     }
@@ -630,14 +586,6 @@ public class ErrorSaveSetting {
 
     public void setBac3e4(ArrayList<String> bac3e4) {
         this.bac3e4 = bac3e4;
-    }
-
-    public ArrayList<String> getBac3e5() {
-        return bac3e5;
-    }
-
-    public void setBac3e5(ArrayList<String> bac3e5) {
-        this.bac3e5 = bac3e5;
     }
 
     public ArrayList<String> getBac3pkp() {
@@ -688,14 +636,6 @@ public class ErrorSaveSetting {
         this.bac4e4 = bac4e4;
     }
 
-    public ArrayList<String> getBac4e5() {
-        return bac4e5;
-    }
-
-    public void setBac4e5(ArrayList<String> bac4e5) {
-        this.bac4e5 = bac4e5;
-    }
-
     public ArrayList<String> getBac4pkp() {
         return bac4pkp;
     }
@@ -704,7 +644,7 @@ public class ErrorSaveSetting {
         this.bac4pkp = bac4pkp;
     }
 
-    public ErrorSaveSetting(ArrayList<String> setname, ArrayList<String> bacs, ArrayList<String> crng, ArrayList<String> eqp1, ArrayList<String> eqt1, ArrayList<String> eqp2, ArrayList<String> eqt2, ArrayList<String> eqp3, ArrayList<String> eqt3, ArrayList<String> eqp4, ArrayList<String> eqt4, ArrayList<String> eqp5, ArrayList<String> eqt5, ArrayList<String> stp, ArrayList<String> enp, ArrayList<String> pp, ArrayList<String> dlte, ArrayList<String> pwd, ArrayList<String> ptm, ArrayList<String> ibst, ArrayList<String> iben, ArrayList<String> ifst, ArrayList<String> ifen, ArrayList<String> bac0bacname, ArrayList<String> bac0e1, ArrayList<String> bac0e2, ArrayList<String> bac0e3, ArrayList<String> bac0e4, ArrayList<String> bac0e5, ArrayList<String> bac0pkp, ArrayList<String> bac1bacname, ArrayList<String> bac1e1, ArrayList<String> bac1e2, ArrayList<String> bac1e3, ArrayList<String> bac1e4, ArrayList<String> bac1e5, ArrayList<String> bac1pkp, ArrayList<String> bac2bacname, ArrayList<String> bac2e1, ArrayList<String> bac2e2, ArrayList<String> bac2e3, ArrayList<String> bac2e4, ArrayList<String> bac2e5, ArrayList<String> bac2pkp, ArrayList<String> bac3bacname, ArrayList<String> bac3e1, ArrayList<String> bac3e2, ArrayList<String> bac3e3, ArrayList<String> bac3e4, ArrayList<String> bac3e5, ArrayList<String> bac3pkp, ArrayList<String> bac4bacname, ArrayList<String> bac4e1, ArrayList<String> bac4e2, ArrayList<String> bac4e3, ArrayList<String> bac4e4, ArrayList<String> bac4e5, ArrayList<String> bac4pkp) {
+    public ErrorSaveSetting(ArrayList<String> setname, ArrayList<String> bacs, ArrayList<String> crng, ArrayList<String> eqp1, ArrayList<String> eqt1, ArrayList<String> eqp2, ArrayList<String> eqt2, ArrayList<String> eqp3, ArrayList<String> eqt3, ArrayList<String> eqp4, ArrayList<String> eqt4, ArrayList<String> eqp5, ArrayList<String> eqt5, ArrayList<String> stp, ArrayList<String> enp, ArrayList<String> pp, ArrayList<String> dlte, ArrayList<String> pwd, ArrayList<String> ptm, ArrayList<String> ibst, ArrayList<String> iben, ArrayList<String> ifst, ArrayList<String> ifen, ArrayList<String> bac0bacname, ArrayList<String> bac0e1, ArrayList<String> bac0e2, ArrayList<String> bac0e3, ArrayList<String> bac0e4, ArrayList<String> bac0pkp, ArrayList<String> bac1bacname, ArrayList<String> bac1e1, ArrayList<String> bac1e2, ArrayList<String> bac1e3, ArrayList<String> bac1e4, ArrayList<String> bac1pkp, ArrayList<String> bac2bacname, ArrayList<String> bac2e1, ArrayList<String> bac2e2, ArrayList<String> bac2e3, ArrayList<String> bac2e4, ArrayList<String> bac2pkp, ArrayList<String> bac3bacname, ArrayList<String> bac3e1, ArrayList<String> bac3e2, ArrayList<String> bac3e3, ArrayList<String> bac3e4, ArrayList<String> bac3pkp, ArrayList<String> bac4bacname, ArrayList<String> bac4e1, ArrayList<String> bac4e2, ArrayList<String> bac4e3, ArrayList<String> bac4e4, ArrayList<String> bac4pkp) {
         this.setname = setname;
         this.bacs = bacs;
         this.crng = crng;
@@ -733,35 +673,30 @@ public class ErrorSaveSetting {
         this.bac0e2 = bac0e2;
         this.bac0e3 = bac0e3;
         this.bac0e4 = bac0e4;
-        this.bac0e5 = bac0e5;
         this.bac0pkp = bac0pkp;
         this.bac1bacname = bac1bacname;
         this.bac1e1 = bac1e1;
         this.bac1e2 = bac1e2;
         this.bac1e3 = bac1e3;
         this.bac1e4 = bac1e4;
-        this.bac1e5 = bac1e5;
         this.bac1pkp = bac1pkp;
         this.bac2bacname = bac2bacname;
         this.bac2e1 = bac2e1;
         this.bac2e2 = bac2e2;
         this.bac2e3 = bac2e3;
         this.bac2e4 = bac2e4;
-        this.bac2e5 = bac2e5;
         this.bac2pkp = bac2pkp;
         this.bac3bacname = bac3bacname;
         this.bac3e1 = bac3e1;
         this.bac3e2 = bac3e2;
         this.bac3e3 = bac3e3;
         this.bac3e4 = bac3e4;
-        this.bac3e5 = bac3e5;
         this.bac3pkp = bac3pkp;
         this.bac4bacname = bac4bacname;
         this.bac4e1 = bac4e1;
         this.bac4e2 = bac4e2;
         this.bac4e3 = bac4e3;
         this.bac4e4 = bac4e4;
-        this.bac4e5 = bac4e5;
         this.bac4pkp = bac4pkp;
     }
 }

@@ -45,7 +45,7 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
         ViewHodler viewHodler = (ViewHodler) holder;
         viewHodler.txtName.setText(arrItem.get(position).getSetname());
         viewHodler.txtTime.setText(arrItem.get(position).getUpdatedAt());
-        viewHodler.txtResult.setText("123");
+        viewHodler.txtResult.setText(String.valueOf(arrItem.get(position).getBacSettings().size()));
         viewHodler.btnDelete.setOnClickListener(v -> callback.onDeleteRCVHistoryMeasure(position));
         viewHodler.btnUse.setOnClickListener(v -> callback.onUseRCVHistoryMeasure(position));
     }

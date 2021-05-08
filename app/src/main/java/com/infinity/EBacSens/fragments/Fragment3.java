@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +69,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private RelativeLayout container;
 
     private Button btnReceiveSettingMeasure, btnSaveSettingMeasure , btnRead , btnWrite;
-    private EditText edtNameMEasure, edtCrng, edtBacs, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
+    private EditText edtNameMEasure, edtCrng, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
 
     private ArrayList<SensorSetting> arrSensorSetting;
 
@@ -81,6 +82,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
 
     private PresenterFragment3 presenterFragment3;
+    private Spinner spnNumber;
 
     private int statusButton;
     private ConnectThread connectThread;
@@ -103,7 +105,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         btnSaveSettingMeasure.setOnClickListener(v -> {
             SensorSetting sensorSetting = new SensorSetting();
             sensorSetting.setSetname(edtNameMEasure.getText().toString());
-            sensorSetting.setBacs(Protector.tryParseInt(edtBacs.getText().toString()));
+            sensorSetting.setBacs(Protector.tryParseInt(spnNumber.getSelectedItem().toString()));
             sensorSetting.setCrng(Protector.tryParseInt(edtCrng.getText().toString()));
             sensorSetting.setEqp1(Protector.tryParseInt(edtEqp1.getText().toString()));
             sensorSetting.setEqp2(Protector.tryParseInt(edtEqp2.getText().toString()));
@@ -130,28 +132,21 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             presenterFragment3.receivedSaveSettingMeasure(APIUtils.token, MainActivity.device.getId(), sensorSetting);
         });
 
-        edtBacs.addTextChangedListener(new TextWatcher() {
+        spnNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (Protector.tryParseInt(edtBacs.getText().toString()) > 5) {
-                    edtBacs.setText("1");
-                }
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 arrBacSetting.clear();
-                for (int i = 0; i < Protector.tryParseInt(edtBacs.getText().toString()); i++) {
-                    arrBacSetting.add(new BacSetting(-1 , -1 , null, 1, 1, 1, 1, 1 , null , null));
+                for (int i = 0; i < Protector.tryParseInt(spnNumber.getSelectedItem().toString()); i++) {
+                    arrBacSetting.add(new BacSetting(-1 , -1 , "", 1, 1, 1, 1, 1 , "" , ""));
                 }
                 adapteRCVBacSetting.notifyDataSetChanged();
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
         });
 
         btnWrite.setOnClickListener(v -> {
@@ -176,6 +171,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private void addController() {
         presenterFragment3 = new PresenterFragment3(this);
         container = view.findViewById(R.id.container_fragment_3);
+        spnNumber = view.findViewById(R.id.fragment_3_spn_number);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
         btnSaveSettingMeasure = view.findViewById(R.id.fragment_3_btn_save_setting_measure);
         btnRead = view.findViewById(R.id.fragment_3_btn_read);
@@ -186,7 +182,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         rcvBacSetting.setNestedScrollingEnabled(false);
         rcvBacSetting.setLayoutManager(new LinearLayoutManager(context));
         edtCrng = view.findViewById(R.id.fragment_3_edt_crng);
-        edtBacs = view.findViewById(R.id.fragment_3_edt_bacs);
         edtEqp1 = view.findViewById(R.id.fragment_3_edt_eqp1);
         edtEqt1 = view.findViewById(R.id.fragment_3_edt_eqt1);
         edtEqp2 = view.findViewById(R.id.fragment_3_edt_eqp2);
@@ -238,6 +233,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else {
+            showErrorMessage("Device not have mac address");
         }
     }
 
@@ -261,7 +258,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         if (arrSensorSetting != null && arrSensorSetting.size() > position) {
             edtNameMEasure.setText(arrSensorSetting.get(position).getSetname());
             edtCrng.setText(String.valueOf(arrSensorSetting.get(position).getCrng()));
-            edtBacs.setText(String.valueOf(arrSensorSetting.get(position).getBacs()));
+            //edtBacs.setText(String.valueOf(arrSensorSetting.get(position).getBacs()));
             edtEqp1.setText(String.valueOf(arrSensorSetting.get(position).getEqp1()));
             edtEqt1.setText(String.valueOf(arrSensorSetting.get(position).getEqt1()));
             edtEqp2.setText(String.valueOf(arrSensorSetting.get(position).getEqp2()));
@@ -284,7 +281,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             edtIfen.setText(String.valueOf(arrSensorSetting.get(position).getIfen()));
 
             if (arrSensorSetting.get(position).getBacSettings() != null) {
-                edtBacs.setText(String.valueOf(arrSensorSetting.get(position).getBacSettings().size()));
                 arrBacSetting.clear();
                 arrBacSetting.addAll(arrSensorSetting.get(position).getBacSettings());
                 adapteRCVBacSetting.notifyDataSetChanged();
@@ -322,12 +318,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             if (errorSensorSetting.getErrors().getSetname() != null && errorSensorSetting.getErrors().getSetname().size() > 0) {
                 edtNameMEasure.setError(errorSensorSetting.getErrors().getSetname().get(0));
                 edtNameMEasure.requestFocus();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBacs() != null && errorSensorSetting.getErrors().getBacs().size() > 0) {
-                edtBacs.setError(errorSensorSetting.getErrors().getBacs().get(0));
-                edtBacs.requestFocus();
                 return;
             }
 
@@ -458,179 +448,153 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             }
 
             if (errorSensorSetting.getErrors().getBac0bacname() != null && errorSensorSetting.getErrors().getBac0bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(0 , errorSensorSetting.getErrors().getBac0bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1bacname() != null && errorSensorSetting.getErrors().getBac1bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(1 , errorSensorSetting.getErrors().getBac1bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2bacname() != null && errorSensorSetting.getErrors().getBac2bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(2 , errorSensorSetting.getErrors().getBac2bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3bacname() != null && errorSensorSetting.getErrors().getBac3bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(3 , errorSensorSetting.getErrors().getBac3bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4bacname() != null && errorSensorSetting.getErrors().getBac4bacname().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4bacname().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertName(4 , errorSensorSetting.getErrors().getBac4bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0e1() != null && errorSensorSetting.getErrors().getBac0e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e2() != null && errorSensorSetting.getErrors().getBac0e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e3() != null && errorSensorSetting.getErrors().getBac0e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e4() != null && errorSensorSetting.getErrors().getBac0e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0e5() != null && errorSensorSetting.getErrors().getBac0e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0e5().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE1(0 , errorSensorSetting.getErrors().getBac0e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1e1() != null && errorSensorSetting.getErrors().getBac1e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e2() != null && errorSensorSetting.getErrors().getBac1e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e3() != null && errorSensorSetting.getErrors().getBac1e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e4() != null && errorSensorSetting.getErrors().getBac1e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1e5() != null && errorSensorSetting.getErrors().getBac1e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1e5().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE1(1 , errorSensorSetting.getErrors().getBac1e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2e1() != null && errorSensorSetting.getErrors().getBac2e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e2() != null && errorSensorSetting.getErrors().getBac2e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e3() != null && errorSensorSetting.getErrors().getBac2e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e4() != null && errorSensorSetting.getErrors().getBac2e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2e5() != null && errorSensorSetting.getErrors().getBac2e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2e5().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE1(2 , errorSensorSetting.getErrors().getBac2e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3e1() != null && errorSensorSetting.getErrors().getBac3e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e1().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e2() != null && errorSensorSetting.getErrors().getBac3e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e2().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e3() != null && errorSensorSetting.getErrors().getBac3e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e3().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e4() != null && errorSensorSetting.getErrors().getBac3e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3e5() != null && errorSensorSetting.getErrors().getBac3e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3e5().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE1(3 , errorSensorSetting.getErrors().getBac3e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e1() != null && errorSensorSetting.getErrors().getBac4e1().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e1().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE1(4 , errorSensorSetting.getErrors().getBac4e1().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e2() != null && errorSensorSetting.getErrors().getBac0e2().size() > 0) {
+                adapteRCVBacSetting.alertE2(0 , errorSensorSetting.getErrors().getBac0e2().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e2() != null && errorSensorSetting.getErrors().getBac1e2().size() > 0) {
+                adapteRCVBacSetting.alertE2(1 , errorSensorSetting.getErrors().getBac1e2().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e2() != null && errorSensorSetting.getErrors().getBac2e2().size() > 0) {
+                adapteRCVBacSetting.alertE2(2 , errorSensorSetting.getErrors().getBac2e2().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e2() != null && errorSensorSetting.getErrors().getBac3e2().size() > 0) {
+                adapteRCVBacSetting.alertE2(3 , errorSensorSetting.getErrors().getBac3e2().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e2() != null && errorSensorSetting.getErrors().getBac4e2().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e2().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE2(4 , errorSensorSetting.getErrors().getBac4e2().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e3() != null && errorSensorSetting.getErrors().getBac0e3().size() > 0) {
+                adapteRCVBacSetting.alertE3(0 , errorSensorSetting.getErrors().getBac0e3().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e3() != null && errorSensorSetting.getErrors().getBac1e3().size() > 0) {
+                adapteRCVBacSetting.alertE3(1 , errorSensorSetting.getErrors().getBac1e3().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e3() != null && errorSensorSetting.getErrors().getBac2e3().size() > 0) {
+                adapteRCVBacSetting.alertE3(2 , errorSensorSetting.getErrors().getBac2e3().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e3() != null && errorSensorSetting.getErrors().getBac3e3().size() > 0) {
+                adapteRCVBacSetting.alertE3(3 , errorSensorSetting.getErrors().getBac3e3().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e3() != null && errorSensorSetting.getErrors().getBac4e3().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e3().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE3(4 , errorSensorSetting.getErrors().getBac4e3().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac0e4() != null && errorSensorSetting.getErrors().getBac0e4().size() > 0) {
+                adapteRCVBacSetting.alertE4(0 , errorSensorSetting.getErrors().getBac0e4().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac1e4() != null && errorSensorSetting.getErrors().getBac1e4().size() > 0) {
+                adapteRCVBacSetting.alertE4(1 , errorSensorSetting.getErrors().getBac1e4().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac2e4() != null && errorSensorSetting.getErrors().getBac2e4().size() > 0) {
+                adapteRCVBacSetting.alertE4(2 , errorSensorSetting.getErrors().getBac2e4().get(0));
+                return;
+            }
+
+            if (errorSensorSetting.getErrors().getBac3e4() != null && errorSensorSetting.getErrors().getBac3e4().size() > 0) {
+                adapteRCVBacSetting.alertE4(3 , errorSensorSetting.getErrors().getBac3e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e4() != null && errorSensorSetting.getErrors().getBac4e4().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e4().get(0), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4e5() != null && errorSensorSetting.getErrors().getBac4e5().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4e5().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertE4(4 , errorSensorSetting.getErrors().getBac4e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0pkp() != null && errorSensorSetting.getErrors().getBac0pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac0pkp().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertSelectBox(0 , errorSensorSetting.getErrors().getBac0pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1pkp() != null && errorSensorSetting.getErrors().getBac1pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac1pkp().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertSelectBox(1 , errorSensorSetting.getErrors().getBac1pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2pkp() != null && errorSensorSetting.getErrors().getBac2pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac2pkp().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertSelectBox(2 , errorSensorSetting.getErrors().getBac2pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3pkp() != null && errorSensorSetting.getErrors().getBac3pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac3pkp().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertSelectBox(3 , errorSensorSetting.getErrors().getBac3pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4pkp() != null && errorSensorSetting.getErrors().getBac4pkp().size() > 0) {
-                Toast.makeText(activity, errorSensorSetting.getErrors().getBac4pkp().get(0), Toast.LENGTH_SHORT).show();
+                adapteRCVBacSetting.alertSelectBox(4 , errorSensorSetting.getErrors().getBac4pkp().get(0));
             }
-
         }
     }
 

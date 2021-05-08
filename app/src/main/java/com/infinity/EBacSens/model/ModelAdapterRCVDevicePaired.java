@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.DataSensorAPI;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.retrofit2.APIUtils;
@@ -40,6 +41,7 @@ public class ModelAdapterRCVDevicePaired {
             @Override
             public void onFailure(@NonNull Call<DataSensorAPI> call, @NonNull Throwable t) {
                 modelAdapterRCVDevicePairedListener.onGetData(null);
+                Protector.appendLog(t.getMessage());
             }
         });
     }
@@ -60,6 +62,7 @@ public class ModelAdapterRCVDevicePaired {
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 modelAdapterRCVDevicePairedListener.onFailDeleteSettingSensor(t.getMessage());
+                Protector.appendLog(t.getMessage());
             }
         });
     }

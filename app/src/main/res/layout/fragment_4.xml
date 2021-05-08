@@ -33,38 +33,25 @@
                     android:textSize="@dimen/_15ssp"
                     android:textStyle="bold" />
 
-                <RelativeLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20ssp">
+                    android:layout_marginTop="@dimen/_20ssp"
+                    android:hint="@string/datetime"
+                    android:textSize="@dimen/_10ssp">
 
-                    <LinearLayout
+                    <AutoCompleteTextView
+                        android:id="@+id/fragment_4_acp_date_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10ssp"
-                        android:background="@drawable/square_border_grey"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10ssp">
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:textSize="@dimen/_11ssp" />
 
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/fragment_4_spn_date_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10ssp"
-                        android:background="@color/white"
-                        android:paddingStart="@dimen/_5ssp"
-                        android:paddingEnd="@dimen/_5ssp"
-                        android:text="@string/datetime"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/fragment_4_btn_history_measure"

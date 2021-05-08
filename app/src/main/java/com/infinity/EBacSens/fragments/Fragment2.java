@@ -99,6 +99,8 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else {
+            showErrorMessage("Device not have mac address");
         }
     }
 
@@ -107,6 +109,16 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
         edtDatetime.setOnClickListener(v -> showDateTimeDialog(edtDatetime));
 
         btnWrite.setOnClickListener(v -> {
+            if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0){
+                edtPeakMode.setError("error");
+                edtPeakMode.requestFocus();
+                return;
+            }
+            if (Protector.tryParseInt(edtPowerOffMin.getText().toString()) > 60){
+                edtPowerOffMin.setError("error");
+                edtPowerOffMin.requestFocus();
+                return;
+            }
             statusButton = 1;
             if (mBluetoothAdapter != null) {
                 connectSensor();
@@ -115,6 +127,16 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
             }
         });
         btnRead.setOnClickListener(v -> {
+            if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0){
+                edtPeakMode.setError("error");
+                edtPeakMode.requestFocus();
+                return;
+            }
+            if (Protector.tryParseInt(edtPowerOffMin.getText().toString()) > 60){
+                edtPowerOffMin.setError("error");
+                edtPowerOffMin.requestFocus();
+                return;
+            }
             statusButton = 0;
             if (mBluetoothAdapter != null) {
                 connectSensor();

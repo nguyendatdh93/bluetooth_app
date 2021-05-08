@@ -111,6 +111,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
                     connectThread.cancel();
                 }
                 connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
+
                 showDialogProcessing();
                 Thread thread = new Thread() {
                     @Override
@@ -129,44 +130,52 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
 
     private void addEvents() {
         btnTestConnect.setOnClickListener(v -> {
-            boolean connection = false;
-            for (int i = 0; i < arrDevicePaired.size(); i++) {
-                if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
-                    connection = true;
+            if (MainActivity.device.getMacDevice() != null){
+                boolean connection = false;
+                for (int i = 0; i < arrDevicePaired.size(); i++) {
+                    if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
+                        connection = true;
+                    }
                 }
-            }
-            if (connection && mBluetoothAdapter != null) {
-                connectSensor();
-            } else {
-                if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                    txtDialogProcessingTitle.setText("Paring...");
-                    showDialogProcessing();
-                    pairDevice(device);
+                if (connection && mBluetoothAdapter != null) {
+                    connectSensor();
                 } else {
-                    showErrorMessage("Device not support Bluetooth");
+                    if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
+                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
+                        txtDialogProcessingTitle.setText("Paring...");
+                        showDialogProcessing();
+                        pairDevice(device);
+                    } else {
+                        showErrorMessage("Device not support Bluetooth");
+                    }
                 }
+            }else {
+                showErrorMessage("Device not have mac address");
             }
         });
 
         btnConnect.setOnClickListener(v -> {
-            boolean connection = false;
-            for (int i = 0; i < arrDevicePaired.size(); i++) {
-                if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
-                    connection = true;
+            if (MainActivity.device.getMacDevice() != null){
+                boolean connection = false;
+                for (int i = 0; i < arrDevicePaired.size(); i++) {
+                    if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
+                        connection = true;
+                    }
                 }
-            }
-            if (connection && mBluetoothAdapter != null) {
-                connectSensor();
-            } else {
-                if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                    txtDialogProcessingTitle.setText("Paring...");
-                    showDialogProcessing();
-                    pairDevice(device);
+                if (connection && mBluetoothAdapter != null) {
+                    connectSensor();
                 } else {
-                    showErrorMessage("Device not support Bluetooth");
+                    if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
+                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
+                        txtDialogProcessingTitle.setText("Paring...");
+                        showDialogProcessing();
+                        pairDevice(device);
+                    } else {
+                        showErrorMessage("Device not support Bluetooth");
+                    }
                 }
+            }else {
+                showErrorMessage("Device not have mac address");
             }
         });
 

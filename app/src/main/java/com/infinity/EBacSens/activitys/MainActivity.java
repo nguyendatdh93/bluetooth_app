@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 
 import java.util.Objects;

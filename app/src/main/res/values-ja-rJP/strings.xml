@@ -81,4 +81,5 @@
     <string name="action" translatable="false">操作</string>
     <string name="microbiological_determination_number" translatable="false">微生物測定数</string>
     <string name="creation_date_and_time" translatable="false">作成日時</string>
+    <string name="measurement" translatable="false">測定</string>
 </resources>
