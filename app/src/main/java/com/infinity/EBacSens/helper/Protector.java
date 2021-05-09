@@ -56,8 +56,15 @@ public class Protector {
 
     public static void appendLog(String text) {
         if (text != null){
+            File folder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "/EBacSens");
+            boolean success;
+            if (!folder.exists()) {
+                success = folder.mkdirs();
+            }
+
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "EBacSens/log.file");
+                    File.separator + "/EBacSens/log.file");
 
             if (!logFile.exists()) {
                 try {
@@ -79,8 +86,15 @@ public class Protector {
     }
     public static void appendLogSensor(String text) {
         if (text != null){
+            File folder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "/EBacSens");
+            boolean success;
+            if (!folder.exists()) {
+                success = folder.mkdirs();
+            }
+
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "EBacSens/LogSensor.file");
+                    File.separator + "/EBacSens/LogSensor.file");
 
             if (!logFile.exists()) {
                 try {

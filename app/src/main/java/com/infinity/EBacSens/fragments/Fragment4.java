@@ -274,14 +274,15 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
                     Observable.create(emitter -> {
-//                        File folder = new File();
-//                        boolean success;
-//                        if (!folder.exists()) {
-//                            success = folder.mkdirs();
-//                        }
+                        File folder = new File(Environment.getExternalStorageDirectory() +
+                                File.separator + "/EBacSens");
+                        boolean success;
+                        if (!folder.exists()) {
+                            success = folder.mkdirs();
+                        }
 
                         FileOutputStream os = new FileOutputStream(Environment.getExternalStorageDirectory() +
-                                File.separator + "EBacSens/ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
+                                File.separator + "/EBacSens/ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
                         os.write(0xef);
                         os.write(0xbb);
                         os.write(0xbf);
@@ -409,7 +410,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         arrResult.clear();
         if (sensorMeasureDetail != null && sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses() != null) {
             sensorMeasureExport = sensorMeasureDetail.getSensorMeasure();
-            for (int i = 0; i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses().size()-1 > i; i++) {
+            for (int i = 0; i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
                 arrGraph.add(new Graph(
                         sensorMeasureExport.getMeasureMeasparas().getArrBac().get(i).getBacName(),
                         (sensorMeasureExport.getMeasureMeasresses().get(i).getDltc() / (sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot() == 0 ? 1 : sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot())),

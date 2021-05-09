@@ -43,7 +43,7 @@ public interface DataClient {
     @GET("api/sensor/measure/{idMeasure}")
     Call<SensorMeasureDetail> getDetailMeasure(@Header("token") String token , @Path("idMeasure") int idMeasure);
 
-    @DELETE("api/sensor/setting/{idSensor}")
+    @DELETE("api/setting/{idSensor}")
     Call<String> deleteSettingSensor(@Header("token") String token , @Path("idSensor") int idSensor);
 
     @POST("api/sensor/store")
@@ -86,7 +86,7 @@ public interface DataClient {
             @Field("measpara[ifst]") int measpara_ifst_,
             @Field("measpara[ifen]") int measpara_ifen_,
             //@Field("measpara[bac][]") List<BacSetting> bac0bacname,
-            @Field("measpara[bac][]") String bac0bacname,
+            @Field("measpara[bac]") String bac0bacname,
 //            @Field("measpara[bac][0]e2") int bac0e2,
 //            @Field("measpara[bac][0]e3") int bac0e3,
 //            @Field("measpara[bac][0]e4") int bac0e4,
