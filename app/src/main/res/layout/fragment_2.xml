@@ -29,6 +29,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_2_edt_name_measure"
                     android:imeOptions="actionDone"
+                    android:maxLength="8"
                     android:singleLine="true"
                     android:layout_width="match_parent"
                     android:textSize="@dimen/_11ssp"

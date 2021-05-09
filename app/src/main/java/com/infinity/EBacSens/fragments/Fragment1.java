@@ -326,6 +326,8 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
     public void onGetData(String value) {
         // get data from sensor
         Log.e("Connection", value != null ? value : "null");
+
+        Protector.appendLogSensor(value);
     }
 
     @Override
@@ -355,9 +357,9 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
 
         if (connectThread != null) {
             // write data to sensor
-            connectThread.write("*R,IDNAME");
-            connectThread.write("*R,VER");
-            connectThread.write("*R,SER");
+            connectThread.write("*R,IDNAME[CR]");
+            connectThread.write("*R,VER[CR]");
+            connectThread.write("*R,SER[CR]");
 
             // test result
             txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));

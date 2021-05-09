@@ -682,6 +682,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     public void onGetData(String value) {
         // get data from sensor
         Log.e("Connection", value != null ? value : "null");
+        Protector.appendLogSensor(value);
     }
 
     @Override

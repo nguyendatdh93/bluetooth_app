@@ -220,6 +220,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
     public void onGetData(String value) {
         // get data from sensor
         Log.e("Connection", value != null ? value : "null");
+        Protector.appendLogSensor(value);
     }
 
     @Override
@@ -241,8 +242,9 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
         cancelDialogProcessing();
 
         if (connectThread != null) {
-
-            connectThread.write("*" + (statusButton == 1 ? "R" : 0 ) + ","+ edtNameMeasure.getText().toString());
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IDNAME,"+ edtNameMeasure.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",DATETIME,"+ edtDatetime.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PRMID,"+ edtDatetime.getText().toString() + "[CR]");
 
             // test result
             edtNameMeasure.setText("Name ex response");

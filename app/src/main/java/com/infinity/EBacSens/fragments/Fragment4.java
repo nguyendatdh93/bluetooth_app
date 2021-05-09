@@ -472,6 +472,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onGetData(String value) {
         // get data from sensor
         Log.e("Connection", value != null ? value : "null");
+
+        Protector.appendLogSensor(value);
     }
 
     @Override

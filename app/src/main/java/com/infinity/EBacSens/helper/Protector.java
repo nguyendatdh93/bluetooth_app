@@ -77,4 +77,27 @@ public class Protector {
             }
         }
     }
+    public static void appendLogSensor(String text) {
+        if (text != null){
+            File logFile = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "EBacSens/LogSensor.file");
+
+            if (!logFile.exists()) {
+                try {
+                    boolean sucess = logFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                //BufferedWriter for performance, true to set append to file flag
+                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+                buf.append(text);
+                buf.newLine();
+                buf.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
