@@ -3,6 +3,8 @@ package com.infinity.EBacSens.model_objects;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class BacSetting {
 
     @SerializedName("id")
@@ -137,4 +139,21 @@ public class BacSetting {
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }
+
+//    @NotNull
+//    @Override
+//    public String toString() {
+//        return '{' +
+//                "\"id\":" + id +
+//                ", \"sensor_setting_id\":" + sensor_setting_id +
+//                ", \"bacName\":" + "\"" + bacName + "\""+
+//                ", \"e1\":" + e1 +
+//                ", \"e2\":" + e2 +
+//                ", \"e3\":" + e3 +
+//                ", \"e4\":" + e4 +
+//                ", \"pkp\":" + pkp +
+//                ", \"createdAt\":" + "\"" + createdAt + "\"" +
+//                ", \"updatedAt\":" + "\"" + updatedAt + "\"" +
+//                '}';
+//    }
 }

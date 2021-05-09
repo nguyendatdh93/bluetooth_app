@@ -435,9 +435,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        cancelDialogProcessing();
+        //cancelDialogProcessing();
         showSuccessMessage("Success Stored");
-        adapterSpnDatetime.notifyDataSetChanged();
+        arrDatetime.clear();
+        arrMeasure.clear();
+        //adapterSpnDatetime.notifyDataSetChanged();
+        presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
         skbProgress.setProgress(100);
         txtProcess.setText("Success Stored!");
         txtProcess.setTextColor(context.getResources().getColor(R.color.black));

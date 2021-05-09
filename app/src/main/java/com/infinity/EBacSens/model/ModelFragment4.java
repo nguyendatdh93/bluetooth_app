@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.infinity.EBacSens.helper.Protector;
+import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
@@ -15,6 +16,10 @@ import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.retrofit2.DataClient;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -67,6 +72,27 @@ public class ModelFragment4 {
     public void handleStoreMeasure(String token, int idMeasure, String datetime, String no, SensorSetting sensorSetting, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses , ArrayList<MeasureMeasdets> measureMeasdets) {
         DataClient dataClient = APIUtils.getData();
 
+
+        JSONArray jsonArrayBacMeasure = new JSONArray();
+
+
+        for (int i = 0 ; i < sensorSetting.getBacSettings().size() ; i++){
+            JSONObject object = new JSONObject();
+            try {
+                object.put("bacname", sensorSetting.getBacSettings().get(i).getBacName());
+                object.put("e1", sensorSetting.getBacSettings().get(i).getE1());
+                object.put("e2", sensorSetting.getBacSettings().get(i).getE2());
+                object.put("e3", sensorSetting.getBacSettings().get(i).getE3());
+                object.put("e4", sensorSetting.getBacSettings().get(i).getE4());
+                object.put("id", sensorSetting.getBacSettings().get(i).getId());
+                object.put("sensor_setting_id", sensorSetting.getBacSettings().get(i).getSensor_setting_id());
+                object.put("created_at", sensorSetting.getBacSettings().get(i).getCreatedAt());
+                jsonArrayBacMeasure.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         final Call<SensorMeasure> callback = dataClient.storeMeasure(token,
                 idMeasure,
                 datetime,
@@ -94,12 +120,14 @@ public class ModelFragment4 {
                 sensorSetting.getIben(),
                 sensorSetting.getIfst(),
                 sensorSetting.getIfen(),
-                sensorSetting.getBacSettings().get(0).getBacName(),
-                sensorSetting.getBacSettings().get(0).getE1(),
-                sensorSetting.getBacSettings().get(0).getE2(),
-                sensorSetting.getBacSettings().get(0).getE3(),
-                sensorSetting.getBacSettings().get(0).getE4(),
-                sensorSetting.getBacSettings().get(0).getId(),
+                jsonArrayBacMeasure.toString(),
+//                sensorSetting.getBacSettings().get(0).getE1(),
+//                sensorSetting.getBacSettings().get(0).getE2(),
+//                sensorSetting.getBacSettings().get(0).getE3(),
+//                sensorSetting.getBacSettings().get(0).getE4(),
+//                sensorSetting.getBacSettings().get(0).getId(),
+//                sensorSetting.getBacSettings().get(0).getSensor_setting_id(),
+//                sensorSetting.getBacSettings().get(0).getCreatedAt(),
 
                 measureMeasbas.getDatetime(),
                 measureMeasbas.getPstaterr(),
