@@ -258,7 +258,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         if (arrSensorSetting != null && arrSensorSetting.size() > position) {
             edtNameMEasure.setText(arrSensorSetting.get(position).getSetname());
             edtCrng.setText(String.valueOf(arrSensorSetting.get(position).getCrng()));
-            //edtBacs.setText(String.valueOf(arrSensorSetting.get(position).getBacs()));
             edtEqp1.setText(String.valueOf(arrSensorSetting.get(position).getEqp1()));
             edtEqt1.setText(String.valueOf(arrSensorSetting.get(position).getEqt1()));
             edtEqp2.setText(String.valueOf(arrSensorSetting.get(position).getEqp2()));
@@ -687,7 +686,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     @Override
     public void onConnected() {
-        cancelDialogProcessing();
         if (connectThread != null) {
             connectThread.run();
         }

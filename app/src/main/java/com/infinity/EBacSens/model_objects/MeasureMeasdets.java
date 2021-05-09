@@ -31,17 +31,17 @@ public class MeasureMeasdets {
     @Expose
     private String eb;
 
-    @SerializedName("lb")
+    @SerializedName("ib")
     @Expose
-    private String lb;
+    private String ib;
 
     @SerializedName("ef")
     @Expose
     private String ef;
 
-    @SerializedName("lf")
+    @SerializedName("if")
     @Expose
-    private String lf;
+    private String _if;
 
     @SerializedName("created_at")
     @Expose
@@ -103,12 +103,12 @@ public class MeasureMeasdets {
         this.eb = eb;
     }
 
-    public String getLb() {
-        return lb;
+    public String getIb() {
+        return ib;
     }
 
-    public void setLb(String lb) {
-        this.lb = lb;
+    public void setIb(String ib) {
+        this.ib = ib;
     }
 
     public String getEf() {
@@ -119,12 +119,12 @@ public class MeasureMeasdets {
         this.ef = ef;
     }
 
-    public String getLf() {
-        return lf;
+    public String get_if() {
+        return _if;
     }
 
-    public void setLf(String lf) {
-        this.lf = lf;
+    public void set_if(String _if) {
+        this._if = _if;
     }
 
     public String getCreatedAt() {
@@ -151,16 +151,16 @@ public class MeasureMeasdets {
         this.castedRawdmp = castedRawdmp;
     }
 
-    public MeasureMeasdets(int id, int sensorMeasureId, String no, String deltae, String deltal, String eb, String lb, String ef, String lf, String createdAt, String updatedAt, String castedRawdmp) {
+    public MeasureMeasdets(int id, int sensorMeasureId, String no, String deltae, String deltal, String eb, String ib, String ef, String _if, String createdAt, String updatedAt, String castedRawdmp) {
         this.id = id;
         this.sensorMeasureId = sensorMeasureId;
         this.no = no;
         this.deltae = deltae;
         this.deltal = deltal;
         this.eb = eb;
-        this.lb = lb;
+        this.ib = ib;
         this.ef = ef;
-        this.lf = lf;
+        this._if = _if;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.castedRawdmp = castedRawdmp;

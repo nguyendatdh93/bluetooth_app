@@ -4,10 +4,12 @@ import com.infinity.EBacSens.model_objects.DataSensorAPI;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.model_objects.SensorInfor;
+import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -49,6 +51,53 @@ public interface DataClient {
             @Field("name") String name,
             @Field("datetime") String datetime,
             @Field("mac_device") String mac_device
+    );
+    @POST("api/sensor/measure")
+    @FormUrlEncoded
+    Call<SensorMeasure> storeMeasure(
+            @Header("token") String token,
+            @Field("sensor_id") int sensor_id,
+            @Field("datetime") String datetime,
+            @Field("no") String no,
+
+            @Field("measpara[setname]") String measpara_setname_,
+            @Field("measpara[bacs]") int measpara_bacs_,
+            @Field("measpara[crng]") int measpara_crng_,
+            @Field("measpara[eqp1]") int measpara_eqp1_,
+            @Field("measpara[eqt1]") int measpara_eqt1_,
+            @Field("measpara[eqp2]") int measpara_eqp2_,
+            @Field("measpara[eqt2]") int measpara_eqt2_,
+            @Field("measpara[eqp3]") int measpara_eqp3_,
+            @Field("measpara[eqt3]") int measpara_eqt3_,
+            @Field("measpara[eqp4]") int measpara_eqp4_,
+            @Field("measpara[eqt4]") int measpara_eqt4_,
+            @Field("measpara[eqp5]") int measpara_eqp5_,
+            @Field("measpara[eqt5]") int measpara_eqt5_,
+            @Field("measpara[stp]") int measpara_stp_,
+            @Field("measpara[enp]") int measpara_enp_,
+            @Field("measpara[pp]") int measpara_pp_,
+            @Field("measpara[dlte]") int measpara_dlte_,
+            @Field("measpara[pwd]") int measpara_pwd_,
+            @Field("measpara[ptm]") int measpara_ptm_,
+            @Field("measpara[ibst]") int measpara_ibst_,
+            @Field("measpara[iben]") int measpara_iben_,
+            @Field("measpara[ifst]") int measpara_ifst_,
+            @Field("measpara[ifen]") int measpara_ifen_,
+
+            @Field("measba[datetime]") String measba_datetime_,
+            @Field("measba[pstaterr]") int measba_pastaerr_,
+            @Field("measba[num]") int measba_num_,
+
+            @Field("measres[0][name]") String measres0name,
+            @Field("measres[0][pkpot]") int measres0pkpot,
+            @Field("measres[0][dltc]") int measres0dltc,
+            @Field("measres[0][bgc]") int measres0bgc,
+            @Field("measres[0][err]") int measres0err,
+            @Field("measres[0][blpsx]") int measres0blpsx,
+            @Field("measres[0][blpsy]") int measres0blpsy,
+            @Field("measres[0][blpex]") int measres0blpex,
+            @Field("measres[0][blpey]") int measres0blpey
+
     );
 
     @POST("api/setting")

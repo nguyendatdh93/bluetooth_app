@@ -35,19 +35,19 @@ public class MeasureMeasress {
 
     @SerializedName("blpsx")
     @Expose
-    private String blpsx;
+    private int blpsx;
 
     @SerializedName("blpsy")
     @Expose
-    private String blpsy;
+    private int blpsy;
 
     @SerializedName("blpex")
     @Expose
-    private String blpex;
+    private int blpex;
 
     @SerializedName("blpey")
     @Expose
-    private String blpey;
+    private int blpey;
 
     @SerializedName("created_at")
     @Expose
@@ -113,35 +113,35 @@ public class MeasureMeasress {
         this.err = err;
     }
 
-    public String getBlpsx() {
+    public int getBlpsx() {
         return blpsx;
     }
 
-    public void setBlpsx(String blpsx) {
+    public void setBlpsx(int blpsx) {
         this.blpsx = blpsx;
     }
 
-    public String getBlpsy() {
+    public int getBlpsy() {
         return blpsy;
     }
 
-    public void setBlpsy(String blpsy) {
+    public void setBlpsy(int blpsy) {
         this.blpsy = blpsy;
     }
 
-    public String getBlpex() {
+    public int getBlpex() {
         return blpex;
     }
 
-    public void setBlpex(String blpex) {
+    public void setBlpex(int blpex) {
         this.blpex = blpex;
     }
 
-    public String getBlpey() {
+    public int getBlpey() {
         return blpey;
     }
 
-    public void setBlpey(String blpey) {
+    public void setBlpey(int blpey) {
         this.blpey = blpey;
     }
 
@@ -161,7 +161,7 @@ public class MeasureMeasress {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasress(int id, int sensorMeasureId, String name, int pkpot, int dltc, int bgc, int err, String blpsx, String blpsy, String blpex, String blpey, String createdAt, String updatedAt) {
+    public MeasureMeasress(int id, int sensorMeasureId, String name, int pkpot, int dltc, int bgc, int err, int blpsx, int blpsy, int blpex, int blpey, String createdAt, String updatedAt) {
         this.id = id;
         this.sensorMeasureId = sensorMeasureId;
         this.name = name;

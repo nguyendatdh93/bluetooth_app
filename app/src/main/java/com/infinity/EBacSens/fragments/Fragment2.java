@@ -224,7 +224,6 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
 
     @Override
     public void onConnected() {
-        cancelDialogProcessing();
         if (connectThread != null) {
             connectThread.run();
         }

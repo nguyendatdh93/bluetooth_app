@@ -66,6 +66,7 @@ import com.infinity.EBacSens.model_objects.Result;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
+import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
 import com.infinity.EBacSens.presenter.PresenterFragment4;
 import com.infinity.EBacSens.retrofit2.APIUtils;
@@ -102,7 +103,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private SeekBar skbProgress;
     private Button btnExportCSV, btnHistoryMeasure;
     private TextView txtProcess;
-    private AutoCompleteTextView acpDatetime;
+    private Spinner spnDatetime;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
@@ -113,7 +114,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private AdapteRCVGraph adapteRCVGraph;
 
     private List<String> arrDatetime;
-    private ArrayAdapter<String> adapterDatetime;
+    private ArrayAdapter<String> adapterSpnDatetime;
 
     private ArrayList<SensorMeasure> arrMeasure;
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
@@ -150,12 +151,20 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             }
         });
 
-        acpDatetime.setOnItemClickListener((parent, view, position, id) -> {
-            skbProgress.setProgress(0);
-            txtProcess.setVisibility(View.GONE);
-            positionCSV = position;
-            showDialogProcessing();
-            presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getSensorId());
+        spnDatetime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                skbProgress.setProgress(0);
+                txtProcess.setVisibility(View.GONE);
+                positionCSV = position;
+                showDialogProcessing();
+                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
 
         showDialogProcessing();
@@ -170,7 +179,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
         skbProgress.setPadding(0, 0, 0, 0);
         txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
-        acpDatetime = view.findViewById(R.id.fragment_4_acp_date_time);
+        spnDatetime = view.findViewById(R.id.fragment_4_spn_date_time);
 
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
         rcvResult.setHasFixedSize(true);
@@ -192,8 +201,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
         arrDatetime = new ArrayList<>();
 
-        adapterDatetime = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrDatetime);
-        acpDatetime.setAdapter(adapterDatetime);
+        adapterSpnDatetime = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrDatetime);
+        spnDatetime.setAdapter(adapterSpnDatetime);
         arrMeasure = new ArrayList<>();
         arrMeasurePage = new ArrayList<>();
 
@@ -378,19 +387,21 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onGetDataMeasurePage(List<SensorMeasurePage.MeasurePage> measurePages) {
         if (measurePages != null) {
             arrMeasurePage.clear();
-            arrDatetime.clear();
+            //arrDatetime.clear();
+            adapterSpnDatetime.clear();
             arrMeasurePage.addAll(measurePages);
             for (int i = 0; i < measurePages.size(); i++) {
-                arrDatetime.add(measurePages.get(i).getDatetime());
+                //arrDatetime.add(measurePages.get(i).getDatetime());
+                adapterSpnDatetime.add(measurePages.get(i).getDatetime());
             }
-            adapterDatetime.notifyDataSetChanged();
+            adapterSpnDatetime.notifyDataSetChanged();
             if (arrDatetime.size() > 0){
-                acpDatetime.setText(arrDatetime.get(0));
+                //acpDatetime.setText(arrDatetime.get(0));
                 skbProgress.setProgress(0);
                 txtProcess.setVisibility(View.GONE);
                 positionCSV = 0;
                 showDialogProcessing();
-                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getSensorId());
+                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
             }
         }
         cancelDialogProcessing();
@@ -405,8 +416,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             for (int i = 0; i < sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().size(); i++) {
                 arrGraph.add(new Graph(
                         sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getName(),
-                        (sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc() / sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot()),
-                        level((sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc() / sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot())),
+                        (sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc() / (sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot() == 0 ? 1 : sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot()) ),
+                        level((sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getDltc() / (sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot() == 0 ? 1 : sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(0).getPkpot()))),
                         "ピーク高さ／ピーク電位"));
                 arrResult.add(new Result(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getName(),
                         String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getPkpot()),
@@ -414,12 +425,23 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getBgc()),
                         String.valueOf(sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses().get(i).getErr())
                         ));
-
             }
         }
         adapteRCVGraph.notifyDataSetChanged();
         adapteRCVResult.notifyDataSetChanged();
         cancelDialogProcessing();
+    }
+
+    @Override
+    public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
+        cancelDialogProcessing();
+        showSuccessMessage("Success Stored");
+    }
+
+    @Override
+    public void onFailStoreMeasure(String error) {
+        cancelDialogProcessing();
+        showErrorMessage(error);
     }
 
     private int level(int val){
@@ -454,7 +476,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onConnected() {
-        cancelDialogProcessing();
         if (connectThread != null) {
             connectThread.run();
         }
@@ -488,7 +509,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             arrMeasure.add(0 , new SensorMeasure(-1,
                     MainActivity.device.getId(),
                     "2021-05-04 08:38:12",
-                    null,
+                    "unknown",
                     "2021-05-04:49:22:00",
                     "2021-05-04:49:22:00",
                     new MeasureMeasbas(4, 4, "2021-05-04 09:18:24", 29, 45, "2021-05-04T07:49:24.000000Z" , "2021-05-04T07:49:24.000000Z"),
@@ -498,16 +519,18 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             for (int i = 0; i < arrMeasure.size(); i++) {
                 arrDatetime.add(0 , arrMeasure.get(i).getDatetime());
             }
-            adapterDatetime.notifyDataSetChanged();
-
-            skbProgress.setProgress(100);
-            txtProcess.setVisibility(View.VISIBLE);
-            txtProcess.setText("Done!");
-            txtProcess.setTextColor(context.getResources().getColor(R.color.green));
+            adapterSpnDatetime.notifyDataSetChanged();
 
             // save to cloud compare by datetime
 
-
+            SensorSetting sensorSetting = new SensorSetting();
+            MeasureMeasbas measureMeasbas = new MeasureMeasbas();
+            measureMeasbas.setDatetime(Protector.getCurrentTime());
+            measureMeasbas.setPstaterr(1);
+            ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
+            measureMeasresses.add(new MeasureMeasress(1 , -MainActivity.device.getId() , "Ex - 01" , 1 , 1 , 0 , 1 , 1, 1, 1 , 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+            showDialogProcessing();
+            presenterFragment4.receivedStoreMeasure(APIUtils.token , MainActivity.device.getId() , Protector.getCurrentTime() , "06" , sensorSetting , measureMeasbas , measureMeasresses);
         }
     }
 }

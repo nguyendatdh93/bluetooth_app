@@ -4,12 +4,16 @@ import com.infinity.EBacSens.model.ModelFragmeant3Listener;
 import com.infinity.EBacSens.model.ModelFragmeant4Listener;
 import com.infinity.EBacSens.model.ModelFragment3;
 import com.infinity.EBacSens.model.ModelFragment4;
+import com.infinity.EBacSens.model_objects.MeasureMeasbas;
+import com.infinity.EBacSens.model_objects.MeasureMeasress;
+import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.views.ViewFragment3Listener;
 import com.infinity.EBacSens.views.ViewFragment4Listener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PresenterFragment4 implements ModelFragmeant4Listener {
@@ -30,6 +34,10 @@ public class PresenterFragment4 implements ModelFragmeant4Listener {
         modelFragment4.handleGetDetailMeasure(token , idMeasure);
     }
 
+    public void receivedStoreMeasure(String token, int idMeasure, String datetime, String no, SensorSetting sensorSetting, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses){
+        modelFragment4.handleStoreMeasure(token , idMeasure , datetime , no , sensorSetting , measureMeasbas , measureMeasresses);
+    }
+
     @Override
     public void onGetDataMeasurePage(List<SensorMeasurePage.MeasurePage> measurePages) {
         callback.onGetDataMeasurePage(measurePages);
@@ -38,5 +46,15 @@ public class PresenterFragment4 implements ModelFragmeant4Listener {
     @Override
     public void onGetDataMeasureDetail(SensorMeasureDetail sensorMeasureDetail) {
         callback.onGetDataMeasureDetail(sensorMeasureDetail);
+    }
+
+    @Override
+    public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
+        callback.onSuccessStoreMeasure(sensorMeasure);
+    }
+
+    @Override
+    public void onFailStoreMeasure(String error) {
+        callback.onFailStoreMeasure(error);
     }
 }

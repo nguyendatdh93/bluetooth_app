@@ -6,11 +6,16 @@ import androidx.annotation.NonNull;
 
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
+import com.infinity.EBacSens.model_objects.MeasureMeasbas;
+import com.infinity.EBacSens.model_objects.MeasureMeasress;
+import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.retrofit2.DataClient;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,9 +29,9 @@ public class ModelFragment4 {
         this.modelFragmeant4Listener = modelFragmeant4Listener;
     }
 
-    public void handleGetMeasurePage(String token , int idSensor , int page , int ful){
+    public void handleGetMeasurePage(String token, int idSensor, int page, int ful) {
         DataClient dataClient = APIUtils.getData();
-        final Call<SensorMeasurePage> callback = dataClient.getMeasurePage(token , idSensor , page ,  ful);
+        final Call<SensorMeasurePage> callback = dataClient.getMeasurePage(token, idSensor, page, ful);
         callback.enqueue(new Callback<SensorMeasurePage>() {
             @Override
             public void onResponse(@NonNull Call<SensorMeasurePage> call, @NonNull Response<SensorMeasurePage> response) {
@@ -41,9 +46,9 @@ public class ModelFragment4 {
         });
     }
 
-    public void handleGetDetailMeasure(String token , int idMeasure){
+    public void handleGetDetailMeasure(String token, int idMeasure) {
         DataClient dataClient = APIUtils.getData();
-        final Call<SensorMeasureDetail> callback = dataClient.getDetailMeasure(token , idMeasure);
+        final Call<SensorMeasureDetail> callback = dataClient.getDetailMeasure(token, idMeasure);
         callback.enqueue(new Callback<SensorMeasureDetail>() {
             @Override
             public void onResponse(@NonNull Call<SensorMeasureDetail> call, @NonNull Response<SensorMeasureDetail> response) {
@@ -53,6 +58,71 @@ public class ModelFragment4 {
             @Override
             public void onFailure(@NonNull Call<SensorMeasureDetail> call, @NonNull Throwable t) {
                 modelFragmeant4Listener.onGetDataMeasureDetail(null);
+                Protector.appendLog(t.getMessage());
+            }
+        });
+    }
+
+    public void handleStoreMeasure(String token, int idMeasure, String datetime, String no, SensorSetting sensorSetting, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses) {
+        DataClient dataClient = APIUtils.getData();
+
+
+        final Call<SensorMeasure> callback = dataClient.storeMeasure(token,
+                idMeasure,
+                datetime,
+                no,
+
+                sensorSetting.getSetname(),
+                sensorSetting.getBacs(),
+                sensorSetting.getCrng(),
+                sensorSetting.getEqp1(),
+                sensorSetting.getEqt1(),
+                sensorSetting.getEqp2(),
+                sensorSetting.getEqt2(),
+                sensorSetting.getEqp3(),
+                sensorSetting.getEqt3(),
+                sensorSetting.getEqp4(),
+                sensorSetting.getEqt4(),
+                sensorSetting.getEqp5(),
+                sensorSetting.getEqt5(),
+                sensorSetting.getStp(),
+                sensorSetting.getEnp(),
+                sensorSetting.getPp(),
+                sensorSetting.getDlte(),
+                sensorSetting.getPwd(),
+                sensorSetting.getPtm(),
+                sensorSetting.getIbst(),
+                sensorSetting.getIben(),
+                sensorSetting.getIfst(),
+                sensorSetting.getIfen(),
+
+                measureMeasbas.getDatetime(),
+                measureMeasbas.getPstaterr(),
+                measureMeasbas.getNum(),
+
+                measureMeasresses.get(0).getName(),
+                measureMeasresses.get(0).getPkpot(),
+                measureMeasresses.get(0).getDltc(),
+                measureMeasresses.get(0).getBgc(),
+                measureMeasresses.get(0).getErr(),
+                measureMeasresses.get(0).getBlpsx(),
+                measureMeasresses.get(0).getBlpsy(),
+                measureMeasresses.get(0).getBlpex(),
+                measureMeasresses.get(0).getBlpey()
+                );
+        callback.enqueue(new Callback<SensorMeasure>() {
+            @Override
+            public void onResponse(@NonNull Call<SensorMeasure> call, @NonNull Response<SensorMeasure> response) {
+                if (response.isSuccessful()){
+                    modelFragmeant4Listener.onSuccessStoreMeasure(response.body());
+                }else {
+                    modelFragmeant4Listener.onFailStoreMeasure(String.valueOf(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SensorMeasure> call, @NonNull Throwable t) {
+                modelFragmeant4Listener.onFailStoreMeasure(t.getMessage());
                 Protector.appendLog(t.getMessage());
             }
         });

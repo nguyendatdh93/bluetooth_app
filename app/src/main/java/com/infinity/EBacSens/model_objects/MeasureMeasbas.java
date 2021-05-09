@@ -21,9 +21,9 @@ public class MeasureMeasbas {
     @Expose
     private int num;
 
-    @SerializedName("pastaerr")
+    @SerializedName("pstaterr")
     @Expose
-    private int pastaerr;
+    private int pstaterr;
 
     @SerializedName("created_at")
     @Expose
@@ -65,12 +65,12 @@ public class MeasureMeasbas {
         this.num = num;
     }
 
-    public int getPastaerr() {
-        return pastaerr;
+    public int getPstaterr() {
+        return pstaterr;
     }
 
-    public void setPastaerr(int pastaerr) {
-        this.pastaerr = pastaerr;
+    public void setPstaterr(int pstaterr) {
+        this.pstaterr = pstaterr;
     }
 
     public String getCreatedAt() {
@@ -89,12 +89,15 @@ public class MeasureMeasbas {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasbas(int id, int sensorMeasureId, String datetime, int num, int pastaerr, String createdAt, String updatedAt) {
+    public MeasureMeasbas() {
+    }
+
+    public MeasureMeasbas(int id, int sensorMeasureId, String datetime, int num, int pstaterr, String createdAt, String updatedAt) {
         this.id = id;
         this.sensorMeasureId = sensorMeasureId;
         this.datetime = datetime;
         this.num = num;
-        this.pastaerr = pastaerr;
+        this.pstaterr = pstaterr;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
