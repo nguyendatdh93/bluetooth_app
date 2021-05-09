@@ -502,30 +502,18 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     @Override
     public void onRuned() {
         if (connectThread != null) {
-            //txtProcess.setTextColor(context.getResources().getColor(R.color.black));
-
             connectThread.write("*R,LIST");
 
             // test result
 
-            ArrayList<BacSetting> bacSettings = new ArrayList<>();
-            bacSettings.add(new BacSetting(1, 1, "ex", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-            arrMeasure.add(0, new SensorMeasure(-1,
-                    MainActivity.device.getId(),
-                    Protector.getCurrentTime(),
-                    "unknown",
-                    Protector.getCurrentTime(),
-                    Protector.getCurrentTime(),
-                    new MeasureMeasbas(4, Protector.getCurrentTime(), 29, 45, Protector.getCurrentTime(), Protector.getCurrentTime()),
-                    null,
-                    new MeasureMeasparas(4, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10, 10, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings),
-                    null));
-            for (int i = 0; i < arrMeasure.size(); i++) {
-                arrDatetime.add(0, arrMeasure.get(i).getDatetime());
-            }
-//            adapterSpnDatetime.notifyDataSetChanged();
-
             // save to cloud compare by datetime
+
+            ArrayList<BacSetting> bacSettings = new ArrayList<>();
+            bacSettings.add(new BacSetting(1, 1, "Ex - 01", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+            bacSettings.add(new BacSetting(1, 1, "Ex - 02", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+            bacSettings.add(new BacSetting(1, 1, "Ex - 03", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+            bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+            bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
 
             SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
             MeasureMeasbas measureMeasbas = new MeasureMeasbas();
@@ -534,9 +522,17 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
             ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
             measureMeasresses.add(new MeasureMeasress(1, "Ex - 01", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasresses.add(new MeasureMeasress(1, "Ex - 02", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasresses.add(new MeasureMeasress(1, "Ex - 03", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasresses.add(new MeasureMeasress(1, "Ex - 04", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasresses.add(new MeasureMeasress(1, "Ex - 05", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
 
             ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
-            measureMeasdets.add(new MeasureMeasdets(1, "Ex 1", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 01", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 02", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 03", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 04", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 05", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
 
             //showDialogProcessing();
             presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);

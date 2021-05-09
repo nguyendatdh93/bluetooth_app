@@ -9,84 +9,84 @@
         <item>5</item>
     </string-array>
 
-    <string name="list_of_measuring_instruments" translatable="false">list_of_measuring_instruments</string>
-    <string name="communication_settings" translatable="false">communication_settings</string>
-    <string name="measuring_instrument_settings" translatable="false">measuring_instrument_settings</string>
-    <string name="measurement_settings" translatable="false">measurement_settings</string>
-    <string name="result" translatable="false">result</string>
-    <string name="com_port_used" translatable="false">com_port_used</string>
-    <string name="connection_test" translatable="false">connection_test</string>
-    <string name="connection_test_success" translatable="false">connection_test_success</string>
-    <string name="connect" translatable="false">connect</string>
-    <string name="disconnect" translatable="false">disconnect</string>
-    <string name="measuring_instrument_job_alias_up_to_8_alphanumeric_characters" translatable="false">measuring_instrument_job_alias_up_to_8_alphanumeric_characters</string>
-    <string name="datetime" translatable="false">datetime</string>
-    <string name="baseline_point_detection_method" translatable="false">baseline_point_detection_method</string>
-    <string name="auto_power_off_0_60_min" translatable="false">auto_power_off_0_60_min</string>
-    <string name="write" translatable="false">write</string>
-    <string name="read" translatable="false">read</string>
-    <string name="basic" translatable="false">basic</string>
-    <string name="setting_name_up_to_8_alphanumeric_characters" translatable="false">setting_name_up_to_8_alphanumeric_characters</string>
-    <string name="number_of_microorganisms_measured_1_5" translatable="false">number_of_microorganisms_measured_1_5</string>
-    <string name="current_range" translatable="false">current_range</string>
-    <string name="equilibrium_potential_1" translatable="false">equilibrium_potential_1</string>
-    <string name="equilibrium_potential_2" translatable="false">equilibrium_potential_2</string>
-    <string name="equilibrium_potential_3" translatable="false">equilibrium_potential_3</string>
-    <string name="equilibrium_potential_4" translatable="false">equilibrium_potential_4</string>
-    <string name="equilibrium_potential_5" translatable="false">equilibrium_potential_5</string>
-    <string name="equilibrium_time_1" translatable="false">equilibrium_time_1</string>
-    <string name="equilibrium_time_2" translatable="false">equilibrium_time_2</string>
-    <string name="equilibrium_time_3" translatable="false">equilibrium_time_3</string>
-    <string name="equilibrium_time_4" translatable="false">equilibrium_time_4</string>
-    <string name="equilibrium_time_5" translatable="false">equilibrium_time_5</string>
-    <string name="start_potential" translatable="false">start_potential</string>
-    <string name="end_potential" translatable="false">end_potential</string>
-    <string name="pulse_amplitude" translatable="false">pulse_amplitude</string>
+    <string name="list_of_measuring_instruments" translatable="false">計測器一覧</string>
+    <string name="communication_settings" translatable="false">通信設定</string>
+    <string name="measuring_instrument_settings" translatable="false">計測器設定</string>
+    <string name="measurement_settings" translatable="false">測定設定</string>
+    <string name="result" translatable="false">結果</string>
+    <string name="com_port_used" translatable="false">使用Comポート</string>
+    <string name="connection_test" translatable="false">接続テスト</string>
+    <string name="connection_test_success" translatable="false">「ポートのオープンに成功しました。」</string>
+    <string name="connect" translatable="false">接続</string>
+    <string name="disconnect" translatable="false">切断</string>
+    <string name="measuring_instrument_job_alias_up_to_8_alphanumeric_characters" translatable="false">計測器職別名(英数字8文字以内)</string>
+    <string name="datetime" translatable="false">日時</string>
+    <string name="baseline_point_detection_method" translatable="false">ベースラインポイント検出方法</string>
+    <string name="auto_power_off_0_60_min" translatable="false">オートパワーオフ(0~60min)</string>
+    <string name="write" translatable="false">書き込み</string>
+    <string name="read" translatable="false">読み込み</string>
+    <string name="basic" translatable="false">基本</string>
+    <string name="setting_name_up_to_8_alphanumeric_characters" translatable="false">設定名（英数字8文字以内）</string>
+    <string name="number_of_microorganisms_measured_1_5" translatable="false">微生物測定数(1~5)</string>
+    <string name="current_range" translatable="false">電流レンジ</string>
+    <string name="equilibrium_potential_1" translatable="false">平衡電位 1</string>
+    <string name="equilibrium_potential_2" translatable="false">平衡電位 2</string>
+    <string name="equilibrium_potential_3" translatable="false">平衡電位 3</string>
+    <string name="equilibrium_potential_4" translatable="false">平衡電位 4</string>
+    <string name="equilibrium_potential_5" translatable="false">平衡電位 5</string>
+    <string name="equilibrium_time_1" translatable="false">平衡時間 1</string>
+    <string name="equilibrium_time_2" translatable="false">平衡時間 2</string>
+    <string name="equilibrium_time_3" translatable="false">平衡時間 3</string>
+    <string name="equilibrium_time_4" translatable="false">平衡時間 4</string>
+    <string name="equilibrium_time_5" translatable="false">平衡時間 5</string>
+    <string name="start_potential" translatable="false">開始電位</string>
+    <string name="end_potential" translatable="false">終了電位</string>
+    <string name="pulse_amplitude" translatable="false">パルス振幅</string>
     <string name="Δe" translatable="false">ΔE</string>
-    <string name="pulse_width" translatable="false">pulse_width</string>
-    <string name="pulse_period" translatable="false">pulse_period</string>
-    <string name="base_current_Ib_sample_time_lower_limit" translatable="false">base_current_Ib_sample_time_lower_limit</string>
-    <string name="base_current_Ib_sample_time_upper_limit" translatable="false">base_current_Ib_sample_time_upper_limit</string>
-    <string name="faraday_If_current_sample_time_lower_limit" translatable="false">faraday_If_current_sample_time_lower_limit</string>
-    <string name="faraday_If_current_sample_time_upper_limit" translatable="false">faraday_If_current_sample_time_upper_limit</string>
-    <string name="peak_detection" translatable="false">peak_detection</string>
-    <string name="microorganism" translatable="false">microorganism</string>
-    <string name="object_name_to_be_measured_up_to_5_alphanumeric_characters" translatable="false">object_name_to_be_measured_up_to_5_alphanumeric_characters</string>
-    <string name="e1_baseline_search_start_potential" translatable="false">e1_baseline_search_start_potential</string>
-    <string name="e2_baseline_search_start_potential" translatable="false">e2_baseline_search_start_potential</string>
-    <string name="e3_baseline_search_start_potential" translatable="false">e3_baseline_search_start_potential</string>
-    <string name="e4_baseline_search_start_potential" translatable="false">e4_baseline_search_start_potential</string>
-    <string name="location_selectbox_up_down" translatable="false">location_selectbox_up_down</string>
-    <string name="list" translatable="false">list</string>
-    <string name="graph" translatable="false">graph</string>
-    <string name="latest_data_update" translatable="false">latest_data_update</string>
-    <string name="baseline_display" translatable="false">baseline_display</string>
-    <string name="measurement_date_and_time" translatable="false">measurement_date_and_time:</string>
-    <string name="measurement_number" translatable="false">measurement_number:</string>
-    <string name="name" translatable="false">name</string>
-    <string name="peak_potential" translatable="false">peak_potential</string>
-    <string name="peak_height" translatable="false">peak_height</string>
-    <string name="error" translatable="false">error</string>
-    <string name="progress" translatable="false">progress</string>
-    <string name="CSV_output" translatable="false">CSV_output</string>
-    <string name="list_of_saved_measurement_settings" translatable="false">list_of_saved_measurement_settings</string>
-    <string name="do_you_want_to_delete_this_measurement_setting" translatable="false">do_you_want_to_delete_this_measurement_setting？</string>
-    <string name="no" translatable="false">no</string>
-    <string name="yes" translatable="false">yes</string>
-    <string name="measurement_result_quantity" translatable="false">Measurement result (quantity)</string>
-    <string name="level" translatable="false">Level</string>
-    <string name="description" translatable="false">Description</string>
-    <string name="cloud" translatable="false">Cloud</string>
-    <string name="save_measurement_settings" translatable="false">save_measurement_settings</string>
-    <string name="read_from_the_measurement_setting_list" translatable="false">read_from_the_measurement_setting_list</string>
-    <string name="measuring_instrument" translatable="false">measuring_instrument</string>
-    <string name="connected" translatable="false">connected</string>
-    <string name="ready_to_connected" translatable="false">ready_to_connected</string>
-    <string name="list_device_online" translatable="false">list_device_online</string>
-    <string name="use" translatable="false">use</string>
-    <string name="delete" translatable="false">delete</string>
-    <string name="action" translatable="false">action</string>
-    <string name="microbiological_determination_number" translatable="false">microbiological_determination_number</string>
-    <string name="creation_date_and_time" translatable="false">creation_date_and_time</string>
-    <string name="measurement" translatable="false">Measurement</string>
+    <string name="pulse_width" translatable="false">パルス幅</string>
+    <string name="pulse_period" translatable="false">パルス期間</string>
+    <string name="base_current_Ib_sample_time_lower_limit" translatable="false">ベース電流(Ib)サンプル時間下限</string>
+    <string name="base_current_Ib_sample_time_upper_limit" translatable="false">ベース電流(Ib)サンプル時間上限</string>
+    <string name="faraday_If_current_sample_time_lower_limit" translatable="false">ファラデー(If)電流サンプル時間下限</string>
+    <string name="faraday_If_current_sample_time_upper_limit" translatable="false">ファラデー(If)電流サンプル時間上限</string>
+    <string name="peak_detection" translatable="false">ピーク検出</string>
+    <string name="microorganism" translatable="false">微生物</string>
+    <string name="object_name_to_be_measured_up_to_5_alphanumeric_characters" translatable="false">測定対象物名（英数字 5 文字以内</string>
+    <string name="e1_baseline_search_start_potential" translatable="false">E1 ベースライン検索開始電位</string>
+    <string name="e2_baseline_search_start_potential" translatable="false">E2 ベースライン検索開始電位</string>
+    <string name="e3_baseline_search_start_potential" translatable="false">E3 ベースライン検索開始電位</string>
+    <string name="e4_baseline_search_start_potential" translatable="false">E4 ベースライン検索開始電位</string>
+    <string name="location_selectbox_up_down" translatable="false">ピーク位置（selectbox: 上、下）</string>
+    <string name="list" translatable="false">一覧</string>
+    <string name="graph" translatable="false">グラフ</string>
+    <string name="latest_data_update" translatable="false">最新データ更新</string>
+    <string name="baseline_display" translatable="false">ベースライン表示</string>
+    <string name="measurement_date_and_time" translatable="false">測定日時:</string>
+    <string name="measurement_number" translatable="false">測定番号:</string>
+    <string name="name" translatable="false">名称</string>
+    <string name="peak_potential" translatable="false">ピーク電位</string>
+    <string name="peak_height" translatable="false">ピーク高さ</string>
+    <string name="error" translatable="false">エラー</string>
+    <string name="progress" translatable="false">進捗状況</string>
+    <string name="CSV_output" translatable="false">CSV出力</string>
+    <string name="list_of_saved_measurement_settings" translatable="false">保存測定設定一覧</string>
+    <string name="do_you_want_to_delete_this_measurement_setting" translatable="false">この測定設定を削除しますか？</string>
+    <string name="no" translatable="false">いいえ</string>
+    <string name="yes" translatable="false">はい</string>
+    <string name="measurement_result_quantity" translatable="false">測定結果（数量）</string>
+    <string name="level" translatable="false">レベル</string>
+    <string name="description" translatable="false">説明</string>
+    <string name="cloud" translatable="false">クラウド</string>
+    <string name="save_measurement_settings" translatable="false">測定設定を保存する</string>
+    <string name="read_from_the_measurement_setting_list" translatable="false">測定設定一覧から読み込み</string>
+    <string name="measuring_instrument" translatable="false">計測器</string>
+    <string name="connected" translatable="false">接続中</string>
+    <string name="ready_to_connected" translatable="false">接続可能</string>
+    <string name="list_device_online" translatable="false">デバイスをオンラインで一覧表示</string>
+    <string name="use" translatable="false">使用</string>
+    <string name="delete" translatable="false">削除</string>
+    <string name="action" translatable="false">操作</string>
+    <string name="microbiological_determination_number" translatable="false">微生物測定数</string>
+    <string name="creation_date_and_time" translatable="false">作成日時</string>
+    <string name="measurement" translatable="false">測定</string>
 </resources>
