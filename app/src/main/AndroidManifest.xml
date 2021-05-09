@@ -24,8 +24,7 @@
         android:fullBackupContent="@xml/my_backup_rules"
         android:theme="@style/Theme.EBacSens">
         <activity android:name=".activitys.ListDeviceActivity"/>
-        <activity android:name=".activitys.MainActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".activitys.MainActivity"/>
         <activity
             android:name=".activitys.SplashActivity"
             android:screenOrientation="portrait"

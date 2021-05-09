@@ -162,7 +162,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 skbProgress.setProgress(0);
-                txtProcess.setVisibility(View.GONE);
+                txtProcess.setText("");
                 positionCSV = position;
                 showDialogProcessing();
                 presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getId());
@@ -184,6 +184,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
+        skbProgress.setEnabled(false);
         skbProgress.setPadding(0, 0, 0, 0);
         txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
         spnDatetime = view.findViewById(R.id.fragment_4_spn_date_time);
@@ -269,7 +270,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 @Override
                 public void onPermissionGranted() {
                     skbProgress.setProgress(0);
-                    txtProcess.setVisibility(View.VISIBLE);
                     txtProcess.setText("Exporting...");
                     txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
@@ -286,7 +286,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         os.write(0xbb);
                         os.write(0xbf);
 
-                        //String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/EBacSens/ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv"); // Here csv file name is MyCsvFile.csv
                         CSVWriter writer;
                         try {
                             writer = new CSVWriter(new OutputStreamWriter(os));
@@ -391,14 +390,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             adapterSpnDatetime.clear();
             arrMeasurePage.addAll(measurePages);
             for (int i = 0; i < measurePages.size(); i++) {
-                //arrDatetime.add(measurePages.get(i).getDatetime());
                 adapterSpnDatetime.add(measurePages.get(i).getDatetime());
             }
             adapterSpnDatetime.notifyDataSetChanged();
             if (arrDatetime.size() > 0) {
-                //acpDatetime.setText(arrDatetime.get(0));
                 skbProgress.setProgress(0);
-                txtProcess.setVisibility(View.GONE);
                 positionCSV = 0;
                 showDialogProcessing();
                 presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
@@ -441,12 +437,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
         cancelDialogProcessing();
         showSuccessMessage("Success Stored");
-
+        adapterSpnDatetime.notifyDataSetChanged();
         skbProgress.setProgress(100);
-        txtProcess.setVisibility(View.VISIBLE);
         txtProcess.setText("Success Stored!");
         txtProcess.setTextColor(context.getResources().getColor(R.color.black));
-
     }
 
     @Override
@@ -493,10 +487,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             connectThread.run();
         }
         MainActivity.device.setStatusConnect(1);
-        skbProgress.setProgress(0);
-        txtProcess.setVisibility(View.VISIBLE);
-        txtProcess.setText("Progressing...");
-        txtProcess.setTextColor(context.getResources().getColor(R.color.black));
     }
 
     @Override
@@ -507,13 +497,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onRuned() {
-        cancelDialogProcessing();
         if (connectThread != null) {
-
-            skbProgress.setProgress(100);
-            txtProcess.setVisibility(View.VISIBLE);
-            txtProcess.setText("Done!");
-            txtProcess.setTextColor(context.getResources().getColor(R.color.black));
+            //txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
             connectThread.write("*R,LIST");
 
@@ -534,7 +519,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             for (int i = 0; i < arrMeasure.size(); i++) {
                 arrDatetime.add(0, arrMeasure.get(i).getDatetime());
             }
-            adapterSpnDatetime.notifyDataSetChanged();
+//            adapterSpnDatetime.notifyDataSetChanged();
 
             // save to cloud compare by datetime
 
@@ -549,7 +534,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
             measureMeasdets.add(new MeasureMeasdets(1, "Ex 1", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
 
-            showDialogProcessing();
+            //showDialogProcessing();
             presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
         }
     }

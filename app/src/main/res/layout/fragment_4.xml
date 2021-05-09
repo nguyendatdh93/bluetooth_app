@@ -350,8 +350,7 @@
                         android:layout_marginTop="@dimen/_5ssp"
                         android:gravity="end"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp"
-                        android:visibility="gone" />
+                        android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -94,6 +94,12 @@ public class ModelFragment4 {
                 sensorSetting.getIben(),
                 sensorSetting.getIfst(),
                 sensorSetting.getIfen(),
+                sensorSetting.getBacSettings().get(0).getBacName(),
+                sensorSetting.getBacSettings().get(0).getE1(),
+                sensorSetting.getBacSettings().get(0).getE2(),
+                sensorSetting.getBacSettings().get(0).getE3(),
+                sensorSetting.getBacSettings().get(0).getE4(),
+                sensorSetting.getBacSettings().get(0).getId(),
 
                 measureMeasbas.getDatetime(),
                 measureMeasbas.getPstaterr(),

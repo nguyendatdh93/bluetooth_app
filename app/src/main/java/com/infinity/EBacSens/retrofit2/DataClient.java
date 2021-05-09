@@ -83,10 +83,17 @@ public interface DataClient {
             @Field("measpara[iben]") int measpara_iben_,
             @Field("measpara[ifst]") int measpara_ifst_,
             @Field("measpara[ifen]") int measpara_ifen_,
+            @Field("bac[0]bacname") String bac0bacname,
+            @Field("bac[0]e1") int bac0e1,
+            @Field("bac[0]e2") int bac0e2,
+            @Field("bac[0]e3") int bac0e3,
+            @Field("bac[0]e4") int bac0e4,
+            @Field("bac[0]id") int bac0id,
 
             @Field("measba[datetime]") String measba_datetime_,
             @Field("measba[pstaterr]") int measba_pastaerr_,
             @Field("measba[num]") int measba_num_,
+
 
             @Field("measres[0][name]") String measres0name,
             @Field("measres[0][pkpot]") int measres0pkpot,
