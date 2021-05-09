@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
+import com.infinity.EBacSens.model_objects.MeasureMeasdets;
 import com.infinity.EBacSens.model_objects.MeasureMeasress;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
@@ -63,15 +64,13 @@ public class ModelFragment4 {
         });
     }
 
-    public void handleStoreMeasure(String token, int idMeasure, String datetime, String no, SensorSetting sensorSetting, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses) {
+    public void handleStoreMeasure(String token, int idMeasure, String datetime, String no, SensorSetting sensorSetting, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses , ArrayList<MeasureMeasdets> measureMeasdets) {
         DataClient dataClient = APIUtils.getData();
-
 
         final Call<SensorMeasure> callback = dataClient.storeMeasure(token,
                 idMeasure,
                 datetime,
                 no,
-
                 sensorSetting.getSetname(),
                 sensorSetting.getBacs(),
                 sensorSetting.getCrng(),
@@ -108,7 +107,15 @@ public class ModelFragment4 {
                 measureMeasresses.get(0).getBlpsx(),
                 measureMeasresses.get(0).getBlpsy(),
                 measureMeasresses.get(0).getBlpex(),
-                measureMeasresses.get(0).getBlpey()
+                measureMeasresses.get(0).getBlpey(),
+
+                measureMeasdets.get(0).getNo(),
+                measureMeasdets.get(0).getDeltae(),
+                measureMeasdets.get(0).getDeltai(),
+                measureMeasdets.get(0).getEb(),
+                measureMeasdets.get(0).getIb(),
+                measureMeasdets.get(0).getEf(),
+                measureMeasdets.get(0).get_if()
                 );
         callback.enqueue(new Callback<SensorMeasure>() {
             @Override

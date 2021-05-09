@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -703,7 +705,37 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     public void onRuned() {
         cancelDialogProcessing();
         if (connectThread != null) {
-            connectThread.write("*" + (statusButton == 1 ? "R" : 0 ) + ",IDNAME"+ edtNameMEasure.getText().toString());
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",SETNAME,"+ edtNameMEasure.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",BACS,"+ spnNumber.getSelectedItem().toString() + "[CR]");
+            for (int i = 0 ; i < arrBacSetting.size() ; i++){
+                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() + "[CR]");
+                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() + "[CR]");
+                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E2_"+(i+1)+","+ arrBacSetting.get(i).getE2() + "[CR]");
+                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E3_"+(i+1)+","+ arrBacSetting.get(i).getE3() + "[CR]");
+                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E4_"+(i+1)+","+ arrBacSetting.get(i).getE4() + "[CR]");
+                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PKP1_"+(i+1)+","+ arrBacSetting.get(i).getPkp() + "[CR]");
+            }
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",CRNG,"+ edtCrng.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP1,"+ edtEqp1.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT1,"+ edtEqt1.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP2,"+ edtEqp2.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT2,"+ edtEqt2.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP3,"+ edtEqp3.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT3,"+ edtEqt3.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP4,"+ edtEqp4.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT4,"+ edtEqt4.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP5,"+ edtEqp5.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT5,"+ edtEqt5.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",STP,"+ edtStp.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",ENP,"+ edtEnp.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PP,"+ edtPp.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",DLTE,"+ edtDlte.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PWD,"+ edtPwd.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PTM,"+ edtPtm.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IBST,"+ edtIbst.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IBEN,"+ edtIben.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFST,"+ edtIfst.getText().toString() + "[CR]");
+            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFEN,"+ edtIfen.getText().toString() + "[CR]");
 
             // test result
             edtNameMEasure.setText("Name ex response");

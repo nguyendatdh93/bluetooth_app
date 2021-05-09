@@ -9,10 +9,6 @@ public class MeasureMeasress {
     @Expose
     private int id;
 
-    @SerializedName("sensor_measure_id")
-    @Expose
-    private int sensorMeasureId;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -35,19 +31,19 @@ public class MeasureMeasress {
 
     @SerializedName("blpsx")
     @Expose
-    private int blpsx;
+    private String blpsx;
 
     @SerializedName("blpsy")
     @Expose
-    private int blpsy;
+    private String blpsy;
 
     @SerializedName("blpex")
     @Expose
-    private int blpex;
+    private String blpex;
 
     @SerializedName("blpey")
     @Expose
-    private int blpey;
+    private String blpey;
 
     @SerializedName("created_at")
     @Expose
@@ -63,14 +59,6 @@ public class MeasureMeasress {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getSensorMeasureId() {
-        return sensorMeasureId;
-    }
-
-    public void setSensorMeasureId(int sensorMeasureId) {
-        this.sensorMeasureId = sensorMeasureId;
     }
 
     public String getName() {
@@ -113,35 +101,35 @@ public class MeasureMeasress {
         this.err = err;
     }
 
-    public int getBlpsx() {
+    public String getBlpsx() {
         return blpsx;
     }
 
-    public void setBlpsx(int blpsx) {
+    public void setBlpsx(String blpsx) {
         this.blpsx = blpsx;
     }
 
-    public int getBlpsy() {
+    public String getBlpsy() {
         return blpsy;
     }
 
-    public void setBlpsy(int blpsy) {
+    public void setBlpsy(String blpsy) {
         this.blpsy = blpsy;
     }
 
-    public int getBlpex() {
+    public String getBlpex() {
         return blpex;
     }
 
-    public void setBlpex(int blpex) {
+    public void setBlpex(String blpex) {
         this.blpex = blpex;
     }
 
-    public int getBlpey() {
+    public String getBlpey() {
         return blpey;
     }
 
-    public void setBlpey(int blpey) {
+    public void setBlpey(String blpey) {
         this.blpey = blpey;
     }
 
@@ -161,9 +149,8 @@ public class MeasureMeasress {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasress(int id, int sensorMeasureId, String name, int pkpot, int dltc, int bgc, int err, int blpsx, int blpsy, int blpex, int blpey, String createdAt, String updatedAt) {
+    public MeasureMeasress(int id, String name, int pkpot, int dltc, int bgc, int err, String blpsx, String blpsy, String blpex, String blpey, String createdAt, String updatedAt) {
         this.id = id;
-        this.sensorMeasureId = sensorMeasureId;
         this.name = name;
         this.pkpot = pkpot;
         this.dltc = dltc;

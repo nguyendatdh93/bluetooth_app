@@ -93,11 +93,19 @@ public interface DataClient {
             @Field("measres[0][dltc]") int measres0dltc,
             @Field("measres[0][bgc]") int measres0bgc,
             @Field("measres[0][err]") int measres0err,
-            @Field("measres[0][blpsx]") int measres0blpsx,
-            @Field("measres[0][blpsy]") int measres0blpsy,
-            @Field("measres[0][blpex]") int measres0blpex,
-            @Field("measres[0][blpey]") int measres0blpey
+            @Field("measres[0][blpsx]") String measres0blpsx,
+            @Field("measres[0][blpsy]") String measres0blpsy,
+            @Field("measres[0][blpex]") String measres0blpex,
+            @Field("measres[0][blpey]") String measres0blpey,
 
+
+            @Field("measdet[0][no]") String measdet0no,
+            @Field("measdet[0][deltae]") float measdet0deltae,
+            @Field("measdet[0][deltai]") float measdet0deltai,
+            @Field("measdet[0][eb]") float measdet0eb,
+            @Field("measdet[0][ib]") float measdet0ib,
+            @Field("measdet[0][ef]") float measdet0ef,
+            @Field("measdet[0][if]") float measdet0if
     );
 
     @POST("api/setting")

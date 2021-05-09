@@ -9,10 +9,6 @@ public class MeasureMeasbas {
     @Expose
     private int id;
 
-    @SerializedName("sensor_measure_id")
-    @Expose
-    private int sensorMeasureId;
-
     @SerializedName("datetime")
     @Expose
     private String datetime;
@@ -39,14 +35,6 @@ public class MeasureMeasbas {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getSensorMeasureId() {
-        return sensorMeasureId;
-    }
-
-    public void setSensorMeasureId(int sensorMeasureId) {
-        this.sensorMeasureId = sensorMeasureId;
     }
 
     public String getDatetime() {
@@ -81,6 +69,9 @@ public class MeasureMeasbas {
         this.createdAt = createdAt;
     }
 
+    public MeasureMeasbas() {
+    }
+
     public String getUpdatedAt() {
         return updatedAt;
     }
@@ -89,12 +80,8 @@ public class MeasureMeasbas {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasbas() {
-    }
-
-    public MeasureMeasbas(int id, int sensorMeasureId, String datetime, int num, int pstaterr, String createdAt, String updatedAt) {
+    public MeasureMeasbas(int id, String datetime, int num, int pstaterr, String createdAt, String updatedAt) {
         this.id = id;
-        this.sensorMeasureId = sensorMeasureId;
         this.datetime = datetime;
         this.num = num;
         this.pstaterr = pstaterr;

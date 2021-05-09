@@ -11,37 +11,33 @@ public class MeasureMeasdets {
     @Expose
     private int id;
 
-    @SerializedName("sensor_measure_id")
-    @Expose
-    private int sensorMeasureId;
-
     @SerializedName("no")
     @Expose
     private String no;
 
     @SerializedName("deltae")
     @Expose
-    private String deltae;
+    private float deltae;
 
-    @SerializedName("deltal")
+    @SerializedName("deltai")
     @Expose
-    private String deltal;
+    private float deltai;
 
     @SerializedName("eb")
     @Expose
-    private String eb;
+    private float eb;
 
     @SerializedName("ib")
     @Expose
-    private String ib;
+    private float ib;
 
     @SerializedName("ef")
     @Expose
-    private String ef;
+    private float ef;
 
     @SerializedName("if")
     @Expose
-    private String _if;
+    private float _if;
 
     @SerializedName("created_at")
     @Expose
@@ -63,14 +59,6 @@ public class MeasureMeasdets {
         this.id = id;
     }
 
-    public int getSensorMeasureId() {
-        return sensorMeasureId;
-    }
-
-    public void setSensorMeasureId(int sensorMeasureId) {
-        this.sensorMeasureId = sensorMeasureId;
-    }
-
     public String getNo() {
         return no;
     }
@@ -79,51 +67,51 @@ public class MeasureMeasdets {
         this.no = no;
     }
 
-    public String getDeltae() {
+    public float getDeltae() {
         return deltae;
     }
 
-    public void setDeltae(String deltae) {
+    public void setDeltae(float deltae) {
         this.deltae = deltae;
     }
 
-    public String getDeltal() {
-        return deltal;
+    public float getDeltai() {
+        return deltai;
     }
 
-    public void setDeltal(String deltal) {
-        this.deltal = deltal;
+    public void setDeltai(float deltai) {
+        this.deltai = deltai;
     }
 
-    public String getEb() {
+    public float getEb() {
         return eb;
     }
 
-    public void setEb(String eb) {
+    public void setEb(float eb) {
         this.eb = eb;
     }
 
-    public String getIb() {
+    public float getIb() {
         return ib;
     }
 
-    public void setIb(String ib) {
+    public void setIb(float ib) {
         this.ib = ib;
     }
 
-    public String getEf() {
+    public float getEf() {
         return ef;
     }
 
-    public void setEf(String ef) {
+    public void setEf(float ef) {
         this.ef = ef;
     }
 
-    public String get_if() {
+    public float get_if() {
         return _if;
     }
 
-    public void set_if(String _if) {
+    public void set_if(float _if) {
         this._if = _if;
     }
 
@@ -151,12 +139,11 @@ public class MeasureMeasdets {
         this.castedRawdmp = castedRawdmp;
     }
 
-    public MeasureMeasdets(int id, int sensorMeasureId, String no, String deltae, String deltal, String eb, String ib, String ef, String _if, String createdAt, String updatedAt, String castedRawdmp) {
+    public MeasureMeasdets(int id, String no, float deltae, float deltai, float eb, float ib, float ef, float _if, String createdAt, String updatedAt, String castedRawdmp) {
         this.id = id;
-        this.sensorMeasureId = sensorMeasureId;
         this.no = no;
         this.deltae = deltae;
-        this.deltal = deltal;
+        this.deltai = deltai;
         this.eb = eb;
         this.ib = ib;
         this.ef = ef;

@@ -8,6 +8,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.InputType;
@@ -87,6 +89,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
                 }
                 connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
                 showDialogProcessing();
+
                 Thread thread = new Thread() {
                     @Override
                     public void run() {
@@ -109,6 +112,11 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
         edtDatetime.setOnClickListener(v -> showDateTimeDialog(edtDatetime));
 
         btnWrite.setOnClickListener(v -> {
+            if (edtNameMeasure.getText().toString().length() == 0){
+                edtNameMeasure.setError("error");
+                edtNameMeasure.requestFocus();
+                return;
+            }
             if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0){
                 edtPeakMode.setError("error");
                 edtPeakMode.requestFocus();

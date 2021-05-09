@@ -31,19 +31,19 @@ public class SensorMeasure {
     @Expose
     private String updatedAt;
 
-    @SerializedName("measure_measba")
+    @SerializedName("measba")
     @Expose
     private MeasureMeasbas measureMeasbas;
 
-    @SerializedName("measure_measdet")
+    @SerializedName("measdet")
     @Expose
     private ArrayList<MeasureMeasdets> measureMeasdets;
 
-    @SerializedName("measure_measpara")
+    @SerializedName("measpara")
     @Expose
     private MeasureMeasparas measureMeasparas;
 
-    @SerializedName("measure_measres")
+    @SerializedName("measres")
     @Expose
     private ArrayList<MeasureMeasress> measureMeasresses;
 

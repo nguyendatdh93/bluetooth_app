@@ -33,6 +33,7 @@
                 android:id="@+id/item_rcv_bac_setting_edt_bac_name"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
+                android:maxLength="5"
                 android:textSize="@dimen/_11ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>

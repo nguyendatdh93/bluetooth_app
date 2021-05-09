@@ -20,7 +20,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelUuid;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -63,7 +69,10 @@ import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -72,6 +81,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
@@ -107,12 +120,13 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
     private void connectSensor() {
         if (MainActivity.device.getMacDevice() != null && mBluetoothAdapter != null) {
             try {
-                if (connectThread != null){
+                if (connectThread != null) {
                     connectThread.cancel();
                 }
                 connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
 
                 showDialogProcessing();
+
                 Thread thread = new Thread() {
                     @Override
                     public void run() {
@@ -130,7 +144,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
 
     private void addEvents() {
         btnTestConnect.setOnClickListener(v -> {
-            if (MainActivity.device.getMacDevice() != null){
+            if (MainActivity.device.getMacDevice() != null) {
                 boolean connection = false;
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
                     if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
@@ -149,13 +163,13 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
                         showErrorMessage("Device not support Bluetooth");
                     }
                 }
-            }else {
+            } else {
                 showErrorMessage("Device not have mac address");
             }
         });
 
         btnConnect.setOnClickListener(v -> {
-            if (MainActivity.device.getMacDevice() != null){
+            if (MainActivity.device.getMacDevice() != null) {
                 boolean connection = false;
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
                     if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
@@ -174,7 +188,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
                         showErrorMessage("Device not support Bluetooth");
                     }
                 }
-            }else {
+            } else {
                 showErrorMessage("Device not have mac address");
             }
         });
@@ -347,7 +361,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread {
         txtInfor1.setText("");
         txtInfor2.setText("");
         txtInfor3.setText("");
-        showErrorMessage("Disconnected");
+        showErrorMessage(error);
         MainActivity.device.setStatusConnect(-1);
     }
 
