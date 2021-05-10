@@ -81,14 +81,30 @@
                     android:textSize="@dimen/_10ssp"/>
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <RelativeLayout
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="@string/peak_detection"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
-                android:textStyle="bold" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_toStartOf="@id/view_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/peak_detection"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/view_left"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="@dimen/_25ssp"
+                    android:layout_height="@dimen/_25ssp"
+                    android:background="@drawable/circle_grey"
+                    android:padding="@dimen/_5ssp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,14 +117,29 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <RelativeLayout
                 android:layout_marginTop="@dimen/_20ssp"
-                android:text="@string/measurement"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15ssp"
-                android:textStyle="bold" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_toStartOf="@id/view_left_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/measurement"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/view_left_2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="@dimen/_25ssp"
+                    android:layout_height="@dimen/_25ssp"
+                    android:background="@drawable/circle_grey"
+                    android:padding="@dimen/_5ssp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+            </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

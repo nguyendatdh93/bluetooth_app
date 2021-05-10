@@ -58,6 +58,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/fragment_2_txt_time"
+                android:text="@string/use_the_current_date_and_time"
+                android:textSize="@dimen/_11ssp"
+                android:textColor="@color/toggle_text_ready_connect"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -97,6 +107,15 @@
                     android:textSize="@dimen/_11ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:text="@string/if_set_to_0_auto_power_off_will_not_be_performed"
+                android:textSize="@dimen/_11ssp"
+                android:textColor="@color/toggle_text_ready_connect"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/fragment_2_btn_write"

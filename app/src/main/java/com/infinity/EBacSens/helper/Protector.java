@@ -56,15 +56,16 @@ public class Protector {
 
     public static void appendLog(String text) {
         if (text != null){
+            text = getCurrentTime() + " " + text;
             File folder = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/EBacSens");
+                    File.separator + "/eBacSens");
             boolean success;
             if (!folder.exists()) {
                 success = folder.mkdirs();
             }
 
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/EBacSens/log.file");
+                    File.separator + "/eBacSens/log.txt");
 
             if (!logFile.exists()) {
                 try {
@@ -86,15 +87,16 @@ public class Protector {
     }
     public static void appendLogSensor(String text) {
         if (text != null){
+            text = getCurrentTime() + " " + text;
             File folder = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/EBacSens");
+                    File.separator + "/eBacSens");
             boolean success;
             if (!folder.exists()) {
                 success = folder.mkdirs();
             }
 
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/EBacSens/LogSensor.file");
+                    File.separator + "/eBacSens/LogSensor.txt");
 
             if (!logFile.exists()) {
                 try {
@@ -113,5 +115,11 @@ public class Protector {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String convertTimeZone(String time){
+        String t1 = time.substring(0,10);
+        String t2 = time.substring(11,19);
+        return t1+" "+t2;
     }
 }

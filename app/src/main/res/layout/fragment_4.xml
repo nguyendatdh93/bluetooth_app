@@ -32,38 +32,6 @@
                     android:textSize="@dimen/_15ssp"
                     android:textStyle="bold" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20ssp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10ssp"
-                        android:background="@drawable/square_border_grey"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10ssp">
-
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/fragment_4_spn_date_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_11ssp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10ssp"
-                        android:background="@color/white"
-                        android:paddingStart="@dimen/_3ssp"
-                        android:paddingEnd="@dimen/_3ssp"
-                        android:text="@string/number_of_microorganisms_measured_1_5"
-                        android:textSize="@dimen/_10ssp"/>
-                </RelativeLayout>
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/fragment_4_btn_history_measure"
                     android:layout_width="match_parent"
@@ -73,6 +41,20 @@
                     android:text="@string/latest_data_update"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11ssp" />
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10ssp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow"
+                    android:orientation="vertical">
+
+                    <com.infinity.EBacSens.canvas.CustomRecyclerView
+                        android:id="@+id/fragment_4_rcv_datetime"
+                        android:layout_margin="@dimen/_1ssp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -159,61 +141,6 @@
                     android:layout_marginTop="@dimen/_1ssp"
                     android:background="@drawable/shadow" />
             </LinearLayout>
-
-
-            <!--            <LinearLayout-->
-            <!--                android:id="@+id/fragment_4_container_chart"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="@dimen/_10ssp"-->
-            <!--                android:background="@drawable/shadow"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <LinearLayout-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:orientation="horizontal">-->
-
-            <!--                    <TextView-->
-            <!--                        android:layout_width="wrap_content"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:layout_gravity="center"-->
-            <!--                        android:rotation="-90"-->
-            <!--                        android:text="Delta[uA]" />-->
-
-            <!--                    <LinearLayout-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:orientation="vertical">-->
-
-            <!--                        <com.github.mikephil.charting.charts.LineChart-->
-            <!--                            android:id="@+id/fragment_4_chart"-->
-            <!--                            android:layout_width="match_parent"-->
-            <!--                            android:layout_height="@dimen/_200sdp" />-->
-
-            <!--                        <TextView-->
-            <!--                            android:layout_width="match_parent"-->
-            <!--                            android:layout_height="wrap_content"-->
-            <!--                            android:layout_marginTop="@dimen/_5ssp"-->
-            <!--                            android:layout_marginBottom="@dimen/_5ssp"-->
-            <!--                            android:gravity="center"-->
-            <!--                            android:text="[mV]" />-->
-            <!--                    </LinearLayout>-->
-            <!--                </LinearLayout>-->
-
-
-            <!--                <CheckBox-->
-            <!--                    android:id="@+id/fragment_4_ckb_base_red_line"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="end"-->
-            <!--                    android:layout_marginEnd="@dimen/_10ssp"-->
-            <!--                    android:button="@drawable/custom_checkbox"-->
-            <!--                    android:text="@string/baseline_display"-->
-            <!--                    android:checked="true"-->
-            <!--                    android:textColor="@color/primary_color"-->
-            <!--                    android:textSize="@dimen/_11ssp" />-->
-            <!--            </LinearLayout>-->
 
             <TextView
                 android:layout_width="match_parent"

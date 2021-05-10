@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
 import android.util.Log;
@@ -56,6 +57,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.ListDeviceActivity;
 import com.infinity.EBacSens.activitys.MainActivity;
+import com.infinity.EBacSens.adapters.AdapteRCVDatetime;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVGraph;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
@@ -67,6 +69,7 @@ import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
 import com.infinity.EBacSens.model_objects.MeasureMeasparas;
 import com.infinity.EBacSens.model_objects.MeasureMeasress;
+import com.infinity.EBacSens.model_objects.ModelRCVDatetime;
 import com.infinity.EBacSens.model_objects.Result;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
@@ -76,6 +79,7 @@ import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
 import com.infinity.EBacSens.presenter.PresenterFragment4;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
+import com.infinity.EBacSens.views.ViewAdapterRCVDatetimeListener;
 import com.infinity.EBacSens.views.ViewConnectThread;
 import com.infinity.EBacSens.views.ViewFragment4Listener;
 import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
@@ -97,10 +101,13 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewConnectThread {
+public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewConnectThread , ViewAdapterRCVDatetimeListener, Handler.Callback {
 
     private View view;
     private Activity activity;
@@ -110,7 +117,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private SeekBar skbProgress;
     private Button btnExportCSV, btnHistoryMeasure;
     private TextView txtProcess;
-    private Spinner spnDatetime;
 
     private RecyclerView rcvResult;
     private ArrayList<Result> arrResult;
@@ -120,11 +126,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<Graph> arrGraph;
     private AdapteRCVGraph adapteRCVGraph;
 
-    private List<String> arrDatetime;
-    private ArrayAdapter<String> adapterSpnDatetime;
+    private RecyclerView rcvDatetime;
+    private ArrayList<ModelRCVDatetime> arrRCVDatetime;
+    private AdapteRCVDatetime adapteRCVDatetime;
 
     private ArrayList<SensorMeasure> arrMeasure;
-    private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
     private Dialog dialogProcessing;
 
@@ -135,6 +141,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     private int positionCSV;
     private SensorMeasure sensorMeasureExport;
+
+    private Handler handler;
+    private int countTryConnect = 0;
+    private final int maxTryConnect = 3;
 
     @Nullable
     @Override
@@ -158,27 +168,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             }
         });
 
-        spnDatetime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                skbProgress.setProgress(0);
-                txtProcess.setText("");
-                positionCSV = position;
-                showDialogProcessing();
-                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getId());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         showDialogProcessing();
         presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
     }
 
     private void addController() {
+        handler = new Handler(this);
         presenterFragment4 = new PresenterFragment4(this);
         container = view.findViewById(R.id.container_fragment_4);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
@@ -187,7 +182,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         skbProgress.setEnabled(false);
         skbProgress.setPadding(0, 0, 0, 0);
         txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
-        spnDatetime = view.findViewById(R.id.fragment_4_spn_date_time);
 
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
         rcvResult.setHasFixedSize(true);
@@ -207,10 +201,14 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         adapteRCVGraph = new AdapteRCVGraph(context, arrGraph);
         rcvGraph.setAdapter(adapteRCVGraph);
 
-        arrDatetime = new ArrayList<>();
+        rcvDatetime = view.findViewById(R.id.fragment_4_rcv_datetime);
+        rcvDatetime.setHasFixedSize(true);
+        rcvDatetime.setLayoutManager(new LinearLayoutManager(context));
+        arrRCVDatetime = new ArrayList<>();
 
-        adapterSpnDatetime = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrDatetime);
-        spnDatetime.setAdapter(adapterSpnDatetime);
+        adapteRCVDatetime = new AdapteRCVDatetime(context, arrRCVDatetime , this);
+        rcvDatetime.setAdapter(adapteRCVDatetime);
+
         arrMeasure = new ArrayList<>();
         arrMeasurePage = new ArrayList<>();
 
@@ -387,14 +385,15 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onGetDataMeasurePage(List<SensorMeasurePage.MeasurePage> measurePages) {
         if (measurePages != null) {
             arrMeasurePage.clear();
-            //arrDatetime.clear();
-            adapterSpnDatetime.clear();
+            arrRCVDatetime.clear();
             arrMeasurePage.addAll(measurePages);
             for (int i = 0; i < measurePages.size(); i++) {
-                adapterSpnDatetime.add(measurePages.get(i).getDatetime());
+                arrRCVDatetime.add(new ModelRCVDatetime(measurePages.get(i).getDatetime() , false));
             }
-            adapterSpnDatetime.notifyDataSetChanged();
-            if (arrDatetime.size() > 0) {
+            adapteRCVDatetime.notifyDataSetChanged();
+            if (arrRCVDatetime.size() > 0) {
+                arrRCVDatetime.get(0).setSelected(true);
+                adapteRCVDatetime.notifyItemChanged(0);
                 skbProgress.setProgress(0);
                 positionCSV = 0;
                 showDialogProcessing();
@@ -436,11 +435,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        //cancelDialogProcessing();
         showSuccessMessage("Success Stored");
-        arrDatetime.clear();
+        arrRCVDatetime.clear();
         arrMeasure.clear();
-        //adapterSpnDatetime.notifyDataSetChanged();
         presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
         skbProgress.setProgress(100);
         txtProcess.setText("Success Stored!");
@@ -483,6 +480,43 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         Log.e("Connection", value != null ? value : "null");
 
         Protector.appendLogSensor(value);
+
+//        if (connectThread != null) {
+//            connectThread.write("*R,LIST");
+//
+//            // test result
+//
+//            // save to cloud compare by datetime
+//
+//            ArrayList<BacSetting> bacSettings = new ArrayList<>();
+//            bacSettings.add(new BacSetting(1, 1, "Ex - 01", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            bacSettings.add(new BacSetting(1, 1, "Ex - 02", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            bacSettings.add(new BacSetting(1, 1, "Ex - 03", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+//
+//            SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
+//            MeasureMeasbas measureMeasbas = new MeasureMeasbas();
+//            measureMeasbas.setDatetime(Protector.getCurrentTime());
+//            measureMeasbas.setPstaterr(1);
+//
+//            ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
+//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 01", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 02", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 03", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 04", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 05", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+//
+//            ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
+//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 01", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 02", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 03", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 04", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 05", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+//
+//            //showDialogProcessing();
+//            presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
+//        }
     }
 
     @Override
@@ -490,53 +524,57 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         if (connectThread != null) {
             connectThread.run();
         }
-        MainActivity.device.setStatusConnect(1);
+        Message message = Message.obtain();
+        message.what = STATE_CONNECTED;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onError(String error) {
-        cancelDialogProcessing();
-        showErrorMessage(error);
+        Message message = Message.obtain();
+        message.what = STATE_DISCONNECTED;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onRuned() {
-        if (connectThread != null) {
-            connectThread.write("*R,LIST");
+        Message message = Message.obtain();
+        message.what = STATE_LISTENING;
+        handler.sendMessage(message);
+    }
 
-            // test result
+    @Override
+    public void onClickRCVDatetime(int position) {
+        skbProgress.setProgress(0);
+        txtProcess.setText("");
+        positionCSV = position;
+        showDialogProcessing();
+        presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(position).getId());
+    }
 
-            // save to cloud compare by datetime
-
-            ArrayList<BacSetting> bacSettings = new ArrayList<>();
-            bacSettings.add(new BacSetting(1, 1, "Ex - 01", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-            bacSettings.add(new BacSetting(1, 1, "Ex - 02", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-            bacSettings.add(new BacSetting(1, 1, "Ex - 03", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-            bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-            bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-
-            SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
-            MeasureMeasbas measureMeasbas = new MeasureMeasbas();
-            measureMeasbas.setDatetime(Protector.getCurrentTime());
-            measureMeasbas.setPstaterr(1);
-
-            ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-            measureMeasresses.add(new MeasureMeasress(1, "Ex - 01", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasresses.add(new MeasureMeasress(1, "Ex - 02", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasresses.add(new MeasureMeasress(1, "Ex - 03", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasresses.add(new MeasureMeasress(1, "Ex - 04", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasresses.add(new MeasureMeasress(1, "Ex - 05", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-
-            ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
-            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 01", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 02", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 03", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 04", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 05", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-
-            //showDialogProcessing();
-            presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
+    @Override
+    public boolean handleMessage(@NonNull Message msg) {
+        switch (msg.what){
+            case 2:
+                MainActivity.device.setStatusConnect(1);
+                cancelDialogProcessing();
+                break;
+            case 1:
+                MainActivity.device.setStatusConnect(1);
+                cancelDialogProcessing();
+                break;
+            case 0:
+                MainActivity.device.setStatusConnect(0);
+                cancelDialogProcessing();
+                if (++countTryConnect >= maxTryConnect){
+                    countTryConnect = 1;
+                    showErrorMessage("Can't connect");
+                }else {
+                    connectSensor();
+                }
+                break;
         }
+        return false;
     }
 }
 

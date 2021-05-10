@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">EBacSens</string>
+    <string name="app_name">eBacSens</string>
 
     <string name="list_of_measuring_instruments" translatable="false">計測器一覧</string>
     <string name="communication_settings" translatable="false">通信設定</string>
@@ -82,4 +82,6 @@
     <string name="microbiological_determination_number" translatable="false">微生物測定数</string>
     <string name="creation_date_and_time" translatable="false">作成日時</string>
     <string name="measurement" translatable="false">測定</string>
+    <string name="use_the_current_date_and_time" translatable="false">現在の日時を使用する</string>
+    <string name="if_set_to_0_auto_power_off_will_not_be_performed" translatable="false">0を設定するとオートパワーオフは行いません</string>
 </resources>

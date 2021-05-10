@@ -29,9 +29,9 @@ public class ConnectThread extends Thread {
     // Defines several constants used when transmitting messages between the
     // service and the UI.
     private interface MessageConstants {
-        public static final int MESSAGE_READ = 0;
-        public static final int MESSAGE_WRITE = 1;
-        public static final int MESSAGE_TOAST = 2;
+        public static final int MESSAGE_READ = 4;
+        public static final int MESSAGE_WRITE = 5;
+        public static final int MESSAGE_TOAST = 6;
 
         // ... (Add other message types here as needed.)
     }
@@ -99,6 +99,7 @@ public class ConnectThread extends Thread {
                 callback.onGetData(readMsg.toString());
             } catch (IOException e) {
                 Log.d("Connection", "Input stream was disconnected", e);
+                //callback.onError(e.getMessage());
                 break;
             }
 

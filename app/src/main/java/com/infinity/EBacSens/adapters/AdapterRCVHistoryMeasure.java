@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorSetting;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
@@ -44,7 +45,8 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
         viewHodler.txtName.setText(arrItem.get(position).getSetname());
-        viewHodler.txtTime.setText(arrItem.get(position).getUpdatedAt());
+        viewHodler.txtTime.setText(Protector.convertTimeZone(arrItem.get(position).getUpdatedAt()));
+
         viewHodler.txtResult.setText(String.valueOf(arrItem.get(position).getBacSettings().size()));
         viewHodler.btnDelete.setOnClickListener(v -> callback.onDeleteRCVHistoryMeasure(position));
         viewHodler.btnUse.setOnClickListener(v -> callback.onUseRCVHistoryMeasure(position));

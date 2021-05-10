@@ -23,6 +23,12 @@ public class MainActivity extends AppCompatActivity  {
 
     public static BluetoothAdapter mBluetoothAdapter;
 
+    public static int STATE_CONNECTED_TEST = 3;
+    public static int STATE_LISTENING = 2;
+    public static int STATE_CONNECTED = 1;
+    public static int STATE_DISCONNECTED = 0;
+
+
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -105,4 +111,6 @@ public class MainActivity extends AppCompatActivity  {
     public void onBack(View view) {
         finish();
     }
+
+
 }

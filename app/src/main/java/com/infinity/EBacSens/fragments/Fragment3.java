@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -60,10 +61,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure , ViewConnectThread {
+public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure , ViewConnectThread , Handler.Callback{
 
     private View view;
     private Activity activity;
@@ -87,7 +91,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private Spinner spnNumber;
 
     private int statusButton;
+    private Handler handler;
+    private boolean canChangeSpinner = true;
     private ConnectThread connectThread;
+    private int countTryConnect = 0;
+    private final int maxTryConnect = 3;
 
     @Nullable
     @Override
@@ -137,11 +145,16 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         spnNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                arrBacSetting.clear();
-                for (int i = 0; i < Protector.tryParseInt(spnNumber.getSelectedItem().toString()); i++) {
-                    arrBacSetting.add(new BacSetting(-1 , -1 , "", 1, 1, 1, 1, 1 , "" , ""));
+                if (canChangeSpinner){
+                    arrBacSetting.clear();
+                    for (int i = 0; i < Protector.tryParseInt(spnNumber.getSelectedItem().toString()); i++) {
+                        arrBacSetting.add(new BacSetting(-1 , -1 , "", 1, 1, 1, 1, 1 , "" , ""));
+                    }
+                    adapteRCVBacSetting.notifyDataSetChanged();
+                }else {
+                    canChangeSpinner = true;
                 }
-                adapteRCVBacSetting.notifyDataSetChanged();
+
             }
 
             @Override
@@ -171,6 +184,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     }
 
     private void addController() {
+        handler = new Handler(this);
         presenterFragment3 = new PresenterFragment3(this);
         container = view.findViewById(R.id.container_fragment_3);
         spnNumber = view.findViewById(R.id.fragment_3_spn_number);
@@ -281,7 +295,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             edtIfst.setText(String.valueOf(arrSensorSetting.get(position).getIfst()));
             edtIfen.setText(String.valueOf(arrSensorSetting.get(position).getIfen()));
 
-            if (arrSensorSetting.get(position).getBacSettings() != null) {
+            if (arrSensorSetting.get(position).getBacSettings() != null && arrSensorSetting.get(position).getBacSettings().size() > 0) {
+                spnNumber.setSelection(arrSensorSetting.get(position).getBacSettings().size()-1);
+                canChangeSpinner = false;
                 arrBacSetting.clear();
                 arrBacSetting.addAll(arrSensorSetting.get(position).getBacSettings());
                 adapteRCVBacSetting.notifyDataSetChanged();
@@ -692,18 +708,24 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         if (connectThread != null) {
             connectThread.run();
         }
-        MainActivity.device.setStatusConnect(1);
+        Message message = Message.obtain();
+        message.what = STATE_CONNECTED;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onError(String error) {
-        cancelDialogProcessing();
-        showErrorMessage(error);
+        Message message = Message.obtain();
+        message.what = STATE_DISCONNECTED;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onRuned() {
-        cancelDialogProcessing();
+        Message message = Message.obtain();
+        message.what = STATE_LISTENING;
+        handler.sendMessage(message);
+
         if (connectThread != null) {
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",SETNAME,"+ edtNameMEasure.getText().toString() + "[CR]");
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",BACS,"+ spnNumber.getSelectedItem().toString() + "[CR]");
@@ -737,9 +759,32 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFST,"+ edtIfst.getText().toString() + "[CR]");
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFEN,"+ edtIfen.getText().toString() + "[CR]");
 
-            // test result
-            edtNameMEasure.setText("Name ex response");
         }
+    }
+
+    @Override
+    public boolean handleMessage(@NonNull Message msg) {
+        switch (msg.what){
+            case 2:
+                MainActivity.device.setStatusConnect(1);
+                cancelDialogProcessing();
+                break;
+            case 1:
+                MainActivity.device.setStatusConnect(1);
+                cancelDialogProcessing();
+                break;
+            case 0:
+                MainActivity.device.setStatusConnect(0);
+                cancelDialogProcessing();
+                if (++countTryConnect >= maxTryConnect){
+                    countTryConnect = 1;
+                    showErrorMessage("Can't connect");
+                }else {
+                    connectSensor();
+                }
+                break;
+        }
+        return false;
     }
 }
 

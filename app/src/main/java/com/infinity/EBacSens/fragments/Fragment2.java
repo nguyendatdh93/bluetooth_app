@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelUuid;
 import android.text.Editable;
 import android.text.InputType;
@@ -51,10 +52,13 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
+import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment2 extends Fragment implements ViewConnectThread {
+public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.Callback{
 
     private View view;
     private Activity activity;
@@ -65,12 +69,15 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
     private Button btnRead , btnWrite;
 
     private Dialog dialogProcessing;
-    private TextView txtDialogProcessingTitle;
+    private TextView txtDialogProcessingTitle , txtDatetime;
 
     private ConnectThread connectThread;
 
     // 1 = write , 0 = read
-    int statusButton = 0;
+    private int statusButton = 0;
+    private Handler handler;
+    private int countTryConnect = 0;
+    private final int maxTryConnect = 3;
 
     @Nullable
     @Override
@@ -108,9 +115,6 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
     }
 
     private void addEvents() {
-        edtDatetime.setText(Protector.getCurrentTime());
-        edtDatetime.setOnClickListener(v -> showDateTimeDialog(edtDatetime));
-
         btnWrite.setOnClickListener(v -> {
             if (edtNameMeasure.getText().toString().length() == 0){
                 edtNameMeasure.setError("error");
@@ -152,41 +156,22 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
                 showErrorMessage("Device not support Bluetooth");
             }
         });
-    }
 
-    private void showDateTimeDialog(final EditText date_time_in) {
-        final Calendar calendar=Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener dateSetListener= (view, year, month, dayOfMonth) -> {
-            calendar.set(Calendar.YEAR,year);
-            calendar.set(Calendar.MONTH,month);
-            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-
-            TimePickerDialog.OnTimeSetListener timeSetListener= (view1, hourOfDay, minute) -> {
-                calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                calendar.set(Calendar.MINUTE,minute);
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss" , Locale.getDefault());
-                date_time_in.setText(simpleDateFormat.format(calendar.getTime()));
-            };
-
-            new TimePickerDialog(context,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
-        };
-        new DatePickerDialog(context,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+        txtDatetime.setOnClickListener(v -> edtDatetime.setText(Protector.getCurrentTime()));
     }
 
     private void addController() {
+        handler = new Handler(this);
+
         container = view.findViewById(R.id.container_fragment_2);
+        txtDatetime = view.findViewById(R.id.fragment_2_txt_time);
         edtDatetime = view.findViewById(R.id.fragment_2_edt_datetime);
         edtNameMeasure = view.findViewById(R.id.fragment_2_edt_name_measure);
         edtPowerOffMin = view.findViewById(R.id.fragment_2_edt_power_off_min);
         edtPeakMode = view.findViewById(R.id.fragment_2_edt_peakmode);
         btnWrite = view.findViewById(R.id.fragment_2_btn_write);
         btnRead = view.findViewById(R.id.fragment_2_btn_read);
-
-        if (MainActivity.device != null){
-            edtPowerOffMin.setText(String.valueOf(MainActivity.device.getPowoffmin()));
-            edtPeakMode.setText(String.valueOf(MainActivity.device.getPowoffmin()));
-        }
-
+        edtDatetime.setText(Protector.getCurrentTime());
         initDialogProcessing();
     }
 
@@ -236,29 +221,54 @@ public class Fragment2 extends Fragment implements ViewConnectThread {
         if (connectThread != null) {
             connectThread.run();
         }
-        MainActivity.device.setStatusConnect(1);
+        Message message = Message.obtain();
+        message.what = STATE_CONNECTED;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onError(String error) {
-        cancelDialogProcessing();
-        showErrorMessage(error);
+        Message message = Message.obtain();
+        message.what = STATE_DISCONNECTED;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onRuned() {
-        cancelDialogProcessing();
+        Message message = Message.obtain();
+        message.what = STATE_LISTENING;
+        handler.sendMessage(message);
 
         if (connectThread != null) {
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IDNAME,"+ edtNameMeasure.getText().toString() + "[CR]");
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",DATETIME,"+ edtDatetime.getText().toString() + "[CR]");
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PRMID,"+ edtDatetime.getText().toString() + "[CR]");
-
-            // test result
-            edtNameMeasure.setText("Name ex response");
-            edtPeakMode.setText(String.valueOf(new Random().nextInt(90) + 10));
-            edtPowerOffMin.setText(String.valueOf(new Random().nextInt(60)));
         }
+    }
+
+    @Override
+    public boolean handleMessage(@NonNull Message msg) {
+        switch (msg.what){
+            case 2:
+                MainActivity.device.setStatusConnect(1);
+                cancelDialogProcessing();
+                break;
+            case 1:
+                MainActivity.device.setStatusConnect(1);
+                cancelDialogProcessing();
+                break;
+            case 0:
+                MainActivity.device.setStatusConnect(0);
+                cancelDialogProcessing();
+                if (++countTryConnect >= maxTryConnect){
+                    countTryConnect = 1;
+                    showErrorMessage("Can't connect");
+                }else {
+                    connectSensor();
+                }
+                break;
+        }
+        return false;
     }
 }
 
