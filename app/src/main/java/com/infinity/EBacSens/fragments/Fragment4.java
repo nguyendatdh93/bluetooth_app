@@ -154,6 +154,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private int countTryConnect = 0;
     private final int maxTryConnect = 2;
 
+    private ArrayList<String> arrRules;
+    private ArrayList<String> arrResults;
+    private int resultStart = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -218,6 +222,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
         arrMeasure = new ArrayList<>();
         arrMeasurePage = new ArrayList<>();
+
+        arrRules = new ArrayList<>();
+        arrResults = new ArrayList<>();
 
         initDialogProcessing();
         initPopup();
@@ -562,16 +569,60 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
 
-                // result sensor
+                // log file
                 Protector.appendLogSensor(tempMsg);
 
+                // result sensor
+                arrResults.add(tempMsg);
+                if (resultStart == 0){
+                    resultStart++;
+                    for (int i = 0 ; i < Protector.tryParseInt(arrResults.get(0)) ; i++){
+                        arrRules.add("*R,BACNAME"+(i+1)+",()[CR]");
+                        arrRules.add("*R,E1_"+(i+1)+",()[CR]");
+                        arrRules.add("*R,E2_"+(i+1)+",()[CR]");
+                        arrRules.add("*R,E3_"+(i+1)+",()[CR]");
+                        arrRules.add("*R,E4_"+(i+1)+",()[CR]");
+                        arrRules.add("*R,PKP"+(i+1)+",()[CR]");
+                    }
+                }
                 break;
             case 2:
-                MainActivity.device.setStatusConnect(1);
+
+                // demo will enable below line
                 cancelDialogProcessing();
 
+                MainActivity.device.setStatusConnect(1);
+
+                arrRules.clear();
+                arrResults.clear();
+
                 if (connectThread != null) {
-                    connectThread.write("*R,LIST");
+
+//                    arrRules.add("*R,SETNAME,[CR]");
+                    arrRules.add("*R,BACS,()[CR]");
+//                    arrRules.add("*R,CRNG,[CR]");
+//                    arrRules.add("*R,EQP1,[CR]");
+//                    arrRules.add("*R,EQT1,[CR]");
+//                    arrRules.add("*R,EQP2,[CR]");
+//                    arrRules.add("*R,EQT2,[CR]");
+//                    arrRules.add("*R,EQP3,[CR]");
+//                    arrRules.add("*R,EQT3,[CR]");
+//                    arrRules.add("*R,EQP4,[CR]");
+//                    arrRules.add("*R,EQT4,[CR]");
+//                    arrRules.add("*R,EQP5,[CR]");
+//                    arrRules.add("*R,EQT5,[CR]");
+//                    arrRules.add("*R,STP,[CR]");
+//                    arrRules.add("*R,ENP,[CR]");
+//                    arrRules.add("*R,PP,[CR]");
+//                    arrRules.add("*R,DLTE,[CR]");
+//                    arrRules.add("*R,PWD,[CR]");
+//                    arrRules.add("*R,PTM,[CR]");
+//                    arrRules.add("*R,IBST,[CR]");
+//                    arrRules.add("*R,IBEN,[CR]");
+//                    arrRules.add("*R,IFST,[CR]");
+//                    arrRules.add("*R,IFEN,[CR]");
+
+                    connectThread.write(arrRules.get(0));
 
                     // test result
 
@@ -584,7 +635,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
                     bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
 
+                    // para
                     SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
+
                     MeasureMeasbas measureMeasbas = new MeasureMeasbas();
                     measureMeasbas.setDatetime(Protector.getCurrentTime());
                     measureMeasbas.setPstaterr(1);

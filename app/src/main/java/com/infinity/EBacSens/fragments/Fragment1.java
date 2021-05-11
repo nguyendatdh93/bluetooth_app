@@ -419,7 +419,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 // log file
                 Protector.appendLogSensor(tempMsg);
                 // result sensor
-                arrResults.add(0,tempMsg);
+                arrResults.add(tempMsg);
 
                 if (arrRules.size() == 0){
                     txtInfor1.setText(arrResults.get(0));
@@ -437,9 +437,9 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 arrRules.clear();
                 arrResults.clear();
                 if (statusConnect == 1){
-                    arrRules.add("*R,IDNAME,[CR]");
-                    arrRules.add("*R,VER,[CR]");
-                    arrRules.add("*R,SER,[CR]");
+                    arrRules.add("*R,IDNAME,()[CR]");
+                    arrRules.add("*R,VER,()[CR]");
+                    arrRules.add("*R,SER,()[CR]");
                 }
 
                 if (connectThread != null && arrRules.size() > 0) {

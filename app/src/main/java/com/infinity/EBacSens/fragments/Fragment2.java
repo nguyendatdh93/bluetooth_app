@@ -280,7 +280,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 // log file
                 Protector.appendLogSensor(tempMsg);
                 // result sensor
-                arrResults.add(0,tempMsg);
+                arrResults.add(tempMsg);
                 if (arrRules.size() == 0){
                     if (statusButton == 1){
                         connectThread.write("SAVE");
@@ -306,10 +306,10 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
 
                 arrRules.clear();
                 arrResults.clear();
-                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",IDNAME,"+ edtNameMeasure.getText().toString() + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",DATETIME,"+ edtDatetime.getText().toString() + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PEAKMODE,"+ edtDatetime.getText().toString() + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",POWOFFMIN,"+ edtDatetime.getText().toString() + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString(): "R,IDNAME,()" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString() : "R,DATETIME,()" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE,()" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN,()" ) + "[CR]");
 
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));
