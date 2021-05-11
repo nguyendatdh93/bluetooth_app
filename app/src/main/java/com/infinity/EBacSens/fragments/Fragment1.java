@@ -19,7 +19,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,7 +56,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
-import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED_TEST;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
@@ -64,7 +67,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     private Activity activity;
     private Context context;
 
-    private RelativeLayout container;
+    //private RelativeLayout container;
     private LinearLayout containerInfor , containerStatus;
     private TextView txtInfor1, txtInfor2, txtInfor3, txtStatusConnection;
     private Button btnTestConnect, btnConnect, btnDisconnect;
@@ -78,10 +81,17 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     private ConnectThread connectThread;
 
+    // popup
+    private LinearLayout containerPopup;
+    ImageView imgTitle;
+    TextView txtTitle , txtContent;
+
     // 0 = test , 1 = connect
     private int statusConnect;
 
     private Handler handler;
+
+    private ArrayList<String> arrRules;
 
     @Nullable
     @Override
@@ -99,7 +109,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler ,this);
 
                 showDialogProcessing();
 
@@ -140,11 +150,11 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                         showDialogProcessing();
                         pairDevice(device);
                     } else {
-                        showErrorMessage("Device not support Bluetooth");
+                        showPopup("Failed" , "Device not have mac address." , false);
                     }
                 }
             } else {
-                showErrorMessage("Device not have mac address");
+                showPopup("Failed" , "Device not have mac address." , false);
             }
         });
 
@@ -167,11 +177,11 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                         showDialogProcessing();
                         pairDevice(device);
                     } else {
-                        showErrorMessage("Device not support Bluetooth");
+                        showPopup("Failed" , "Device not have mac address." , false);
                     }
                 }
             } else {
-                showErrorMessage("Device not have mac address");
+                showPopup("Failed" , "Device not have mac address." , false);
             }
         });
 
@@ -204,33 +214,12 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         }
     }
 
-    private void showSuccessMessage(String message) {
-        Snackbar snackbar = Snackbar
-                .make(container, message, Snackbar.LENGTH_LONG);
-        View view = snackbar.getView();
-        view.setBackgroundColor(Color.GREEN);
-        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.BLACK);
-        snackbar.show();
-    }
-
-    private void showErrorMessage(String message) {
-        Snackbar snackbar = Snackbar
-                .make(container, message, Snackbar.LENGTH_LONG);
-        View view = snackbar.getView();
-        view.setBackgroundColor(Color.RED);
-        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        snackbar.show();
-    }
-
     private void addController() {
         intentFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
 
-        container = view.findViewById(R.id.container_fragment_1);
+        containerPopup = view.findViewById(R.id.container_popup);
         containerStatus = view.findViewById(R.id.fragment_1_container_status);
         containerInfor = view.findViewById(R.id.fragment_1_container_infor);
-        container = view.findViewById(R.id.container_fragment_1);
         txtInfor1 = view.findViewById(R.id.fragment_1_txt_infor_1);
         txtInfor2 = view.findViewById(R.id.fragment_1_txt_infor_2);
         txtInfor3 = view.findViewById(R.id.fragment_1_txt_infor_3);
@@ -252,10 +241,23 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         btnDisconnect = view.findViewById(R.id.fragment_1_btn_disconnect);
 
         arrDevicePaired = new ArrayList<>();
-
+        arrRules = new ArrayList<>();
 
         initDialogProcessing();
         getPairedDevices();
+        initPopup();
+    }
+
+    private void initPopup(){
+        ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
+        imgTitle = view.findViewById(R.id.fragment_popup_img_title);
+
+        imgClose.setOnClickListener(v -> {
+            hidePopup();
+        });
+
+        txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
+        txtContent = view.findViewById(R.id.fragment_popup_txt_content);
     }
 
     private void initDialogProcessing() {
@@ -275,6 +277,42 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         }
     }
 
+    private void showPopup(String title , String content , boolean success){
+        txtTitle.setText(title);
+        txtContent.setText(content);
+
+        if (success){
+            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
+        }else {
+            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+            imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
+        }
+
+        containerPopup.setVisibility(View.VISIBLE);
+
+        Animation animSlide = AnimationUtils.loadAnimation(context,
+                R.anim.left_to_right);
+        containerPopup.startAnimation(animSlide);
+
+        final Runnable r = new Runnable() {
+            public void run() {
+                hidePopup();
+            }
+        };
+        handler.postDelayed(r, 3000);
+    }
+
+
+    private void hidePopup(){
+        if (containerPopup.getVisibility() == View.VISIBLE){
+            Animation animSlide = AnimationUtils.loadAnimation(context,
+                    R.anim.right_to_left);
+            containerPopup.startAnimation(animSlide);
+            containerPopup.setVisibility(View.GONE);
+        }
+    }
+
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -286,7 +324,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    showSuccessMessage("Paired");
+                    showPopup("Success" , "Paired." , true);
                     cancelDialogProcessing();
                     if (mBluetoothAdapter != null) {
                         connectSensor();
@@ -358,7 +396,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-        if (statusConnect == 1) {
+        if (statusConnect == 1 && msg.what == 2) {
 
             // test
 
@@ -371,7 +409,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
             txtInfor3.setText("Serial:0003");
 
             return false;
-        }else if(statusConnect == 0) {
+        }else if(statusConnect == 0 && msg.what == 2) {
             MainActivity.device.setStatusConnect(1);
             cancelDialogProcessing();
             containerInfor.setVisibility(View.GONE);
@@ -382,23 +420,44 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         }
 
         switch (msg.what){
-            //
-            case 3:
-                MainActivity.device.setStatusConnect(1);
+            case 6:
                 cancelDialogProcessing();
+                byte[] readBuff = (byte[]) msg.obj;
+                String tempMsg = new String(readBuff, 0, msg.arg1);
+
+                // result sensor
+
+                if (arrRules.size() == 0){
+                    cancelDialogProcessing();
+                }else {
+                    arrRules.remove(0);
+                    connectThread.write(arrRules.get(0));
+                }
+
+                Protector.appendLogSensor(tempMsg);
+
+                break;
+            case 2:
+                MainActivity.device.setStatusConnect(1);
+                // demo will enable below line
+                cancelDialogProcessing();
+
+                arrRules.clear();
+                if (statusConnect == 1){
+                    arrRules.add("*R,IDNAME,[CR]");
+                    arrRules.add("*R,IDNAME,[CR]");
+                    arrRules.add("*R,IDNAME,[CR]");
+                }
+
+                if (connectThread != null) {
+                    connectThread.write(arrRules.get(0));
+                }
+
+                //test result
                 containerInfor.setVisibility(View.GONE);
                 containerStatus.setVisibility(View.VISIBLE);
                 txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
                 txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
-                break;
-            case 1:
-                MainActivity.device.setStatusConnect(1);
-                cancelDialogProcessing();
-                containerInfor.setVisibility(View.VISIBLE);
-                containerStatus.setVisibility(View.GONE);
-                txtInfor1.setText("MODEL:EbacSens");
-                txtInfor2.setText("Ver.a.014");
-                txtInfor3.setText("Serial:0003");
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);

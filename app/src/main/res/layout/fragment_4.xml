@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_fragment_4"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/container_fragment_4">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -43,17 +43,17 @@
                     android:textSize="@dimen/_11ssp" />
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/_10ssp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10ssp"
                     android:background="@drawable/shadow"
                     android:orientation="vertical">
 
                     <com.infinity.EBacSens.canvas.CustomRecyclerView
                         android:id="@+id/fragment_4_rcv_datetime"
-                        android:layout_margin="@dimen/_1ssp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_1ssp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -134,12 +134,19 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fragment_4_rcv_graph"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_1ssp"
-                    android:background="@drawable/shadow" />
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fragment_4_rcv_graph"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_1ssp"
+                        android:background="@drawable/shadow" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <TextView
@@ -231,11 +238,18 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fragment_4_rcv_result"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_1ssp" />
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fragment_4_rcv_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_1ssp" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -291,7 +305,65 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
+    <LinearLayout
+        android:id="@+id/container_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:padding="@dimen/_10ssp">
+
+        <ImageButton
+            android:id="@+id/fragment_popup_img_close"
+            android:layout_width="@dimen/_25ssp"
+            android:layout_height="@dimen/_25ssp"
+            android:layout_gravity="end"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_close_24" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/fragment_popup_img_title"
+                android:layout_width="@dimen/_40ssp"
+                android:layout_height="@dimen/_40ssp"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/_5ssp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fragment_popup_txt_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/fragment_popup_txt_content"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_11ssp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
 </RelativeLayout>

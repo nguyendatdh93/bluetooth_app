@@ -8,10 +8,10 @@
     </item>
 
     <item
-        android:left="@dimen/_1ssp"
-        android:right="@dimen/_1ssp"
-        android:top="@dimen/_1ssp"
-        android:bottom="@dimen/_1ssp">
+        android:left="@dimen/_3ssp"
+        android:right="@dimen/_3ssp"
+        android:top="@dimen/_3ssp"
+        android:bottom="@dimen/_3ssp">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/white"/>
             <corners android:radius="@dimen/_2ssp" />

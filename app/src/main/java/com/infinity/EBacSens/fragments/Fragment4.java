@@ -22,12 +22,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -107,12 +111,11 @@ import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewConnectThread , ViewAdapterRCVDatetimeListener, Handler.Callback {
+public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewConnectThread, ViewAdapterRCVDatetimeListener, Handler.Callback {
 
     private View view;
     private Activity activity;
     private Context context;
-    private RelativeLayout container;
 
     private SeekBar skbProgress;
     private Button btnExportCSV, btnHistoryMeasure;
@@ -134,6 +137,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     private Dialog dialogProcessing;
 
+    // popup
+    private LinearLayout containerPopup;
+    private ImageView imgTitle;
+    private TextView txtTitle , txtContent;
+
     private List<SensorMeasurePage.MeasurePage> arrMeasurePage;
     private PresenterFragment4 presenterFragment4;
 
@@ -144,7 +152,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     private Handler handler;
     private int countTryConnect = 0;
-    private final int maxTryConnect = 3;
+    private final int maxTryConnect = 2;
 
     @Nullable
     @Override
@@ -164,7 +172,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             if (mBluetoothAdapter != null) {
                 connectSensor();
             } else {
-                showErrorMessage("Device not support Bluetooth");
+                showPopup("Failed" , "Device not have mac address." , false);
             }
         });
 
@@ -175,7 +183,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private void addController() {
         handler = new Handler(this);
         presenterFragment4 = new PresenterFragment4(this);
-        container = view.findViewById(R.id.container_fragment_4);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
@@ -206,13 +213,63 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         rcvDatetime.setLayoutManager(new LinearLayoutManager(context));
         arrRCVDatetime = new ArrayList<>();
 
-        adapteRCVDatetime = new AdapteRCVDatetime(context, arrRCVDatetime , this);
+        adapteRCVDatetime = new AdapteRCVDatetime(context, arrRCVDatetime, this);
         rcvDatetime.setAdapter(adapteRCVDatetime);
 
         arrMeasure = new ArrayList<>();
         arrMeasurePage = new ArrayList<>();
 
         initDialogProcessing();
+        initPopup();
+    }
+
+    private void initPopup(){
+        containerPopup = view.findViewById(R.id.container_popup);
+        ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
+        imgTitle = view.findViewById(R.id.fragment_popup_img_title);
+
+        imgClose.setOnClickListener(v -> {
+            hidePopup();
+        });
+
+        txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
+        txtContent = view.findViewById(R.id.fragment_popup_txt_content);
+    }
+
+    private void showPopup(String title , String content , boolean success){
+        txtTitle.setText(title);
+        txtContent.setText(content);
+
+        if (success){
+            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
+        }else {
+            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+            imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
+        }
+
+        containerPopup.setVisibility(View.VISIBLE);
+
+        Animation animSlide = AnimationUtils.loadAnimation(context,
+                R.anim.left_to_right);
+        containerPopup.startAnimation(animSlide);
+
+        final Runnable r = new Runnable() {
+            public void run() {
+                hidePopup();
+            }
+        };
+        handler.postDelayed(r, 3000);
+    }
+
+
+    private void hidePopup(){
+        if (containerPopup.getVisibility() == View.VISIBLE){
+            Animation animSlide = AnimationUtils.loadAnimation(context,
+                    R.anim.right_to_left);
+            containerPopup.startAnimation(animSlide);
+            containerPopup.setVisibility(View.GONE);
+        }
     }
 
     private void connectSensor() {
@@ -221,7 +278,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler , this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -237,7 +294,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 e.printStackTrace();
             }
         } else {
-            showErrorMessage("Device not have mac address");
+            showPopup("Failed" , "Device not have mac address." , false);
         }
     }
 
@@ -349,29 +406,19 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         skbProgress.setProgress(100);
                         txtProcess.setText("Done!");
                         txtProcess.setTextColor(context.getResources().getColor(R.color.green));
-                        showSuccessMessage("Exported");
+                        showPopup("Success" , "Exported CSV." , true);
                     });
                 }
 
                 @Override
                 public void onPermissionDenied(List<String> deniedPermissions) {
-                    showErrorMessage("denied");
+                    showPopup("Failed" , "Access denied" , false);
                 }
             };
             TedPermission.with(context).setPermissionListener(permissionListener).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
         } else {
-            showErrorMessage("Null response");
+            showPopup("Success" , "Null response." , false);
         }
-    }
-
-    private void showSuccessMessage(String message) {
-        Snackbar snackbar = Snackbar
-                .make(container, message, Snackbar.LENGTH_LONG);
-        View view = snackbar.getView();
-        view.setBackgroundColor(Color.GREEN);
-        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.BLACK);
-        snackbar.show();
     }
 
     @Override
@@ -388,7 +435,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             arrRCVDatetime.clear();
             arrMeasurePage.addAll(measurePages);
             for (int i = 0; i < measurePages.size(); i++) {
-                arrRCVDatetime.add(new ModelRCVDatetime(measurePages.get(i).getDatetime() , false));
+                arrRCVDatetime.add(new ModelRCVDatetime(measurePages.get(i).getDatetime(), false));
             }
             adapteRCVDatetime.notifyDataSetChanged();
             if (arrRCVDatetime.size() > 0) {
@@ -435,7 +482,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        showSuccessMessage("Success Stored");
+        showPopup("Success" , "Stored." , true);
+
         arrRCVDatetime.clear();
         arrMeasure.clear();
         presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
@@ -447,7 +495,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     @Override
     public void onFailStoreMeasure(String error) {
         cancelDialogProcessing();
-        showErrorMessage(error);
+        showPopup("Failed" , error , false);
+        Protector.appendLog(error);
     }
 
     private int level(int val) {
@@ -464,59 +513,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         }
     }
 
-    private void showErrorMessage(String message) {
-        Snackbar snackbar = Snackbar
-                .make(container, message, Snackbar.LENGTH_LONG);
-        View view = snackbar.getView();
-        view.setBackgroundColor(Color.RED);
-        TextView textView = view.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        snackbar.show();
-    }
-
     @Override
     public void onGetData(String value) {
         // get data from sensor
         Log.e("Connection", value != null ? value : "null");
 
         Protector.appendLogSensor(value);
-
-//        if (connectThread != null) {
-//            connectThread.write("*R,LIST");
-//
-//            // test result
-//
-//            // save to cloud compare by datetime
-//
-//            ArrayList<BacSetting> bacSettings = new ArrayList<>();
-//            bacSettings.add(new BacSetting(1, 1, "Ex - 01", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            bacSettings.add(new BacSetting(1, 1, "Ex - 02", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            bacSettings.add(new BacSetting(1, 1, "Ex - 03", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-//
-//            SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
-//            MeasureMeasbas measureMeasbas = new MeasureMeasbas();
-//            measureMeasbas.setDatetime(Protector.getCurrentTime());
-//            measureMeasbas.setPstaterr(1);
-//
-//            ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 01", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 02", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 03", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 04", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasresses.add(new MeasureMeasress(1, "Ex - 05", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-//
-//            ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
-//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 01", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 02", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 03", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 04", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-//            measureMeasdets.add(new MeasureMeasdets(1, "Ex - 05", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-//
-//            //showDialogProcessing();
-//            presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
-//        }
     }
 
     @Override
@@ -554,10 +556,56 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-        switch (msg.what){
+        switch (msg.what) {
+            case 6:
+                cancelDialogProcessing();
+                byte[] readBuff = (byte[]) msg.obj;
+                String tempMsg = new String(readBuff, 0, msg.arg1);
+
+                // result sensor
+                Protector.appendLogSensor(tempMsg);
+
+                break;
             case 2:
                 MainActivity.device.setStatusConnect(1);
                 cancelDialogProcessing();
+
+                if (connectThread != null) {
+                    connectThread.write("*R,LIST");
+
+                    // test result
+
+                    // save to cloud compare by datetime
+
+                    ArrayList<BacSetting> bacSettings = new ArrayList<>();
+                    bacSettings.add(new BacSetting(1, 1, "Ex - 01", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    bacSettings.add(new BacSetting(1, 1, "Ex - 02", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    bacSettings.add(new BacSetting(1, 1, "Ex - 03", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
+
+                    SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
+                    MeasureMeasbas measureMeasbas = new MeasureMeasbas();
+                    measureMeasbas.setDatetime(Protector.getCurrentTime());
+                    measureMeasbas.setPstaterr(1);
+
+                    ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
+                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 01", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 02", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 03", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 04", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 05", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
+
+                    ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
+                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 01", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 02", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 03", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 04", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 05", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+
+                    showDialogProcessing();
+                    presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
+                }
                 break;
             case 1:
                 MainActivity.device.setStatusConnect(1);
@@ -566,10 +614,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             case 0:
                 MainActivity.device.setStatusConnect(0);
                 cancelDialogProcessing();
-                if (++countTryConnect >= maxTryConnect){
+                if (++countTryConnect >= maxTryConnect) {
                     countTryConnect = 1;
-                    showErrorMessage("Can't connect");
-                }else {
+                    showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
+                } else {
                     connectSensor();
                 }
                 break;

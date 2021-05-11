@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,11 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -72,7 +77,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private View view;
     private Activity activity;
     private Context context;
-    private RelativeLayout container;
 
     private Button btnReceiveSettingMeasure, btnSaveSettingMeasure , btnRead , btnWrite;
     private EditText edtNameMEasure, edtCrng, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
@@ -90,12 +94,19 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private PresenterFragment3 presenterFragment3;
     private Spinner spnNumber;
 
+    // popup
+    private LinearLayout containerPopup;
+    private ImageView imgTitle , imgExpandMeasure , imgExpandSetting;
+    private TextView txtTitle , txtContent;
+
     private int statusButton;
     private Handler handler;
     private boolean canChangeSpinner = true;
     private ConnectThread connectThread;
     private int countTryConnect = 0;
-    private final int maxTryConnect = 3;
+    private final int maxTryConnect = 2;
+
+    private ArrayList<String> arrRules;
 
     @Nullable
     @Override
@@ -107,6 +118,25 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     }
 
     private void addEvents() {
+        imgExpandMeasure.setOnClickListener(v -> {
+            if (view.findViewById(R.id.container_measure).getVisibility() == View.VISIBLE){
+                view.findViewById(R.id.container_measure).setVisibility(View.GONE);
+                imgExpandMeasure.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
+            }else {
+                view.findViewById(R.id.container_measure).setVisibility(View.VISIBLE);
+                imgExpandMeasure.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
+            }
+        });
+        imgExpandSetting.setOnClickListener(v -> {
+            if (view.findViewById(R.id.container_setting).getVisibility() == View.VISIBLE){
+                view.findViewById(R.id.container_setting).setVisibility(View.GONE);
+                imgExpandSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
+            }else {
+                view.findViewById(R.id.container_setting).setVisibility(View.VISIBLE);
+                imgExpandSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
+            }
+        });
+
         btnReceiveSettingMeasure.setOnClickListener(v -> {
             showDialogProcessing();
             presenterFragment3.receivedReceiveSettingMeasure(APIUtils.token);
@@ -169,7 +199,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             if (mBluetoothAdapter != null) {
                 connectSensor();
             }else {
-                showErrorMessage("Device not support Bluetooth");
+                showPopup("Failed" , "Device not support Bluetooth." , false);
             }
         });
 
@@ -178,7 +208,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             if (mBluetoothAdapter != null) {
                 connectSensor();
             }else {
-                showErrorMessage("Device not support Bluetooth");
+                showPopup("Failed" , "Device not support Bluetooth." , false);
             }
         });
     }
@@ -186,7 +216,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private void addController() {
         handler = new Handler(this);
         presenterFragment3 = new PresenterFragment3(this);
-        container = view.findViewById(R.id.container_fragment_3);
+        arrRules = new ArrayList<>();
+        imgExpandMeasure = view.findViewById(R.id.view_left);
+        imgExpandSetting = view.findViewById(R.id.view_left_2);
         spnNumber = view.findViewById(R.id.fragment_3_spn_number);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
         btnSaveSettingMeasure = view.findViewById(R.id.fragment_3_btn_save_setting_measure);
@@ -227,6 +259,56 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         arrSensorSetting = new ArrayList<>();
 
         initDialogProcessing();
+        initPopup();
+    }
+
+    private void initPopup(){
+        containerPopup = view.findViewById(R.id.container_popup);
+        ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
+        imgTitle = view.findViewById(R.id.fragment_popup_img_title);
+
+        imgClose.setOnClickListener(v -> {
+            hidePopup();
+        });
+
+        txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
+        txtContent = view.findViewById(R.id.fragment_popup_txt_content);
+    }
+
+    private void showPopup(String title , String content , boolean success){
+        txtTitle.setText(title);
+        txtContent.setText(content);
+
+        if (success){
+            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
+        }else {
+            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+            imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
+        }
+
+        containerPopup.setVisibility(View.VISIBLE);
+
+        Animation animSlide = AnimationUtils.loadAnimation(context,
+                R.anim.left_to_right);
+        containerPopup.startAnimation(animSlide);
+
+        final Runnable r = new Runnable() {
+            public void run() {
+                hidePopup();
+            }
+        };
+        handler.postDelayed(r, 3000);
+    }
+
+
+    private void hidePopup(){
+        if (containerPopup.getVisibility() == View.VISIBLE){
+            Animation animSlide = AnimationUtils.loadAnimation(context,
+                    R.anim.right_to_left);
+            containerPopup.startAnimation(animSlide);
+            containerPopup.setVisibility(View.GONE);
+        }
     }
 
     private void connectSensor() {
@@ -235,7 +317,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 if (connectThread != null){
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler , this);
                 showDialogProcessing();
                 Thread thread = new Thread() {
                     @Override
@@ -250,7 +332,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 e.printStackTrace();
             }
         }else {
-            showErrorMessage("Device not have mac address");
+            showPopup("Failed" , "Device not support Bluetooth." , false);
         }
     }
 
@@ -305,16 +387,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         }
     }
 
-    private void showSuccessMessage(String message) {
-        Snackbar snackbar = Snackbar
-                .make(container, message, Snackbar.LENGTH_LONG);
-        View view = snackbar.getView();
-        view.setBackgroundColor(Color.GREEN);
-        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.BLACK);
-        snackbar.show();
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -325,7 +397,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public void onSuccessUpdateSettingSensor() {
         cancelDialogProcessing();
-        showSuccessMessage("Success");
+        showPopup("Success" , "You have successfully changed providing time." , true);
     }
 
     @Override
@@ -662,16 +734,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
-    private void showErrorMessage(String message) {
-        Snackbar snackbar = Snackbar
-                .make(container, message, Snackbar.LENGTH_LONG);
-        View view = snackbar.getView();
-        view.setBackgroundColor(Color.RED);
-        TextView textView = view.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        snackbar.show();
-    }
-
     @Override
     public void onDeleteRCVHistoryMeasure(int position) {
         dialogYesNo = new Dialog(context);
@@ -758,13 +820,21 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IBEN,"+ edtIben.getText().toString() + "[CR]");
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFST,"+ edtIfst.getText().toString() + "[CR]");
             connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFEN,"+ edtIfen.getText().toString() + "[CR]");
-
         }
     }
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
         switch (msg.what){
+            case 6:
+                cancelDialogProcessing();
+                byte[] readBuff = (byte[]) msg.obj;
+                String tempMsg = new String(readBuff, 0, msg.arg1);
+
+                // result sensor
+                Protector.appendLogSensor(tempMsg);
+
+                break;
             case 2:
                 MainActivity.device.setStatusConnect(1);
                 cancelDialogProcessing();
@@ -778,7 +848,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 cancelDialogProcessing();
                 if (++countTryConnect >= maxTryConnect){
                     countTryConnect = 1;
-                    showErrorMessage("Can't connect");
+                    showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
                 }else {
                     connectSensor();
                 }

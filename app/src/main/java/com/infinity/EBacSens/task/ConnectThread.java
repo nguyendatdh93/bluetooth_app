@@ -38,9 +38,10 @@ public class ConnectThread extends Thread {
 
     BluetoothSocket mmSocket = null;
 
-    public ConnectThread(BluetoothSocket socket , ViewConnectThread callback) {
+    public ConnectThread(BluetoothSocket socket , Handler handler , ViewConnectThread callback) {
+        this.mmSocket = socket;
+        this.handler = handler;
         this.callback = callback;
-        mmSocket = socket;
 
         InputStream tmpIn = null;
         OutputStream tmpOut = null;

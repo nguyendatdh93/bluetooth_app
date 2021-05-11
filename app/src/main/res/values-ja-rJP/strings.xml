@@ -84,4 +84,5 @@
     <string name="measurement" translatable="false">測定</string>
     <string name="use_the_current_date_and_time" translatable="false">現在の日時を使用する</string>
     <string name="if_set_to_0_auto_power_off_will_not_be_performed" translatable="false">0を設定するとオートパワーオフは行いません</string>
+    <string name="tutorial_" translatable="false">0：通常、1：最小、2：最大</string>
 </resources>
