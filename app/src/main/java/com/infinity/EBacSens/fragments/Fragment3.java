@@ -107,6 +107,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private final int maxTryConnect = 2;
 
     private ArrayList<String> arrRules;
+    private ArrayList<String> arrResults;
 
     @Nullable
     @Override
@@ -216,7 +217,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private void addController() {
         handler = new Handler(this);
         presenterFragment3 = new PresenterFragment3(this);
-        arrRules = new ArrayList<>();
+
         imgExpandMeasure = view.findViewById(R.id.view_left);
         imgExpandSetting = view.findViewById(R.id.view_left_2);
         spnNumber = view.findViewById(R.id.fragment_3_spn_number);
@@ -257,6 +258,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
 
         arrSensorSetting = new ArrayList<>();
+        arrRules = new ArrayList<>();
+        arrResults = new ArrayList<>();
 
         initDialogProcessing();
         initPopup();
@@ -761,8 +764,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public void onGetData(String value) {
         // get data from sensor
-        Log.e("Connection", value != null ? value : "null");
-        Protector.appendLogSensor(value);
     }
 
     @Override
@@ -787,40 +788,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         Message message = Message.obtain();
         message.what = STATE_LISTENING;
         handler.sendMessage(message);
-
-        if (connectThread != null) {
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",SETNAME,"+ edtNameMEasure.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",BACS,"+ spnNumber.getSelectedItem().toString() + "[CR]");
-            for (int i = 0 ; i < arrBacSetting.size() ; i++){
-                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() + "[CR]");
-                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() + "[CR]");
-                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E2_"+(i+1)+","+ arrBacSetting.get(i).getE2() + "[CR]");
-                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E3_"+(i+1)+","+ arrBacSetting.get(i).getE3() + "[CR]");
-                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",E4_"+(i+1)+","+ arrBacSetting.get(i).getE4() + "[CR]");
-                connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PKP1_"+(i+1)+","+ arrBacSetting.get(i).getPkp() + "[CR]");
-            }
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",CRNG,"+ edtCrng.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP1,"+ edtEqp1.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT1,"+ edtEqt1.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP2,"+ edtEqp2.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT2,"+ edtEqt2.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP3,"+ edtEqp3.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT3,"+ edtEqt3.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP4,"+ edtEqp4.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT4,"+ edtEqt4.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP5,"+ edtEqp5.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT5,"+ edtEqt5.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",STP,"+ edtStp.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",ENP,"+ edtEnp.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PP,"+ edtPp.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",DLTE,"+ edtDlte.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PWD,"+ edtPwd.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",PTM,"+ edtPtm.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IBST,"+ edtIbst.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IBEN,"+ edtIben.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFST,"+ edtIfst.getText().toString() + "[CR]");
-            connectThread.write("*" + (statusButton == 1 ? "W" : "R" ) + ",IFEN,"+ edtIfen.getText().toString() + "[CR]");
-        }
     }
 
     @Override
@@ -831,17 +798,81 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
 
-                // result sensor
+                // log file
                 Protector.appendLogSensor(tempMsg);
+
+                // result sensor
+                arrResults.add(0,tempMsg);
+                if (arrRules.size() == 0){
+                    if (statusButton == 1){
+                        connectThread.write("SAVE");
+                    }else {
+                        edtNameMEasure.setText(arrResults.get(0));
+                        spnNumber.setSelection(Protector.tryParseInt(arrResults.get(1)));
+                        canChangeSpinner = false;
+
+                        if (arrBacSetting.size() == 1){
+//                            arrBacSetting.clear();
+//                            arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
+//                                    MainActivity.device.getId(),
+//                                    "","","","","","","",""));
+                        }
+                    }
+
+                    cancelDialogProcessing();
+                    showPopup("Success" , "You have successfully changed providing time." , true);
+                }else {
+                    arrRules.remove(0);
+                    connectThread.write(arrRules.get(0));
+                }
 
                 break;
             case 2:
-                MainActivity.device.setStatusConnect(1);
+
+                // demo will enable below line
                 cancelDialogProcessing();
-                break;
-            case 1:
+
                 MainActivity.device.setStatusConnect(1);
-                cancelDialogProcessing();
+
+                arrRules.clear();
+                arrResults.clear();
+
+                if (connectThread != null) {
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",SETNAME,"+ edtNameMEasure.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",BACS,"+ spnNumber.getSelectedItem().toString() + "[CR]");
+                    for (int i = 0 ; i < arrBacSetting.size() ; i++){
+                        arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() + "[CR]");
+                        arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() + "[CR]");
+                        arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",E2_"+(i+1)+","+ arrBacSetting.get(i).getE2() + "[CR]");
+                        arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",E3_"+(i+1)+","+ arrBacSetting.get(i).getE3() + "[CR]");
+                        arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",E4_"+(i+1)+","+ arrBacSetting.get(i).getE4() + "[CR]");
+                        arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PKP1_"+(i+1)+","+ arrBacSetting.get(i).getPkp() + "[CR]");
+                    }
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",CRNG,"+ edtCrng.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP1,"+ edtEqp1.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT1,"+ edtEqt1.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP2,"+ edtEqp2.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT2,"+ edtEqt2.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP3,"+ edtEqp3.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT3,"+ edtEqt3.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP4,"+ edtEqp4.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT4,"+ edtEqt4.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQP5,"+ edtEqp5.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",EQT5,"+ edtEqt5.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",STP,"+ edtStp.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",ENP,"+ edtEnp.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PP,"+ edtPp.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",DLTE,"+ edtDlte.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PWD,"+ edtPwd.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PTM,"+ edtPtm.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",IBST,"+ edtIbst.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",IBEN,"+ edtIben.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",IFST,"+ edtIfst.getText().toString() + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",IFEN,"+ edtIfen.getText().toString() + "[CR]");
+
+                    connectThread.write(arrRules.get(0));
+                }
+
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);

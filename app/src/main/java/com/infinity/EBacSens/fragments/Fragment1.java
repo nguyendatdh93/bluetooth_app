@@ -92,6 +92,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     private Handler handler;
 
     private ArrayList<String> arrRules;
+    private ArrayList<String> arrResults;
 
     @Nullable
     @Override
@@ -242,6 +243,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
         arrDevicePaired = new ArrayList<>();
         arrRules = new ArrayList<>();
+        arrResults = new ArrayList<>();
 
         initDialogProcessing();
         getPairedDevices();
@@ -359,10 +361,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     @Override
     public void onGetData(String value) {
-        // get data from sensor
-        Log.e("Connection", value != null ? value : "null");
 
-        Protector.appendLogSensor(value);
     }
 
     @Override
@@ -387,19 +386,13 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         Message message = Message.obtain();
         message.what = STATE_LISTENING;
         handler.sendMessage(message);
-
-        // write to sensor
-        connectThread.write("*R,IDNAME[CR]");
-        connectThread.write("*R,VER[CR]");
-        connectThread.write("*R,SER[CR]");
     }
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
+
+        // test demo
         if (statusConnect == 1 && msg.what == 2) {
-
-            // test
-
             MainActivity.device.setStatusConnect(1);
             cancelDialogProcessing();
             containerInfor.setVisibility(View.VISIBLE);
@@ -407,7 +400,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
             txtInfor1.setText("MODEL:EbacSens");
             txtInfor2.setText("Ver.a.014");
             txtInfor3.setText("Serial:0003");
-
             return false;
         }else if(statusConnect == 0 && msg.what == 2) {
             MainActivity.device.setStatusConnect(1);
@@ -424,40 +416,41 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 cancelDialogProcessing();
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
-
+                // log file
+                Protector.appendLogSensor(tempMsg);
                 // result sensor
+                arrResults.add(0,tempMsg);
 
                 if (arrRules.size() == 0){
+                    txtInfor1.setText(arrResults.get(0));
+                    txtInfor2.setText(arrResults.get(1));
+                    txtInfor3.setText(arrResults.get(2));
                     cancelDialogProcessing();
                 }else {
                     arrRules.remove(0);
                     connectThread.write(arrRules.get(0));
                 }
 
-                Protector.appendLogSensor(tempMsg);
-
                 break;
             case 2:
                 MainActivity.device.setStatusConnect(1);
-                // demo will enable below line
-                cancelDialogProcessing();
-
                 arrRules.clear();
+                arrResults.clear();
                 if (statusConnect == 1){
                     arrRules.add("*R,IDNAME,[CR]");
-                    arrRules.add("*R,IDNAME,[CR]");
-                    arrRules.add("*R,IDNAME,[CR]");
+                    arrRules.add("*R,VER,[CR]");
+                    arrRules.add("*R,SER,[CR]");
                 }
 
-                if (connectThread != null) {
+                if (connectThread != null && arrRules.size() > 0) {
                     connectThread.write(arrRules.get(0));
+                }else {
+                    containerInfor.setVisibility(View.GONE);
+                    containerStatus.setVisibility(View.VISIBLE);
+                    txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
+                    txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
+                    cancelDialogProcessing();
                 }
-
-                //test result
-                containerInfor.setVisibility(View.GONE);
-                containerStatus.setVisibility(View.VISIBLE);
-                txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
-                txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);

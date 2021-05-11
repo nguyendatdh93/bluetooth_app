@@ -68,6 +68,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
     private final int maxTryConnect = 2;
 
     private ArrayList<String> arrRules;
+    private ArrayList<String> arrResults;
 
     @Nullable
     @Override
@@ -163,6 +164,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
         edtDatetime.setText(Protector.getCurrentTime());
 
         arrRules = new ArrayList<>();
+        arrResults = new ArrayList<>();
         initDialogProcessing();
         initPopup();
     }
@@ -275,22 +277,25 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 cancelDialogProcessing();
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
-
+                // log file
+                Protector.appendLogSensor(tempMsg);
                 // result sensor
-
+                arrResults.add(0,tempMsg);
                 if (arrRules.size() == 0){
                     if (statusButton == 1){
                         connectThread.write("SAVE");
                     }else {
-                        cancelDialogProcessing();
-                        showPopup("Success" , "You have successfully changed providing time." , true);
+                        edtNameMeasure.setText(arrResults.get(0));
+                        edtDatetime.setText(arrResults.get(1));
+                        edtPeakMode.setText(arrResults.get(2));
+                        edtPowerOffMin.setText(arrResults.get(3));
                     }
+                    cancelDialogProcessing();
+                    showPopup("Success" , "You have successfully changed providing time." , true);
                 }else {
                     arrRules.remove(0);
                     connectThread.write(arrRules.get(0));
                 }
-
-                Protector.appendLogSensor(tempMsg);
 
                 break;
             case 2:
@@ -300,9 +305,11 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 MainActivity.device.setStatusConnect(1);
 
                 arrRules.clear();
+                arrResults.clear();
                 arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",IDNAME,"+ edtNameMeasure.getText().toString() + "[CR]");
                 arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",DATETIME,"+ edtDatetime.getText().toString() + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PRMID,"+ edtDatetime.getText().toString() + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",PEAKMODE,"+ edtDatetime.getText().toString() + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W" : "R" ) + ",POWOFFMIN,"+ edtDatetime.getText().toString() + "[CR]");
 
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));
