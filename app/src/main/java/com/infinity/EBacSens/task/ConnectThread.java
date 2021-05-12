@@ -97,10 +97,11 @@ public class ConnectThread extends Thread {
                         MessageConstants.MESSAGE_READ, numBytes, -1,
                         mmBuffer);
                 readMsg.sendToTarget();
-                callback.onGetData(readMsg.toString());
+                //callback.onGetData(readMsg.toString());
             } catch (IOException e) {
                 Log.d("Connection", "Input stream was disconnected", e);
                 //callback.onError(e.getMessage());
+                Log.e("AAAA" , e.getMessage());
                 break;
             }
 
@@ -112,6 +113,7 @@ public class ConnectThread extends Thread {
             mmOutStream.write(value.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("AAAA" , e.getMessage());
         }
     }
 
@@ -123,6 +125,7 @@ public class ConnectThread extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("AAAA" , e.getMessage());
         }
     }
 }

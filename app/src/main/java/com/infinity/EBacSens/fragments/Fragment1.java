@@ -384,6 +384,8 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         Message message = Message.obtain();
         message.what = STATE_DISCONNECTED;
         handler.sendMessage(message);
+        Protector.appendLog(error);
+        Log.e("AAAA" , error);
     }
 
     @Override
@@ -396,28 +398,8 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     @Override
     public boolean handleMessage(@NonNull Message msg) {
 
-        // test demo
-//        if (statusConnect == 1 && msg.what == 2) {
-//            MainActivity.device.setStatusConnect(1);
-//            cancelDialogProcessing();
-//            containerInfor.setVisibility(View.VISIBLE);
-//            containerStatus.setVisibility(View.GONE);
-//            txtInfor1.setText("MODEL:EbacSens");
-//            txtInfor2.setText("Ver.a.014");
-//            txtInfor3.setText("Serial:0003");
-//            return false;
-//        }else if(statusConnect == 0 && msg.what == 2) {
-//            MainActivity.device.setStatusConnect(1);
-//            cancelDialogProcessing();
-//            containerInfor.setVisibility(View.GONE);
-//            containerStatus.setVisibility(View.VISIBLE);
-//            txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
-//            txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
-//            return false;
-//        }
-
         switch (msg.what){
-            case 6:
+            case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 // log file
@@ -425,15 +407,21 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 // result sensor
                 arrResults.add(tempMsg);
 
-                if (arrRules.size() == 0){
-                    txtInfor1.setText(arrResults.get(0));
-                    txtInfor2.setText(arrResults.get(1));
-                    txtInfor3.setText(arrResults.get(2));
-                    cancelDialogProcessing();
+                if (statusConnect == 1){
+                    if (arrRules.size() == 0 && arrResults.size() >= 3){
+                        txtInfor1.setText(arrResults.get(0));
+                        txtInfor2.setText(arrResults.get(1));
+                        txtInfor3.setText(arrResults.get(2));
+                        containerInfor.setVisibility(View.VISIBLE);
+                        containerStatus.setVisibility(View.GONE);
+                        cancelDialogProcessing();
+                    }else {
+                        connectThread.write(arrRules.get(0));
+                        Protector.appendLog(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
                 }else {
-                    connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
-                    arrRules.remove(0);
+                    cancelDialogProcessing();
                 }
 
                 break;
@@ -446,9 +434,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                     arrRules.add("*R,IDNAME[CR]");
                     arrRules.add("*R,VER[CR]");
                     arrRules.add("*R,SER[CR]");
-                }
-
-                if (connectThread != null && arrRules.size() > 0) {
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
