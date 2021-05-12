@@ -283,6 +283,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 if (arrRules.size() == 0){
                     if (statusButton == 1){
                         connectThread.write("SAVE");
+                        Protector.appendLog("SAVE");
                     }else {
                         edtNameMeasure.setText(arrResults.get(0));
                         edtDatetime.setText(arrResults.get(1));
@@ -292,26 +293,26 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                     cancelDialogProcessing();
                     showPopup("Success" , "You have successfully changed providing time." , true);
                 }else {
-                    arrRules.remove(0);
                     connectThread.write(arrRules.get(0));
+                    Protector.appendLog(arrRules.get(0));
+                    arrRules.remove(0);
                 }
 
                 break;
             case 2:
-                // demo will enable below line
-                cancelDialogProcessing();
-
                 MainActivity.device.setStatusConnect(1);
 
                 arrRules.clear();
                 arrResults.clear();
-                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString(): "R,IDNAME,()" ) + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString() : "R,DATETIME,()" ) + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE,()" ) + "[CR]");
-                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN,()" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString(): "R,IDNAME" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString() : "R,DATETIME" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN" ) + "[CR]");
 
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));
+                    Protector.appendLog(arrRules.get(0));
+                    arrRules.remove(0);
                 }
 
                 break;

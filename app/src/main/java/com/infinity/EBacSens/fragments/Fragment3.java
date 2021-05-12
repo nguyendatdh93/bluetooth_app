@@ -805,6 +805,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 if (arrRules.size() == 0){
                     if (statusButton == 1){
                         connectThread.write("SAVE");
+                        Protector.appendLog("SAVE");
                     }else {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
@@ -971,55 +972,54 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     cancelDialogProcessing();
                     showPopup("Success" , "You have successfully changed providing time." , true);
                 }else {
-                    arrRules.remove(0);
                     connectThread.write(arrRules.get(0));
+                    Protector.appendLog(arrRules.get(0));
+                    arrRules.remove(0);
                 }
 
                 break;
             case 2:
-
-                // demo will enable below line
-                cancelDialogProcessing();
-
                 MainActivity.device.setStatusConnect(1);
 
                 arrRules.clear();
                 arrResults.clear();
 
                 if (connectThread != null) {
-                    arrRules.add("*" + (statusButton == 1 ? "W,SETNAME,"+ edtNameMEasure.getText().toString() : "R,SETNAME,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,BACS,"+ spnNumber.getSelectedItem().toString() : "RBACS,()" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,SETNAME,"+ edtNameMEasure.getText().toString() : "R,SETNAME" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,BACS,"+ spnNumber.getSelectedItem().toString() : "RBACS" ) + "[CR]");
                     for (int i = 0 ; i < arrBacSetting.size() ; i++){
-                        arrRules.add("*" + (statusButton == 1 ? "W,BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() : "R,BACNAME"+(i+1)+",()" ) + "[CR]");
-                        arrRules.add("*" + (statusButton == 1 ? "W,E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() : "R,E1_"+(i+1)+",()" + "[CR]"));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E2_"+(i+1)+","+ arrBacSetting.get(i).getE2() : "R,E2_"+(i+1)+",()" + "[CR]"));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E3_"+(i+1)+","+ arrBacSetting.get(i).getE3() : "R,E3_"+(i+1)+",()" + "[CR]"));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E4_"+(i+1)+","+ arrBacSetting.get(i).getE4() : "R,E4_"+(i+1)+",()" + "[CR]"));
-                        arrRules.add("*" + (statusButton == 1 ? "W,PKP"+(i+1)+","+ arrBacSetting.get(i).getPkp() : "R,PKP"+(i+1)+",()" + "[CR]"));
+                        arrRules.add("*" + (statusButton == 1 ? "W,BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() : "R,BACNAME"+(i+1)+"" ) + "[CR]");
+                        arrRules.add("*" + (statusButton == 1 ? "W,E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() : "R,E1_"+(i+1)+"" + "[CR]"));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E2_"+(i+1)+","+ arrBacSetting.get(i).getE2() : "R,E2_"+(i+1)+"" + "[CR]"));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E3_"+(i+1)+","+ arrBacSetting.get(i).getE3() : "R,E3_"+(i+1)+"" + "[CR]"));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E4_"+(i+1)+","+ arrBacSetting.get(i).getE4() : "R,E4_"+(i+1)+"" + "[CR]"));
+                        arrRules.add("*" + (statusButton == 1 ? "W,PKP"+(i+1)+","+ arrBacSetting.get(i).getPkp() : "R,PKP"+(i+1)+"" + "[CR]"));
                     }
-                    arrRules.add("*" + (statusButton == 1 ? "W,CRNG,"+ edtCrng.getText().toString() : "R,CRNG,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP1,"+ edtEqp1.getText().toString() : "R,EQP1,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT1,"+ edtEqt1.getText().toString() : "R,EQT1,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP2,"+ edtEqp2.getText().toString() : "R,EQP2,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT2,"+ edtEqt2.getText().toString() : "R,EQT2,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP3,"+ edtEqp3.getText().toString() : "R,EQP3,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT3,"+ edtEqt3.getText().toString() : "R,EQT3,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP4,"+ edtEqp4.getText().toString() : "R,EQP4,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT4,"+ edtEqt4.getText().toString() : "R,EQT4,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP5,"+ edtEqp5.getText().toString() : "R,EQP5,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT5,"+ edtEqt5.getText().toString() : "R,EQT5,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,STP,"+ edtStp.getText().toString() : "R,STP,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,ENP,"+ edtEnp.getText().toString() : "R,ENP,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PP,"+ edtPp.getText().toString() : "R,PP,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,DLTE,"+ edtDlte.getText().toString() : "R,DLTE,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PWD,"+ edtPwd.getText().toString() : "R,PWD,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PTM,"+ edtPtm.getText().toString() : "R,PTM,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IBST,"+ edtIbst.getText().toString() : "R,IBST,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IBEN,"+ edtIben.getText().toString() : "R,IBEN,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IFST,"+ edtIfst.getText().toString() : "R,IFST,()" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IFEN,"+ edtIfen.getText().toString() : "R,IFEN,()" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,CRNG,"+ edtCrng.getText().toString() : "R,CRNG" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP1,"+ edtEqp1.getText().toString() : "R,EQP1" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT1,"+ edtEqt1.getText().toString() : "R,EQT1" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP2,"+ edtEqp2.getText().toString() : "R,EQP2" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT2,"+ edtEqt2.getText().toString() : "R,EQT2" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP3,"+ edtEqp3.getText().toString() : "R,EQP3" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT3,"+ edtEqt3.getText().toString() : "R,EQT3" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP4,"+ edtEqp4.getText().toString() : "R,EQP4" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT4,"+ edtEqt4.getText().toString() : "R,EQT4" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP5,"+ edtEqp5.getText().toString() : "R,EQP5" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT5,"+ edtEqt5.getText().toString() : "R,EQT5" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,STP,"+ edtStp.getText().toString() : "R,STP" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,ENP,"+ edtEnp.getText().toString() : "R,ENP" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PP,"+ edtPp.getText().toString() : "R,PP" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,DLTE,"+ edtDlte.getText().toString() : "R,DLTE" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PWD,"+ edtPwd.getText().toString() : "R,PWD" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PTM,"+ edtPtm.getText().toString() : "R,PTM" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IBST,"+ edtIbst.getText().toString() : "R,IBST" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IBEN,"+ edtIben.getText().toString() : "R,IBEN" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IFST,"+ edtIfst.getText().toString() : "R,IFST" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IFEN,"+ edtIfen.getText().toString() : "R,IFEN" ) + "[CR]");
 
                     connectThread.write(arrRules.get(0));
+                    Protector.appendLog(arrRules.get(0));
+                    arrRules.remove(0);
                 }
 
                 break;
