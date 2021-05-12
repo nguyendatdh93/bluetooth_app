@@ -272,7 +272,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
     @Override
     public boolean handleMessage(@NonNull Message msg) {
         switch (msg.what){
-            case 6:
+            case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 // log file

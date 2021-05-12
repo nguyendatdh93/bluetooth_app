@@ -793,7 +793,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public boolean handleMessage(@NonNull Message msg) {
         switch (msg.what){
-            case 6:
+            case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
 
