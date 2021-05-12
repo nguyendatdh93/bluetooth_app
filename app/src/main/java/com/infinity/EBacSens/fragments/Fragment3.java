@@ -101,6 +101,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private TextView txtTitle , txtContent;
 
     private int statusButton;
+    private int resultStart = 0;
     private Handler handler;
     private boolean canChangeSpinner = true;
     private int countTryConnect = 0;
@@ -196,11 +197,15 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         });
 
         btnWrite.setOnClickListener(v -> {
-            statusButton = 1;
-            if (mBluetoothAdapter != null) {
-                connectSensor();
+            if (edtNameMEasure.getText().toString().length() == 0){
+                edtNameMEasure.setError("Error");
             }else {
-                showPopup("Failed" , "Device not support Bluetooth." , false);
+                statusButton = 1;
+                if (mBluetoothAdapter != null) {
+                    connectSensor();
+                }else {
+                    showPopup("Failed" , "Device not support Bluetooth." , false);
+                }
             }
         });
 
@@ -802,11 +807,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                 // result sensor
                 arrResults.add(tempMsg);
-                if (arrRules.size() == 0){
-                    if (statusButton == 1){
+                if (statusButton == 1){
+                    if (arrRules.size() == 0){
                         connectThread.write("SAVE");
                         Protector.appendLog("SAVE");
-                    }else {
+
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
@@ -967,14 +972,108 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         edtIfen.setText(arrResults.get(pos));
 
                         adapteRCVBacSetting.notifyDataSetChanged();
-                    }
 
-                    cancelDialogProcessing();
-                    showPopup("Success" , "You have successfully changed providing time." , true);
+                        cancelDialogProcessing();
+                        showPopup("Success" , "You have successfully changed providing time." , true);
+                    }else {
+                        connectThread.write(arrRules.get(0));
+                        Protector.appendLog(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
                 }else {
-                    connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
-                    arrRules.remove(0);
+                    if (resultStart == 1){
+                        resultStart++;
+                        for (int i = 0 ; i < Protector.tryParseInt(arrResults.get(0)) ; i++){
+                            arrRules.add("*R,BACNAME"+(i)+"" + "[CR]");
+                            arrRules.add("*" +  "R,E1_"+(i+1)+"" + "[CR]");
+                            arrRules.add("*" +  "R,E2_"+(i+1)+"" + "[CR]");
+                            arrRules.add("*" +  "R,E3_"+(i+1)+"" + "[CR]");
+                            arrRules.add("*" +  "R,E4_"+(i+1)+"" + "[CR]");
+                            arrRules.add("*" +  "R,PKP"+(i+1)+"" + "[CR]");
+                        }
+                        connectThread.write(arrRules.get(0));
+                        Protector.appendLog(arrRules.get(0));
+                        arrRules.remove(0);
+                        arrResults.clear();
+                    }
+                    if (resultStart == 2){
+                        if (arrRules.size() == 0){
+                            resultStart++;
+                            arrBacSetting.clear();
+                            for (int i = 0 ; i < arrResults.size() ; i+=6){
+                                arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
+                                        MainActivity.device.getId(),
+                                        arrResults.get(i),
+                                        Protector.tryParseInt(arrResults.get(i+1)),
+                                        Protector.tryParseInt(arrResults.get(i+2)),
+                                        Protector.tryParseInt(arrResults.get(i+3)),
+                                        Protector.tryParseInt(arrResults.get(i+4)),
+                                        Protector.tryParseInt(arrResults.get(i+5)),Protector.getCurrentTime(),Protector.getCurrentTime()));
+                            }
+                            adapteRCVBacSetting.notifyDataSetChanged();
+                            arrResults.clear();
+                            arrRules.add("*" + "R,SETNAME"  + "[CR]");
+                            arrRules.add("*" +  "R,CRNG" + "[CR]");
+                            arrRules.add("*" + "R,EQP1"  + "[CR]");
+                            arrRules.add("*" + "R,EQT1"  + "[CR]");
+                            arrRules.add("*" +  "R,EQP2"  + "[CR]");
+                            arrRules.add("*" +  "R,EQT2"  + "[CR]");
+                            arrRules.add("*" +  "R,EQP3"  + "[CR]");
+                            arrRules.add("*" +  "R,EQT3"  + "[CR]");
+                            arrRules.add("*" +  "R,EQP4"  + "[CR]");
+                            arrRules.add("*" +  "R,EQT4"  + "[CR]");
+                            arrRules.add("*" +  "R,EQP5" + "[CR]");
+                            arrRules.add("*" +  "R,EQT5"  + "[CR]");
+                            arrRules.add("*" +  "R,STP"  + "[CR]");
+                            arrRules.add("*" +  "R,ENP"  + "[CR]");
+                            arrRules.add("*" +  "R,PP"  + "[CR]");
+                            arrRules.add("*" +  "R,DLTE"  + "[CR]");
+                            arrRules.add("*" +  "R,PWD" + "[CR]");
+                            arrRules.add("*" +  "R,PTM"  + "[CR]");
+                            arrRules.add("*" +  "R,IBST"  + "[CR]");
+                            arrRules.add("*" +  "R,IBEN"  + "[CR]");
+                            arrRules.add("*" +  "R,IFST"  + "[CR]");
+                            arrRules.add("*" +  "R,IFEN"  + "[CR]");
+                            connectThread.write(arrRules.get(0));
+                            Protector.appendLog(arrRules.get(0));
+                            arrRules.remove(0);
+                        }else {
+                            connectThread.write(arrRules.get(0));
+                            Protector.appendLog(arrRules.get(0));
+                            arrRules.remove(0);
+                        }
+                    }
+                    if (resultStart == 3 && arrRules.size() == 0){
+                        int pos = 0;
+                        edtNameMEasure.setText(arrResults.get(pos++));
+                        edtCrng.setText(arrResults.get(pos++));
+                        edtEqp1.setText(arrResults.get(pos++));
+                        edtEqt1.setText(arrResults.get(pos++));
+                        edtEqp2.setText(arrResults.get(pos++));
+                        edtEqt2.setText(arrResults.get(pos++));
+                        edtEqp3.setText(arrResults.get(pos++));
+                        edtEqt3.setText(arrResults.get(pos++));
+                        edtEqp4.setText(arrResults.get(pos++));
+                        edtEqt4.setText(arrResults.get(pos++));
+                        edtEqp5.setText(arrResults.get(pos++));
+                        edtEqt5.setText(arrResults.get(pos++));
+                        edtStp.setText(arrResults.get(pos++));
+                        edtEnp.setText(arrResults.get(pos++));
+                        edtPp.setText(arrResults.get(pos++));
+                        edtDlte.setText(arrResults.get(pos++));
+                        edtPwd.setText(arrResults.get(pos++));
+                        edtPtm.setText(arrResults.get(pos++));
+                        edtIbst.setText(arrResults.get(pos++));
+                        edtIben.setText(arrResults.get(pos++));
+                        edtIfst.setText(arrResults.get(pos++));
+                        edtIfen.setText(arrResults.get(pos));
+                        cancelDialogProcessing();
+                        showPopup("Success" , "You have successfully changed providing time." , true);
+                    }else {
+                        connectThread.write(arrRules.get(0));
+                        Protector.appendLog(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
                 }
 
                 break;
@@ -984,10 +1083,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                 arrRules.clear();
                 arrResults.clear();
-
-                if (connectThread != null) {
+                resultStart = 1;
+                if (statusButton == 1){
                     arrRules.add("*" + (statusButton == 1 ? "W,SETNAME,"+ edtNameMEasure.getText().toString() : "R,SETNAME" ) + "[CR]");
-                    arrRules.add("*" + (statusButton == 1 ? "W,BACS,"+ spnNumber.getSelectedItem().toString() : "RBACS" ) + "[CR]");
+                    arrRules.add("*" + (statusButton == 1 ? "W,BACS,"+ spnNumber.getSelectedItem().toString() : "R,BACS" ) + "[CR]");
                     for (int i = 0 ; i < arrBacSetting.size() ; i++){
                         arrRules.add("*" + (statusButton == 1 ? "W,BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() : "R,BACNAME"+(i+1)+"" ) + "[CR]");
                         arrRules.add("*" + (statusButton == 1 ? "W,E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() : "R,E1_"+(i+1)+"" + "[CR]"));
@@ -1018,6 +1117,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     arrRules.add("*" + (statusButton == 1 ? "W,IFST,"+ edtIfst.getText().toString() : "R,IFST" ) + "[CR]");
                     arrRules.add("*" + (statusButton == 1 ? "W,IFEN,"+ edtIfen.getText().toString() : "R,IFEN" ) + "[CR]");
 
+                    connectThread.write(arrRules.get(0));
+                    Protector.appendLog(arrRules.get(0));
+                    arrRules.remove(0);
+                }else {
+                    arrRules.add("*R,BACS[CR]");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
