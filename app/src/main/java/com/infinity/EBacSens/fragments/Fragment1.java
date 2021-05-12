@@ -394,24 +394,24 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     public boolean handleMessage(@NonNull Message msg) {
 
         // test demo
-        if (statusConnect == 1 && msg.what == 2) {
-            MainActivity.device.setStatusConnect(1);
-            cancelDialogProcessing();
-            containerInfor.setVisibility(View.VISIBLE);
-            containerStatus.setVisibility(View.GONE);
-            txtInfor1.setText("MODEL:EbacSens");
-            txtInfor2.setText("Ver.a.014");
-            txtInfor3.setText("Serial:0003");
-            return false;
-        }else if(statusConnect == 0 && msg.what == 2) {
-            MainActivity.device.setStatusConnect(1);
-            cancelDialogProcessing();
-            containerInfor.setVisibility(View.GONE);
-            containerStatus.setVisibility(View.VISIBLE);
-            txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
-            txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
-            return false;
-        }
+//        if (statusConnect == 1 && msg.what == 2) {
+//            MainActivity.device.setStatusConnect(1);
+//            cancelDialogProcessing();
+//            containerInfor.setVisibility(View.VISIBLE);
+//            containerStatus.setVisibility(View.GONE);
+//            txtInfor1.setText("MODEL:EbacSens");
+//            txtInfor2.setText("Ver.a.014");
+//            txtInfor3.setText("Serial:0003");
+//            return false;
+//        }else if(statusConnect == 0 && msg.what == 2) {
+//            MainActivity.device.setStatusConnect(1);
+//            cancelDialogProcessing();
+//            containerInfor.setVisibility(View.GONE);
+//            containerStatus.setVisibility(View.VISIBLE);
+//            txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
+//            txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
+//            return false;
+//        }
 
         switch (msg.what){
             case 6:
