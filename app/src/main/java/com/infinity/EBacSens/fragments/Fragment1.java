@@ -413,7 +413,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
         switch (msg.what){
             case 6:
-                cancelDialogProcessing();
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 // log file

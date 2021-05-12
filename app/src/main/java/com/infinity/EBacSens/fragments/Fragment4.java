@@ -157,7 +157,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
     private int resultStart = 0;
-
+    private ArrayList<BacSetting> bacSettings;
+    private ArrayList<MeasureMeasress> measureMeasresses;
+    private ArrayList<MeasureMeasdets>  measureMeasdets;
+    private SensorSetting sensorSetting;
+    private MeasureMeasbas measureMeasbas;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -225,6 +229,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
         arrRules = new ArrayList<>();
         arrResults = new ArrayList<>();
+        bacSettings = new ArrayList<>();
 
         initDialogProcessing();
         initPopup();
@@ -565,7 +570,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public boolean handleMessage(@NonNull Message msg) {
         switch (msg.what) {
             case 6:
-                cancelDialogProcessing();
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
 
@@ -584,6 +588,182 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.add("*R,E4_"+(i+1)+",()[CR]");
                         arrRules.add("*R,PKP"+(i+1)+",()[CR]");
                     }
+                    arrResults.clear();
+                    connectThread.write(arrRules.get(0));
+                    arrRules.remove(0);
+                }
+
+                if (resultStart == 1){
+                    if (arrRules.size() != 0){
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+
+                        for (int i = 0 ; i < arrResults.size() ; i+=6){
+                            bacSettings.add(new BacSetting(MainActivity.device.getId(),
+                                    MainActivity.device.getId(),arrResults.get(i),
+                                    Protector.tryParseInt(arrResults.get(i+1)),
+                                    Protector.tryParseInt(arrResults.get(i+2)),
+                                    Protector.tryParseInt(arrResults.get(i+3)),
+                                    Protector.tryParseInt(arrResults.get(i+4)),
+                                    Protector.tryParseInt(arrResults.get(i+5)),Protector.getCurrentTime(),Protector.getCurrentTime()));
+                        }
+
+                        arrResults.clear();
+
+                        arrRules.add("*R,SETNAME,()[CR]");
+                        arrRules.add("*R,CRNG,()[CR]");
+                        arrRules.add("*R,EQP1,()[CR]");
+                        arrRules.add("*R,EQT1,()[CR]");
+                        arrRules.add("*R,EQP2,()[CR]");
+                        arrRules.add("*R,EQT2,()[CR]");
+                        arrRules.add("*R,EQP3,()[CR]");
+                        arrRules.add("*R,EQT3,()[CR]");
+                        arrRules.add("*R,EQP4,()[CR]");
+                        arrRules.add("*R,EQT4,()[CR]");
+                        arrRules.add("*R,EQP5,()[CR]");
+                        arrRules.add("*R,EQT5,()[CR]");
+                        arrRules.add("*R,STP,()[CR]");
+                        arrRules.add("*R,ENP,()[CR]");
+                        arrRules.add("*R,PP,()[CR]");
+                        arrRules.add("*R,DLTE,()[CR]");
+                        arrRules.add("*R,PWD,()[CR]");
+                        arrRules.add("*R,PTM,()[CR]");
+                        arrRules.add("*R,IBST,()[CR]");
+                        arrRules.add("*R,IBEN,()[CR]");
+                        arrRules.add("*R,IFST,()[CR]");
+                        arrRules.add("*R,IFEN,()[CR]");
+
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
+                }
+                if (resultStart == 3){
+                    if (arrRules.size() != 0){
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+                        sensorSetting = new SensorSetting(MainActivity.device.getId(),
+                                arrResults.get(0),
+                                bacSettings.size(),
+                                Protector.tryParseInt(arrResults.get(1)),
+                                Protector.tryParseInt(arrResults.get(2)),
+                                Protector.tryParseInt(arrResults.get(3)),
+                                Protector.tryParseInt(arrResults.get(4)),
+                                Protector.tryParseInt(arrResults.get(5)),
+                                Protector.tryParseInt(arrResults.get(6)),
+                                Protector.tryParseInt(arrResults.get(7)),
+                                Protector.tryParseInt(arrResults.get(8)),
+                                Protector.tryParseInt(arrResults.get(9)),
+                                Protector.tryParseInt(arrResults.get(10)),
+                                Protector.tryParseInt(arrResults.get(11)),
+                                Protector.tryParseInt(arrResults.get(12)),
+                                Protector.tryParseInt(arrResults.get(13)),
+                                Protector.tryParseInt(arrResults.get(14)),
+                                Protector.tryParseInt(arrResults.get(15)),
+                                Protector.tryParseInt(arrResults.get(16)),
+                                Protector.tryParseInt(arrResults.get(17)),
+                                Protector.tryParseInt(arrResults.get(18)),
+                                Protector.tryParseInt(arrResults.get(19)),
+                                Protector.tryParseInt(arrResults.get(20)),
+                                Protector.tryParseInt(arrResults.get(21)), MainActivity.device.getId(), Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
+                        arrResults.clear();
+                        arrRules.add("*R_DATETIME");
+                        arrRules.add("*R_NUM");
+                        arrRules.add("*R_PSTATERR");
+
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
+                }
+                if (resultStart == 4){
+                    if (arrRules.size() != 0){
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+                        measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
+                                arrResults.get(0),Protector.tryParseInt(arrResults.get(1)),Protector.tryParseInt(arrResults.get(2)),"","");
+                        arrResults.clear();
+
+                        arrRules.add("*MEASRES");
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
+                }
+                if (resultStart == 5){
+                    if (arrRules.size() != 0){
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+                        for (int i = 0 ; i < Protector.tryParseInt(arrResults.get(0)) ; i++){
+                            arrRules.add("*R_NAME_" + (i+1) + "[CR]");
+                            arrRules.add("*R_PKPOT_" + (i+1) + "[CR]");
+                            arrRules.add("*R_DLTC_" + (i+1) + "[CR]");
+                            arrRules.add("*R_BGC_" + (i+1) + "[CR]");
+                            arrRules.add("*R_ERR_" + (i+1) + "[CR]");
+                            arrRules.add("*R_BLPSX_" + (i+1) + "[CR]");
+                            arrRules.add("*R_BLPSY_" + (i+1) + "[CR]");
+                            arrRules.add("*R_BLPEX_" + (i+1) + "[CR]");
+                            arrRules.add("*R_BLPEY_" + (i+1) + "[CR]");
+                        }
+                        arrResults.clear();
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
+                }
+                if (resultStart == 6){
+                    if (arrRules.size() != 0){
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+                        for (int i = 0 ; i < arrResults.size() ; i+=8){
+                            measureMeasresses = new ArrayList<>();
+                            measureMeasresses.add(new MeasureMeasress(MainActivity.device.getId(),
+                                    arrResults.get(i),
+                                    Protector.tryParseInt(arrResults.get(i+1)),
+                                    Protector.tryParseInt(arrResults.get(i+2)),
+                                    Protector.tryParseInt(arrResults.get(i+3)),
+                                    Protector.tryParseInt(arrResults.get(i+4)),
+                                    arrResults.get(i+5),
+                                    arrResults.get(i+6),
+                                    arrResults.get(i+7),
+                                    arrResults.get(i+8), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                        }
+
+                        arrRules.add("＊RAWDMP8,10");
+                        arrResults.clear();
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }
+                }
+                if (resultStart == 7){
+                    if (arrRules.size() != 0){
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+                        int no = 1;
+                        for (int i = 0 ; i < arrResults.get(0).length() ; i+=24){
+                            measureMeasdets = new ArrayList<>();
+                            measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                    (no++) +"",
+                                    Integer.parseInt(arrResults.get(0).substring(i , (i + 4)) , 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i+4) , (i + 8)) , 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i+8) , (i + 12)) , 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i+12) , (i + 16)) , 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i+16) , (i + 20)) , 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i+20) , (i + 24)) , 16),
+                                    Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                        }
+
+                        arrResults.clear();
+                        presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
+                    }
                 }
                 break;
             case 2:
@@ -595,69 +775,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                 arrRules.clear();
                 arrResults.clear();
+                bacSettings.clear();
 
                 if (connectThread != null) {
-
-//                    arrRules.add("*R,SETNAME,[CR]");
+                    resultStart = 0;
                     arrRules.add("*R,BACS,()[CR]");
-//                    arrRules.add("*R,CRNG,[CR]");
-//                    arrRules.add("*R,EQP1,[CR]");
-//                    arrRules.add("*R,EQT1,[CR]");
-//                    arrRules.add("*R,EQP2,[CR]");
-//                    arrRules.add("*R,EQT2,[CR]");
-//                    arrRules.add("*R,EQP3,[CR]");
-//                    arrRules.add("*R,EQT3,[CR]");
-//                    arrRules.add("*R,EQP4,[CR]");
-//                    arrRules.add("*R,EQT4,[CR]");
-//                    arrRules.add("*R,EQP5,[CR]");
-//                    arrRules.add("*R,EQT5,[CR]");
-//                    arrRules.add("*R,STP,[CR]");
-//                    arrRules.add("*R,ENP,[CR]");
-//                    arrRules.add("*R,PP,[CR]");
-//                    arrRules.add("*R,DLTE,[CR]");
-//                    arrRules.add("*R,PWD,[CR]");
-//                    arrRules.add("*R,PTM,[CR]");
-//                    arrRules.add("*R,IBST,[CR]");
-//                    arrRules.add("*R,IBEN,[CR]");
-//                    arrRules.add("*R,IFST,[CR]");
-//                    arrRules.add("*R,IFEN,[CR]");
-
                     connectThread.write(arrRules.get(0));
-
-                    // test result
-
-                    // save to cloud compare by datetime
-
-                    ArrayList<BacSetting> bacSettings = new ArrayList<>();
-                    bacSettings.add(new BacSetting(1, 1, "Ex - 01", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    bacSettings.add(new BacSetting(1, 1, "Ex - 02", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    bacSettings.add(new BacSetting(1, 1, "Ex - 03", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    bacSettings.add(new BacSetting(1, 1, "Ex - 04", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    bacSettings.add(new BacSetting(1, 1, "Ex - 05", 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime()));
-
-                    // para
-                    SensorSetting sensorSetting = new SensorSetting(1, "ex", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
-
-                    MeasureMeasbas measureMeasbas = new MeasureMeasbas();
-                    measureMeasbas.setDatetime(Protector.getCurrentTime());
-                    measureMeasbas.setPstaterr(1);
-
-                    ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 01", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 02", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 03", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 04", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasresses.add(new MeasureMeasress(1, "Ex - 05", 1, 1, 0, 1, "1", "2", "1", "2", Protector.getCurrentTime(), Protector.getCurrentTime()));
-
-                    ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
-                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 01", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 02", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 03", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 04", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-                    measureMeasdets.add(new MeasureMeasdets(1, "Ex - 05", 1, 1, 1, 1, 1, 1, Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-
-                    showDialogProcessing();
-                    presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
                 }
                 break;
             case 1:

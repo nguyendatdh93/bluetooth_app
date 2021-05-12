@@ -794,7 +794,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     public boolean handleMessage(@NonNull Message msg) {
         switch (msg.what){
             case 6:
-                cancelDialogProcessing();
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
 

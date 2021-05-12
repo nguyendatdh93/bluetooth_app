@@ -69,8 +69,6 @@ public class MeasureMeasbas {
         this.createdAt = createdAt;
     }
 
-    public MeasureMeasbas() {
-    }
 
     public String getUpdatedAt() {
         return updatedAt;
