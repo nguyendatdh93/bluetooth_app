@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
+import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
@@ -53,8 +54,6 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
 
     private Dialog dialogProcessing;
     private TextView txtDialogProcessingTitle , txtDatetime;
-
-    private ConnectThread connectThread;
 
     // popup
     private LinearLayout containerPopup;
@@ -300,6 +299,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
 
                 break;
             case 2:
+                countTryConnect = 1;
                 MainActivity.device.setStatusConnect(1);
 
                 arrRules.clear();

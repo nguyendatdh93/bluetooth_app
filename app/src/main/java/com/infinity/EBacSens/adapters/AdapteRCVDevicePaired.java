@@ -79,9 +79,6 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
             }
 
             viewHodler.containerView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
-            //viewHodler.btnUnpair.setOnClickListener(v -> callback.onUnpairRCVDevicePaired(position));
-            viewHodler.btnUnpair.setOnClickListener(v -> presenterAdapterRCVDevicePaired.receivedDeleteSettingSensor(APIUtils.token , arrItem.get(position).getId() , position));
-            viewHodler.container.setShowMode(SwipeLayout.ShowMode.PullOut);
         }
     }
 
@@ -143,16 +140,12 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
 
     static class ViewHodler extends RecyclerView.ViewHolder {
         TextView txtName, txtToggle;
-        Button btnUnpair;
-        SwipeLayout container;
         RelativeLayout containerView;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.item_rcv_menu_draw_txt_name);
             txtToggle = itemView.findViewById(R.id.item_rcv_menu_draw_txt_toggle);
-            container = itemView.findViewById(R.id.item_rcv_menu_draw_continer);
-            btnUnpair = itemView.findViewById(R.id.item_rcv_device_paired_btn_unpair);
             containerView = itemView.findViewById(R.id.item_rcv_device_paired_container_view);
         }
     }

@@ -58,6 +58,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
+import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
@@ -79,7 +80,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     private IntentFilter intentFilter;
 
-    private ConnectThread connectThread;
+    //private ConnectThread connectThread;
 
     // popup
     private LinearLayout containerPopup;
@@ -88,7 +89,8 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     // 0 = test , 1 = connect
     private int statusConnect;
-
+    private int countTryConnect = 0;
+    private final int maxTryConnect = 2;
     private Handler handler;
 
     private ArrayList<String> arrRules;
@@ -433,6 +435,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
                 break;
             case 2:
+                countTryConnect = 1;
                 MainActivity.device.setStatusConnect(1);
                 arrRules.clear();
                 arrResults.clear();
@@ -455,12 +458,23 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 }
                 break;
             case 0:
-                MainActivity.device.setStatusConnect(0);
-                cancelDialogProcessing();
-                containerInfor.setVisibility(View.GONE);
-                containerStatus.setVisibility(View.VISIBLE);
-                txtStatusConnection.setText("Disconnected");
-                txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
+                if (statusConnect == -1){
+                    MainActivity.device.setStatusConnect(0);
+                    cancelDialogProcessing();
+                    containerInfor.setVisibility(View.GONE);
+                    containerStatus.setVisibility(View.VISIBLE);
+                    txtStatusConnection.setText("Disconnected");
+                    txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
+                }else {
+                    MainActivity.device.setStatusConnect(0);
+                    cancelDialogProcessing();
+                    if (++countTryConnect >= maxTryConnect){
+                        countTryConnect = 1;
+                        showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
+                    }else {
+                        connectSensor();
+                    }
+                }
         }
         return false;
     }

@@ -235,7 +235,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                 }
 
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
-                    if (device.getAddress().equals(arrDevicePaired.get(i).getMacDevice())) {
+                    if (arrDevicePaired.get(i).getStatusConnect() != 1 && device.getAddress().equals(arrDevicePaired.get(i).getMacDevice())) {
                         arrDevicePaired.get(i).setStatusConnect(-1);
                         adapteRCVDevicePaired.notifyItemChanged(i);
                         break;
@@ -396,7 +396,20 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     @Override
     protected void onResume() {
         super.onResume();
-        if (adapteRCVDevicePaired != null){
+        if (adapteRCVDevicePaired != null && arrDevicePaired != null && MainActivity.device != null && MainActivity.device.getMacDevice() != null){
+            for (int i = 0 ; i < arrDevicePaired.size() ; i++){
+                if (arrDevicePaired.get(i).getStatusConnect() == 1){
+                    arrDevicePaired.get(i).setStatusConnect(-1);
+                }
+            }
+
+            for (int i = 0 ; i < arrDevicePaired.size() ; i++){
+                if (arrDevicePaired.get(i).getMacDevice() != null && arrDevicePaired.get(i).getMacDevice().equals(MainActivity.device.getMacDevice()) && MainActivity.device.getStatusConnect() == 1){
+                    arrDevicePaired.get(i).setStatusConnect(1);
+                    break;
+                }
+            }
+
             adapteRCVDevicePaired.notifyDataSetChanged();
         }
     }

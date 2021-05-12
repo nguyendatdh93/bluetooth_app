@@ -108,6 +108,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
+import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
@@ -144,8 +145,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     private List<SensorMeasurePage.MeasurePage> arrMeasurePage;
     private PresenterFragment4 presenterFragment4;
-
-    private ConnectThread connectThread;
 
     private int positionCSV;
     private SensorMeasure sensorMeasureExport;
@@ -775,10 +774,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 }
                 break;
             case 2:
-
-                // demo will enable below line
-                cancelDialogProcessing();
-
+                countTryConnect = 1;
                 MainActivity.device.setStatusConnect(1);
 
                 arrRules.clear();

@@ -69,6 +69,7 @@ import java.util.Random;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
+import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
@@ -102,7 +103,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private int statusButton;
     private Handler handler;
     private boolean canChangeSpinner = true;
-    private ConnectThread connectThread;
     private int countTryConnect = 0;
     private final int maxTryConnect = 2;
 
@@ -979,6 +979,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                 break;
             case 2:
+                countTryConnect = 1;
                 MainActivity.device.setStatusConnect(1);
 
                 arrRules.clear();

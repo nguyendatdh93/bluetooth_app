@@ -16,6 +16,7 @@ import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorInfor;
+import com.infinity.EBacSens.task.ConnectThread;
 
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity  {
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
+    public static ConnectThread connectThread;
     public static SensorInfor device;
     private TextView txtNameDevice;
     private int offset = 0;

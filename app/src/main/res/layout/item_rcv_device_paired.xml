@@ -1,79 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_rcv_menu_draw_continer"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:leftEdgeSwipeOffset="0dp"
-    app:rightEdgeSwipeOffset="0dp">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/item_rcv_device_paired_btn_unpair"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/red"
-            android:text="Unpair"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_11ssp" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/item_rcv_device_paired_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="@dimen/_10ssp">
 
-        <RelativeLayout
-            android:id="@+id/item_rcv_device_paired_container_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10ssp">
-
-            <ImageView
-                android:id="@+id/view_left"
-                android:layout_width="@dimen/_20ssp"
-                android:layout_height="@dimen/_20ssp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/online_52px" />
-
-            <TextView
-                android:id="@+id/item_rcv_menu_draw_txt_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_5ssp"
-                android:layout_marginEnd="@dimen/_5ssp"
-                android:layout_toStartOf="@+id/item_rcv_menu_draw_txt_toggle"
-                android:layout_toEndOf="@id/view_left"
-                android:textSize="@dimen/_11ssp" />
-
-            <TextView
-                android:id="@+id/item_rcv_menu_draw_txt_toggle"
-                android:layout_width="@dimen/_80ssp"
-                android:layout_height="@dimen/_20ssp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/circle_bg_button_not_active"
-                android:gravity="center"
-                android:paddingStart="@dimen/_5ssp"
-                android:paddingEnd="@dimen/_5ssp"
-                android:textColor="@color/toggle_color"
-                android:textSize="@dimen/_11ssp" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/view_left"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_20ssp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/online_52px" />
 
         <TextView
-            android:layout_marginStart="@dimen/_10ssp"
-            android:layout_marginEnd="@dimen/_10ssp"
+            android:id="@+id/item_rcv_menu_draw_txt_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1ssp"
-            android:background="@color/grey" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5ssp"
+            android:layout_marginEnd="@dimen/_5ssp"
+            android:layout_toStartOf="@+id/item_rcv_menu_draw_txt_toggle"
+            android:layout_toEndOf="@id/view_left"
+            android:textSize="@dimen/_11ssp" />
 
-</com.daimajia.swipe.SwipeLayout>
+        <TextView
+            android:id="@+id/item_rcv_menu_draw_txt_toggle"
+            android:layout_width="@dimen/_80ssp"
+            android:layout_height="@dimen/_20ssp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_bg_button_not_active"
+            android:gravity="center"
+            android:paddingStart="@dimen/_5ssp"
+            android:paddingEnd="@dimen/_5ssp"
+            android:textColor="@color/toggle_color"
+            android:textSize="@dimen/_11ssp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_10ssp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1ssp"
+        android:background="@color/grey" />
+</LinearLayout>
