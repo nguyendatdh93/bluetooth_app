@@ -141,7 +141,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     // popup
     private LinearLayout containerPopup;
     private ImageView imgTitle;
-    private TextView txtTitle , txtContent;
+    private TextView txtTitle, txtContent;
 
     private List<SensorMeasurePage.MeasurePage> arrMeasurePage;
     private PresenterFragment4 presenterFragment4;
@@ -158,9 +158,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private int resultStart = 0;
     private ArrayList<BacSetting> bacSettings;
     private ArrayList<MeasureMeasress> measureMeasresses;
-    private ArrayList<MeasureMeasdets>  measureMeasdets;
+    private ArrayList<MeasureMeasdets> measureMeasdets;
     private SensorSetting sensorSetting;
     private MeasureMeasbas measureMeasbas;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -179,7 +180,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             if (mBluetoothAdapter != null) {
                 connectSensor();
             } else {
-                showPopup("Failed" , "Device not have mac address." , false);
+                showPopup("Failed", "Device not have mac address.", false);
             }
         });
 
@@ -234,7 +235,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         initPopup();
     }
 
-    private void initPopup(){
+    private void initPopup() {
         containerPopup = view.findViewById(R.id.container_popup);
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
@@ -247,14 +248,14 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         txtContent = view.findViewById(R.id.fragment_popup_txt_content);
     }
 
-    private void showPopup(String title , String content , boolean success){
+    private void showPopup(String title, String content, boolean success) {
         txtTitle.setText(title);
         txtContent.setText(content);
 
-        if (success){
+        if (success) {
             imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
-        }else {
+        } else {
             imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
@@ -274,8 +275,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     }
 
 
-    private void hidePopup(){
-        if (containerPopup.getVisibility() == View.VISIBLE){
+    private void hidePopup() {
+        if (containerPopup.getVisibility() == View.VISIBLE) {
             Animation animSlide = AnimationUtils.loadAnimation(context,
                     R.anim.right_to_left);
             containerPopup.startAnimation(animSlide);
@@ -289,7 +290,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler , this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -305,7 +306,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 e.printStackTrace();
             }
         } else {
-            showPopup("Failed" , "Device not have mac address." , false);
+            showPopup("Failed", "Device not have mac address.", false);
         }
     }
 
@@ -358,7 +359,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             writer = new CSVWriter(new OutputStreamWriter(os));
                             List<String[]> data = new ArrayList<>();
                             data.add(new String[]{"測定日時", sensorMeasure.getDatetime()});
-                            data.add(new String[]{"データ番号", "14"}); // prmid
+                            data.add(new String[]{"データ番号", sensorMeasure.getNo()});
                             data.add(new String[]{"設定名", String.valueOf(sensorMeasure.getMeasureMeasparas().getSetname())});
                             data.add(new String[]{"測定数", String.valueOf(sensorMeasure.getMeasureMeasparas().getBacs())});
                             data.add(new String[]{"レンジ", String.valueOf(sensorMeasure.getMeasureMeasparas().getCrng())});
@@ -390,6 +391,72 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 data.add(new String[]{"E4ベースライン検索終了電位", String.valueOf(sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getE4())});
                                 data.add(new String[]{"ピーク位置", String.valueOf(sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getPkp())});
                             }
+                            data.add(new String[]{});
+
+                            if (sensorMeasure.getMeasureMeasresses().size() == 1) {
+                                data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName()});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr())});
+                            } else if (sensorMeasure.getMeasureMeasresses().size() == 2) {
+                                data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName()});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr())});
+                            } else if (sensorMeasure.getMeasureMeasresses().size() == 3) {
+                                data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName()});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr())});
+                            } else if (sensorMeasure.getMeasureMeasresses().size() == 4) {
+                                data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), sensorMeasure.getMeasureMeasresses().get(3).getName()});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getPkpot())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getDltc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBgc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsx())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsy())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpex())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpey())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getErr())});
+                            } else if (sensorMeasure.getMeasureMeasresses().size() == 5) {
+                                data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), sensorMeasure.getMeasureMeasresses().get(3).getName(), sensorMeasure.getMeasureMeasresses().get(4).getName()});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getPkpot())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getDltc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBgc())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpsx())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpsy())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpex())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpey())});
+                                data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getErr())});
+                            }
+
+                            data.add(new String[]{});
+                            data.add(new String[]{"No", "E(mV)", "DeltaI(uA)", "Eb", "Ib", "Ef", "If"});
+
+                            for (int i = 0; i < sensorMeasure.getMeasureMeasdets().size(); i++) {
+                                data.add(new String[]{String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getNo()),
+                                        String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltae()),
+                                        String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltai()),
+                                        String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEb()),
+                                        String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getIb()),
+                                        String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEf()),
+                                        String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).get_if())});
+                            }
 
                             for (int i = 0; i < data.size(); i++) {
                                 writer.writeNext(data.get(i));
@@ -417,18 +484,18 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         skbProgress.setProgress(100);
                         txtProcess.setText("Done!");
                         txtProcess.setTextColor(context.getResources().getColor(R.color.green));
-                        showPopup("Success" , "Exported CSV." , true);
+                        showPopup("Success", "Exported CSV.", true);
                     });
                 }
 
                 @Override
                 public void onPermissionDenied(List<String> deniedPermissions) {
-                    showPopup("Failed" , "Access denied" , false);
+                    showPopup("Failed", "Access denied", false);
                 }
             };
             TedPermission.with(context).setPermissionListener(permissionListener).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
         } else {
-            showPopup("Success" , "Null response." , false);
+            showPopup("Success", "Null response.", false);
         }
     }
 
@@ -493,7 +560,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        showPopup("Success" , "Stored." , true);
+        showPopup("Success", "Stored.", true);
 
         arrRCVDatetime.clear();
         arrMeasure.clear();
@@ -506,7 +573,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     @Override
     public void onFailStoreMeasure(String error) {
         cancelDialogProcessing();
-        showPopup("Failed" , error , false);
+        showPopup("Failed", error, false);
         Protector.appendLog(error);
     }
 
@@ -577,15 +644,15 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                 // result sensor
                 arrResults.add(tempMsg);
-                if (resultStart == 0){
+                if (resultStart == 0) {
                     resultStart++;
-                    for (int i = 0 ; i < Protector.tryParseInt(arrResults.get(0)) ; i++){
-                        arrRules.add("*R,BACNAME"+(i+1)+"[CR]");
-                        arrRules.add("*R,E1_"+(i+1)+"[CR]");
-                        arrRules.add("*R,E2_"+(i+1)+"[CR]");
-                        arrRules.add("*R,E3_"+(i+1)+"[CR]");
-                        arrRules.add("*R,E4_"+(i+1)+"[CR]");
-                        arrRules.add("*R,PKP"+(i+1)+"[CR]");
+                    for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
+                        arrRules.add("*R,BACNAME" + (i + 1) + "[CR]");
+                        arrRules.add("*R,E1_" + (i + 1) + "[CR]");
+                        arrRules.add("*R,E2_" + (i + 1) + "[CR]");
+                        arrRules.add("*R,E3_" + (i + 1) + "[CR]");
+                        arrRules.add("*R,E4_" + (i + 1) + "[CR]");
+                        arrRules.add("*R,PKP" + (i + 1) + "[CR]");
                     }
                     arrResults.clear();
                     connectThread.write(arrRules.get(0));
@@ -593,22 +660,22 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     arrRules.remove(0);
                 }
 
-                if (resultStart == 1){
-                    if (arrRules.size() != 0){
+                if (resultStart == 1) {
+                    if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
-                    }else {
+                    } else {
                         resultStart++;
 
-                        for (int i = 0 ; i < arrResults.size() ; i+=6){
+                        for (int i = 0; i < arrResults.size(); i += 6) {
                             bacSettings.add(new BacSetting(MainActivity.device.getId(),
-                                    MainActivity.device.getId(),arrResults.get(i),
-                                    Protector.tryParseInt(arrResults.get(i+1)),
-                                    Protector.tryParseInt(arrResults.get(i+2)),
-                                    Protector.tryParseInt(arrResults.get(i+3)),
-                                    Protector.tryParseInt(arrResults.get(i+4)),
-                                    Protector.tryParseInt(arrResults.get(i+5)),Protector.getCurrentTime(),Protector.getCurrentTime()));
+                                    MainActivity.device.getId(), arrResults.get(i),
+                                    Protector.tryParseInt(arrResults.get(i + 1)),
+                                    Protector.tryParseInt(arrResults.get(i + 2)),
+                                    Protector.tryParseInt(arrResults.get(i + 3)),
+                                    Protector.tryParseInt(arrResults.get(i + 4)),
+                                    Protector.tryParseInt(arrResults.get(i + 5)), Protector.getCurrentTime(), Protector.getCurrentTime()));
                         }
 
                         arrResults.clear();
@@ -641,11 +708,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.remove(0);
                     }
                 }
-                if (resultStart == 3){
-                    if (arrRules.size() != 0){
+                if (resultStart == 3) {
+                    if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
-                    }else {
+                    } else {
                         resultStart++;
                         sensorSetting = new SensorSetting(MainActivity.device.getId(),
                                 arrResults.get(0),
@@ -681,14 +748,14 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.remove(0);
                     }
                 }
-                if (resultStart == 4){
-                    if (arrRules.size() != 0){
+                if (resultStart == 4) {
+                    if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
-                    }else {
+                    } else {
                         resultStart++;
                         measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                arrResults.get(0),Protector.tryParseInt(arrResults.get(1)),Protector.tryParseInt(arrResults.get(2)),"","");
+                                arrResults.get(0), Protector.tryParseInt(arrResults.get(1)), Protector.tryParseInt(arrResults.get(2)), "", "");
                         arrResults.clear();
 
                         arrRules.add("*MEASRES");
@@ -697,22 +764,22 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.remove(0);
                     }
                 }
-                if (resultStart == 5){
-                    if (arrRules.size() != 0){
+                if (resultStart == 5) {
+                    if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
-                    }else {
+                    } else {
                         resultStart++;
-                        for (int i = 0 ; i < Protector.tryParseInt(arrResults.get(0)) ; i++){
-                            arrRules.add("*R_NAME_" + (i+1) + "[CR]");
-                            arrRules.add("*R_PKPOT_" + (i+1) + "[CR]");
-                            arrRules.add("*R_DLTC_" + (i+1) + "[CR]");
-                            arrRules.add("*R_BGC_" + (i+1) + "[CR]");
-                            arrRules.add("*R_ERR_" + (i+1) + "[CR]");
-                            arrRules.add("*R_BLPSX_" + (i+1) + "[CR]");
-                            arrRules.add("*R_BLPSY_" + (i+1) + "[CR]");
-                            arrRules.add("*R_BLPEX_" + (i+1) + "[CR]");
-                            arrRules.add("*R_BLPEY_" + (i+1) + "[CR]");
+                        for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
+                            arrRules.add("*R_NAME_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_PKPOT_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_DLTC_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_BGC_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_ERR_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_BLPSX_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_BLPSY_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_BLPEX_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_BLPEY_" + (i + 1) + "[CR]");
                         }
                         arrResults.clear();
                         connectThread.write(arrRules.get(0));
@@ -720,24 +787,24 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.remove(0);
                     }
                 }
-                if (resultStart == 6){
-                    if (arrRules.size() != 0){
+                if (resultStart == 6) {
+                    if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
-                    }else {
+                    } else {
                         resultStart++;
-                        for (int i = 0 ; i < arrResults.size() ; i+=8){
+                        for (int i = 0; i < arrResults.size(); i += 8) {
                             measureMeasresses = new ArrayList<>();
                             measureMeasresses.add(new MeasureMeasress(MainActivity.device.getId(),
                                     arrResults.get(i),
-                                    Protector.tryParseInt(arrResults.get(i+1)),
-                                    Protector.tryParseInt(arrResults.get(i+2)),
-                                    Protector.tryParseInt(arrResults.get(i+3)),
-                                    Protector.tryParseInt(arrResults.get(i+4)),
-                                    arrResults.get(i+5),
-                                    arrResults.get(i+6),
-                                    arrResults.get(i+7),
-                                    arrResults.get(i+8), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                                    Protector.tryParseInt(arrResults.get(i + 1)),
+                                    Protector.tryParseInt(arrResults.get(i + 2)),
+                                    Protector.tryParseInt(arrResults.get(i + 3)),
+                                    Protector.tryParseInt(arrResults.get(i + 4)),
+                                    arrResults.get(i + 5),
+                                    arrResults.get(i + 6),
+                                    arrResults.get(i + 7),
+                                    arrResults.get(i + 8), Protector.getCurrentTime(), Protector.getCurrentTime()));
                         }
 
                         arrRules.add("＊RAWDMP8,10");
@@ -747,24 +814,24 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.remove(0);
                     }
                 }
-                if (resultStart == 7){
-                    if (arrRules.size() != 0){
+                if (resultStart == 7) {
+                    if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
-                    }else {
+                    } else {
                         resultStart++;
                         int no = 1;
-                        for (int i = 0 ; i < arrResults.get(0).length() ; i+=24){
+                        for (int i = 0; i < arrResults.get(0).length(); i += 24) {
                             measureMeasdets = new ArrayList<>();
                             measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                    (no++) +"",
-                                    Integer.parseInt(arrResults.get(0).substring(i , (i + 4)) , 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i+4) , (i + 8)) , 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i+8) , (i + 12)) , 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i+12) , (i + 16)) , 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i+16) , (i + 20)) , 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i+20) , (i + 24)) , 16),
+                                    (no++) + "",
+                                    Integer.parseInt(arrResults.get(0).substring(i, (i + 4)), 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i + 4), (i + 8)), 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i + 8), (i + 12)), 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i + 12), (i + 16)), 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i + 16), (i + 20)), 16),
+                                    Integer.parseInt(arrResults.get(0).substring((i + 20), (i + 24)), 16),
                                     Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
                         }
 
@@ -798,7 +865,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 cancelDialogProcessing();
                 if (++countTryConnect >= maxTryConnect) {
                     countTryConnect = 1;
-                    showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
+                    showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
                 } else {
                     connectSensor();
                 }

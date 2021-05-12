@@ -3,6 +3,8 @@ package com.infinity.EBacSens.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +39,7 @@ import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.presenter.PresenterFragment1;
+import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
 import com.infinity.EBacSens.views.ViewFragment1Listener;
@@ -50,6 +53,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -113,7 +117,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                     connectThread.cancel();
                 }
                 connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler ,this);
-
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
