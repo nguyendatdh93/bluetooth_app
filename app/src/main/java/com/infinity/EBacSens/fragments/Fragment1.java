@@ -385,7 +385,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         message.what = STATE_DISCONNECTED;
         handler.sendMessage(message);
         Protector.appendLog(error);
-        Log.e("AAAA" , error);
     }
 
     @Override
