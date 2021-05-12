@@ -657,6 +657,7 @@
         android:layout_marginTop="@dimen/_10ssp"
         android:layout_marginEnd="@dimen/_10ssp"
         android:background="@drawable/shadow"
+        android:visibility="gone"
         android:orientation="vertical"
         android:padding="@dimen/_10ssp">
 
