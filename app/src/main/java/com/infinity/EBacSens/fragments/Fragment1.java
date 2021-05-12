@@ -448,7 +448,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 if (connectThread != null && arrRules.size() > 0) {
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
-                    arrResults.remove(0);
+                    arrRules.remove(0);
                 }else {
                     containerInfor.setVisibility(View.GONE);
                     containerStatus.setVisibility(View.VISIBLE);
