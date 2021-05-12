@@ -199,7 +199,14 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         btnWrite.setOnClickListener(v -> {
             if (edtNameMEasure.getText().toString().length() == 0){
                 edtNameMEasure.setError("Error");
+                edtNameMEasure.requestFocus();
             }else {
+                for (int i = 0 ; i < arrBacSetting.size() ; i++){
+                    if (arrBacSetting.get(i).getBacName().length() == 0){
+                        adapteRCVBacSetting.alertName(i , "Error");
+                        return;
+                    }
+                }
                 statusButton = 1;
                 if (mBluetoothAdapter != null) {
                     connectSensor();
