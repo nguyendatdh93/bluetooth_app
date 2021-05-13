@@ -647,12 +647,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 if (resultStart == 0) {
                     resultStart++;
                     for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
-                        arrRules.add("*R,BACNAME" + (i + 1) + "[CR]");
-                        arrRules.add("*R,E1_" + (i + 1) + "[CR]");
-                        arrRules.add("*R,E2_" + (i + 1) + "[CR]");
-                        arrRules.add("*R,E3_" + (i + 1) + "[CR]");
-                        arrRules.add("*R,E4_" + (i + 1) + "[CR]");
-                        arrRules.add("*R,PKP" + (i + 1) + "[CR]");
+                        arrRules.add("*R,BACNAME" + (i + 1) + "");
+                        arrRules.add("*R,E1_" + (i + 1) + "");
+                        arrRules.add("*R,E2_" + (i + 1) + "");
+                        arrRules.add("*R,E3_" + (i + 1) + "");
+                        arrRules.add("*R,E4_" + (i + 1) + "");
+                        arrRules.add("*R,PKP" + (i + 1) + "");
                     }
                     arrResults.clear();
                     connectThread.write(arrRules.get(0));
@@ -680,28 +680,28 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         arrResults.clear();
 
-                        arrRules.add("*R,SETNAME[CR]");
-                        arrRules.add("*R,CRNG[CR]");
-                        arrRules.add("*R,EQP1[CR]");
-                        arrRules.add("*R,EQT1[CR]");
-                        arrRules.add("*R,EQP2[CR]");
-                        arrRules.add("*R,EQT2[CR]");
-                        arrRules.add("*R,EQP3[CR]");
-                        arrRules.add("*R,EQT3[CR]");
-                        arrRules.add("*R,EQP4[CR]");
-                        arrRules.add("*R,EQT4[CR]");
-                        arrRules.add("*R,EQP5[CR]");
-                        arrRules.add("*R,EQT5[CR]");
-                        arrRules.add("*R,STP[CR]");
-                        arrRules.add("*R,ENP[CR]");
-                        arrRules.add("*R,PP[CR]");
-                        arrRules.add("*R,DLTE[CR]");
-                        arrRules.add("*R,PWD[CR]");
-                        arrRules.add("*R,PTM[CR]");
-                        arrRules.add("*R,IBST[CR]");
-                        arrRules.add("*R,IBEN[CR]");
-                        arrRules.add("*R,IFST[CR]");
-                        arrRules.add("*R,IFEN[CR]");
+                        arrRules.add("*R,SETNAME");
+                        arrRules.add("*R,CRNG");
+                        arrRules.add("*R,EQP1");
+                        arrRules.add("*R,EQT1");
+                        arrRules.add("*R,EQP2");
+                        arrRules.add("*R,EQT2");
+                        arrRules.add("*R,EQP3");
+                        arrRules.add("*R,EQT3");
+                        arrRules.add("*R,EQP4");
+                        arrRules.add("*R,EQT4");
+                        arrRules.add("*R,EQP5");
+                        arrRules.add("*R,EQT5");
+                        arrRules.add("*R,STP");
+                        arrRules.add("*R,ENP");
+                        arrRules.add("*R,PP");
+                        arrRules.add("*R,DLTE");
+                        arrRules.add("*R,PWD");
+                        arrRules.add("*R,PTM");
+                        arrRules.add("*R,IBST");
+                        arrRules.add("*R,IBEN");
+                        arrRules.add("*R,IFST");
+                        arrRules.add("*R,IFEN");
 
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
@@ -771,15 +771,15 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     } else {
                         resultStart++;
                         for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
-                            arrRules.add("*R_NAME_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_PKPOT_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_DLTC_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_BGC_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_ERR_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_BLPSX_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_BLPSY_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_BLPEX_" + (i + 1) + "[CR]");
-                            arrRules.add("*R_BLPEY_" + (i + 1) + "[CR]");
+                            arrRules.add("*R_NAME_" + (i + 1) + "");
+                            arrRules.add("*R_PKPOT_" + (i + 1) + "");
+                            arrRules.add("*R_DLTC_" + (i + 1) + "");
+                            arrRules.add("*R_BGC_" + (i + 1) + "");
+                            arrRules.add("*R_ERR_" + (i + 1) + "");
+                            arrRules.add("*R_BLPSX_" + (i + 1) + "");
+                            arrRules.add("*R_BLPSY_" + (i + 1) + "");
+                            arrRules.add("*R_BLPEX_" + (i + 1) + "");
+                            arrRules.add("*R_BLPEY_" + (i + 1) + "");
                         }
                         arrResults.clear();
                         connectThread.write(arrRules.get(0));
@@ -850,7 +850,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                 if (connectThread != null) {
                     resultStart = 0;
-                    arrRules.add("*R,BACS[CR]");
+                    arrRules.add("*R,BACS");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrResults.remove(0);
