@@ -658,9 +658,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
-                }
-
-                if (resultStart == 1) {
+                } else if (resultStart == 1) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
@@ -702,13 +700,13 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         arrRules.add("*R,IBEN");
                         arrRules.add("*R,IFST");
                         arrRules.add("*R,IFEN");
-
+                        resultStart++;
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
+
                     }
-                }
-                if (resultStart == 3) {
+                } else if (resultStart == 3) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
@@ -747,8 +745,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                     }
-                }
-                if (resultStart == 4) {
+                } else if (resultStart == 4) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
@@ -763,8 +760,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                     }
-                }
-                if (resultStart == 5) {
+                } else if (resultStart == 5) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
@@ -786,14 +782,13 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                     }
-                }
-                if (resultStart == 6) {
+                } else if (resultStart == 6) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
                     } else {
                         resultStart++;
-                        for (int i = 0; i < arrResults.size(); i += 8) {
+                        for (int i = 0; i < arrResults.size(); i += 9) {
                             measureMeasresses = new ArrayList<>();
                             measureMeasresses.add(new MeasureMeasress(MainActivity.device.getId(),
                                     arrResults.get(i),
@@ -813,8 +808,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                     }
-                }
-                if (resultStart == 7) {
+                } else if (resultStart == 7) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
@@ -826,12 +820,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             measureMeasdets = new ArrayList<>();
                             measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
                                     (no++) + "",
-                                    Integer.parseInt(arrResults.get(0).substring(i, (i + 4)), 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i + 4), (i + 8)), 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i + 8), (i + 12)), 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i + 12), (i + 16)), 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i + 16), (i + 20)), 16),
-                                    Integer.parseInt(arrResults.get(0).substring((i + 20), (i + 24)), 16),
+                                    Protector.tryParseHex(arrResults.get(0).length() > 4 ? arrResults.get(0).substring(i, (i + 4)) : ""),
+                                    Protector.tryParseHex(arrResults.get(0).length() > 8 ? arrResults.get(0).substring((i + 4), (i + 8)) : ""),
+                                    Protector.tryParseHex(arrResults.get(0).length() > 12 ? arrResults.get(0).substring((i + 8), (i + 12)) : ""),
+                                    Protector.tryParseHex(arrResults.get(0).length() > 16 ? arrResults.get(0).substring((i + 12), (i + 16)) : ""),
+                                    Protector.tryParseHex(arrResults.get(0).length() > 20 ? arrResults.get(0).substring((i + 16), (i + 20)) : ""),
+                                    Protector.tryParseHex(arrResults.get(0).length() > 24 ? arrResults.get(0).substring((i + 20), (i + 24)) : ""),
                                     Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
                         }
 
@@ -853,7 +847,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     arrRules.add("*R,BACS");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
-                    arrResults.remove(0);
+                    arrRules.remove(0);
                 }
                 break;
             case 1:

@@ -73,13 +73,13 @@ import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure , ViewConnectThread , Handler.Callback{
+public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure, ViewConnectThread, Handler.Callback {
 
     private View view;
     private Activity activity;
     private Context context;
 
-    private Button btnReceiveSettingMeasure, btnSaveSettingMeasure , btnRead , btnWrite;
+    private Button btnReceiveSettingMeasure, btnSaveSettingMeasure, btnRead, btnWrite;
     private EditText edtNameMEasure, edtCrng, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
 
     private ArrayList<SensorSetting> arrSensorSetting;
@@ -97,8 +97,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     // popup
     private LinearLayout containerPopup;
-    private ImageView imgTitle , imgExpandMeasure , imgExpandSetting;
-    private TextView txtTitle , txtContent;
+    private ImageView imgTitle, imgExpandMeasure, imgExpandSetting;
+    private TextView txtTitle, txtContent;
 
     private int statusButton;
     private int resultStart = 0;
@@ -121,19 +121,19 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     private void addEvents() {
         imgExpandMeasure.setOnClickListener(v -> {
-            if (view.findViewById(R.id.container_measure).getVisibility() == View.VISIBLE){
+            if (view.findViewById(R.id.container_measure).getVisibility() == View.VISIBLE) {
                 view.findViewById(R.id.container_measure).setVisibility(View.GONE);
                 imgExpandMeasure.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
-            }else {
+            } else {
                 view.findViewById(R.id.container_measure).setVisibility(View.VISIBLE);
                 imgExpandMeasure.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
             }
         });
         imgExpandSetting.setOnClickListener(v -> {
-            if (view.findViewById(R.id.container_setting).getVisibility() == View.VISIBLE){
+            if (view.findViewById(R.id.container_setting).getVisibility() == View.VISIBLE) {
                 view.findViewById(R.id.container_setting).setVisibility(View.GONE);
                 imgExpandSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
-            }else {
+            } else {
                 view.findViewById(R.id.container_setting).setVisibility(View.VISIBLE);
                 imgExpandSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
             }
@@ -177,13 +177,13 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         spnNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (canChangeSpinner){
+                if (canChangeSpinner) {
                     arrBacSetting.clear();
                     for (int i = 0; i < Protector.tryParseInt(spnNumber.getSelectedItem().toString()); i++) {
-                        arrBacSetting.add(new BacSetting(-1 , -1 , "", 1, 1, 1, 1, 1 , "" , ""));
+                        arrBacSetting.add(new BacSetting(-1, -1, "", 1, 1, 1, 1, 1, "", ""));
                     }
                     adapteRCVBacSetting.notifyDataSetChanged();
-                }else {
+                } else {
                     canChangeSpinner = true;
                 }
 
@@ -197,21 +197,21 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         });
 
         btnWrite.setOnClickListener(v -> {
-            if (edtNameMEasure.getText().toString().length() == 0){
+            if (edtNameMEasure.getText().toString().length() == 0) {
                 edtNameMEasure.setError("Error");
                 edtNameMEasure.requestFocus();
-            }else {
-                for (int i = 0 ; i < arrBacSetting.size() ; i++){
-                    if (arrBacSetting.get(i).getBacName().length() == 0){
-                        adapteRCVBacSetting.alertName(i , "Error");
+            } else {
+                for (int i = 0; i < arrBacSetting.size(); i++) {
+                    if (arrBacSetting.get(i).getBacName().length() == 0) {
+                        adapteRCVBacSetting.alertName(i, "Error");
                         return;
                     }
                 }
                 statusButton = 1;
                 if (mBluetoothAdapter != null) {
                     connectSensor();
-                }else {
-                    showPopup("Failed" , "Device not support Bluetooth." , false);
+                } else {
+                    showPopup("Failed", "Device not support Bluetooth.", false);
                 }
             }
         });
@@ -220,8 +220,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             statusButton = 0;
             if (mBluetoothAdapter != null) {
                 connectSensor();
-            }else {
-                showPopup("Failed" , "Device not support Bluetooth." , false);
+            } else {
+                showPopup("Failed", "Device not support Bluetooth.", false);
             }
         });
     }
@@ -265,7 +265,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         edtIfen = view.findViewById(R.id.fragment_3_edt_ifen);
 
         arrBacSetting = new ArrayList<>();
-        arrBacSetting.add(new BacSetting(-1 , -1 ,null, 1, 1, 1, 1, 1 , null , null));
+        arrBacSetting.add(new BacSetting(-1, -1, null, 1, 1, 1, 1, 1, null, null));
         adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
 
@@ -277,7 +277,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         initPopup();
     }
 
-    private void initPopup(){
+    private void initPopup() {
         containerPopup = view.findViewById(R.id.container_popup);
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
@@ -290,14 +290,14 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         txtContent = view.findViewById(R.id.fragment_popup_txt_content);
     }
 
-    private void showPopup(String title , String content , boolean success){
+    private void showPopup(String title, String content, boolean success) {
         txtTitle.setText(title);
         txtContent.setText(content);
 
-        if (success){
+        if (success) {
             imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
-        }else {
+        } else {
             imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
@@ -317,8 +317,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     }
 
 
-    private void hidePopup(){
-        if (containerPopup.getVisibility() == View.VISIBLE){
+    private void hidePopup() {
+        if (containerPopup.getVisibility() == View.VISIBLE) {
             Animation animSlide = AnimationUtils.loadAnimation(context,
                     R.anim.right_to_left);
             containerPopup.startAnimation(animSlide);
@@ -329,10 +329,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private void connectSensor() {
         if (MainActivity.device.getMacDevice() != null && mBluetoothAdapter != null) {
             try {
-                if (connectThread != null){
+                if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler , this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
                 Thread thread = new Thread() {
                     @Override
@@ -346,8 +346,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
-            showPopup("Failed" , "Device not support Bluetooth." , false);
+        } else {
+            showPopup("Failed", "Device not support Bluetooth.", false);
         }
     }
 
@@ -393,7 +393,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             edtIfen.setText(String.valueOf(arrSensorSetting.get(position).getIfen()));
 
             if (arrSensorSetting.get(position).getBacSettings() != null && arrSensorSetting.get(position).getBacSettings().size() > 0) {
-                spnNumber.setSelection(arrSensorSetting.get(position).getBacSettings().size()-1);
+                spnNumber.setSelection(arrSensorSetting.get(position).getBacSettings().size() - 1);
                 canChangeSpinner = false;
                 arrBacSetting.clear();
                 arrBacSetting.addAll(arrSensorSetting.get(position).getBacSettings());
@@ -412,7 +412,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public void onSuccessUpdateSettingSensor() {
         cancelDialogProcessing();
-        showPopup("Success" , "You have successfully changed providing time." , true);
+        showPopup("Success", "You have successfully changed providing time.", true);
     }
 
     @Override
@@ -552,152 +552,152 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             }
 
             if (errorSensorSetting.getErrors().getBac0bacname() != null && errorSensorSetting.getErrors().getBac0bacname().size() > 0) {
-                adapteRCVBacSetting.alertName(0 , errorSensorSetting.getErrors().getBac0bacname().get(0));
+                adapteRCVBacSetting.alertName(0, errorSensorSetting.getErrors().getBac0bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1bacname() != null && errorSensorSetting.getErrors().getBac1bacname().size() > 0) {
-                adapteRCVBacSetting.alertName(1 , errorSensorSetting.getErrors().getBac1bacname().get(0));
+                adapteRCVBacSetting.alertName(1, errorSensorSetting.getErrors().getBac1bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2bacname() != null && errorSensorSetting.getErrors().getBac2bacname().size() > 0) {
-                adapteRCVBacSetting.alertName(2 , errorSensorSetting.getErrors().getBac2bacname().get(0));
+                adapteRCVBacSetting.alertName(2, errorSensorSetting.getErrors().getBac2bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3bacname() != null && errorSensorSetting.getErrors().getBac3bacname().size() > 0) {
-                adapteRCVBacSetting.alertName(3 , errorSensorSetting.getErrors().getBac3bacname().get(0));
+                adapteRCVBacSetting.alertName(3, errorSensorSetting.getErrors().getBac3bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4bacname() != null && errorSensorSetting.getErrors().getBac4bacname().size() > 0) {
-                adapteRCVBacSetting.alertName(4 , errorSensorSetting.getErrors().getBac4bacname().get(0));
+                adapteRCVBacSetting.alertName(4, errorSensorSetting.getErrors().getBac4bacname().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0e1() != null && errorSensorSetting.getErrors().getBac0e1().size() > 0) {
-                adapteRCVBacSetting.alertE1(0 , errorSensorSetting.getErrors().getBac0e1().get(0));
+                adapteRCVBacSetting.alertE1(0, errorSensorSetting.getErrors().getBac0e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1e1() != null && errorSensorSetting.getErrors().getBac1e1().size() > 0) {
-                adapteRCVBacSetting.alertE1(1 , errorSensorSetting.getErrors().getBac1e1().get(0));
+                adapteRCVBacSetting.alertE1(1, errorSensorSetting.getErrors().getBac1e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2e1() != null && errorSensorSetting.getErrors().getBac2e1().size() > 0) {
-                adapteRCVBacSetting.alertE1(2 , errorSensorSetting.getErrors().getBac2e1().get(0));
+                adapteRCVBacSetting.alertE1(2, errorSensorSetting.getErrors().getBac2e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3e1() != null && errorSensorSetting.getErrors().getBac3e1().size() > 0) {
-                adapteRCVBacSetting.alertE1(3 , errorSensorSetting.getErrors().getBac3e1().get(0));
+                adapteRCVBacSetting.alertE1(3, errorSensorSetting.getErrors().getBac3e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e1() != null && errorSensorSetting.getErrors().getBac4e1().size() > 0) {
-                adapteRCVBacSetting.alertE1(4 , errorSensorSetting.getErrors().getBac4e1().get(0));
+                adapteRCVBacSetting.alertE1(4, errorSensorSetting.getErrors().getBac4e1().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0e2() != null && errorSensorSetting.getErrors().getBac0e2().size() > 0) {
-                adapteRCVBacSetting.alertE2(0 , errorSensorSetting.getErrors().getBac0e2().get(0));
+                adapteRCVBacSetting.alertE2(0, errorSensorSetting.getErrors().getBac0e2().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1e2() != null && errorSensorSetting.getErrors().getBac1e2().size() > 0) {
-                adapteRCVBacSetting.alertE2(1 , errorSensorSetting.getErrors().getBac1e2().get(0));
+                adapteRCVBacSetting.alertE2(1, errorSensorSetting.getErrors().getBac1e2().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2e2() != null && errorSensorSetting.getErrors().getBac2e2().size() > 0) {
-                adapteRCVBacSetting.alertE2(2 , errorSensorSetting.getErrors().getBac2e2().get(0));
+                adapteRCVBacSetting.alertE2(2, errorSensorSetting.getErrors().getBac2e2().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3e2() != null && errorSensorSetting.getErrors().getBac3e2().size() > 0) {
-                adapteRCVBacSetting.alertE2(3 , errorSensorSetting.getErrors().getBac3e2().get(0));
+                adapteRCVBacSetting.alertE2(3, errorSensorSetting.getErrors().getBac3e2().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e2() != null && errorSensorSetting.getErrors().getBac4e2().size() > 0) {
-                adapteRCVBacSetting.alertE2(4 , errorSensorSetting.getErrors().getBac4e2().get(0));
+                adapteRCVBacSetting.alertE2(4, errorSensorSetting.getErrors().getBac4e2().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0e3() != null && errorSensorSetting.getErrors().getBac0e3().size() > 0) {
-                adapteRCVBacSetting.alertE3(0 , errorSensorSetting.getErrors().getBac0e3().get(0));
+                adapteRCVBacSetting.alertE3(0, errorSensorSetting.getErrors().getBac0e3().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1e3() != null && errorSensorSetting.getErrors().getBac1e3().size() > 0) {
-                adapteRCVBacSetting.alertE3(1 , errorSensorSetting.getErrors().getBac1e3().get(0));
+                adapteRCVBacSetting.alertE3(1, errorSensorSetting.getErrors().getBac1e3().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2e3() != null && errorSensorSetting.getErrors().getBac2e3().size() > 0) {
-                adapteRCVBacSetting.alertE3(2 , errorSensorSetting.getErrors().getBac2e3().get(0));
+                adapteRCVBacSetting.alertE3(2, errorSensorSetting.getErrors().getBac2e3().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3e3() != null && errorSensorSetting.getErrors().getBac3e3().size() > 0) {
-                adapteRCVBacSetting.alertE3(3 , errorSensorSetting.getErrors().getBac3e3().get(0));
+                adapteRCVBacSetting.alertE3(3, errorSensorSetting.getErrors().getBac3e3().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e3() != null && errorSensorSetting.getErrors().getBac4e3().size() > 0) {
-                adapteRCVBacSetting.alertE3(4 , errorSensorSetting.getErrors().getBac4e3().get(0));
+                adapteRCVBacSetting.alertE3(4, errorSensorSetting.getErrors().getBac4e3().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0e4() != null && errorSensorSetting.getErrors().getBac0e4().size() > 0) {
-                adapteRCVBacSetting.alertE4(0 , errorSensorSetting.getErrors().getBac0e4().get(0));
+                adapteRCVBacSetting.alertE4(0, errorSensorSetting.getErrors().getBac0e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1e4() != null && errorSensorSetting.getErrors().getBac1e4().size() > 0) {
-                adapteRCVBacSetting.alertE4(1 , errorSensorSetting.getErrors().getBac1e4().get(0));
+                adapteRCVBacSetting.alertE4(1, errorSensorSetting.getErrors().getBac1e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2e4() != null && errorSensorSetting.getErrors().getBac2e4().size() > 0) {
-                adapteRCVBacSetting.alertE4(2 , errorSensorSetting.getErrors().getBac2e4().get(0));
+                adapteRCVBacSetting.alertE4(2, errorSensorSetting.getErrors().getBac2e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3e4() != null && errorSensorSetting.getErrors().getBac3e4().size() > 0) {
-                adapteRCVBacSetting.alertE4(3 , errorSensorSetting.getErrors().getBac3e4().get(0));
+                adapteRCVBacSetting.alertE4(3, errorSensorSetting.getErrors().getBac3e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4e4() != null && errorSensorSetting.getErrors().getBac4e4().size() > 0) {
-                adapteRCVBacSetting.alertE4(4 , errorSensorSetting.getErrors().getBac4e4().get(0));
+                adapteRCVBacSetting.alertE4(4, errorSensorSetting.getErrors().getBac4e4().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac0pkp() != null && errorSensorSetting.getErrors().getBac0pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(0 , errorSensorSetting.getErrors().getBac0pkp().get(0));
+                adapteRCVBacSetting.alertSelectBox(0, errorSensorSetting.getErrors().getBac0pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac1pkp() != null && errorSensorSetting.getErrors().getBac1pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(1 , errorSensorSetting.getErrors().getBac1pkp().get(0));
+                adapteRCVBacSetting.alertSelectBox(1, errorSensorSetting.getErrors().getBac1pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac2pkp() != null && errorSensorSetting.getErrors().getBac2pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(2 , errorSensorSetting.getErrors().getBac2pkp().get(0));
+                adapteRCVBacSetting.alertSelectBox(2, errorSensorSetting.getErrors().getBac2pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac3pkp() != null && errorSensorSetting.getErrors().getBac3pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(3 , errorSensorSetting.getErrors().getBac3pkp().get(0));
+                adapteRCVBacSetting.alertSelectBox(3, errorSensorSetting.getErrors().getBac3pkp().get(0));
                 return;
             }
 
             if (errorSensorSetting.getErrors().getBac4pkp() != null && errorSensorSetting.getErrors().getBac4pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(4 , errorSensorSetting.getErrors().getBac4pkp().get(0));
+                adapteRCVBacSetting.alertSelectBox(4, errorSensorSetting.getErrors().getBac4pkp().get(0));
             }
         }
     }
@@ -804,7 +804,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-        switch (msg.what){
+        switch (msg.what) {
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
@@ -814,8 +814,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                 // result sensor
                 arrResults.add(tempMsg);
-                if (statusButton == 1){
-                    if (arrRules.size() == 0){
+                if (statusButton == 1) {
+                    if (arrRules.size() == 0) {
                         connectThread.write("SAVE");
                         Protector.appendLog("SAVE");
 
@@ -824,7 +824,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
                         canChangeSpinner = false;
 
-                        if (arrBacSetting.size() == 1){
+                        if (arrBacSetting.size() == 1) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
@@ -833,8 +833,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
-                        }else if (arrBacSetting.size() == 2){
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
+                        } else if (arrBacSetting.size() == 2) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
@@ -843,7 +843,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -851,8 +851,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
-                        }else if (arrBacSetting.size() == 3){
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
+                        } else if (arrBacSetting.size() == 3) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
@@ -861,7 +861,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -869,7 +869,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -877,8 +877,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
-                        }else if (arrBacSetting.size() == 4){
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
+                        } else if (arrBacSetting.size() == 4) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
@@ -887,7 +887,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -895,7 +895,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -903,7 +903,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -911,8 +911,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
-                        }else if (arrBacSetting.size() == 5){
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
+                        } else if (arrBacSetting.size() == 5) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
@@ -921,7 +921,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -929,7 +929,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -937,7 +937,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -945,7 +945,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
@@ -953,7 +953,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),"",""));
+                                    Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         }
 
                         edtCrng.setText(arrResults.get(pos++));
@@ -981,76 +981,74 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         adapteRCVBacSetting.notifyDataSetChanged();
 
                         cancelDialogProcessing();
-                        showPopup("Success" , "You have successfully changed providing time." , true);
-                    }else {
+                        showPopup("Success", "You have successfully changed providing time.", true);
+                    } else {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                     }
-                }else {
-                    if (resultStart == 1){
+                } else {
+                    if (resultStart == 1) {
                         resultStart++;
-                        for (int i = 0 ; i < Protector.tryParseInt(arrResults.get(0)) ; i++){
-                            arrRules.add("*R,BACNAME"+(i)+"" + "");
-                            arrRules.add("*" +  "R,E1_"+(i+1)+"" + "");
-                            arrRules.add("*" +  "R,E2_"+(i+1)+"" + "");
-                            arrRules.add("*" +  "R,E3_"+(i+1)+"" + "");
-                            arrRules.add("*" +  "R,E4_"+(i+1)+"" + "");
-                            arrRules.add("*" +  "R,PKP"+(i+1)+"" + "");
+                        for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
+                            arrRules.add("*R,BACNAME" + (i + 1) + "" + "");
+                            arrRules.add("*" + "R,E1_" + (i + 1) + "" + "");
+                            arrRules.add("*" + "R,E2_" + (i + 1) + "" + "");
+                            arrRules.add("*" + "R,E3_" + (i + 1) + "" + "");
+                            arrRules.add("*" + "R,E4_" + (i + 1) + "" + "");
+                            arrRules.add("*" + "R,PKP" + (i + 1) + "" + "");
                         }
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                         arrResults.clear();
-                    }
-                    if (resultStart == 2){
-                        if (arrRules.size() == 0){
+                    } else if (resultStart == 2) {
+                        if (arrRules.size() == 0) {
                             resultStart++;
                             arrBacSetting.clear();
-                            for (int i = 0 ; i < arrResults.size() ; i+=6){
+                            for (int i = 0; i < arrResults.size(); i += 6) {
                                 arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                         MainActivity.device.getId(),
                                         arrResults.get(i),
-                                        Protector.tryParseInt(arrResults.get(i+1)),
-                                        Protector.tryParseInt(arrResults.get(i+2)),
-                                        Protector.tryParseInt(arrResults.get(i+3)),
-                                        Protector.tryParseInt(arrResults.get(i+4)),
-                                        Protector.tryParseInt(arrResults.get(i+5)),Protector.getCurrentTime(),Protector.getCurrentTime()));
+                                        Protector.tryParseInt(arrResults.get(i + 1)),
+                                        Protector.tryParseInt(arrResults.get(i + 2)),
+                                        Protector.tryParseInt(arrResults.get(i + 3)),
+                                        Protector.tryParseInt(arrResults.get(i + 4)),
+                                        Protector.tryParseInt(arrResults.get(i + 5)), Protector.getCurrentTime(), Protector.getCurrentTime()));
                             }
                             adapteRCVBacSetting.notifyDataSetChanged();
                             arrResults.clear();
-                            arrRules.add("*" + "R,SETNAME"  + "");
-                            arrRules.add("*" +  "R,CRNG" + "");
-                            arrRules.add("*" + "R,EQP1"  + "");
-                            arrRules.add("*" + "R,EQT1"  + "");
-                            arrRules.add("*" +  "R,EQP2"  + "");
-                            arrRules.add("*" +  "R,EQT2"  + "");
-                            arrRules.add("*" +  "R,EQP3"  + "");
-                            arrRules.add("*" +  "R,EQT3"  + "");
-                            arrRules.add("*" +  "R,EQP4"  + "");
-                            arrRules.add("*" +  "R,EQT4"  + "");
-                            arrRules.add("*" +  "R,EQP5" + "");
-                            arrRules.add("*" +  "R,EQT5"  + "");
-                            arrRules.add("*" +  "R,STP"  + "");
-                            arrRules.add("*" +  "R,ENP"  + "");
-                            arrRules.add("*" +  "R,PP"  + "");
-                            arrRules.add("*" +  "R,DLTE"  + "");
-                            arrRules.add("*" +  "R,PWD" + "");
-                            arrRules.add("*" +  "R,PTM"  + "");
-                            arrRules.add("*" +  "R,IBST"  + "");
-                            arrRules.add("*" +  "R,IBEN"  + "");
-                            arrRules.add("*" +  "R,IFST"  + "");
-                            arrRules.add("*" +  "R,IFEN"  + "");
+                            arrRules.add("*" + "R,SETNAME" + "");
+                            arrRules.add("*" + "R,CRNG" + "");
+                            arrRules.add("*" + "R,EQP1" + "");
+                            arrRules.add("*" + "R,EQT1" + "");
+                            arrRules.add("*" + "R,EQP2" + "");
+                            arrRules.add("*" + "R,EQT2" + "");
+                            arrRules.add("*" + "R,EQP3" + "");
+                            arrRules.add("*" + "R,EQT3" + "");
+                            arrRules.add("*" + "R,EQP4" + "");
+                            arrRules.add("*" + "R,EQT4" + "");
+                            arrRules.add("*" + "R,EQP5" + "");
+                            arrRules.add("*" + "R,EQT5" + "");
+                            arrRules.add("*" + "R,STP" + "");
+                            arrRules.add("*" + "R,ENP" + "");
+                            arrRules.add("*" + "R,PP" + "");
+                            arrRules.add("*" + "R,DLTE" + "");
+                            arrRules.add("*" + "R,PWD" + "");
+                            arrRules.add("*" + "R,PTM" + "");
+                            arrRules.add("*" + "R,IBST" + "");
+                            arrRules.add("*" + "R,IBEN" + "");
+                            arrRules.add("*" + "R,IFST" + "");
+                            arrRules.add("*" + "R,IFEN" + "");
                             connectThread.write(arrRules.get(0));
                             Protector.appendLog(arrRules.get(0));
                             arrRules.remove(0);
-                        }else {
+                        } else {
                             connectThread.write(arrRules.get(0));
                             Protector.appendLog(arrRules.get(0));
                             arrRules.remove(0);
                         }
-                    }
-                    if (resultStart == 3 && arrRules.size() == 0){
+                    } else if (resultStart == 3 && arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         edtCrng.setText(arrResults.get(pos++));
@@ -1075,8 +1073,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         edtIfst.setText(arrResults.get(pos++));
                         edtIfen.setText(arrResults.get(pos));
                         cancelDialogProcessing();
-                        showPopup("Success" , "You have successfully changed providing time." , true);
-                    }else {
+                        showPopup("Success", "You have successfully changed providing time.", true);
+                    } else {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
@@ -1091,43 +1089,43 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 arrRules.clear();
                 arrResults.clear();
                 resultStart = 1;
-                if (statusButton == 1){
-                    arrRules.add("*" + (statusButton == 1 ? "W,SETNAME,"+ edtNameMEasure.getText().toString() : "R,SETNAME" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,BACS,"+ spnNumber.getSelectedItem().toString() : "R,BACS" ) + "");
-                    for (int i = 0 ; i < arrBacSetting.size() ; i++){
-                        arrRules.add("*" + (statusButton == 1 ? "W,BACNAME"+(i+1)+","+ arrBacSetting.get(i).getBacName() : "R,BACNAME"+(i+1)+"" ) + "");
-                        arrRules.add("*" + (statusButton == 1 ? "W,E1_"+(i+1)+","+ arrBacSetting.get(i).getE1() : "R,E1_"+(i+1)+"" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E2_"+(i+1)+","+ arrBacSetting.get(i).getE2() : "R,E2_"+(i+1)+"" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E3_"+(i+1)+","+ arrBacSetting.get(i).getE3() : "R,E3_"+(i+1)+"" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E4_"+(i+1)+","+ arrBacSetting.get(i).getE4() : "R,E4_"+(i+1)+"" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,PKP"+(i+1)+","+ arrBacSetting.get(i).getPkp() : "R,PKP"+(i+1)+"" + ""));
+                if (statusButton == 1) {
+                    arrRules.add("*" + (statusButton == 1 ? "W,SETNAME," + edtNameMEasure.getText().toString() : "R,SETNAME") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,BACS," + spnNumber.getSelectedItem().toString() : "R,BACS") + "");
+                    for (int i = 0; i < arrBacSetting.size(); i++) {
+                        arrRules.add("*" + (statusButton == 1 ? "W,BACNAME" + (i + 1) + "," + arrBacSetting.get(i).getBacName() : "R,BACNAME" + (i + 1) + "") + "");
+                        arrRules.add("*" + (statusButton == 1 ? "W,E1_" + (i + 1) + "," + arrBacSetting.get(i).getE1() : "R,E1_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E2_" + (i + 1) + "," + arrBacSetting.get(i).getE2() : "R,E2_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E3_" + (i + 1) + "," + arrBacSetting.get(i).getE3() : "R,E3_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E4_" + (i + 1) + "," + arrBacSetting.get(i).getE4() : "R,E4_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,PKP" + (i + 1) + "," + arrBacSetting.get(i).getPkp() : "R,PKP" + (i + 1) + "" + ""));
                     }
-                    arrRules.add("*" + (statusButton == 1 ? "W,CRNG,"+ edtCrng.getText().toString() : "R,CRNG" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP1,"+ edtEqp1.getText().toString() : "R,EQP1" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT1,"+ edtEqt1.getText().toString() : "R,EQT1" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP2,"+ edtEqp2.getText().toString() : "R,EQP2" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT2,"+ edtEqt2.getText().toString() : "R,EQT2" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP3,"+ edtEqp3.getText().toString() : "R,EQP3" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT3,"+ edtEqt3.getText().toString() : "R,EQT3" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP4,"+ edtEqp4.getText().toString() : "R,EQP4" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT4,"+ edtEqt4.getText().toString() : "R,EQT4" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP5,"+ edtEqp5.getText().toString() : "R,EQP5" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT5,"+ edtEqt5.getText().toString() : "R,EQT5" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,STP,"+ edtStp.getText().toString() : "R,STP" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,ENP,"+ edtEnp.getText().toString() : "R,ENP" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PP,"+ edtPp.getText().toString() : "R,PP" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,DLTE,"+ edtDlte.getText().toString() : "R,DLTE" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PWD,"+ edtPwd.getText().toString() : "R,PWD" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PTM,"+ edtPtm.getText().toString() : "R,PTM" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IBST,"+ edtIbst.getText().toString() : "R,IBST" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IBEN,"+ edtIben.getText().toString() : "R,IBEN" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IFST,"+ edtIfst.getText().toString() : "R,IFST" ) + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IFEN,"+ edtIfen.getText().toString() : "R,IFEN" ) + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,CRNG," + edtCrng.getText().toString() : "R,CRNG") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP1," + edtEqp1.getText().toString() : "R,EQP1") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT1," + edtEqt1.getText().toString() : "R,EQT1") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP2," + edtEqp2.getText().toString() : "R,EQP2") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT2," + edtEqt2.getText().toString() : "R,EQT2") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP3," + edtEqp3.getText().toString() : "R,EQP3") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT3," + edtEqt3.getText().toString() : "R,EQT3") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP4," + edtEqp4.getText().toString() : "R,EQP4") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT4," + edtEqt4.getText().toString() : "R,EQT4") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP5," + edtEqp5.getText().toString() : "R,EQP5") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT5," + edtEqt5.getText().toString() : "R,EQT5") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,STP," + edtStp.getText().toString() : "R,STP") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,ENP," + edtEnp.getText().toString() : "R,ENP") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PP," + edtPp.getText().toString() : "R,PP") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,DLTE," + edtDlte.getText().toString() : "R,DLTE") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PWD," + edtPwd.getText().toString() : "R,PWD") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PTM," + edtPtm.getText().toString() : "R,PTM") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IBST," + edtIbst.getText().toString() : "R,IBST") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IBEN," + edtIben.getText().toString() : "R,IBEN") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IFST," + edtIfst.getText().toString() : "R,IFST") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IFEN," + edtIfen.getText().toString() : "R,IFEN") + "");
 
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
-                }else {
+                } else {
                     arrRules.add("*R,BACS");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
@@ -1138,10 +1136,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             case 0:
                 MainActivity.device.setStatusConnect(0);
                 cancelDialogProcessing();
-                if (++countTryConnect >= maxTryConnect){
+                if (++countTryConnect >= maxTryConnect) {
                     countTryConnect = 1;
-                    showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
-                }else {
+                    showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
+                } else {
                     connectSensor();
                 }
                 break;

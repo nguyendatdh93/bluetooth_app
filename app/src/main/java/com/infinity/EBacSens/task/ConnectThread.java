@@ -7,14 +7,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.views.ViewConnectThread;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class ConnectThread extends Thread {
@@ -22,6 +25,7 @@ public class ConnectThread extends Thread {
     private InputStream mmInStream;
     private OutputStream mmOutStream;
     private byte[] mmBuffer; // mmBuffer store for the stream
+     // mmBuffer store for the stream
     ViewConnectThread callback;
 
     private Handler handler; // handler that gets info from Bluetooth service
@@ -85,20 +89,32 @@ public class ConnectThread extends Thread {
     public void run() {
         callback.onRuned();
         mmBuffer = new byte[1024];
-        int numBytes; // bytes returned from read()
 
+        int numBytes = 0; // bytes returned from read()
+        String result = "";
         // Keep listening to the InputStream until an exception occurs.
-        while (mmSocket!= null && mmInStream != null && mmBuffer != null) {
+        while (true) {
             try {
-                // Read from the InputStream.
-                numBytes = mmInStream.read(mmBuffer);
-                // Send the obtained bytes to the UI activity.
-                Message readMsg = handler.obtainMessage(
-                        MessageConstants.MESSAGE_READ, numBytes, -1,
-                        mmBuffer);
-                readMsg.sendToTarget();
+                if (mmInStream.available() > 0) {
+                    byte[] mmBufferTemp = new byte[mmInStream.available()];
+
+                    numBytes += mmInStream.read(mmBufferTemp);
+
+                    String str = new String(mmBufferTemp, StandardCharsets.UTF_8); // for UTF-8 encoding
+                    result += str;
+
+                    Thread.sleep(100);
+                } else if (numBytes > 0) {
+                    Message readMsg = handler.obtainMessage(
+                            MessageConstants.MESSAGE_READ, numBytes, -1,
+                            result.getBytes());
+                    readMsg.sendToTarget();
+                    numBytes = 0;
+                    result ="";
+                }
+
                 //callback.onGetData(readMsg.toString());
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 Log.d("Connection", "Input stream was disconnected", e);
                 //callback.onError(e.getMessage());
                 Log.e("AAAA" , e.getMessage());

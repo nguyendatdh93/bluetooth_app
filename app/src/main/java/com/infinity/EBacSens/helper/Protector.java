@@ -43,6 +43,14 @@ public class Protector {
         }
     }
 
+    public static int tryParseHex(String value) {
+        try {
+            return Integer.parseInt(value , 16);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
     public static ErrorSensorSetting parseErrorSensorSetting(Response<?> response) {
         Converter<ResponseBody, ErrorSensorSetting> converter = RetrofitClient.retrofit.responseBodyConverter(ErrorSensorSetting.class, new Annotation[0]);
         ErrorSensorSetting errorResponse;

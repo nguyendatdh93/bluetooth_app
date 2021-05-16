@@ -180,7 +180,8 @@
                         android:id="@+id/fragment_3_edt_eqp1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -200,6 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -218,7 +220,8 @@
                         android:id="@+id/fragment_3_edt_eqp2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -238,6 +241,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -256,7 +260,8 @@
                         android:id="@+id/fragment_3_edt_eqp3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -275,6 +280,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -293,7 +299,8 @@
                         android:id="@+id/fragment_3_edt_eqp4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -313,6 +320,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -331,7 +339,8 @@
                         android:id="@+id/fragment_3_edt_eqp5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -351,6 +360,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -369,7 +379,8 @@
                         android:id="@+id/fragment_3_edt_stp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberSigned"
+                        android:maxLength="5"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -389,6 +400,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
@@ -408,6 +420,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="5"
                         android:text="1"
                         android:textSize="@dimen/_11ssp" />
 
@@ -427,6 +440,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="5"
                         android:text="1"
                         android:textSize="@dimen/_11ssp" />
 
@@ -446,6 +460,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="10"
                         android:textSize="@dimen/_11ssp" />
 
@@ -465,6 +480,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="10"
                         android:textSize="@dimen/_11ssp" />
 
@@ -484,7 +500,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:text="1"
+                        android:maxLength="6"
+                        android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -503,6 +520,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="1"
                         android:textSize="@dimen/_11ssp" />
 
@@ -522,7 +540,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:text="1"
+                        android:maxLength="6"
+                        android:text="0"
                         android:textSize="@dimen/_11ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -541,6 +560,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:text="1"
                         android:textSize="@dimen/_11ssp" />
 

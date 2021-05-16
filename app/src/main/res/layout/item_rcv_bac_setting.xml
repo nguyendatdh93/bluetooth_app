@@ -52,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/item_rcv_bac_setting_edt_e1"
                 android:text="0"
-                android:inputType="number"
+                android:inputType="numberSigned"
+                android:maxLength="5"
                 android:textSize="@dimen/_11ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/item_rcv_bac_setting_edt_e2"
                 android:text="0"
-                android:inputType="number"
+                android:inputType="numberSigned"
+                android:maxLength="5"
                 android:textSize="@dimen/_11ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +92,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/item_rcv_bac_setting_edt_e3"
                 android:text="0"
-                android:inputType="number"
+                android:inputType="numberSigned"
+                android:maxLength="5"
                 android:textSize="@dimen/_11ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -109,7 +112,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/item_rcv_bac_setting_edt_e4"
                 android:text="0"
-                android:inputType="number"
+                android:inputType="numberSigned"
+                android:maxLength="5"
                 android:textSize="@dimen/_11ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -128,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/item_rcv_bac_setting_edt_pkp"
                 android:text="0"
+                android:maxLength="1"
                 android:inputType="number"
                 android:textSize="@dimen/_11ssp" />
 
