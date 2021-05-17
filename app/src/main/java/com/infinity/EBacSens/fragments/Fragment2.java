@@ -304,10 +304,10 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
 
                 arrRules.clear();
                 arrResults.clear();
-                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString(): "R,IDNAME" ) + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString().replace("-" , "").replace(" " , "").replace(":" , "") : "R,DATETIME" ) + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE" ) + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN" ) + "");
+                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString(): "R,IDNAME" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString().replace("-" , "").replace(" " , "").replace(":" , "") : "R,DATETIME" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE" ) + "[CR]");
+                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN" ) + "[CR]");
 
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));

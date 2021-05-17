@@ -430,9 +430,9 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 arrRules.clear();
                 arrResults.clear();
                 if (statusConnect == 1){
-                    arrRules.add("*R,IDNAME");
-                    arrRules.add("*R,VER");
-                    arrRules.add("*R,SER");
+                    arrRules.add("*R,IDNAME[CR]");
+                    arrRules.add("*R,VER[CR]");
+                    arrRules.add("*R,SER[CR]");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
