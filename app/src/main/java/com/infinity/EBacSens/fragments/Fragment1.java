@@ -116,7 +116,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler ,this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler ,this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {

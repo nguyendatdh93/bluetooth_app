@@ -30,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.TestActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
 import com.infinity.EBacSens.helper.Protector;
@@ -181,7 +182,10 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
     @Override
     public void onClickRCVDevicePaired(int position) {
-        Intent i = new Intent(this , MainActivity.class);
+//        Intent i = new Intent(this , MainActivity.class);
+//        i.putExtra("device", arrDevicePaired.get(position));
+//        startActivity(i);
+        Intent i = new Intent(this , TestActivity.class);
         i.putExtra("device", arrDevicePaired.get(position));
         startActivity(i);
     }

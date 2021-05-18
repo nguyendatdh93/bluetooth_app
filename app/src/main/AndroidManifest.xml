@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.infinity.EBacSens">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="com.google.android.things.permission.MANAGE_BLUETOOTH" />
@@ -15,16 +16,17 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/my_backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
-        android:fullBackupContent="@xml/my_backup_rules"
-        android:theme="@style/Theme.EBacSens">
-        <activity android:name=".activitys.ListDeviceActivity"/>
-        <activity android:name=".activitys.MainActivity"/>
+        android:theme="@style/Theme.EBacSens"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".activitys.ListDeviceActivity" />
+        <activity android:name=".activitys.MainActivity" />
         <activity
             android:name=".activitys.SplashActivity"
             android:screenOrientation="portrait"
@@ -35,6 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.infinity.EBacSens.fileprovider"
