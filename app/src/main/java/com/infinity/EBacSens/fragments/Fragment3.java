@@ -990,6 +990,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 } else {
                     if (resultStart == 1) {
                         resultStart++;
+                        Log.e("AAAA" , Protector.tryParseInt(arrResults.get(0))+"");
                         for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
                             arrRules.add("*R,BACNAME" + (i + 1) + "" + "");
                             arrRules.add("*" + "R,E1_" + (i + 1) + "" + "");

@@ -182,12 +182,12 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
     @Override
     public void onClickRCVDevicePaired(int position) {
-//        Intent i = new Intent(this , MainActivity.class);
-//        i.putExtra("device", arrDevicePaired.get(position));
-//        startActivity(i);
-        Intent i = new Intent(this , TestActivity.class);
+        Intent i = new Intent(this , MainActivity.class);
         i.putExtra("device", arrDevicePaired.get(position));
         startActivity(i);
+//        Intent i = new Intent(this , TestActivity.class);
+//        i.putExtra("device", arrDevicePaired.get(position));
+//        startActivity(i);
     }
 
     @Override

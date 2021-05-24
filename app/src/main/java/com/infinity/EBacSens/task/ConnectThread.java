@@ -100,24 +100,22 @@ public class ConnectThread extends Thread {
 
                     numBytes += mmInStream.read(mmBufferTemp);
 
-                    String str = new String(mmBufferTemp, StandardCharsets.UTF_8); // for UTF-8 encoding
+                    String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
                     result += str;
 
-                    Thread.sleep(100);
-                } else if (numBytes > 0) {
-                    Message readMsg = handler.obtainMessage(
-                            MessageConstants.MESSAGE_READ, numBytes, -1,
-                            result.getBytes());
-                    readMsg.sendToTarget();
-                    numBytes = 0;
-                    result ="";
+                    if (result.contains("[CR]") || result.contains("\n") || result.contains("\r") || result.contains("\r\n") || result.contains("*MEASUREFINISH")){
+                        result = result.replace("[CR]" , "").replace("\n" , "").replace("\n" , "").replace("\r\n" , "");
+                        Message readMsg = handler.obtainMessage(
+                                MessageConstants.MESSAGE_READ, result.getBytes(StandardCharsets.UTF_8).length, -1,
+                                result.getBytes());
+                        readMsg.sendToTarget();
+                        numBytes = 0;
+                        result ="";
+                    }
+                    //Thread.sleep(100);
                 }
-
-                //callback.onGetData(readMsg.toString());
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 Log.d("Connection", "Input stream was disconnected", e);
-                //callback.onError(e.getMessage());
-                Log.e("AAAA" , e.getMessage());
                 break;
             }
 
@@ -126,10 +124,10 @@ public class ConnectThread extends Thread {
 
     public void write(String value) {
         try {
+            value += "\n";
             mmOutStream.write(value.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("AAAA" , e.getMessage());
         }
     }
 
@@ -141,7 +139,6 @@ public class ConnectThread extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("AAAA" , e.getMessage());
         }
     }
 }
