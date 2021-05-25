@@ -73,7 +73,7 @@ public class Protector {
             }
 
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens/log.txt");
+                    File.separator + "/eBacSens/logTest.txt");
 
             if (!logFile.exists()) {
                 try {
@@ -104,7 +104,7 @@ public class Protector {
             }
 
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens/LogSensor.txt");
+                    File.separator + "/eBacSens/LogSensorTest.txt");
 
             if (!logFile.exists()) {
                 try {
@@ -129,5 +129,12 @@ public class Protector {
         String t1 = time.substring(0,10);
         String t2 = time.substring(11,19);
         return t1+" "+t2;
+    }
+
+    public static String formatTimeSensor(String value){
+        if (value != null && value.length() > 13){
+            return value.substring(0,4) + "-" + value.substring(4,6) + "-" + value.substring(6,8) + " " + value.substring(8,10) + ":" + value.substring(10,12) + ":" + value.substring(12,14);
+        }
+        return value;
     }
 }

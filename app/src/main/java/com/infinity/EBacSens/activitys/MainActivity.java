@@ -5,9 +5,12 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -106,6 +109,8 @@ public class MainActivity extends AppCompatActivity  {
         Objects.requireNonNull(tabLayout.getTabAt(1)).setCustomView(R.layout.custom_icon_tab_2_main);
         Objects.requireNonNull(tabLayout.getTabAt(2)).setCustomView(R.layout.custom_icon_tab_3_main);
         Objects.requireNonNull(tabLayout.getTabAt(3)).setCustomView(R.layout.custom_icon_tab_4_main);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (device != null){
             txtNameDevice.setText(device.getName());

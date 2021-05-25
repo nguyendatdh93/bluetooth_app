@@ -857,7 +857,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             case 0:
                 MainActivity.device.setStatusConnect(0);
                 cancelDialogProcessing();
-                if (++countTryConnect >= maxTryConnect) {
+                if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
                     showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
                 } else {

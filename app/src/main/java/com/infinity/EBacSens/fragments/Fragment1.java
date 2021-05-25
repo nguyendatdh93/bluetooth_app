@@ -455,7 +455,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 }else {
                     MainActivity.device.setStatusConnect(0);
                     cancelDialogProcessing();
-                    if (++countTryConnect >= maxTryConnect){
+                    if (++countTryConnect > maxTryConnect){
                         countTryConnect = 1;
                         showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
                     }else {

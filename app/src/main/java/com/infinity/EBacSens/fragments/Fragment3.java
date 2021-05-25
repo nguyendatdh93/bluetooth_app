@@ -816,8 +816,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 arrResults.add(tempMsg);
                 if (statusButton == 1) {
                     if (arrRules.size() == 0) {
-                        connectThread.write("SAVE");
-                        Protector.appendLog("SAVE");
 
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
@@ -990,7 +988,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 } else {
                     if (resultStart == 1) {
                         resultStart++;
-                        Log.e("AAAA" , Protector.tryParseInt(arrResults.get(0))+"");
                         for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
                             arrRules.add("*R,BACNAME" + (i + 1) + "" + "");
                             arrRules.add("*" + "R,E1_" + (i + 1) + "" + "");
@@ -1122,7 +1119,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     arrRules.add("*" + (statusButton == 1 ? "W,IBEN," + edtIben.getText().toString() : "R,IBEN") + "");
                     arrRules.add("*" + (statusButton == 1 ? "W,IFST," + edtIfst.getText().toString() : "R,IFST") + "");
                     arrRules.add("*" + (statusButton == 1 ? "W,IFEN," + edtIfen.getText().toString() : "R,IFEN") + "");
-
+                    if (statusButton == 1){
+                        arrRules.add("*W,SAVE");
+                    }
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
@@ -1137,7 +1136,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             case 0:
                 MainActivity.device.setStatusConnect(0);
                 cancelDialogProcessing();
-                if (++countTryConnect >= maxTryConnect) {
+                if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
                     showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
                 } else {

@@ -1,5 +1,6 @@
 package com.infinity.EBacSens.activitys;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -144,7 +145,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         adapteRCVDevicePaired.onLoadMore();
         rcvDevicePaired.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!recyclerView.canScrollVertically(1)) {
                     adapteRCVDevicePaired.onLoadMore();
@@ -185,9 +186,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         Intent i = new Intent(this , MainActivity.class);
         i.putExtra("device", arrDevicePaired.get(position));
         startActivity(i);
-//        Intent i = new Intent(this , TestActivity.class);
-//        i.putExtra("device", arrDevicePaired.get(position));
-//        startActivity(i);
     }
 
     @Override
@@ -199,17 +197,27 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 //        adapteRCVDevicePaired.notifyItemRangeChanged(position, arrDevicePaired.size());
     }
 
+    @Override
+    public void onRefreshItem(int position) {
+        if (arrDevicePaired.get(position).getMacDevice() != null && arrDeviceOnline != null ){
+            for (int i = 0 ; i < arrDeviceOnline.size() ; i++){
+                if (arrDeviceOnline.get(i) != null && arrDeviceOnline.get(i).getAddress() != null && arrDevicePaired.get(position).getMacDevice().equals(arrDeviceOnline.get(i).getAddress())) {
+                    arrDevicePaired.get(position).setStatusConnect(-1);
+                    break;
+                }
+            }
+        }
+    }
+
     private void checkEnableBluetooth() {
         if (mBluetoothAdapter == null) {
             txtStatusBluetooth.setVisibility(View.VISIBLE);
             txtStatusBluetooth.setText("Device does not support Bluetooth");
             txtStatusBluetooth.setTextColor(getResources().getColor(R.color.red));
-            //rcvDevicePaired.setVisibility(View.GONE);
         } else if (!mBluetoothAdapter.isEnabled()) {
             txtStatusBluetooth.setVisibility(View.VISIBLE);
             txtStatusBluetooth.setText("Bluetooth is not enabled");
             txtStatusBluetooth.setTextColor(getResources().getColor(R.color.red));
-            //rcvDevicePaired.setVisibility(View.GONE);
         } else {
             txtStatusBluetooth.setVisibility(View.GONE);
             rcvDevicePaired.setVisibility(View.VISIBLE);
@@ -281,12 +289,10 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                     case BluetoothAdapter.STATE_OFF:
                         txtStatusBluetooth.setVisibility(View.VISIBLE);
                         txtStatusBluetooth.setText("Bluetooth off");
-                        //rcvDevicePaired.setVisibility(View.GONE);
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         txtStatusBluetooth.setVisibility(View.VISIBLE);
                         txtStatusBluetooth.setText("Turning Bluetooth off...");
-                        //rcvDevicePaired.setVisibility(View.GONE);
                         break;
                     case BluetoothAdapter.STATE_ON:
                         txtStatusBluetooth.setVisibility(View.GONE);

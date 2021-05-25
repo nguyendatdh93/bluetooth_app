@@ -280,15 +280,10 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 // result sensor
                 arrResults.add(tempMsg);
                 if (arrRules.size() == 0){
-                    if (statusButton == 1){
-                        connectThread.write("SAVE");
-                        Protector.appendLog("SAVE");
-                    }else {
-                        edtNameMeasure.setText(arrResults.get(0));
-                        edtDatetime.setText(arrResults.get(1));
-                        edtPeakMode.setText(arrResults.get(2));
-                        edtPowerOffMin.setText(arrResults.get(3));
-                    }
+                    edtNameMeasure.setText(arrResults.get(0));
+                    edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
+                    edtPeakMode.setText(arrResults.get(2));
+                    edtPowerOffMin.setText(arrResults.get(3));
                     cancelDialogProcessing();
                     showPopup("Success" , "You have successfully changed providing time." , true);
                 }else {
@@ -308,6 +303,9 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString().replace("-" , "").replace(" " , "").replace(":" , "") : "R,DATETIME" ) + "");
                 arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE" ) + "");
                 arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN" ) + "");
+                if (statusButton == 1){
+                    arrRules.add("*W,SAVE");
+                }
 
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));
@@ -319,7 +317,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
             case 0:
                 MainActivity.device.setStatusConnect(0);
                 cancelDialogProcessing();
-                if (++countTryConnect >= maxTryConnect){
+                if (++countTryConnect > maxTryConnect){
                     countTryConnect = 1;
                     showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
                 }else {

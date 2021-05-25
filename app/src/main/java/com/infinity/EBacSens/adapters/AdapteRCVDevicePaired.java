@@ -101,6 +101,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         if (arrayList != null && arrayList.size() > 0) {
             for (SensorInfor item : arrayList) {
                 arrItem.add(item);
+                callback.onRefreshItem(arrItem.size()-1);
                 notifyItemInserted(arrItem.size() - 1);
             }
             offset += limit;

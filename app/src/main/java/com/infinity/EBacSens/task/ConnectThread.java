@@ -104,11 +104,18 @@ public class ConnectThread extends Thread {
                     result += str;
 
                     if (result.contains("[CR]") || result.contains("\n") || result.contains("\r") || result.contains("\r\n") || result.contains("*MEASUREFINISH")){
-                        result = result.replace("[CR]" , "").replace("\n" , "").replace("\n" , "").replace("\r\n" , "");
+                        result = result.replace("[CR]" , "").replace("\n" , "").replace("\r" , "").replace("\r\n" , "");
+                        String[] values = result.split(",");
+                        String data ="";
+                        if (values.length > 1){
+                            data = values[1];
+                        }
+
                         Message readMsg = handler.obtainMessage(
-                                MessageConstants.MESSAGE_READ, result.getBytes(StandardCharsets.UTF_8).length, -1,
-                                result.getBytes());
+                                MessageConstants.MESSAGE_READ, data.getBytes(StandardCharsets.UTF_8).length, -1,
+                                data.getBytes());
                         readMsg.sendToTarget();
+
                         numBytes = 0;
                         result ="";
                     }
@@ -124,7 +131,7 @@ public class ConnectThread extends Thread {
 
     public void write(String value) {
         try {
-            value += "\n";
+            value += "\r";
             mmOutStream.write(value.getBytes());
         } catch (IOException e) {
             e.printStackTrace();

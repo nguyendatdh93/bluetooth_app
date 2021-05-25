@@ -11,7 +11,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,57 +40,122 @@ public class TestActivity extends AppCompatActivity {
 
     private Handler handler;
     private TextView txtResult;
+    private Spinner spn;
+    private EditText edtInput2;
+    private boolean connected = false;
+    SensorInfor device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         txtResult = findViewById(R.id.txt_result);
+        edtInput2 = findViewById(R.id.edt_input_2);
+        spn = findViewById(R.id.spn);
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        SensorInfor device = (SensorInfor) getIntent().getSerializableExtra("device");
-
-        if (mBluetoothAdapter == null || device.getMacDevice() == null) {
-            // エラー: Bluetooth なし.
-            Toast.makeText(this, "please , choose other device have mac_address", Toast.LENGTH_SHORT).show();
-        }else {
-            mBluetoothAdapter.cancelDiscovery();
-
-            connectTread = new SerialPortProfileConnectThread(mBluetoothAdapter.getRemoteDevice(device.getMacDevice()));
-            connectTread.start();
-
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                edtInput2.setText(spn.getSelectedItem().toString());
             }
 
-            handler = new Handler(new Handler.Callback() {
-                @Override
-                public boolean handleMessage(@NonNull Message msg) {
-                    byte[] readBuff = (byte[]) msg.obj;
-                    String tempMsg = new String(readBuff, 0, msg.arg1);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                    txtResult.setText(txtResult.getText().toString()+ tempMsg +"\n");
+            }
+        });
 
-                    return false;
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                byte[] readBuff = (byte[]) msg.obj;
+                String tempMsg = new String(readBuff, 0, msg.arg1);
+
+                if (tempMsg.equals("Connected")){
+                    connected = true;
+                }else if (tempMsg.equals("Disconnected")){
+                    connected = false;
                 }
-            });
-            mReceiveTask = new BluetoothReceiveTask(connectTread.getSocket() , handler);
-            mReceiveTask.start();
+                txtResult.setText(txtResult.getText().toString() + tempMsg + "\n");
+                Protector.appendLogSensor(tempMsg);
+                return false;
+            }
+        });
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        device = (SensorInfor) getIntent().getSerializableExtra("device");
+
+    }
+
+    public void connect(View view) {
+        if (connected) {
+            Message readMsg = handler.obtainMessage(
+                    1, "Connected".getBytes(StandardCharsets.UTF_8).length, -1,
+                    "Connected".getBytes(StandardCharsets.UTF_8));
+            readMsg.sendToTarget();
+        } else {
+            if (mBluetoothAdapter == null || device.getMacDevice() == null) {
+                // エラー: Bluetooth なし.
+                Toast.makeText(this, "please , choose other device have mac_address", Toast.LENGTH_SHORT).show();
+            } else {
+                mBluetoothAdapter.cancelDiscovery();
+                Message readMsg = handler.obtainMessage(
+                        1, "Connecting".getBytes(StandardCharsets.UTF_8).length, -1,
+                        "Connecting".getBytes(StandardCharsets.UTF_8));
+                readMsg.sendToTarget();
+                connectTread = new SerialPortProfileConnectThread(mBluetoothAdapter.getRemoteDevice(device.getMacDevice()));
+                connectTread.start();
+
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+                mReceiveTask = new BluetoothReceiveTask(connectTread.getSocket(), handler);
+                mReceiveTask.start();
+
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
 
     }
 
+    public void disconnect(View view) {
+        if (connected && mReceiveTask != null) {
+            mReceiveTask.finish();
+        }
+    }
+
     public void sendData(View view) {
-        mReceiveTask.write("*R,IDNAME");
+        if (connected || edtInput2.getText().toString().length() != 0){
+            mReceiveTask.write(edtInput2.getText().toString());
+            Protector.appendLog(edtInput2.getText().toString());
+        }
+    }
+
+    public void testConnect(View view) {
+        Toast.makeText(this, connected ? "Connected" : "Disconnected", Toast.LENGTH_SHORT).show();
+    }
+
+    public void sendData1(View view) {
+        if (connected || edtInput2.getText().toString().length() != 0){
+            mReceiveTask.write1(edtInput2.getText().toString());
+            Protector.appendLog(edtInput2.getText().toString());
+        }
+    }
+
+    public void sendData2(View view) {
+        if (connected || edtInput2.getText().toString().length() != 0){
+            mReceiveTask.write2(edtInput2.getText().toString());
+            Protector.appendLog(edtInput2.getText().toString());
+        }
     }
 
     public static class BluetoothConnectThread extends Thread {
@@ -153,7 +221,7 @@ public class TestActivity extends AppCompatActivity {
 
         protected volatile boolean mIsCancel;
 
-        public BluetoothReceiveTask(BluetoothSocket socket , Handler handler) {
+        public BluetoothReceiveTask(BluetoothSocket socket, Handler handler) {
             this.handler = handler;
             mIsCancel = false;
             mSocket = null;
@@ -169,8 +237,8 @@ public class TestActivity extends AppCompatActivity {
                 mOutputStream = socket.getOutputStream();
                 mSocket = socket;
                 Message readMsg = handler.obtainMessage(
-                        1, "Đã kết nối".getBytes(StandardCharsets.UTF_8).length, -1,
-                        "Đã kết nối".getBytes(StandardCharsets.UTF_8));
+                        1, "Connected".getBytes(StandardCharsets.UTF_8).length, -1,
+                        "Connected".getBytes(StandardCharsets.UTF_8));
                 readMsg.sendToTarget();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -179,10 +247,39 @@ public class TestActivity extends AppCompatActivity {
 
         public void write(String value) {
             try {
+                value += '\n';
                 mOutputStream.write(value.getBytes());
                 Message readMsg = handler.obtainMessage(
-                        1, ("Đã gửi lệnh : " + value).getBytes(StandardCharsets.UTF_8).length, -1,
-                        ("Đã gửi lệnh : " + value).getBytes(StandardCharsets.UTF_8));
+                        1, ("Sent rules : " + value).getBytes(StandardCharsets.UTF_8).length, -1,
+                        ("Sent rules : " + value).getBytes(StandardCharsets.UTF_8));
+                readMsg.sendToTarget();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void write1(String value) {
+            try {
+                value += '\r';
+                mOutputStream.write(value.getBytes());
+                Message readMsg = handler.obtainMessage(
+                        1, ("Sent rules : " + value).getBytes(StandardCharsets.UTF_8).length, -1,
+                        ("Sent rules : " + value).getBytes(StandardCharsets.UTF_8));
+                readMsg.sendToTarget();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void write2(String value) {
+            try {
+                value += "\r\n";
+                mOutputStream.write(value.getBytes());
+                Message readMsg = handler.obtainMessage(
+                        1, ("Sent rules : " + value).getBytes(StandardCharsets.UTF_8).length, -1,
+                        ("Sent rules : " + value).getBytes(StandardCharsets.UTF_8));
                 readMsg.sendToTarget();
 
             } catch (IOException e) {
@@ -196,8 +293,8 @@ public class TestActivity extends AppCompatActivity {
 
             Log.i(TAG, "start read task.");
             Message readMsg = handler.obtainMessage(
-                    1, "Đang đợi kết quả từ sensor".getBytes(StandardCharsets.UTF_8).length, -1,
-                    "Đang đợi kết quả từ sensor".getBytes(StandardCharsets.UTF_8));
+                    1, "Listenting from sensor".getBytes(StandardCharsets.UTF_8).length, -1,
+                    "Listenting from sensor".getBytes(StandardCharsets.UTF_8));
 
             readMsg.sendToTarget();
             while (mInputStream != null) {
@@ -207,7 +304,7 @@ public class TestActivity extends AppCompatActivity {
 
                 try {
                     readSize = mInputStream.read(buffer);
-                    Protector.appendLogSensor(readSize+"");
+                    Protector.appendLogSensor(readSize + "");
 //                    if (readSize == 64) {
 //                        // 処理.
 //                    } else {
@@ -216,8 +313,8 @@ public class TestActivity extends AppCompatActivity {
                     String str = new String(buffer, StandardCharsets.UTF_8);
 
                     Message readMsg1 = handler.obtainMessage(
-                            1, ("Đã nhận : " + str).getBytes(StandardCharsets.UTF_8).length, -1,
-                            ("Đã nhận : " + str).getBytes(StandardCharsets.UTF_8));
+                            1, ("Received : " + str).getBytes(StandardCharsets.UTF_8).length, -1,
+                            ("Received : " + str).getBytes(StandardCharsets.UTF_8));
                     readMsg1.sendToTarget();
                     Thread.sleep(0);
                 } catch (IOException e) {
@@ -243,6 +340,10 @@ public class TestActivity extends AppCompatActivity {
 
             try {
                 mSocket.close();
+                Message readMsg1 = handler.obtainMessage(
+                        1, ("Disconnected").getBytes(StandardCharsets.UTF_8).length, -1,
+                        ("Disconnected").getBytes(StandardCharsets.UTF_8));
+                readMsg1.sendToTarget();
             } catch (IOException e) {
                 e.printStackTrace();
             }
