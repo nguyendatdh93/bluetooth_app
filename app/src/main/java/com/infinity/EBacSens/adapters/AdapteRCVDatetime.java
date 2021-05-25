@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.model_objects.Graph;
 import com.infinity.EBacSens.model_objects.ModelRCVDatetime;
 import com.infinity.EBacSens.views.ViewAdapterRCVDatetimeListener;
 

@@ -1,77 +1,45 @@
 package com.infinity.EBacSens.fragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.material.snackbar.Snackbar;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
-import com.infinity.EBacSens.activitys.ListDeviceActivity;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVDatetime;
-import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVGraph;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
-import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.Graph;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
-import com.infinity.EBacSens.model_objects.MeasureMeasparas;
 import com.infinity.EBacSens.model_objects.MeasureMeasress;
 import com.infinity.EBacSens.model_objects.ModelRCVDatetime;
 import com.infinity.EBacSens.model_objects.Result;
@@ -79,27 +47,20 @@ import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
-import com.infinity.EBacSens.model_objects.VerticalSpaceItemDecoration;
 import com.infinity.EBacSens.presenter.PresenterFragment4;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewAdapterRCVDatetimeListener;
 import com.infinity.EBacSens.views.ViewConnectThread;
 import com.infinity.EBacSens.views.ViewFragment4Listener;
-import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 import com.opencsv.CSVWriter;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -115,7 +76,6 @@ import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewConnectThread, ViewAdapterRCVDatetimeListener, Handler.Callback {
 
     private View view;
-    private Activity activity;
     private Context context;
 
     private SeekBar skbProgress;
@@ -180,7 +140,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             if (mBluetoothAdapter != null) {
                 connectSensor();
             } else {
-                showPopup("Failed", "Device not have mac address.", false);
+                showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
             }
         });
 
@@ -240,9 +200,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
 
-        imgClose.setOnClickListener(v -> {
-            hidePopup();
-        });
+        imgClose.setOnClickListener(v -> hidePopup());
 
         txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
         txtContent = view.findViewById(R.id.fragment_popup_txt_content);
@@ -253,10 +211,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         txtContent.setText(content);
 
         if (success) {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
         } else {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -266,14 +224,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 R.anim.left_to_right);
         containerPopup.startAnimation(animSlide);
 
-        final Runnable r = new Runnable() {
-            public void run() {
-                hidePopup();
-            }
-        };
+        final Runnable r = this::hidePopup;
         handler.postDelayed(r, 3000);
     }
-
 
     private void hidePopup() {
         if (containerPopup.getVisibility() == View.VISIBLE) {
@@ -306,7 +259,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 e.printStackTrace();
             }
         } else {
-            showPopup("Failed", "Device not have mac address.", false);
+            showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
         }
     }
 
@@ -334,19 +287,19 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 @Override
                 public void onPermissionGranted() {
                     skbProgress.setProgress(0);
-                    txtProcess.setText("Exporting...");
+                    txtProcess.setText(context.getResources().getString(R.string.exporting));
                     txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
                     Observable.create(emitter -> {
                         File folder = new File(Environment.getExternalStorageDirectory() +
-                                File.separator + "/EBacSens");
+                                File.separator + "/eBacSens");
                         boolean success;
                         if (!folder.exists()) {
                             success = folder.mkdirs();
                         }
 
                         FileOutputStream os = new FileOutputStream(Environment.getExternalStorageDirectory() +
-                                File.separator + "/EBacSens/ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
+                                File.separator + "/eBacSens/ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
                         os.write(0xef);
                         os.write(0xbb);
                         os.write(0xbf);
@@ -479,20 +432,20 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     }, () -> {
                         // progress tamom shod
                         skbProgress.setProgress(100);
-                        txtProcess.setText("Done!");
+                        txtProcess.setText(context.getResources().getString(R.string.done));
                         txtProcess.setTextColor(context.getResources().getColor(R.color.green));
-                        showPopup("Success", "Exported CSV.", true);
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     });
                 }
 
                 @Override
                 public void onPermissionDenied(List<String> deniedPermissions) {
-                    showPopup("Failed", "Access denied", false);
+                    showPopup(context.getResources().getString(R.string.failure), "Access denied", false);
                 }
             };
             TedPermission.with(context).setPermissionListener(permissionListener).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
         } else {
-            showPopup("Success", "Null response.", false);
+            showPopup(context.getResources().getString(R.string.failure), "Null response.", false);
         }
     }
 
@@ -500,7 +453,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        activity = (Activity) context;
     }
 
     @Override
@@ -548,7 +500,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getErr())
                 ));
             }
-
         }
         adapteRCVGraph.notifyDataSetChanged();
         adapteRCVResult.notifyDataSetChanged();
@@ -557,20 +508,20 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        showPopup("Success", "Stored.", true);
+        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
 
         arrRCVDatetime.clear();
         arrMeasure.clear();
         presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
         skbProgress.setProgress(100);
-        txtProcess.setText("Success Stored!");
+        txtProcess.setText(context.getResources().getString(R.string.success_stored));
         txtProcess.setTextColor(context.getResources().getColor(R.color.black));
     }
 
     @Override
     public void onFailStoreMeasure(String error) {
         cancelDialogProcessing();
-        showPopup("Failed", error, false);
+        showPopup(context.getResources().getString(R.string.failure), error, false);
         Protector.appendLog(error);
     }
 
@@ -591,15 +542,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     @Override
     public void onGetData(String value) {
         // get data from sensor
-        Log.e("Connection", value != null ? value : "null");
-
-        Protector.appendLogSensor(value);
     }
 
     @Override
     public void onConnected() {
         if (connectThread != null) {
-            connectThread.run();
+            connectThread.start();
         }
         Message message = Message.obtain();
         message.what = STATE_CONNECTED;
@@ -855,7 +803,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 MainActivity.device.setStatusConnect(0);
                 if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
-                    showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
+                    showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
                 } else {
                     connectSensor();
                 }

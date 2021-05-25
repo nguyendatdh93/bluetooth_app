@@ -1,16 +1,8 @@
 package com.infinity.EBacSens.helper;
 
-import android.Manifest;
-import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
-import android.telephony.TelephonyManager;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-import com.infinity.EBacSens.activitys.ListDeviceActivity;
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
-import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.retrofit2.RetrofitClient;
 
 import java.io.BufferedWriter;
@@ -21,7 +13,6 @@ import java.lang.annotation.Annotation;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import okhttp3.ResponseBody;
@@ -53,11 +44,13 @@ public class Protector {
 
     public static ErrorSensorSetting parseErrorSensorSetting(Response<?> response) {
         Converter<ResponseBody, ErrorSensorSetting> converter = RetrofitClient.retrofit.responseBodyConverter(ErrorSensorSetting.class, new Annotation[0]);
-        ErrorSensorSetting errorResponse;
-        try {
-            errorResponse = converter.convert(response.errorBody());
-        } catch (IOException e) {
-            return new ErrorSensorSetting();
+        ErrorSensorSetting errorResponse = null;
+        if (response.errorBody() != null){
+            try {
+                errorResponse = converter.convert(response.errorBody());
+            } catch (IOException e) {
+                return new ErrorSensorSetting();
+            }
         }
         return errorResponse;
     }
@@ -104,7 +97,7 @@ public class Protector {
             }
 
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens/LogSensorTest.txt");
+                    File.separator + "/eBacSens/LogSensor.txt");
 
             if (!logFile.exists()) {
                 try {

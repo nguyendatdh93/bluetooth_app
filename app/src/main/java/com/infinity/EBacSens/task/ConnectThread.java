@@ -1,46 +1,34 @@
 package com.infinity.EBacSens.task;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.ParcelUuid;
-import android.os.SystemClock;
 import android.util.Log;
 
-import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.views.ViewConnectThread;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 public class ConnectThread extends Thread {
 
-    private InputStream mmInStream;
-    private OutputStream mmOutStream;
-    private byte[] mmBuffer; // mmBuffer store for the stream
-     // mmBuffer store for the stream
-    ViewConnectThread callback;
+    private final InputStream mmInStream;
+    private final OutputStream mmOutStream;
+    private final ViewConnectThread callback;
 
-    private Handler handler; // handler that gets info from Bluetooth service
+    private final Handler handler; // handler that gets info from Bluetooth service
 
-    // Defines several constants used when transmitting messages between the
-    // service and the UI.
     private interface MessageConstants {
-        public static final int MESSAGE_READ = 4;
-        public static final int MESSAGE_WRITE = 5;
-        public static final int MESSAGE_TOAST = 6;
+        int MESSAGE_READ = 4;
+        int MESSAGE_WRITE = 5;
+        int MESSAGE_TOAST = 6;
 
         // ... (Add other message types here as needed.)
     }
 
-    BluetoothSocket mmSocket = null;
+    BluetoothSocket mmSocket;
 
     public ConnectThread(BluetoothSocket socket , Handler handler , ViewConnectThread callback) {
         this.mmSocket = socket;
@@ -88,10 +76,11 @@ public class ConnectThread extends Thread {
 
     public void run() {
         callback.onRuned();
-        mmBuffer = new byte[1024];
+        // mmBuffer store for the stream
+        //byte[] mmBuffer = new byte[1024];
 
         int numBytes = 0; // bytes returned from read()
-        String result = "";
+        StringBuilder result = new StringBuilder();
         // Keep listening to the InputStream until an exception occurs.
         while (true) {
             try {
@@ -101,11 +90,11 @@ public class ConnectThread extends Thread {
                     numBytes += mmInStream.read(mmBufferTemp);
 
                     String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
-                    result += str;
+                    result.append(str);
 
-                    if (result.contains("[CR]") || result.contains("\n") || result.contains("\r") || result.contains("\r\n") || result.contains("*MEASUREFINISH")){
-                        result = result.replace("[CR]" , "").replace("\n" , "").replace("\r" , "").replace("\r\n" , "");
-                        String[] values = result.split(",");
+                    if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
+                        result = new StringBuilder(result.toString().replace("[CR]", "").replace("\n", "").replace("\r", "").replace("\r\n", ""));
+                        String[] values = result.toString().split(",");
                         String data ="";
                         if (values.length > 1){
                             data = values[1];
@@ -117,7 +106,7 @@ public class ConnectThread extends Thread {
                         readMsg.sendToTarget();
 
                         numBytes = 0;
-                        result ="";
+                        result = new StringBuilder();
                     }
                 }
             } catch (IOException e) {

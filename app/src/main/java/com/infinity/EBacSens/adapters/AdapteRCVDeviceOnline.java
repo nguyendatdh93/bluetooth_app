@@ -23,9 +23,9 @@ public class AdapteRCVDeviceOnline extends RecyclerView.Adapter<RecyclerView.Vie
     private Context context;
     private ViewRCVDeviceOnline callback;
 
-    private int TYPE_VIEW_HOLDER = 0 , TYPE_VIEW_SEARCHING = 1;
+    private int TYPE_VIEW_HOLDER = 0, TYPE_VIEW_SEARCHING = 1;
 
-    public AdapteRCVDeviceOnline(Context context , ArrayList<BluetoothDevice> arrItem , ViewRCVDeviceOnline callback) {
+    public AdapteRCVDeviceOnline(Context context, ArrayList<BluetoothDevice> arrItem, ViewRCVDeviceOnline callback) {
         this.arrItem = arrItem;
         this.context = context;
         this.callback = callback;
@@ -35,18 +35,18 @@ public class AdapteRCVDeviceOnline extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        if (viewType == TYPE_VIEW_HOLDER){
+        if (viewType == TYPE_VIEW_HOLDER) {
             View view = layoutInflater.inflate(R.layout.item_rcv_device_online, parent, false);
             return new ViewHodler(view);
-        }else {
+        } else {
             View view = layoutInflater.inflate(R.layout.item_searhcing, parent, false);
-            return new ViewSẻaching(view);
+            return new ViewSearching(view);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder.getItemViewType() == TYPE_VIEW_HOLDER){
+        if (holder.getItemViewType() == TYPE_VIEW_HOLDER) {
             ViewHodler viewHodler = (ViewHodler) holder;
             viewHodler.txtName.setText(arrItem.get(position).getName() == null ? arrItem.get(position).getAddress() : arrItem.get(position).getName());
             viewHodler.itemView.setOnClickListener(v -> callback.onClickRCVDeviceOnline(position));
@@ -77,9 +77,8 @@ public class AdapteRCVDeviceOnline extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    static class ViewSẻaching extends RecyclerView.ViewHolder {
-
-        public ViewSẻaching(@NonNull View itemView) {
+    static class ViewSearching extends RecyclerView.ViewHolder {
+        public ViewSearching(@NonNull View itemView) {
             super(itemView);
         }
     }

@@ -1,8 +1,6 @@
 package com.infinity.EBacSens.presenter;
 
-import com.infinity.EBacSens.model.ModelFragmeant3Listener;
 import com.infinity.EBacSens.model.ModelFragmeant4Listener;
-import com.infinity.EBacSens.model.ModelFragment3;
 import com.infinity.EBacSens.model.ModelFragment4;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
@@ -11,7 +9,6 @@ import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
-import com.infinity.EBacSens.views.ViewFragment3Listener;
 import com.infinity.EBacSens.views.ViewFragment4Listener;
 
 import java.util.ArrayList;

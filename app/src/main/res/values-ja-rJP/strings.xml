@@ -86,7 +86,20 @@
     <string name="if_set_to_0_auto_power_off_will_not_be_performed" translatable="false">0を設定するとオートパワーオフは行いません</string>
     <string name="tutorial_" translatable="false">0：通常、1：最小、2：最大</string>
     <string name="done" translatable="false">完了</string>
-    <string name="the_process_is_complete." translatable="false">処理が完了しました。</string>
-    <string name="failure." translatable="false">失敗</string>
+    <string name="the_process_is_complete" translatable="false">処理が完了しました。</string>
+    <string name="failure" translatable="false">失敗</string>
     <string name="processing_failed" translatable="false">処理が失敗しました。</string>
+    <string name="pairing" translatable="false">ペアリング</string>
+    <string name="success_stored" translatable="false">成功を収めました！</string>
+    <string name="exporting" translatable="false">エクスポート</string>
+    <string name="device_does_not_support_bluetooth" translatable="false">デバイスはBluetoothをサポートしていません</string>
+    <string name="device_not_enable_bluetooth" translatable="false">デバイスがBluetoothを有効にしていない</string>
+    <string name="storing_to_cloud" translatable="false">クラウドへの保存</string>
+    <string name="paired" translatable="false">paired</string>
+    <string name="unpaired" translatable="false">不対</string>
+    <string name="bluetooth_off" translatable="false">Bluetoothオフ</string>
+    <string name="turning_bluetooth_off" translatable="false">Bluetoothをオフにする</string>
+    <string name="turning_bluetooth_on" translatable="false">Bluetoothをオンにする</string>
+    <string name="turn_on_bluetooth" translatable="false">Bluetoothをオンにします</string>
+    <string name="off" translatable="false">Off</string>
 </resources>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -64,18 +65,18 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             ViewHodler viewHodler = (ViewHodler) holder;
             viewHodler.txtName.setText(arrItem.get(position).getName());
-            if (arrItem.get(position).getStatusConnect() == -1){
+            if (arrItem.get(position).getStatusConnect() == -1) {
                 viewHodler.txtToggle.setTextColor(context.getResources().getColor(R.color.toggle_text_ready_connect));
                 viewHodler.txtToggle.setText(context.getResources().getString(R.string.ready_to_connected));
-                viewHodler.txtToggle.setBackground(context.getResources().getDrawable(R.drawable.circle_bg_button_ready_connect));
-            }else if (arrItem.get(position).getStatusConnect() == 1){
+                viewHodler.txtToggle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_bg_button_ready_connect));
+            } else if (arrItem.get(position).getStatusConnect() == 1) {
                 viewHodler.txtToggle.setTextColor(context.getResources().getColor(R.color.toggle_text_active));
                 viewHodler.txtToggle.setText(context.getResources().getString(R.string.connected));
-                viewHodler.txtToggle.setBackground(context.getResources().getDrawable(R.drawable.circle_bg_button_active));
-            }else {
+                viewHodler.txtToggle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_bg_button_active));
+            } else {
                 viewHodler.txtToggle.setTextColor(context.getResources().getColor(R.color.toggle_text_not_active));
-                viewHodler.txtToggle.setText("Off");
-                viewHodler.txtToggle.setBackground(context.getResources().getDrawable(R.drawable.circle_bg_button_not_active));
+                viewHodler.txtToggle.setText(context.getResources().getString(R.string.off));
+                viewHodler.txtToggle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_bg_button_not_active));
             }
 
             viewHodler.containerView.setOnClickListener(v -> callback.onClickRCVDevicePaired(position));
@@ -101,7 +102,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
         if (arrayList != null && arrayList.size() > 0) {
             for (SensorInfor item : arrayList) {
                 arrItem.add(item);
-                callback.onRefreshItem(arrItem.size()-1);
+                callback.onRefreshItem(arrItem.size() - 1);
                 notifyItemInserted(arrItem.size() - 1);
             }
             offset += limit;
@@ -123,7 +124,7 @@ public class AdapteRCVDevicePaired extends RecyclerView.Adapter<RecyclerView.Vie
     public void onLoadMore() {
         if (!onLoadMore && !onLoadEnd) {
             onLoadMore = true;
-            arrItem.add(new SensorInfor(-1, null, null, -1 , -1 , null , null , null));
+            arrItem.add(new SensorInfor(-1, null, null, -1, -1, null, null, null));
             notifyItemInserted(arrItem.size() - 1);
             presenterAdapterRCVDevicePaired.receivedGetData(limit, offset);
         }

@@ -1,7 +1,5 @@
 package com.infinity.EBacSens.model;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.infinity.EBacSens.helper.Protector;
@@ -24,16 +22,16 @@ public class ModelAdapterRCVDevicePaired {
         this.modelAdapterRCVDevicePairedListener = modelAdapterRCVDevicePairedListener;
     }
 
-    public void handleGetData(int limit , int offset){
+    public void handleGetData(int limit, int offset) {
         DataClient dataClient = APIUtils.getData();
         final Call<DataSensorAPI> callback = dataClient.getAllSensorPaired(APIUtils.token);
         callback.enqueue(new Callback<DataSensorAPI>() {
             @Override
             public void onResponse(@NonNull Call<DataSensorAPI> call, @NonNull Response<DataSensorAPI> response) {
-                if (response.body() != null && response.body().getSensors() != null){
+                if (response.body() != null && response.body().getSensors() != null) {
                     ArrayList<SensorInfor> sensors = (ArrayList<SensorInfor>) response.body().getSensors();
                     modelAdapterRCVDevicePairedListener.onGetData(sensors);
-                }else {
+                } else {
                     modelAdapterRCVDevicePairedListener.onGetData(null);
                 }
             }
@@ -46,9 +44,9 @@ public class ModelAdapterRCVDevicePaired {
         });
     }
 
-    public void handleDeleteSettingSensor(String token , int idSensor , int position){
+    public void handleDeleteSettingSensor(String token, int idSensor, int position) {
         DataClient dataClient = APIUtils.getData();
-        final Call<String> callback = dataClient.deleteSettingSensor(token , idSensor);
+        final Call<String> callback = dataClient.deleteSettingSensor(token, idSensor);
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {

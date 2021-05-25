@@ -1,12 +1,8 @@
 package com.infinity.EBacSens.model;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.infinity.EBacSens.helper.Protector;
-import com.infinity.EBacSens.model_objects.BacSetting;
-import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
 import com.infinity.EBacSens.model_objects.MeasureMeasress;

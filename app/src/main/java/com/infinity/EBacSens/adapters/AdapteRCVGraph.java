@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.model_objects.Graph;
-import com.infinity.EBacSens.model_objects.Result;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class AdapteRCVGraph extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final ArrayList<Graph> arrItem;
     private final Context context;
 
-    public AdapteRCVGraph(Context context , ArrayList<Graph> arrItem) {
+    public AdapteRCVGraph(Context context, ArrayList<Graph> arrItem) {
         this.arrItem = arrItem;
         this.context = context;
     }
@@ -46,11 +45,10 @@ public class AdapteRCVGraph extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         return arrItem.size();
-
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
-        TextView txtName , txtResult , txtLevel , txtDescription;
+        TextView txtName, txtResult, txtLevel, txtDescription;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);

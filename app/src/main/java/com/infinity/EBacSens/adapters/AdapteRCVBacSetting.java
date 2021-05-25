@@ -1,16 +1,12 @@
 package com.infinity.EBacSens.adapters;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
-import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 
 import java.util.ArrayList;
 

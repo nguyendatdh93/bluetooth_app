@@ -3,16 +3,10 @@ package com.infinity.EBacSens.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,39 +14,31 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVBacSetting;
-import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
-import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
-import com.infinity.EBacSens.model_objects.FollowSensor;
-import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorSetting;
-import com.infinity.EBacSens.presenter.PresenterAdapterRCVDevicePaired;
 import com.infinity.EBacSens.presenter.PresenterFragment3;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
@@ -62,9 +48,6 @@ import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
@@ -211,7 +194,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 if (mBluetoothAdapter != null) {
                     connectSensor();
                 } else {
-                    showPopup("Failed", "Device not support Bluetooth.", false);
+                    showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
                 }
             }
         });
@@ -221,7 +204,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             if (mBluetoothAdapter != null) {
                 connectSensor();
             } else {
-                showPopup("Failed", "Device not support Bluetooth.", false);
+                showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
             }
         });
     }
@@ -282,9 +265,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
 
-        imgClose.setOnClickListener(v -> {
-            hidePopup();
-        });
+        imgClose.setOnClickListener(v -> hidePopup());
 
         txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
         txtContent = view.findViewById(R.id.fragment_popup_txt_content);
@@ -295,10 +276,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         txtContent.setText(content);
 
         if (success) {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
         } else {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -308,11 +289,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 R.anim.left_to_right);
         containerPopup.startAnimation(animSlide);
 
-        final Runnable r = new Runnable() {
-            public void run() {
-                hidePopup();
-            }
-        };
+        final Runnable r = this::hidePopup;
         handler.postDelayed(r, 3000);
     }
 
@@ -347,7 +324,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 e.printStackTrace();
             }
         } else {
-            showPopup("Failed", "Device not support Bluetooth.", false);
+            showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
         }
     }
 
@@ -414,7 +391,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public void onSuccessUpdateSettingSensor() {
         cancelDialogProcessing();
-        showPopup("Success", "You have successfully changed providing time.", true);
+        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
     }
 
     @Override
@@ -783,7 +760,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public void onConnected() {
         if (connectThread != null) {
-            connectThread.run();
+            connectThread.start();
         }
         Message message = Message.obtain();
         message.what = STATE_CONNECTED;
@@ -981,7 +958,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         adapteRCVBacSetting.notifyDataSetChanged();
 
                         cancelDialogProcessing();
-                        showPopup("Success", "You have successfully changed providing time.", true);
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
@@ -1073,7 +1050,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         edtIfst.setText(arrResults.get(pos++));
                         edtIfen.setText(arrResults.get(pos));
                         cancelDialogProcessing();
-                        showPopup("Success", "You have successfully changed providing time.", true);
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
@@ -1139,7 +1116,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 MainActivity.device.setStatusConnect(0);
                 if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
-                    showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
+                    showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
                 } else {
                     connectSensor();
                 }

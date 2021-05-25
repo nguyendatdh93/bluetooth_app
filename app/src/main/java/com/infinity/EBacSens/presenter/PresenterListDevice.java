@@ -1,15 +1,9 @@
 package com.infinity.EBacSens.presenter;
 
-import com.infinity.EBacSens.model.ModelFragmeant3Listener;
-import com.infinity.EBacSens.model.ModelFragment3;
 import com.infinity.EBacSens.model.ModelListDevice;
 import com.infinity.EBacSens.model.ModelListDeviceListener;
 import com.infinity.EBacSens.model_objects.SensorInfor;
-import com.infinity.EBacSens.model_objects.SensorSetting;
-import com.infinity.EBacSens.views.ViewFragment3Listener;
 import com.infinity.EBacSens.views.ViewListDeviceListener;
-
-import java.util.List;
 
 public class PresenterListDevice implements ModelListDeviceListener {
 

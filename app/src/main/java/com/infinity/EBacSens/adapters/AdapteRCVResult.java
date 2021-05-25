@@ -19,7 +19,7 @@ public class AdapteRCVResult extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private ArrayList<Result> arrItem;
     private Context context;
 
-    public AdapteRCVResult(Context context , ArrayList<Result> arrItem) {
+    public AdapteRCVResult(Context context, ArrayList<Result> arrItem) {
         this.arrItem = arrItem;
         this.context = context;
     }
@@ -35,7 +35,6 @@ public class AdapteRCVResult extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
-
         viewHodler.txtName.setText(arrItem.get(position).getName());
         viewHodler.txtResult.setText(arrItem.get(position).getResult());
         viewHodler.txtHeightTop.setText(arrItem.get(position).getHeightTop());
@@ -46,11 +45,10 @@ public class AdapteRCVResult extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return arrItem.size();
-
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
-        TextView txtName , txtResult , txtHeightTop , txtBGuA , txtError;
+        TextView txtName, txtResult, txtHeightTop, txtBGuA, txtError;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);

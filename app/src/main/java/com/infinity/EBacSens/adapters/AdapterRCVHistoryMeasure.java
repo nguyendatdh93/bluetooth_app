@@ -1,12 +1,10 @@
 package com.infinity.EBacSens.adapters;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.helper.Protector;
-import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorSetting;
-import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 import com.infinity.EBacSens.views.ViewRCVHistoryMeasure;
 
 import java.util.ArrayList;
@@ -58,8 +54,8 @@ public class AdapterRCVHistoryMeasure extends RecyclerView.Adapter<RecyclerView.
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
-        TextView txtName , txtTime , txtResult;
-        Button btnDelete , btnUse;
+        TextView txtName, txtTime, txtResult;
+        Button btnDelete, btnUse;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);

@@ -3,7 +3,6 @@ package com.infinity.EBacSens.canvas;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.widget.AutoCompleteTextView;
 
 public class InstantAutoComplete extends androidx.appcompat.widget.AppCompatAutoCompleteTextView {
 

@@ -20,11 +20,11 @@ import com.infinity.EBacSens.task.ConnectThread;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     public static BluetoothAdapter mBluetoothAdapter;
 
-//    public static final int MESSAGE_TOAST = 6;
+    //    public static final int MESSAGE_TOAST = 6;
 //    public static final int MESSAGE_WRITE = 5;
 //    public static final int MESSAGE_READ = 4;
     public static int STATE_LISTENING = 2;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity  {
 
             @Override
             public void onPageSelected(int position) {
-                if (offset < position){
+                if (offset < position) {
                     offset = position;
                     viewPager.setOffscreenPageLimit(offset);
                 }
@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity  {
                 arrlinearLayout[2] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(2)).getCustomView()).findViewById(R.id.container_fragment_3);
                 arrlinearLayout[3] = Objects.requireNonNull(Objects.requireNonNull(tabLayout.getTabAt(3)).getCustomView()).findViewById(R.id.container_fragment_4);
 
-                for (int i = 0 ; i < arrTxtTitle.length ; i++){
+                for (int i = 0; i < arrTxtTitle.length; i++) {
                     arrTxtTitle[i].setTextColor(i == position ? Color.WHITE : Color.BLACK);
-                    arrlinearLayout[i].setBackground(i == position ? ContextCompat.getDrawable(MainActivity.this , R.drawable.circle_bg_menu_active) : ContextCompat.getDrawable(MainActivity.this , R.drawable.circle_bg_menu_not_active));
+                    arrlinearLayout[i].setBackground(i == position ? ContextCompat.getDrawable(MainActivity.this, R.drawable.circle_bg_menu_active) : ContextCompat.getDrawable(MainActivity.this, R.drawable.circle_bg_menu_not_active));
                 }
             }
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity  {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (device != null){
+        if (device != null) {
             txtNameDevice.setText(device.getName());
         }
     }

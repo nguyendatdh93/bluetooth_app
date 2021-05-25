@@ -1,18 +1,12 @@
 package com.infinity.EBacSens.presenter;
 
-import com.infinity.EBacSens.model.ModelAdapterRCVDevicePaired;
-import com.infinity.EBacSens.model.ModelAdapterRCVDevicePairedListener;
 import com.infinity.EBacSens.model.ModelFragmeant3Listener;
 import com.infinity.EBacSens.model.ModelFragment3;
-import com.infinity.EBacSens.model_objects.DataSensorSettingAPI;
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
-import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorSetting;
-import com.infinity.EBacSens.views.ViewAdapterRCVDevicePairedListener;
 import com.infinity.EBacSens.views.ViewFragment3Listener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PresenterFragment3 implements ModelFragmeant3Listener {
 

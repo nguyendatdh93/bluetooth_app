@@ -9,33 +9,6 @@
         <item>5</item>
     </string-array>
 
-    <string-array name="array_name" translatable="false">
-        <item>*R,IDNAME</item>
-        <item>*R,PRMID</item>
-        <item>*R,CRNG</item>
-        <item>*R,EQP1</item>
-        <item>*R,EQT1</item>
-        <item>*R,EQP2</item>
-        <item>*R,EQT2</item>
-        <item>*R,EQP3</item>
-        <item>*R,EQT3</item>
-        <item>*R,EQP4</item>
-        <item>*R,EQT4</item>
-        <item>*R,EQP5</item>
-        <item>*R,EQT5</item>
-        <item>*R,STP</item>
-        <item>*R,ENP</item>
-        <item>*R,PP</item>
-        <item>*R,DLTE</item>
-        <item>*R,PWD</item>
-        <item>*R,PTM</item>
-        <item>*R,IBST</item>
-        <item>*R,IBEN</item>
-        <item>*R,IFST</item>
-        <item>*R,IFEN</item>
-
-    </string-array>
-
     <string name="list_of_measuring_instruments" translatable="false">計測器一覧</string>
     <string name="communication_settings" translatable="false">通信設定</string>
     <string name="measuring_instrument_settings" translatable="false">計測器設定</string>
@@ -121,6 +94,19 @@
     <string name="tutorial_" translatable="false">0：通常、1：最小、2：最大</string>
     <string name="done" translatable="false">完了</string>
     <string name="the_process_is_complete" translatable="false">処理が完了しました。</string>
-    <string name="failure." translatable="false">失敗</string>
+    <string name="failure" translatable="false">失敗</string>
     <string name="processing_failed" translatable="false">処理が失敗しました。</string>
+    <string name="pairing" translatable="false">ペアリング</string>
+    <string name="success_stored" translatable="false">成功を収めました！</string>
+    <string name="exporting" translatable="false">エクスポート</string>
+    <string name="device_does_not_support_bluetooth" translatable="false">デバイスはBluetoothをサポートしていません</string>
+    <string name="device_not_enable_bluetooth" translatable="false">デバイスがBluetoothを有効にしていない</string>
+    <string name="storing_to_cloud" translatable="false">クラウドへの保存</string>
+    <string name="paired" translatable="false">paired</string>
+    <string name="unpaired" translatable="false">不対</string>
+    <string name="bluetooth_off" translatable="false">Bluetoothオフ</string>
+    <string name="turning_bluetooth_off" translatable="false">Bluetoothをオフにする</string>
+    <string name="turning_bluetooth_on" translatable="false">Bluetoothをオンにする</string>
+    <string name="turn_on_bluetooth" translatable="false">Bluetoothをオンにします</string>
+    <string name="off" translatable="false">Off</string>
 </resources>

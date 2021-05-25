@@ -1,14 +1,11 @@
 package com.infinity.EBacSens.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
@@ -43,22 +39,21 @@ import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.Callback{
+public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Callback {
 
     private View view;
-    private Activity activity;
     private Context context;
 
-    private EditText edtNameMeasure , edtDatetime , edtPowerOffMin , edtPeakMode;
-    private Button btnRead , btnWrite;
+    private EditText edtNameMeasure, edtDatetime, edtPowerOffMin, edtPeakMode;
+    private Button btnRead, btnWrite;
 
     private Dialog dialogProcessing;
-    private TextView txtDialogProcessingTitle , txtDatetime;
+    private TextView txtDatetime;
 
     // popup
     private LinearLayout containerPopup;
     private ImageView imgTitle;
-    private TextView txtTitle , txtContent;
+    private TextView txtTitle, txtContent;
 
     // 1 = write , 0 = read
     private int statusButton = 0;
@@ -81,10 +76,10 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
     private void connectSensor() {
         if (MainActivity.device.getMacDevice() != null && mBluetoothAdapter != null) {
             try {
-                if (connectThread != null){
+                if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler , this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -99,24 +94,24 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
-            showPopup("Failed" , "Device not support Bluetooth." , false);
+        } else {
+            showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
         }
     }
 
     private void addEvents() {
         btnWrite.setOnClickListener(v -> {
-            if (edtNameMeasure.getText().toString().length() == 0){
+            if (edtNameMeasure.getText().toString().length() == 0) {
                 edtNameMeasure.setError("error");
                 edtNameMeasure.requestFocus();
                 return;
             }
-            if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0){
+            if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0) {
                 edtPeakMode.setError("error");
                 edtPeakMode.requestFocus();
                 return;
             }
-            if (Protector.tryParseInt(edtPowerOffMin.getText().toString()) > 60){
+            if (Protector.tryParseInt(edtPowerOffMin.getText().toString()) > 60) {
                 edtPowerOffMin.setError("error");
                 edtPowerOffMin.requestFocus();
                 return;
@@ -124,17 +119,17 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
             statusButton = 1;
             if (mBluetoothAdapter != null) {
                 connectSensor();
-            }else {
-                showPopup("Failed" , "Device not support Bluetooth." , false);
+            } else {
+                showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
             }
         });
         btnRead.setOnClickListener(v -> {
-            if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0){
+            if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0) {
                 edtPeakMode.setError("error");
                 edtPeakMode.requestFocus();
                 return;
             }
-            if (Protector.tryParseInt(edtPowerOffMin.getText().toString()) > 60){
+            if (Protector.tryParseInt(edtPowerOffMin.getText().toString()) > 60) {
                 edtPowerOffMin.setError("error");
                 edtPowerOffMin.requestFocus();
                 return;
@@ -142,8 +137,8 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
             statusButton = 0;
             if (mBluetoothAdapter != null) {
                 connectSensor();
-            }else {
-                showPopup("Failed" , "Device not support Bluetooth." , false);
+            } else {
+                showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
             }
         });
 
@@ -172,11 +167,10 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
         dialogProcessing = new Dialog(context);
         dialogProcessing.setContentView(R.layout.dialog_processing);
         dialogProcessing.setCancelable(false);
-        txtDialogProcessingTitle = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
     }
 
     private void showDialogProcessing() {
-        if (dialogProcessing != null){
+        if (dialogProcessing != null) {
             dialogProcessing.show();
         }
     }
@@ -191,7 +185,6 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        activity = (Activity) context;
     }
 
     @Override
@@ -202,7 +195,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
     @Override
     public void onConnected() {
         if (connectThread != null) {
-            connectThread.run();
+            connectThread.start();
         }
         Message message = Message.obtain();
         message.what = STATE_CONNECTED;
@@ -223,28 +216,26 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
         handler.sendMessage(message);
     }
 
-    private void initPopup(){
+    private void initPopup() {
         containerPopup = view.findViewById(R.id.container_popup);
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
 
-        imgClose.setOnClickListener(v -> {
-            hidePopup();
-        });
+        imgClose.setOnClickListener(v -> hidePopup());
 
         txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
         txtContent = view.findViewById(R.id.fragment_popup_txt_content);
     }
 
-    private void showPopup(String title , String content , boolean success){
+    private void showPopup(String title, String content, boolean success) {
         txtTitle.setText(title);
         txtContent.setText(content);
 
-        if (success){
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+        if (success) {
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
-        }else {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+        } else {
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -254,16 +245,12 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 R.anim.left_to_right);
         containerPopup.startAnimation(animSlide);
 
-        final Runnable r = new Runnable() {
-            public void run() {
-                hidePopup();
-            }
-        };
+        final Runnable r = this::hidePopup;
         handler.postDelayed(r, 3000);
     }
 
-    private void hidePopup(){
-        if (containerPopup.getVisibility() == View.VISIBLE){
+    private void hidePopup() {
+        if (containerPopup.getVisibility() == View.VISIBLE) {
             Animation animSlide = AnimationUtils.loadAnimation(context,
                     R.anim.right_to_left);
             containerPopup.startAnimation(animSlide);
@@ -273,7 +260,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-        switch (msg.what){
+        switch (msg.what) {
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
@@ -281,14 +268,14 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 Protector.appendLogSensor(tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
-                if (arrRules.size() == 0){
+                if (arrRules.size() == 0) {
                     edtNameMeasure.setText(arrResults.get(0));
                     edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
                     edtPeakMode.setText(arrResults.get(2));
                     edtPowerOffMin.setText(arrResults.get(3));
                     cancelDialogProcessing();
-                    showPopup("Success" , "You have successfully changed providing time." , true);
-                }else {
+                    showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+                } else {
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
@@ -301,11 +288,11 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
 
                 arrRules.clear();
                 arrResults.clear();
-                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString(): "R,IDNAME" ) + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME,"+ edtDatetime.getText().toString().replace("-" , "").replace(" " , "").replace(":" , "") : "R,DATETIME" ) + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE,"+ edtPeakMode.getText().toString() : "R,PEAKMODE" ) + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN,"+ edtPowerOffMin.getText().toString() : "R,POWOFFMIN" ) + "");
-                if (statusButton == 1){
+                arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString() : "R,IDNAME") + "");
+                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME," + edtDatetime.getText().toString().replace("-", "").replace(" ", "").replace(":", "") : "R,DATETIME") + "");
+                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE," + edtPeakMode.getText().toString() : "R,PEAKMODE") + "");
+                arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN," + edtPowerOffMin.getText().toString() : "R,POWOFFMIN") + "");
+                if (statusButton == 1) {
                     arrRules.add("*W,SAVE");
                 }
 
@@ -318,10 +305,10 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);
-                if (++countTryConnect > maxTryConnect){
+                if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
-                    showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
-                }else {
+                    showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
+                } else {
                     connectSensor();
                 }
                 break;

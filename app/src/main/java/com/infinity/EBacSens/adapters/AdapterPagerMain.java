@@ -16,7 +16,7 @@ public class AdapterPagerMain extends FragmentStatePagerAdapter {
 
     public AdapterPagerMain(FragmentManager fm, int tabCount) {
         super(fm);
-        this.tabCount= tabCount;
+        this.tabCount = tabCount;
     }
 
     @NonNull

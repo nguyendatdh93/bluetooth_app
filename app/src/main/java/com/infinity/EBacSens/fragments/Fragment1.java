@@ -3,21 +3,14 @@ package com.infinity.EBacSens.fragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +20,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,30 +27,16 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
-import com.infinity.EBacSens.presenter.PresenterFragment1;
-import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
-import com.infinity.EBacSens.views.ViewFragment1Listener;
-import com.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
@@ -73,7 +51,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
     private Activity activity;
     private Context context;
 
-    //private RelativeLayout container;
     private LinearLayout containerInfor, containerStatus;
     private TextView txtInfor1, txtInfor2, txtInfor3, txtStatusConnection;
     private Button btnTestConnect, btnConnect, btnDisconnect;
@@ -84,8 +61,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
     private ArrayList<BluetoothDevice> arrDevicePaired;
 
     private IntentFilter intentFilter;
-
-    //private ConnectThread connectThread;
 
     // popup
     private LinearLayout containerPopup;
@@ -100,9 +75,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
 
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
-
-    // beta
-    private int process, processed = 0;
 
     @Nullable
     @Override
@@ -142,7 +114,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         handler = new Handler(this);
 
         btnTestConnect.setOnClickListener(v -> {
-            processed = 0;
             if (MainActivity.device.getMacDevice() != null) {
                 boolean connection = false;
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
@@ -157,7 +128,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 } else {
                     if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
                         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                        txtDialogProcessingTitle.setText("Paring...");
+                        txtDialogProcessingTitle.setText(context.getResources().getString(R.string.pairing));
                         showDialogProcessing();
                         pairDevice(device);
                     } else {
@@ -170,7 +141,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         });
 
         btnConnect.setOnClickListener(v -> {
-            processed = 0;
             if (MainActivity.device.getMacDevice() != null) {
                 boolean connection = false;
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
@@ -185,15 +155,15 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 } else {
                     if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
                         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                        txtDialogProcessingTitle.setText("Paring...");
+                        txtDialogProcessingTitle.setText(context.getResources().getString(R.string.pairing));
                         showDialogProcessing();
                         pairDevice(device);
                     } else {
-                        showPopup("Failed", "Device not have mac address.", false);
+                        showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
                     }
                 }
             } else {
-                showPopup("Failed", "Device not have mac address.", false);
+                showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
             }
         });
 
@@ -239,13 +209,13 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
 
         if (MainActivity.device.getStatusConnect() == -1) {
             txtStatusConnection.setTextColor(context.getResources().getColor(R.color.yellow));
-            txtStatusConnection.setText("Ready to connect");
+            txtStatusConnection.setText(context.getResources().getString(R.string.ready_to_connected));
         } else if (MainActivity.device.getStatusConnect() == 1) {
             txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
-            txtStatusConnection.setText("Connected");
+            txtStatusConnection.setText(context.getResources().getString(R.string.connected));
         } else {
             txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
-            txtStatusConnection.setText("Not connection");
+            txtStatusConnection.setText(context.getResources().getString(R.string.disconnect));
         }
 
         btnTestConnect = view.findViewById(R.id.fragment_1_btn_test_connect);
@@ -265,9 +235,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
 
-        imgClose.setOnClickListener(v -> {
-            hidePopup();
-        });
+        imgClose.setOnClickListener(v -> hidePopup());
 
         txtTitle = view.findViewById(R.id.fragment_popup_txt_title);
         txtContent = view.findViewById(R.id.fragment_popup_txt_content);
@@ -311,7 +279,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         containerPopup.startAnimation(animSlide);
 
         final Runnable r = this::hidePopup;
-        handler.postDelayed(r, 3000);
+        handler.postDelayed(r, 2000);
     }
 
     private void hidePopup() {
@@ -456,13 +424,13 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                     cancelDialogProcessing();
                     containerInfor.setVisibility(View.GONE);
                     containerStatus.setVisibility(View.VISIBLE);
-                    txtStatusConnection.setText("Disconnected");
+                    txtStatusConnection.setText(context.getResources().getString(R.string.disconnect));
                     txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
                 } else {
                     MainActivity.device.setStatusConnect(0);
                     if (++countTryConnect > maxTryConnect) {
                         countTryConnect = 1;
-                        showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
+                        showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
                     } else {
                         connectSensor();
                     }
