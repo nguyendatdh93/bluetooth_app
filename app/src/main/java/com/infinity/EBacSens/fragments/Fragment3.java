@@ -358,7 +358,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     }
 
     private void showDialogProcessing() {
-        dialogProcessing.show();
+        if (dialogProcessing != null){
+            dialogProcessing.show();
+        }
     }
 
     private void cancelDialogProcessing() {
@@ -1135,7 +1137,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);
-                cancelDialogProcessing();
                 if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
                     showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);

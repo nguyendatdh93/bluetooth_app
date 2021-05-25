@@ -66,14 +66,14 @@ import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment1 extends Fragment implements ViewConnectThread , Handler.Callback{
+public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Callback {
 
     private View view;
     private Activity activity;
     private Context context;
 
     //private RelativeLayout container;
-    private LinearLayout containerInfor , containerStatus;
+    private LinearLayout containerInfor, containerStatus;
     private TextView txtInfor1, txtInfor2, txtInfor3, txtStatusConnection;
     private Button btnTestConnect, btnConnect, btnDisconnect;
 
@@ -89,7 +89,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     // popup
     private LinearLayout containerPopup;
     ImageView imgTitle;
-    TextView txtTitle , txtContent;
+    TextView txtTitle, txtContent;
 
     // 0 = test , 1 = connect
     private int statusConnect;
@@ -99,6 +99,9 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
+
+    // beta
+    private int process, processed = 0;
 
     @Nullable
     @Override
@@ -116,7 +119,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler ,this);
+                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -138,6 +141,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         handler = new Handler(this);
 
         btnTestConnect.setOnClickListener(v -> {
+            processed = 0;
             if (MainActivity.device.getMacDevice() != null) {
                 boolean connection = false;
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
@@ -156,15 +160,16 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                         showDialogProcessing();
                         pairDevice(device);
                     } else {
-                        showPopup("Failed" , "Device not have mac address." , false);
+                        showPopup("Failed", "Device not have mac address.", false);
                     }
                 }
             } else {
-                showPopup("Failed" , "Device not have mac address." , false);
+                showPopup("Failed", "Device not have mac address.", false);
             }
         });
 
         btnConnect.setOnClickListener(v -> {
+            processed = 0;
             if (MainActivity.device.getMacDevice() != null) {
                 boolean connection = false;
                 for (int i = 0; i < arrDevicePaired.size(); i++) {
@@ -183,11 +188,11 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                         showDialogProcessing();
                         pairDevice(device);
                     } else {
-                        showPopup("Failed" , "Device not have mac address." , false);
+                        showPopup("Failed", "Device not have mac address.", false);
                     }
                 }
             } else {
-                showPopup("Failed" , "Device not have mac address." , false);
+                showPopup("Failed", "Device not have mac address.", false);
             }
         });
 
@@ -255,7 +260,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         initPopup();
     }
 
-    private void initPopup(){
+    private void initPopup() {
         ImageButton imgClose = view.findViewById(R.id.fragment_popup_img_close);
         imgTitle = view.findViewById(R.id.fragment_popup_img_title);
 
@@ -275,7 +280,9 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     }
 
     private void showDialogProcessing() {
-        dialogProcessing.show();
+        if (dialogProcessing != null) {
+            dialogProcessing.show();
+        }
     }
 
     private void cancelDialogProcessing() {
@@ -284,14 +291,14 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
         }
     }
 
-    private void showPopup(String title , String content , boolean success){
+    private void showPopup(String title, String content, boolean success) {
         txtTitle.setText(title);
         txtContent.setText(content);
 
-        if (success){
+        if (success) {
             imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
-        }else {
+        } else {
             imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
@@ -311,8 +318,8 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
     }
 
 
-    private void hidePopup(){
-        if (containerPopup.getVisibility() == View.VISIBLE){
+    private void hidePopup() {
+        if (containerPopup.getVisibility() == View.VISIBLE) {
             Animation animSlide = AnimationUtils.loadAnimation(context,
                     R.anim.right_to_left);
             containerPopup.startAnimation(animSlide);
@@ -331,7 +338,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    showPopup("Success" , "Paired." , true);
+                    showPopup("Success", "Paired.", true);
                     cancelDialogProcessing();
                     if (mBluetoothAdapter != null) {
                         connectSensor();
@@ -344,6 +351,11 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
             }
         }
     };
+
+    private void changeProcess(int processed) {
+        float per = (float) processed / process * 100;
+        txtDialogProcessingTitle.setText(per + "%");
+    }
 
     @Override
     public void onStart() {
@@ -396,8 +408,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-
-        switch (msg.what){
+        switch (msg.what) {
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
@@ -406,20 +417,20 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 // result sensor
                 arrResults.add(tempMsg);
 
-                if (statusConnect == 1){
-                    if (arrRules.size() == 0 && arrResults.size() >= 3){
+                if (statusConnect == 1) {
+                    if (arrRules.size() == 0 && arrResults.size() >= 3) {
                         txtInfor1.setText(arrResults.get(0));
                         txtInfor2.setText(arrResults.get(1));
                         txtInfor3.setText(arrResults.get(2));
                         containerInfor.setVisibility(View.VISIBLE);
                         containerStatus.setVisibility(View.GONE);
                         cancelDialogProcessing();
-                    }else {
+                    } else {
                         connectThread.write(arrRules.get(0));
                         Protector.appendLog(arrRules.get(0));
                         arrRules.remove(0);
                     }
-                }else {
+                } else {
                     cancelDialogProcessing();
                 }
 
@@ -429,14 +440,14 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 MainActivity.device.setStatusConnect(1);
                 arrRules.clear();
                 arrResults.clear();
-                if (statusConnect == 1){
+                if (statusConnect == 1) {
                     arrRules.add("*R,IDNAME");
                     arrRules.add("*R,VER");
                     arrRules.add("*R,SER");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
-                }else {
+                } else {
                     containerInfor.setVisibility(View.GONE);
                     containerStatus.setVisibility(View.VISIBLE);
                     txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
@@ -445,20 +456,19 @@ public class Fragment1 extends Fragment implements ViewConnectThread , Handler.C
                 }
                 break;
             case 0:
-                if (statusConnect == -1){
+                if (statusConnect == -1) {
                     MainActivity.device.setStatusConnect(0);
                     cancelDialogProcessing();
                     containerInfor.setVisibility(View.GONE);
                     containerStatus.setVisibility(View.VISIBLE);
                     txtStatusConnection.setText("Disconnected");
                     txtStatusConnection.setTextColor(context.getResources().getColor(R.color.red));
-                }else {
+                } else {
                     MainActivity.device.setStatusConnect(0);
-                    cancelDialogProcessing();
-                    if (++countTryConnect > maxTryConnect){
+                    if (++countTryConnect > maxTryConnect) {
                         countTryConnect = 1;
-                        showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
-                    }else {
+                        showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);
+                    } else {
                         connectSensor();
                     }
                 }

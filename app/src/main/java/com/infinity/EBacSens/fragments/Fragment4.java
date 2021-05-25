@@ -317,12 +317,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     }
 
     private void showDialogProcessing() {
-        if (dialogProcessing == null) {
-            dialogProcessing = new Dialog(context);
-            dialogProcessing.setContentView(R.layout.dialog_processing);
-            dialogProcessing.setCancelable(false);
+        if (dialogProcessing != null){
+            dialogProcessing.show();
         }
-        dialogProcessing.show();
     }
 
     private void cancelDialogProcessing() {
@@ -856,7 +853,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);
-                cancelDialogProcessing();
                 if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
                     showPopup("Failed", "Something went terribly wrong.\n" + "Try again.", false);

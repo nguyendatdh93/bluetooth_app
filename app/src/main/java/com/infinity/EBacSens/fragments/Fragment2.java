@@ -176,7 +176,9 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
     }
 
     private void showDialogProcessing() {
-        dialogProcessing.show();
+        if (dialogProcessing != null){
+            dialogProcessing.show();
+        }
     }
 
     private void cancelDialogProcessing() {
@@ -316,7 +318,6 @@ public class Fragment2 extends Fragment implements ViewConnectThread  , Handler.
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);
-                cancelDialogProcessing();
                 if (++countTryConnect > maxTryConnect){
                     countTryConnect = 1;
                     showPopup("Failed" , "Something went terribly wrong.\n" +"Try again." , false);
