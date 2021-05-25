@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -296,10 +297,10 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         txtContent.setText(content);
 
         if (success) {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            imgTitle.setBackground(ContextCompat.getDrawable(context , R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
         } else {
-            imgTitle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+            imgTitle.setBackground(ContextCompat.getDrawable(context , R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -309,14 +310,9 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 R.anim.left_to_right);
         containerPopup.startAnimation(animSlide);
 
-        final Runnable r = new Runnable() {
-            public void run() {
-                hidePopup();
-            }
-        };
+        final Runnable r = this::hidePopup;
         handler.postDelayed(r, 3000);
     }
-
 
     private void hidePopup() {
         if (containerPopup.getVisibility() == View.VISIBLE) {
@@ -337,8 +333,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    showPopup("Success", "Paired.", true);
+                    showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     cancelDialogProcessing();
                     if (mBluetoothAdapter != null) {
                         connectSensor();
@@ -352,10 +347,10 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         }
     };
 
-    private void changeProcess(int processed) {
-        float per = (float) processed / process * 100;
-        txtDialogProcessingTitle.setText(per + "%");
-    }
+//    private void changeProcess(int processed) {
+//        float per = (float) processed / process * 100;
+//        txtDialogProcessingTitle.setText(per + "%");
+//    }
 
     @Override
     public void onStart() {
@@ -384,7 +379,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
     @Override
     public void onConnected() {
         if (connectThread != null) {
-            connectThread.run();
+            connectThread.start();
         }
         Message message = Message.obtain();
         message.what = STATE_CONNECTED;

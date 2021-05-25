@@ -5,10 +5,8 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapterPagerMain;
-import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.task.ConnectThread;
 
@@ -27,9 +24,9 @@ public class MainActivity extends AppCompatActivity  {
 
     public static BluetoothAdapter mBluetoothAdapter;
 
-    public static final int MESSAGE_TOAST = 6;
-    public static final int MESSAGE_WRITE = 5;
-    public static final int MESSAGE_READ = 4;
+//    public static final int MESSAGE_TOAST = 6;
+//    public static final int MESSAGE_WRITE = 5;
+//    public static final int MESSAGE_READ = 4;
     public static int STATE_LISTENING = 2;
     public static int STATE_CONNECTED = 1;
     public static int STATE_DISCONNECTED = 0;
@@ -40,7 +37,6 @@ public class MainActivity extends AppCompatActivity  {
 
     public static ConnectThread connectThread;
     public static SensorInfor device;
-    private TextView txtNameDevice;
     private int offset = 0;
 
     @Override
@@ -95,7 +91,7 @@ public class MainActivity extends AppCompatActivity  {
         device = (SensorInfor) getIntent().getSerializableExtra("device");
 
         viewPager = findViewById(R.id.view_pager_main);
-        txtNameDevice = findViewById(R.id.txt_name_sensor);
+        TextView txtNameDevice = findViewById(R.id.txt_name_sensor);
         tabLayout = findViewById(R.id.tab_layout_main);
         tabLayout.addTab(tabLayout.newTab().setText("Tab1"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab2"));

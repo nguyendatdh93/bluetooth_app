@@ -25,7 +25,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EBacSens"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TestActivity"></activity>
         <activity android:name=".activitys.ListDeviceActivity" />
         <activity android:name=".activitys.MainActivity" />
         <activity

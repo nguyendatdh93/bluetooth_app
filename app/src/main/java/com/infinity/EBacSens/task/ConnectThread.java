@@ -119,7 +119,6 @@ public class ConnectThread extends Thread {
                         numBytes = 0;
                         result ="";
                     }
-                    //Thread.sleep(100);
                 }
             } catch (IOException e) {
                 Log.d("Connection", "Input stream was disconnected", e);
