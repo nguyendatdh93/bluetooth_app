@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -177,7 +178,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         rcvGraph.setAdapter(adapteRCVGraph);
 
         rcvDatetime = view.findViewById(R.id.fragment_4_rcv_datetime);
-        rcvDatetime.setHasFixedSize(true);
+        //rcvDatetime.setHasFixedSize(true);
         rcvDatetime.setLayoutManager(new LinearLayoutManager(context));
         arrRCVDatetime = new ArrayList<>();
 
@@ -277,7 +278,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     private void cancelDialogProcessing() {
         if (dialogProcessing != null) {
-            dialogProcessing.cancel();
+            dialogProcessing.dismiss();
         }
     }
 
@@ -588,21 +589,42 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 Protector.appendLogSensor(tempMsg);
 
                 // result sensor
+                Log.e("AAAA" , tempMsg);
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
-                    resultStart++;
-                    for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
-                        arrRules.add("*R,BACNAME" + (i + 1) + "");
-                        arrRules.add("*R,E1_" + (i + 1) + "");
-                        arrRules.add("*R,E2_" + (i + 1) + "");
-                        arrRules.add("*R,E3_" + (i + 1) + "");
-                        arrRules.add("*R,E4_" + (i + 1) + "");
-                        arrRules.add("*R,PKP" + (i + 1) + "");
+                    if (tempMsg.contains("*LISTEND")){
+                        for (int i = 0 ; i < arrResults.size()-1 ; i++){
+                            boolean isHave = false;
+                            for (int j = 0; j < arrMeasure.size() ; j++){
+                                if (arrResults.get(i).equals(arrMeasure.get(j).getDatetime())){
+                                    isHave = true;
+                                    break;
+                                }
+                            }
+                            arrRCVDatetime.add(0,new ModelRCVDatetime(arrResults.get(i) , false));
+                            adapteRCVDatetime.notifyItemInserted(0);
+                            if (!isHave){
+                                // read sensor
+
+                            }
+                        }
+
+
+//                        resultStart++;
+//                        for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
+//                            arrRules.add("*R,BACNAME" + (i + 1) + "");
+//                            arrRules.add("*R,E1_" + (i + 1) + "");
+//                            arrRules.add("*R,E2_" + (i + 1) + "");
+//                            arrRules.add("*R,E3_" + (i + 1) + "");
+//                            arrRules.add("*R,E4_" + (i + 1) + "");
+//                            arrRules.add("*R,PKP" + (i + 1) + "");
+//                        }
+//                        arrResults.clear();
+//                        connectThread.write(arrRules.get(0));
+//                        Protector.appendLog(arrRules.get(0));
+//                        arrRules.remove(0);
                     }
-                    arrResults.clear();
-                    connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
-                    arrRules.remove(0);
+
                 } else if (resultStart == 1) {
                     if (arrRules.size() != 0) {
                         connectThread.write(arrRules.get(0));
@@ -787,17 +809,20 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrResults.clear();
                 bacSettings.clear();
 
+//                if (connectThread != null) {
+//                    resultStart = 0;
+//                    arrRules.add("*R,BACS");
+//                    connectThread.write(arrRules.get(0));
+//                    Protector.appendLog(arrRules.get(0));
+//                    arrRules.remove(0);
+//                }
                 if (connectThread != null) {
                     resultStart = 0;
-                    arrRules.add("*R,BACS");
+                    arrRules.add("*LIST");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);
                 }
-                break;
-            case 1:
-                MainActivity.device.setStatusConnect(1);
-                cancelDialogProcessing();
                 break;
             case 0:
                 MainActivity.device.setStatusConnect(0);

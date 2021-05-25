@@ -92,7 +92,36 @@ public class ConnectThread extends Thread {
                     String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
                     result.append(str);
 
-                    if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
+                    if (result.toString().contains("*LIST")){
+                        if (result.toString().contains("*LISTEND")){
+                            String[] values = new String[0];
+                            if (result.toString().contains("[CR]")){
+                                 values = result.toString().split("[CR]");
+                            }else if (result.toString().contains("\n")){
+                                values = result.toString().split("\n");
+                            }else if (result.toString().contains("\r")){
+                                values = result.toString().split("\r");
+                            }else if (result.toString().contains("\r\n")){
+                                values = result.toString().split("\r\n");
+                            }
+
+
+                            for (String value : values) {
+                                if (value.contains(":") && value.contains("/")){
+                                    Message readMsg = handler.obtainMessage(
+                                            MessageConstants.MESSAGE_READ, value.replace("*LIST," , "").getBytes(StandardCharsets.UTF_8).length, -1,
+                                            value.replace("*LIST," , "").getBytes());
+                                    readMsg.sendToTarget();
+                                }
+                            }
+                            Message readMsg = handler.obtainMessage(
+                                    MessageConstants.MESSAGE_READ, values[values.length-1].getBytes(StandardCharsets.UTF_8).length, -1,
+                                    values[values.length-1].getBytes());
+                            readMsg.sendToTarget();
+                            numBytes = 0;
+                            result = new StringBuilder();
+                        }
+                    }else if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
                         result = new StringBuilder(result.toString().replace("[CR]", "").replace("\n", "").replace("\r", "").replace("\r\n", ""));
                         String[] values = result.toString().split(",");
                         String data ="";

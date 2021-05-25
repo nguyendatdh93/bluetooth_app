@@ -342,7 +342,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     private void cancelDialogProcessing() {
         if (dialogProcessing != null) {
-            dialogProcessing.cancel();
+            dialogProcessing.dismiss();
         }
     }
 

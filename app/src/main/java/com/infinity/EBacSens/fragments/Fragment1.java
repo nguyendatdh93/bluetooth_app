@@ -256,7 +256,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
 
     private void cancelDialogProcessing() {
         if (dialogProcessing != null) {
-            dialogProcessing.cancel();
+            dialogProcessing.dismiss();
         }
     }
 
