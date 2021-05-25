@@ -803,6 +803,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 MainActivity.device.setStatusConnect(0);
                 if (++countTryConnect > maxTryConnect) {
                     countTryConnect = 1;
+                    cancelDialogProcessing();
                     showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
                 } else {
                     connectSensor();
