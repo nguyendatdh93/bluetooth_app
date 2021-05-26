@@ -47,10 +47,6 @@ public class MeasureMeasdets {
     @Expose
     private String updatedAt;
 
-    @SerializedName("casted_rawdmp")
-    @Expose
-    private String castedRawdmp;
-
     public int getId() {
         return id;
     }
@@ -131,15 +127,7 @@ public class MeasureMeasdets {
         this.updatedAt = updatedAt;
     }
 
-    public String getCastedRawdmp() {
-        return castedRawdmp;
-    }
-
-    public void setCastedRawdmp(String castedRawdmp) {
-        this.castedRawdmp = castedRawdmp;
-    }
-
-    public MeasureMeasdets(int id, String no, float deltae, float deltai, float eb, float ib, float ef, float _if, String createdAt, String updatedAt, String castedRawdmp) {
+    public MeasureMeasdets(int id, String no, float deltae, float deltai, float eb, float ib, float ef, float _if, String createdAt, String updatedAt) {
         this.id = id;
         this.no = no;
         this.deltae = deltae;
@@ -150,6 +138,5 @@ public class MeasureMeasdets {
         this._if = _if;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.castedRawdmp = castedRawdmp;
     }
 }

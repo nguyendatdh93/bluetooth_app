@@ -656,7 +656,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
 
                         measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0], Protector.tryParseInt(values[1]), 1, "", "");
+                                values[0],  1, Protector.tryParseInt(values[1]),"", "");
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersBas.get(0));
@@ -679,7 +679,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
 
                         measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0], Protector.tryParseInt(values[1]),1, "", "");
+                                values[0],  1, Protector.tryParseInt(values[1]),"", "");
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersPara.get(0));
@@ -911,7 +911,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 Protector.tryParseHex(values[1].length() > 16 ? values[1].substring((i + 12), (i + 16)) : ""),
                                 Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
                                 Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
-                                Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                                Protector.getCurrentTime(), Protector.getCurrentTime()));
 
                         connectThread.writeMeasure(rulersDet.get(0));
                         Protector.appendLog(rulersDet.get(0));
@@ -936,7 +936,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 Protector.tryParseHex(values[1].length() > 16 ? values[1].substring((i + 12), (i + 16)) : ""),
                                 Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
                                 Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
-                                Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                                Protector.getCurrentTime(), Protector.getCurrentTime()));
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
                         cancelDialogProcessing();
 
