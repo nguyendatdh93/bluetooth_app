@@ -87,7 +87,6 @@ public class ConnectThread extends Thread {
         while (true) {
             try {
                 if (mmInStream.available() > 0) {
-                    isMeasure = false;
                     byte[] mmBufferTemp = new byte[mmInStream.available()];
 
                     numBytes += mmInStream.read(mmBufferTemp);
@@ -96,24 +95,13 @@ public class ConnectThread extends Thread {
                     result.append(str);
 
                     if (isMeasure){
-                        if (result.toString().contains("*MEASUREFINISH")){
-
-//                            String[] values = new String[0];
-//                            if (result.toString().contains("[CR]")){
-//                                values = result.toString().split("[CR]");
-//                            }else if (result.toString().contains("\n")){
-//                                values = result.toString().split("\n");
-//                            }else if (result.toString().contains("\r")){
-//                                values = result.toString().split("\r");
-//                            }else if (result.toString().contains("\r\n")){
-//                                values = result.toString().split("\r\n");
-//                            }
-
+                        if (result.toString().contains("*MEASUREFINSH") || result.toString().contains("*RAWDMPEND")){
                             Message readMsg = handler.obtainMessage(
                                     MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                     result.toString().getBytes());
                             readMsg.sendToTarget();
                             numBytes = 0;
+
                             result = new StringBuilder();
                         }
                     }else {
@@ -182,8 +170,8 @@ public class ConnectThread extends Thread {
         }
     }
 
-    public void writeMeasure(String value , boolean isMeasure) {
-        this.isMeasure = isMeasure;
+    public void writeMeasure(String value) {
+        this.isMeasure = true;
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());

@@ -134,6 +134,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<MeasureMeasbas> resultBas = new ArrayList<>();
     private ArrayList<MeasureMeasparas> resultParas = new ArrayList<>();
     private ArrayList<MeasureMeasress> resultRess = new ArrayList<>();
+    private ArrayList<MeasureMeasdets> resultDets = new ArrayList<>();
 
     @Nullable
     @Override
@@ -601,7 +602,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 Protector.appendLogSensor(tempMsg);
 
                 // result sensor
-                Log.e("AAAA", tempMsg);
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
                     if (tempMsg.contains("*LISTEND")) {
@@ -632,7 +632,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 rulersDet.add("*R,MEASDET," + resultListSensors.get(i).getNo());
                             }
 
-                            connectThread.write(rulersBas.get(0));
+                            connectThread.writeMeasure(rulersBas.get(0));
                             Protector.appendLog(rulersBas.get(0));
                             rulersBas.remove(0);
                         } else {
@@ -659,7 +659,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 values[0], Protector.tryParseInt(values[1]), 1, "", "");
                         resultBas.add(measureMeasbas);
 
-                        connectThread.writeMeasure(rulersBas.get(0), true);
+                        connectThread.writeMeasure(rulersBas.get(0));
                         Protector.appendLog(rulersBas.get(0));
                         rulersBas.remove(0);
 
@@ -682,14 +682,13 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 values[0], Protector.tryParseInt(values[1]),1, "", "");
                         resultBas.add(measureMeasbas);
 
-                        connectThread.write(rulersPara.get(0));
+                        connectThread.writeMeasure(rulersPara.get(0));
                         Protector.appendLog(rulersPara.get(0));
                         rulersPara.remove(0);
 
                     }
                 } else if (resultStart == 3) {
                     if (rulersPara.size() != 0) {
-                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
                         String[] values = new String[0];
                         if (tempMsg.contains("[CR]")) {
                             values = tempMsg.split("[CR]");
@@ -749,13 +748,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         resultParas.add(measureMeasparas);
 
 
-                        connectThread.write(rulersPara.get(0));
+                        connectThread.writeMeasure(rulersPara.get(0));
                         rulersPara.remove(0);
 
                     } else {
                         resultStart++;
 
-                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
                         String[] values = new String[0];
                         if (tempMsg.contains("[CR]")) {
                             values = tempMsg.split("[CR]");
@@ -814,14 +812,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         resultParas.add(measureMeasparas);
 
-                        connectThread.write(rulersRes.get(0));
+                        connectThread.writeMeasure(rulersRes.get(0));
                         Protector.appendLog(rulersRes.get(0));
                         rulersRes.remove(0);
                     }
                 } else if (resultStart == 4) {
                     if (rulersRes.size() != 0) {
-
-                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
                         String[] values = new String[0];
                         if (tempMsg.contains("[CR]")) {
                             values = tempMsg.split("[CR]");
@@ -835,7 +831,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         int pos = 0;
 
-                        for (int i = 0 ; i < values.length ; i+=9){
+                        for (int i = 0 ; i < values.length -1; i+=9){
                             MeasureMeasress measureMeasress = new MeasureMeasress(
                                     MainActivity.device.getId(),
                                     values[pos++],
@@ -853,12 +849,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             resultRess.add(measureMeasress);
                         }
 
-                        connectThread.write(rulersRes.get(0));
+                        connectThread.writeMeasure(rulersRes.get(0));
                         rulersRes.remove(0);
                     } else {
                         resultStart++;
 
-                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
                         String[] values = new String[0];
                         if (tempMsg.contains("[CR]")) {
                             values = tempMsg.split("[CR]");
@@ -872,7 +867,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         int pos = 0;
 
-                        for (int i = 0 ; i < values.length ; i+=9){
+                        for (int i = 0 ; i < values.length -1; i+=9){
                             MeasureMeasress measureMeasress = new MeasureMeasress(
                                     MainActivity.device.getId(),
                                     values[pos++],
@@ -890,20 +885,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             resultRess.add(measureMeasress);
                         }
 
-                        cancelDialogProcessing();
-
-                        Log.e("AAAA" , resultBas.size()+"");
-                        Log.e("AAAA" , resultParas.size()+"");
-                        Log.e("AAAA" , resultRess.size()+"");
-
-//                        connectThread.write(rulersDet.get(0));
-//                        Protector.appendLog(rulersDet.get(0));
-//                        rulersDet.remove(0);
+                        connectThread.writeMeasure(rulersDet.get(0));
+                        Protector.appendLog(rulersDet.get(0));
+                        rulersDet.remove(0);
                     }
                 } else if (resultStart == 5) {
                     if (rulersDet.size() != 0) {
-
-                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
                         String[] values = new String[0];
                         if (tempMsg.contains("[CR]")) {
                             values = tempMsg.split("[CR]");
@@ -915,76 +902,45 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             values = tempMsg.split("\r\n");
                         }
 
+                        int i = 0;
+                        resultDets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                values[0].split(",")[1],
+                                Protector.tryParseHex(values[1].length() > 4 ? values[1].substring(i, (i + 4)) : ""),
+                                Protector.tryParseHex(values[1].length() > 8 ? values[1].substring((i + 4), (i + 8)) : ""),
+                                Protector.tryParseHex(values[1].length() > 12 ? values[1].substring((i + 8), (i + 12)) : ""),
+                                Protector.tryParseHex(values[1].length() > 16 ? values[1].substring((i + 12), (i + 16)) : ""),
+                                Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
+                                Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
+                                Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
 
-                        connectThread.write(rulersDet.get(0));
+                        connectThread.writeMeasure(rulersDet.get(0));
+                        Protector.appendLog(rulersDet.get(0));
                         rulersDet.remove(0);
                     } else {
-                        resultStart++;
-                        for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
-                            arrRules.add("*R_NAME_" + (i + 1) + "");
-                            arrRules.add("*R_PKPOT_" + (i + 1) + "");
-                            arrRules.add("*R_DLTC_" + (i + 1) + "");
-                            arrRules.add("*R_BGC_" + (i + 1) + "");
-                            arrRules.add("*R_ERR_" + (i + 1) + "");
-                            arrRules.add("*R_BLPSX_" + (i + 1) + "");
-                            arrRules.add("*R_BLPSY_" + (i + 1) + "");
-                            arrRules.add("*R_BLPEX_" + (i + 1) + "");
-                            arrRules.add("*R_BLPEY_" + (i + 1) + "");
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
                         }
-                        arrResults.clear();
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
-                    }
-                } else if (resultStart == 6) {
-                    if (arrRules.size() != 0) {
-                        connectThread.write(arrRules.get(0));
-                        arrRules.remove(0);
-                    } else {
-                        resultStart++;
-                        for (int i = 0; i < arrResults.size(); i += 9) {
-                            measureMeasresses = new ArrayList<>();
-                            measureMeasresses.add(new MeasureMeasress(MainActivity.device.getId(),
-                                    arrResults.get(i),
-                                    Protector.tryParseInt(arrResults.get(i + 1)),
-                                    Protector.tryParseInt(arrResults.get(i + 2)),
-                                    Protector.tryParseInt(arrResults.get(i + 3)),
-                                    Protector.tryParseInt(arrResults.get(i + 4)),
-                                    arrResults.get(i + 5),
-                                    arrResults.get(i + 6),
-                                    arrResults.get(i + 7),
-                                    arrResults.get(i + 8), Protector.getCurrentTime(), Protector.getCurrentTime()));
-                        }
+                        int i = 0;
+                        resultDets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                values[0].split(",")[1],
+                                Protector.tryParseHex(values[1].length() > 4 ? values[1].substring(i, (i + 4)) : ""),
+                                Protector.tryParseHex(values[1].length() > 8 ? values[1].substring((i + 4), (i + 8)) : ""),
+                                Protector.tryParseHex(values[1].length() > 12 ? values[1].substring((i + 8), (i + 12)) : ""),
+                                Protector.tryParseHex(values[1].length() > 16 ? values[1].substring((i + 12), (i + 16)) : ""),
+                                Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
+                                Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
+                                Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
+                        cancelDialogProcessing();
 
-                        arrRules.add("＊RAWDMP8,10");
-                        arrResults.clear();
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
-                    }
-                } else if (resultStart == 7) {
-                    if (arrRules.size() != 0) {
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
-                    } else {
-                        resultStart++;
-                        int no = 1;
-                        for (int i = 0; i < arrResults.get(0).length(); i += 24) {
-                            measureMeasdets = new ArrayList<>();
-                            measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                    (no++) + "",
-                                    Protector.tryParseHex(arrResults.get(0).length() > 4 ? arrResults.get(0).substring(i, (i + 4)) : ""),
-                                    Protector.tryParseHex(arrResults.get(0).length() > 8 ? arrResults.get(0).substring((i + 4), (i + 8)) : ""),
-                                    Protector.tryParseHex(arrResults.get(0).length() > 12 ? arrResults.get(0).substring((i + 8), (i + 12)) : ""),
-                                    Protector.tryParseHex(arrResults.get(0).length() > 16 ? arrResults.get(0).substring((i + 12), (i + 16)) : ""),
-                                    Protector.tryParseHex(arrResults.get(0).length() > 20 ? arrResults.get(0).substring((i + 16), (i + 20)) : ""),
-                                    Protector.tryParseHex(arrResults.get(0).length() > 24 ? arrResults.get(0).substring((i + 20), (i + 24)) : ""),
-                                    Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime()));
-                        }
-
-                        arrResults.clear();
-                        presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
+                        //presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
                     }
                 }
                 break;
@@ -996,14 +952,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrResults.clear();
                 bacSettings.clear();
 
-//                if (connectThread != null) {
-//                    resultStart = 0;
-//                    arrRules.add("*R,BACS");
-//                    connectThread.write(arrRules.get(0));
-//                    Protector.appendLog(arrRules.get(0));
-//                    arrRules.remove(0);
-//                }
                 if (connectThread != null) {
+                    resultDets.clear();
+                    rulersDet.clear();
+                    resultRess.clear();
+                    rulersRes.clear();
+                    resultParas.clear();
+                    rulersPara.clear();
+                    resultBas.clear();
+                    rulersBas.clear();
+
                     resultStart = 0;
                     arrRules.add("*LIST,5");
                     connectThread.write(arrRules.get(0));
