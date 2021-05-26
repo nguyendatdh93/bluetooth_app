@@ -133,9 +133,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     private ArrayList<MeasureMeasbas> resultBas = new ArrayList<>();
     private ArrayList<MeasureMeasparas> resultParas = new ArrayList<>();
-    private ArrayList<MeasureMeasress> resultRess = new ArrayList<>();
-    private ArrayList<MeasureMeasdets> resultDets = new ArrayList<>();
+    private ArrayList<ArrayList<MeasureMeasress>> resultRess = new ArrayList<>();
+    private ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
 
+    private int counterStore = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -522,14 +523,15 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
-
-        arrRCVDatetime.clear();
-        arrMeasure.clear();
-        presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
-        skbProgress.setProgress(100);
-        txtProcess.setText(context.getResources().getString(R.string.success_stored));
-        txtProcess.setTextColor(context.getResources().getColor(R.color.black));
+        if (resultListSensors.size() == ++counterStore){
+            showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
+            arrRCVDatetime.clear();
+            arrMeasure.clear();
+            presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
+            skbProgress.setProgress(100);
+            txtProcess.setText(context.getResources().getString(R.string.success_stored));
+            txtProcess.setTextColor(context.getResources().getColor(R.color.black));
+        }
     }
 
     @Override
@@ -606,18 +608,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 if (resultStart == 0) {
                     if (tempMsg.contains("*LISTEND")) {
                         for (int i = 0; i < arrResults.size() - 1; i++) {
-                            boolean isHave = false;
+                            boolean isHave = true;
                             for (int j = 0; j < arrMeasure.size(); j++) {
-                                if (arrResults.get(i).equals(arrMeasure.get(j).getDatetime())) {
-                                    isHave = true;
+                                if (arrResults.get(i).replace("/" , "-").equals(arrMeasure.get(j).getDatetime())) {
+                                    isHave = false;
                                     break;
                                 }
                             }
                             if (!isHave) {
                                 String[] result = arrResults.get(i).split(",");
                                 resultListSensors.add(new ResultListSensor(result[0], Protector.tryParseInt(result[1])));
-
-
                                 // read sensor
                             }
                         }
@@ -656,7 +656,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
 
                         measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0],  1, Protector.tryParseInt(values[1]),"", "");
+                                values[0].split(",")[1].replace("/","-"),  1, Protector.tryParseInt(values[1].split(",")[1]),"", "");
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersBas.get(0));
@@ -679,7 +679,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
 
                         measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0],  1, Protector.tryParseInt(values[1]),"", "");
+                                values[0].split(",")[1].replace("/","-"),  1, Protector.tryParseInt(values[1].split(",")[1]),"", "");
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersPara.get(0));
@@ -705,43 +705,44 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         MeasureMeasparas measureMeasparas = new MeasureMeasparas(
                                 MainActivity.device.getId(),
                                 values[pos++],
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                values[pos++],
-                                values[pos++],
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                null,
+                                null,
                                 null
                         );
 
                         ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length; i += 6) {
+                        for (int i = pos; i < values.length-1; i += 6) {
                             arrBac.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
-                                    values[i],
-                                    Protector.tryParseInt(values[i + 1]),
-                                    Protector.tryParseInt(values[i + 2]),
-                                    Protector.tryParseInt(values[i + 3]),
-                                    Protector.tryParseInt(values[i + 4]),
-                                    Protector.tryParseInt(values[+5]), null, null));
+                                    values[i].split(",")[1],
+                                    Protector.tryParseInt(values[i + 1].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 2].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 3].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 4].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 5].split(",")[1]),
+                                    null, null));
                         }
                         measureMeasparas.setArrBac(arrBac);
 
@@ -770,43 +771,44 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         MeasureMeasparas measureMeasparas = new MeasureMeasparas(
                                 MainActivity.device.getId(),
                                 values[pos++],
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                Protector.tryParseInt(values[pos++]),
-                                values[pos++],
-                                values[pos++],
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                Protector.tryParseInt(values[pos++].split(",")[1]),
+                                null,
+                                null,
                                 null
                         );
 
                         ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length; i += 6) {
+                        for (int i = pos; i < values.length-1; i += 6) {
                             arrBac.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
-                                    values[i],
-                                    Protector.tryParseInt(values[i + 1]),
-                                    Protector.tryParseInt(values[i + 2]),
-                                    Protector.tryParseInt(values[i + 3]),
-                                    Protector.tryParseInt(values[i + 4]),
-                                    Protector.tryParseInt(values[+5]), null, null));
+                                    values[i].split(",")[1],
+                                    Protector.tryParseInt(values[i + 1].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 2].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 3].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 4].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 5].split(",")[1]),
+                                    null, null));
                         }
                         measureMeasparas.setArrBac(arrBac);
 
@@ -831,23 +833,26 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         int pos = 0;
 
+                        ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
                         for (int i = 0 ; i < values.length -1; i+=9){
                             MeasureMeasress measureMeasress = new MeasureMeasress(
                                     MainActivity.device.getId(),
-                                    values[pos++],
-                                    Protector.tryParseInt(values[pos++]),
-                                    Protector.tryParseInt(values[pos++]),
-                                    Protector.tryParseInt(values[pos++]),
-                                    Protector.tryParseInt(values[pos++]),
-                                    values[pos++],
-                                    values[pos++],
-                                    values[pos++],
-                                    values[pos++],
+                                    values[pos++].split(",")[1],
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    values[pos++].split(",")[1],
+                                    values[pos++].split(",")[1],
+                                    values[pos++].split(",")[1],
+                                    values[pos++].split(",")[1],
                                     null,
                                     null
-                                    );
-                            resultRess.add(measureMeasress);
+                            );
+                            measureMeasresses.add(measureMeasress);
                         }
+
+                        resultRess.add(measureMeasresses);
 
                         connectThread.writeMeasure(rulersRes.get(0));
                         rulersRes.remove(0);
@@ -867,23 +872,26 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         int pos = 0;
 
+                        ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
                         for (int i = 0 ; i < values.length -1; i+=9){
                             MeasureMeasress measureMeasress = new MeasureMeasress(
                                     MainActivity.device.getId(),
-                                    values[pos++],
-                                    Protector.tryParseInt(values[pos++]),
-                                    Protector.tryParseInt(values[pos++]),
-                                    Protector.tryParseInt(values[pos++]),
-                                    Protector.tryParseInt(values[pos++]),
-                                    values[pos++],
-                                    values[pos++],
-                                    values[pos++],
-                                    values[pos++],
+                                    values[pos++].split(",")[1],
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    Protector.tryParseInt(values[pos++].split(",")[1]),
+                                    values[pos++].split(",")[1],
+                                    values[pos++].split(",")[1],
+                                    values[pos++].split(",")[1],
+                                    values[pos++].split(",")[1],
                                     null,
                                     null
                             );
-                            resultRess.add(measureMeasress);
+                            measureMeasresses.add(measureMeasress);
                         }
+
+                        resultRess.add(measureMeasresses);
 
                         connectThread.writeMeasure(rulersDet.get(0));
                         Protector.appendLog(rulersDet.get(0));
@@ -903,7 +911,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
 
                         int i = 0;
-                        resultDets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                        ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
+
+                        measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
                                 values[0].split(",")[1],
                                 Protector.tryParseHex(values[1].length() > 4 ? values[1].substring(i, (i + 4)) : ""),
                                 Protector.tryParseHex(values[1].length() > 8 ? values[1].substring((i + 4), (i + 8)) : ""),
@@ -913,6 +923,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
                                 Protector.getCurrentTime(), Protector.getCurrentTime()));
 
+                        resultDets.add(measureMeasdets);
                         connectThread.writeMeasure(rulersDet.get(0));
                         Protector.appendLog(rulersDet.get(0));
                         rulersDet.remove(0);
@@ -928,7 +939,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             values = tempMsg.split("\r\n");
                         }
                         int i = 0;
-                        resultDets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                        ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
+
+                        measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
                                 values[0].split(",")[1],
                                 Protector.tryParseHex(values[1].length() > 4 ? values[1].substring(i, (i + 4)) : ""),
                                 Protector.tryParseHex(values[1].length() > 8 ? values[1].substring((i + 4), (i + 8)) : ""),
@@ -937,10 +950,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
                                 Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
                                 Protector.getCurrentTime(), Protector.getCurrentTime()));
-                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
-                        cancelDialogProcessing();
 
-                        //presenterFragment4.receivedStoreMeasure(APIUtils.token, MainActivity.device.getId(), Protector.getCurrentTime(), "06", sensorSetting, measureMeasbas, measureMeasresses, measureMeasdets);
+                        resultDets.add(measureMeasdets);
+
+                        for (int j = 0 ; j < resultListSensors.size() ; j++){
+                            presenterFragment4.receivedStoreMeasure(APIUtils.token,
+                                    MainActivity.device.getId(),
+                                    resultListSensors.get(j).getDatetime(),
+                                    String.valueOf(resultListSensors.get(j).getNo()), resultParas.get(i), resultBas.get(i), resultRess.get(i), resultDets.get(i));
+
+                        }
                     }
                 }
                 break;
@@ -953,6 +972,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 bacSettings.clear();
 
                 if (connectThread != null) {
+                    counterStore = 0;
+                    resultListSensors.clear();
                     resultDets.clear();
                     rulersDet.clear();
                     resultRess.clear();

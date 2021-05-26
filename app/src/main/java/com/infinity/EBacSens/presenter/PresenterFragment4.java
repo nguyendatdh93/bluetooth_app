@@ -4,6 +4,7 @@ import com.infinity.EBacSens.model.ModelFragmeant4Listener;
 import com.infinity.EBacSens.model.ModelFragment4;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
+import com.infinity.EBacSens.model_objects.MeasureMeasparas;
 import com.infinity.EBacSens.model_objects.MeasureMeasress;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
@@ -32,8 +33,8 @@ public class PresenterFragment4 implements ModelFragmeant4Listener {
         modelFragment4.handleGetDetailMeasure(token , idMeasure);
     }
 
-    public void receivedStoreMeasure(String token, int idMeasure, String datetime, String no, SensorSetting sensorSetting, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses, ArrayList<MeasureMeasdets> measureMeasdets){
-        modelFragment4.handleStoreMeasure(token , idMeasure , datetime , no , sensorSetting , measureMeasbas , measureMeasresses , measureMeasdets);
+    public void receivedStoreMeasure(String token, int idMeasure, String datetime, String no, MeasureMeasparas measureMeasparas, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses, ArrayList<MeasureMeasdets> measureMeasdets){
+        modelFragment4.handleStoreMeasure(token , idMeasure , datetime , no , measureMeasparas , measureMeasbas , measureMeasresses , measureMeasdets);
     }
 
     @Override

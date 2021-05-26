@@ -30,7 +30,7 @@ public class Protector {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            return 0;
+            return tryParseHex(value);
         }
     }
 
@@ -131,9 +131,5 @@ public class Protector {
         return value;
     }
 
-//    public static String[] trimMeasdet(String value){
-//        for (int i = 0 ; i < value.length() ; i++){
-//
-//        }
-//    }
+
 }

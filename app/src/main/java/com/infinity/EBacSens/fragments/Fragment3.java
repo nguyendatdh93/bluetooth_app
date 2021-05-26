@@ -933,17 +933,17 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         }
 
-                        edtCrng.setText(arrResults.get(pos++));
-                        edtEqp1.setText(arrResults.get(pos++));
-                        edtEqt1.setText(arrResults.get(pos++));
-                        edtEqp2.setText(arrResults.get(pos++));
-                        edtEqt2.setText(arrResults.get(pos++));
-                        edtEqp3.setText(arrResults.get(pos++));
-                        edtEqt3.setText(arrResults.get(pos++));
-                        edtEqp4.setText(arrResults.get(pos++));
-                        edtEqt4.setText(arrResults.get(pos++));
-                        edtEqp5.setText(arrResults.get(pos++));
-                        edtEqt5.setText(arrResults.get(pos++));
+                        edtCrng.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp1.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt1.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp2.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt2.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp3.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt3.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp4.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt4.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp5.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt5.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
                         edtStp.setText(arrResults.get(pos++));
                         edtEnp.setText(arrResults.get(pos++));
                         edtPp.setText(arrResults.get(pos++));
