@@ -13,7 +13,7 @@ public class MeasureMeasbas {
     @Expose
     private String datetime;
 
-    @SerializedName("num")
+    @SerializedName("measba[num]")
     @Expose
     private int num;
 
@@ -68,7 +68,6 @@ public class MeasureMeasbas {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-
 
     public String getUpdatedAt() {
         return updatedAt;

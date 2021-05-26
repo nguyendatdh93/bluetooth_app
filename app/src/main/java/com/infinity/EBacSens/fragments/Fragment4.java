@@ -41,9 +41,11 @@ import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.Graph;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
+import com.infinity.EBacSens.model_objects.MeasureMeasparas;
 import com.infinity.EBacSens.model_objects.MeasureMeasress;
 import com.infinity.EBacSens.model_objects.ModelRCVDatetime;
 import com.infinity.EBacSens.model_objects.Result;
+import com.infinity.EBacSens.model_objects.ResultListSensor;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
@@ -122,6 +124,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<MeasureMeasdets> measureMeasdets;
     private SensorSetting sensorSetting;
     private MeasureMeasbas measureMeasbas;
+
+    private final ArrayList<ResultListSensor> resultListSensors = new ArrayList<>();
+    private final ArrayList<String> rulersBas = new ArrayList<>();
+    private final ArrayList<String> rulersPara = new ArrayList<>();
+    private final ArrayList<String> rulersRes = new ArrayList<>();
+    private final ArrayList<String> rulersDet = new ArrayList<>();
+
+    private ArrayList<MeasureMeasbas> resultBas = new ArrayList<>();
+    private ArrayList<MeasureMeasparas> resultParas = new ArrayList<>();
+    private ArrayList<MeasureMeasress> resultRess = new ArrayList<>();
 
     @Nullable
     @Override
@@ -212,10 +224,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         txtContent.setText(content);
 
         if (success) {
-            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_green));
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
         } else {
-            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_red));
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -271,7 +283,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     }
 
     private void showDialogProcessing() {
-        if (dialogProcessing != null){
+        if (dialogProcessing != null) {
             dialogProcessing.show();
         }
     }
@@ -589,148 +601,323 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 Protector.appendLogSensor(tempMsg);
 
                 // result sensor
-                Log.e("AAAA" , tempMsg);
+                Log.e("AAAA", tempMsg);
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
-                    if (tempMsg.contains("*LISTEND")){
-                        for (int i = 0 ; i < arrResults.size()-1 ; i++){
+                    if (tempMsg.contains("*LISTEND")) {
+                        for (int i = 0; i < arrResults.size() - 1; i++) {
                             boolean isHave = false;
-                            for (int j = 0; j < arrMeasure.size() ; j++){
-                                if (arrResults.get(i).equals(arrMeasure.get(j).getDatetime())){
+                            for (int j = 0; j < arrMeasure.size(); j++) {
+                                if (arrResults.get(i).equals(arrMeasure.get(j).getDatetime())) {
                                     isHave = true;
                                     break;
                                 }
                             }
-                            arrRCVDatetime.add(0,new ModelRCVDatetime(arrResults.get(i) , false));
-                            adapteRCVDatetime.notifyItemInserted(0);
-                            if (!isHave){
-                                // read sensor
+                            if (!isHave) {
+                                String[] result = arrResults.get(i).split(",");
+                                resultListSensors.add(new ResultListSensor(result[0], Protector.tryParseInt(result[1])));
 
+
+                                // read sensor
                             }
                         }
 
+                        resultStart++;
+                        arrRules.clear();
+                        if (resultListSensors.size() > 0) {
+                            for (int i = 0; i < resultListSensors.size(); i++) {
+                                rulersBas.add("*R,MEASBAS," + resultListSensors.get(i).getNo());
+                                rulersPara.add("*R,MEASPARA," + resultListSensors.get(i).getNo());
+                                rulersRes.add("*R,MEASRES," + resultListSensors.get(i).getNo());
+                                rulersDet.add("*R,MEASDET," + resultListSensors.get(i).getNo());
+                            }
 
-//                        resultStart++;
-//                        for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
-//                            arrRules.add("*R,BACNAME" + (i + 1) + "");
-//                            arrRules.add("*R,E1_" + (i + 1) + "");
-//                            arrRules.add("*R,E2_" + (i + 1) + "");
-//                            arrRules.add("*R,E3_" + (i + 1) + "");
-//                            arrRules.add("*R,E4_" + (i + 1) + "");
-//                            arrRules.add("*R,PKP" + (i + 1) + "");
-//                        }
-//                        arrResults.clear();
-//                        connectThread.write(arrRules.get(0));
-//                        Protector.appendLog(arrRules.get(0));
-//                        arrRules.remove(0);
+                            connectThread.write(rulersBas.get(0));
+                            Protector.appendLog(rulersBas.get(0));
+                            rulersBas.remove(0);
+                        } else {
+                            cancelDialogProcessing();
+                            showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
+                        }
                     }
 
                 } else if (resultStart == 1) {
-                    if (arrRules.size() != 0) {
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
-                    } else {
-                        resultStart++;
+                    if (rulersBas.size() != 0) {
 
-                        for (int i = 0; i < arrResults.size(); i += 6) {
-                            bacSettings.add(new BacSetting(MainActivity.device.getId(),
-                                    MainActivity.device.getId(), arrResults.get(i),
-                                    Protector.tryParseInt(arrResults.get(i + 1)),
-                                    Protector.tryParseInt(arrResults.get(i + 2)),
-                                    Protector.tryParseInt(arrResults.get(i + 3)),
-                                    Protector.tryParseInt(arrResults.get(i + 4)),
-                                    Protector.tryParseInt(arrResults.get(i + 5)), Protector.getCurrentTime(), Protector.getCurrentTime()));
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
                         }
 
-                        arrResults.clear();
+                        measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
+                                values[0], Protector.tryParseInt(values[1]), 1, "", "");
+                        resultBas.add(measureMeasbas);
 
-                        arrRules.add("*R,SETNAME");
-                        arrRules.add("*R,CRNG");
-                        arrRules.add("*R,EQP1");
-                        arrRules.add("*R,EQT1");
-                        arrRules.add("*R,EQP2");
-                        arrRules.add("*R,EQT2");
-                        arrRules.add("*R,EQP3");
-                        arrRules.add("*R,EQT3");
-                        arrRules.add("*R,EQP4");
-                        arrRules.add("*R,EQT4");
-                        arrRules.add("*R,EQP5");
-                        arrRules.add("*R,EQT5");
-                        arrRules.add("*R,STP");
-                        arrRules.add("*R,ENP");
-                        arrRules.add("*R,PP");
-                        arrRules.add("*R,DLTE");
-                        arrRules.add("*R,PWD");
-                        arrRules.add("*R,PTM");
-                        arrRules.add("*R,IBST");
-                        arrRules.add("*R,IBEN");
-                        arrRules.add("*R,IFST");
-                        arrRules.add("*R,IFEN");
+                        connectThread.writeMeasure(rulersBas.get(0), true);
+                        Protector.appendLog(rulersBas.get(0));
+                        rulersBas.remove(0);
+
+                    } else {
                         resultStart++;
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
+                        resultStart++;
+
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+                        measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
+                                values[0], Protector.tryParseInt(values[1]),1, "", "");
+                        resultBas.add(measureMeasbas);
+
+                        connectThread.write(rulersPara.get(0));
+                        Protector.appendLog(rulersPara.get(0));
+                        rulersPara.remove(0);
 
                     }
                 } else if (resultStart == 3) {
-                    if (arrRules.size() != 0) {
-                        connectThread.write(arrRules.get(0));
-                        arrRules.remove(0);
+                    if (rulersPara.size() != 0) {
+                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+                        int pos = 0;
+
+                        MeasureMeasparas measureMeasparas = new MeasureMeasparas(
+                                MainActivity.device.getId(),
+                                values[pos++],
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                values[pos++],
+                                values[pos++],
+                                null
+                        );
+
+                        ArrayList<BacSetting> arrBac = new ArrayList<>();
+                        for (int i = pos; i < values.length; i += 6) {
+                            arrBac.add(new BacSetting(MainActivity.device.getId(),
+                                    MainActivity.device.getId(),
+                                    values[i],
+                                    Protector.tryParseInt(values[i + 1]),
+                                    Protector.tryParseInt(values[i + 2]),
+                                    Protector.tryParseInt(values[i + 3]),
+                                    Protector.tryParseInt(values[i + 4]),
+                                    Protector.tryParseInt(values[+5]), null, null));
+                        }
+                        measureMeasparas.setArrBac(arrBac);
+
+                        resultParas.add(measureMeasparas);
+
+
+                        connectThread.write(rulersPara.get(0));
+                        rulersPara.remove(0);
+
                     } else {
                         resultStart++;
-                        sensorSetting = new SensorSetting(MainActivity.device.getId(),
-                                arrResults.get(0),
-                                bacSettings.size(),
-                                Protector.tryParseInt(arrResults.get(1)),
-                                Protector.tryParseInt(arrResults.get(2)),
-                                Protector.tryParseInt(arrResults.get(3)),
-                                Protector.tryParseInt(arrResults.get(4)),
-                                Protector.tryParseInt(arrResults.get(5)),
-                                Protector.tryParseInt(arrResults.get(6)),
-                                Protector.tryParseInt(arrResults.get(7)),
-                                Protector.tryParseInt(arrResults.get(8)),
-                                Protector.tryParseInt(arrResults.get(9)),
-                                Protector.tryParseInt(arrResults.get(10)),
-                                Protector.tryParseInt(arrResults.get(11)),
-                                Protector.tryParseInt(arrResults.get(12)),
-                                Protector.tryParseInt(arrResults.get(13)),
-                                Protector.tryParseInt(arrResults.get(14)),
-                                Protector.tryParseInt(arrResults.get(15)),
-                                Protector.tryParseInt(arrResults.get(16)),
-                                Protector.tryParseInt(arrResults.get(17)),
-                                Protector.tryParseInt(arrResults.get(18)),
-                                Protector.tryParseInt(arrResults.get(19)),
-                                Protector.tryParseInt(arrResults.get(20)),
-                                Protector.tryParseInt(arrResults.get(21)), MainActivity.device.getId(), Protector.getCurrentTime(), Protector.getCurrentTime(), Protector.getCurrentTime(), bacSettings);
-                        arrResults.clear();
-                        arrRules.add("*R_DATETIME");
-                        arrRules.add("*R_NUM");
-                        arrRules.add("*R_PSTATERR");
 
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
+                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+                        int pos = 0;
+
+                        MeasureMeasparas measureMeasparas = new MeasureMeasparas(
+                                MainActivity.device.getId(),
+                                values[pos++],
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                Protector.tryParseInt(values[pos++]),
+                                values[pos++],
+                                values[pos++],
+                                null
+                        );
+
+                        ArrayList<BacSetting> arrBac = new ArrayList<>();
+                        for (int i = pos; i < values.length; i += 6) {
+                            arrBac.add(new BacSetting(MainActivity.device.getId(),
+                                    MainActivity.device.getId(),
+                                    values[i],
+                                    Protector.tryParseInt(values[i + 1]),
+                                    Protector.tryParseInt(values[i + 2]),
+                                    Protector.tryParseInt(values[i + 3]),
+                                    Protector.tryParseInt(values[i + 4]),
+                                    Protector.tryParseInt(values[+5]), null, null));
+                        }
+                        measureMeasparas.setArrBac(arrBac);
+
+                        resultParas.add(measureMeasparas);
+
+                        connectThread.write(rulersRes.get(0));
+                        Protector.appendLog(rulersRes.get(0));
+                        rulersRes.remove(0);
                     }
                 } else if (resultStart == 4) {
-                    if (arrRules.size() != 0) {
-                        connectThread.write(arrRules.get(0));
-                        arrRules.remove(0);
+                    if (rulersRes.size() != 0) {
+
+                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+                        int pos = 0;
+
+                        for (int i = 0 ; i < values.length ; i+=9){
+                            MeasureMeasress measureMeasress = new MeasureMeasress(
+                                    MainActivity.device.getId(),
+                                    values[pos++],
+                                    Protector.tryParseInt(values[pos++]),
+                                    Protector.tryParseInt(values[pos++]),
+                                    Protector.tryParseInt(values[pos++]),
+                                    Protector.tryParseInt(values[pos++]),
+                                    values[pos++],
+                                    values[pos++],
+                                    values[pos++],
+                                    values[pos++],
+                                    null,
+                                    null
+                                    );
+                            resultRess.add(measureMeasress);
+                        }
+
+                        connectThread.write(rulersRes.get(0));
+                        rulersRes.remove(0);
                     } else {
                         resultStart++;
-                        measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                arrResults.get(0), Protector.tryParseInt(arrResults.get(1)), Protector.tryParseInt(arrResults.get(2)), "", "");
-                        arrResults.clear();
 
-                        arrRules.add("*MEASRES");
-                        connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
-                        arrRules.remove(0);
+                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+                        int pos = 0;
+
+                        for (int i = 0 ; i < values.length ; i+=9){
+                            MeasureMeasress measureMeasress = new MeasureMeasress(
+                                    MainActivity.device.getId(),
+                                    values[pos++],
+                                    Protector.tryParseInt(values[pos++]),
+                                    Protector.tryParseInt(values[pos++]),
+                                    Protector.tryParseInt(values[pos++]),
+                                    Protector.tryParseInt(values[pos++]),
+                                    values[pos++],
+                                    values[pos++],
+                                    values[pos++],
+                                    values[pos++],
+                                    null,
+                                    null
+                            );
+                            resultRess.add(measureMeasress);
+                        }
+
+                        cancelDialogProcessing();
+
+                        Log.e("AAAA" , resultBas.size()+"");
+                        Log.e("AAAA" , resultParas.size()+"");
+                        Log.e("AAAA" , resultRess.size()+"");
+
+//                        connectThread.write(rulersDet.get(0));
+//                        Protector.appendLog(rulersDet.get(0));
+//                        rulersDet.remove(0);
                     }
                 } else if (resultStart == 5) {
-                    if (arrRules.size() != 0) {
-                        connectThread.write(arrRules.get(0));
-                        arrRules.remove(0);
+                    if (rulersDet.size() != 0) {
+
+                        tempMsg = tempMsg.replace("\r*MEASUREFINISH", "");
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+
+                        connectThread.write(rulersDet.get(0));
+                        rulersDet.remove(0);
                     } else {
                         resultStart++;
                         for (int i = 0; i < Protector.tryParseInt(arrResults.get(0)); i++) {
@@ -818,7 +1005,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 //                }
                 if (connectThread != null) {
                     resultStart = 0;
-                    arrRules.add("*LIST");
+                    arrRules.add("*LIST,5");
                     connectThread.write(arrRules.get(0));
                     Protector.appendLog(arrRules.get(0));
                     arrRules.remove(0);

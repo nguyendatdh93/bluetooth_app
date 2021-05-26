@@ -270,7 +270,8 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 arrResults.add(tempMsg);
                 if (arrRules.size() == 0) {
                     edtNameMeasure.setText(arrResults.get(0));
-                    edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
+                    //edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
+                    edtDatetime.setText(arrResults.get(1));
                     edtPeakMode.setText(arrResults.get(2));
                     edtPowerOffMin.setText(arrResults.get(3));
                     cancelDialogProcessing();

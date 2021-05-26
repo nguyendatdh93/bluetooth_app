@@ -130,4 +130,10 @@ public class Protector {
         }
         return value;
     }
+
+//    public static String[] trimMeasdet(String value){
+//        for (int i = 0 ; i < value.length() ; i++){
+//
+//        }
+//    }
 }
