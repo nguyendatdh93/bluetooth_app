@@ -11,7 +11,8 @@
 
     <style name="SplashscreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_flash_screen</item>
-
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="colorPrimaryDark">@color/grey</item>
     </style>
 </resources>

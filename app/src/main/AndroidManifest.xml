@@ -25,12 +25,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EBacSens"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activitys.ListDeviceActivity" />
-        <activity android:name=".activitys.MainActivity" />
+        <activity android:name=".activitys.ListDeviceActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activitys.MainActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".activitys.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashscreenTheme">
+            android:theme="@style/SplashscreenTheme"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

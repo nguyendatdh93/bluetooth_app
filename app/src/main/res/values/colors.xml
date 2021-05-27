@@ -21,4 +21,5 @@
     <color name="orange">#FF9800</color>
     <color name="title_graph">#4b6276</color>
     <color name="border">#cccccc</color>
+    <color name="bg_flash">#161917</color>
 </resources>

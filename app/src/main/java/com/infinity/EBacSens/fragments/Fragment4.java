@@ -516,7 +516,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         arrResult.clear();
         if (sensorMeasureDetail != null && sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses() != null) {
             sensorMeasureExport = sensorMeasureDetail.getSensorMeasure();
-            for (int i = 0; i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
+            for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses() != null && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
                 arrGraph.add(new Graph(
                         sensorMeasureExport.getMeasureMeasparas().getArrBac().get(i).getBacName(),
                         (sensorMeasureExport.getMeasureMeasresses().get(i).getDltc() / (sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot() == 0 ? 1 : sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot())),
@@ -525,7 +525,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 ));
             }
 
-            for (int i = 0; i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
+            for (int i = 0; sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
                 arrResult.add(new Result(sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot()),
                         String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()),
@@ -625,19 +625,31 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
                     if (tempMsg.contains("*LISTEND")) {
-                        for (int i = 1; i < arrResults.size() - 1; i++) {
+                        String[] values = new String[0];
+                        if (tempMsg.contains("[CR]")) {
+                            values = tempMsg.split("[CR]");
+                        } else if (tempMsg.contains("\n")) {
+                            values = tempMsg.split("\n");
+                        } else if (tempMsg.contains("\r")) {
+                            values = tempMsg.split("\r");
+                        } else if (tempMsg.contains("\r\n")) {
+                            values = tempMsg.split("\r\n");
+                        }
+
+                        for (int i = 1; i < values.length - 1; i++) {
                             boolean isHave = false;
-                            for (int j = 0; j < arrMeasure.size(); j++) {
-                                if (arrResults.get(i).replace("/" , "-").equals(arrMeasure.get(j).getDatetime())) {
+                            for (int j = 0; j < arrMeasurePage.size(); j++) {
+                                if (values[i].split(",")[1].replace("/" , "-").equals(arrMeasurePage.get(j).getDatetime().replace("/" , "-"))) {
                                     isHave = true;
                                     break;
                                 }
                             }
                             if (!isHave) {
                                 // read sensor
-                                String[] result = arrResults.get(i).split(",");
-                                resultListSensors.add(new ResultListSensor(result[0], Protector.tryParseInt(result[1])));
+                                Log.e("AAAA" , values[i].split(",")[1].replace("/" , "-"));
+                                resultListSensors.add(new ResultListSensor(values[i].split(",")[1] , Protector.tryParseInt(values[i].split(",")[2])));
                             }
+
                         }
 
                         resultStart++;
@@ -957,7 +969,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
 
                             measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                    i+"",
+                                    (i/8)+"",
                                     deltaE,
                                     deltaI,
                                     eb,
@@ -1010,7 +1022,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
 
                             measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                    i+"",
+                                    (i/8)+"",
                                     deltaE,
                                     deltaI,
                                     eb,

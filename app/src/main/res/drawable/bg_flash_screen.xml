@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@color/white"/>
+        android:drawable="@color/bg_flash"/>
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/online_52px"/>
+            android:src="@drawable/icon"/>
     </item>
 </layer-list>

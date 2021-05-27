@@ -326,7 +326,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         btnWrite = view.findViewById(R.id.fragment_3_btn_write);
         edtNameMEasure = view.findViewById(R.id.fragment_3_edt_name_measure);
         rcvBacSetting = view.findViewById(R.id.fragment_3_rcv_bac_setting);
-        rcvBacSetting.setHasFixedSize(true);
+        //rcvBacSetting.setHasFixedSize(true);
         rcvBacSetting.setNestedScrollingEnabled(false);
         rcvBacSetting.setLayoutManager(new LinearLayoutManager(context));
         edtEqp1 = view.findViewById(R.id.fragment_3_edt_eqp1);
