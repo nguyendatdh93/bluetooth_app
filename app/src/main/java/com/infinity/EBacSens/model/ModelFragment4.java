@@ -44,7 +44,7 @@ public class ModelFragment4 {
             @Override
             public void onFailure(@NonNull Call<SensorMeasurePage> call, @NonNull Throwable t) {
                 modelFragmeant4Listener.onGetDataMeasurePage(null);
-                Protector.appendLog(t.getMessage());
+                Protector.appendLog(true ,t.getMessage());
             }
         });
     }
@@ -61,7 +61,7 @@ public class ModelFragment4 {
             @Override
             public void onFailure(@NonNull Call<SensorMeasureDetail> call, @NonNull Throwable t) {
                 modelFragmeant4Listener.onGetDataMeasureDetail(null);
-                Protector.appendLog(t.getMessage());
+                Protector.appendLog(true ,t.getMessage());
             }
         });
     }
@@ -472,7 +472,7 @@ public class ModelFragment4 {
             @Override
             public void onFailure(@NonNull Call<SensorMeasure> call, @NonNull Throwable t) {
                 modelFragmeant4Listener.onFailStoreMeasure(t.getMessage());
-                Protector.appendLog(t.getMessage());
+                Protector.appendLog(true ,t.getMessage());
             }
         });
     }

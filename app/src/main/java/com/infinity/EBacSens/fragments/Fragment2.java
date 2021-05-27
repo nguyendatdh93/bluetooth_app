@@ -266,7 +266,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLogSensor(tempMsg);
+                Protector.appendLog(true , tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
                 if (arrRules.size() == 0) {
@@ -279,7 +279,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                     showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                 } else {
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
+                    Protector.appendLog(false,arrRules.get(0));
                     arrRules.remove(0);
                 }
 
@@ -300,7 +300,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
 
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
+                    Protector.appendLog(false ,arrRules.get(0));
                     arrRules.remove(0);
                 }
 

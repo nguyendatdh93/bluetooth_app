@@ -359,7 +359,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         Message message = Message.obtain();
         message.what = STATE_DISCONNECTED;
         handler.sendMessage(message);
-        Protector.appendLog(error);
+        Protector.appendLog(true , error);
     }
 
     @Override
@@ -377,7 +377,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLogSensor(tempMsg);
+                Protector.appendLog(true ,tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
 
@@ -391,7 +391,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                         cancelDialogProcessing();
                     } else {
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
+                        Protector.appendLog(false , arrRules.get(0));
                         arrRules.remove(0);
                     }
                 } else {
@@ -409,7 +409,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                     arrRules.add("*R,VER");
                     arrRules.add("*R,SER");
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
+                    Protector.appendLog(false ,arrRules.get(0));
                     arrRules.remove(0);
                 } else {
                     containerInfor.setVisibility(View.GONE);

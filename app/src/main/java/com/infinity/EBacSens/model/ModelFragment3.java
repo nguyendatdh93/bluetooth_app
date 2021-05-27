@@ -50,7 +50,7 @@ public class ModelFragment3 {
             @Override
             public void onFailure(@NonNull Call<ErrorSensorSetting> call, @NonNull Throwable t) {
                 modelFragmeant3Listener.onFailUpdateSettingSensor(null);
-                Protector.appendLog(t.getMessage());
+                Protector.appendLog(true ,t.getMessage());
             }
         });
     }
@@ -71,7 +71,7 @@ public class ModelFragment3 {
             @Override
             public void onFailure(@NonNull Call<DataSensorSettingAPI> call, @NonNull Throwable t) {
                 modelFragmeant3Listener.onGetSettingSensor(null);
-                Protector.appendLog(t.getMessage());
+                Protector.appendLog(true ,t.getMessage());
             }
         });
     }
@@ -92,7 +92,7 @@ public class ModelFragment3 {
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 modelFragmeant3Listener.onFailDeleteSettingSensor(t.getMessage());
-                Protector.appendLog(t.getMessage());
+                Protector.appendLog(true ,t.getMessage());
             }
         });
     }

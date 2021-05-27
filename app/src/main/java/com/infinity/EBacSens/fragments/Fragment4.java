@@ -556,7 +556,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onFailStoreMeasure(String error) {
         cancelDialogProcessing();
         showPopup(context.getResources().getString(R.string.failure), error, false);
-        Protector.appendLog(error);
+        Protector.appendLog(true ,error);
     }
 
     private int level(int val) {
@@ -619,7 +619,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLogSensor(tempMsg);
+                Protector.appendLog(true ,tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);
@@ -663,7 +663,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             }
 
                             connectThread.writeMeasure(rulersBas.get(0));
-                            Protector.appendLog(rulersBas.get(0));
+                            Protector.appendLog(false ,rulersBas.get(0));
                             rulersBas.remove(0);
                         } else {
                             cancelDialogProcessing();
@@ -694,7 +694,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersBas.get(0));
-                        Protector.appendLog(rulersBas.get(0));
+                        Protector.appendLog(false ,rulersBas.get(0));
                         rulersBas.remove(0);
 
                     } else {
@@ -717,7 +717,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersPara.get(0));
-                        Protector.appendLog(rulersPara.get(0));
+                        Protector.appendLog(false ,rulersPara.get(0));
                         rulersPara.remove(0);
 
                     }
@@ -849,7 +849,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         resultParas.add(measureMeasparas);
 
                         connectThread.writeMeasure(rulersRes.get(0));
-                        Protector.appendLog(rulersRes.get(0));
+                        Protector.appendLog(false ,rulersRes.get(0));
                         rulersRes.remove(0);
                     }
                 } else if (resultStart == 4) {
@@ -928,7 +928,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         resultRess.add(measureMeasresses);
 
                         connectThread.writeMeasure(rulersDet.get(0));
-                        Protector.appendLog(rulersDet.get(0));
+                        Protector.appendLog(false ,rulersDet.get(0));
                         rulersDet.remove(0);
                     }
                 } else if (resultStart == 5) {
@@ -984,7 +984,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         posReadDet++;
 
                         connectThread.writeMeasure(rulersDet.get(0));
-                        Protector.appendLog(rulersDet.get(0));
+                        Protector.appendLog(false ,rulersDet.get(0));
                         rulersDet.remove(0);
                     } else {
                         String[] values = new String[0];
@@ -1068,7 +1068,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     resultStart = 0;
                     arrRules.add("*LIST,5");
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
+                    Protector.appendLog(false ,arrRules.get(0));
                     arrRules.remove(0);
                 }
                 break;

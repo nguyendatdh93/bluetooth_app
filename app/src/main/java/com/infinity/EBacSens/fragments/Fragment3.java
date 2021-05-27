@@ -886,13 +886,12 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLogSensor(tempMsg);
+                Protector.appendLog(true ,tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);
                 if (statusButton == 1) {
                     if (arrRules.size() == 0) {
-
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
@@ -1058,7 +1057,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
+                        Protector.appendLog(false ,arrRules.get(0));
                         arrRules.remove(0);
                     }
                 } else {
@@ -1073,7 +1072,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                             arrRules.add("*" + "R,PKP" + (i + 1) + "" + "");
                         }
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
+                        Protector.appendLog(false ,arrRules.get(0));
                         arrRules.remove(0);
                         arrResults.clear();
                     } else if (resultStart == 2) {
@@ -1115,11 +1114,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                             arrRules.add("*" + "R,IFST" + "");
                             arrRules.add("*" + "R,IFEN" + "");
                             connectThread.write(arrRules.get(0));
-                            Protector.appendLog(arrRules.get(0));
+                            Protector.appendLog(false ,arrRules.get(0));
                             arrRules.remove(0);
                         } else {
                             connectThread.write(arrRules.get(0));
-                            Protector.appendLog(arrRules.get(0));
+                            Protector.appendLog(false ,arrRules.get(0));
                             arrRules.remove(0);
                         }
                     } else if (resultStart == 3 && arrRules.size() == 0) {
@@ -1150,7 +1149,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(arrRules.get(0));
+                        Protector.appendLog(false ,arrRules.get(0));
                         arrRules.remove(0);
                     }
                 }
@@ -1199,12 +1198,12 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         arrRules.add("*W,SAVE");
                     }
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
+                    Protector.appendLog(false ,arrRules.get(0));
                     arrRules.remove(0);
                 } else {
                     arrRules.add("*R,BACS");
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(arrRules.get(0));
+                    Protector.appendLog(false ,arrRules.get(0));
                     arrRules.remove(0);
                 }
 

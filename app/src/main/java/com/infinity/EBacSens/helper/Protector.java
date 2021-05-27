@@ -55,9 +55,14 @@ public class Protector {
         return errorResponse;
     }
 
-    public static void appendLog(String text) {
+    public static void appendLog(boolean isReceive , String text) {
         if (text != null){
-            text = getCurrentTime() + " " + text;
+            if (isReceive){
+                text = getCurrentTime() + " Received: " + text;
+            }else {
+                text = getCurrentTime() + " Sent: " + text;
+            }
+
             File folder = new File(Environment.getExternalStorageDirectory() +
                     File.separator + "/eBacSens");
             boolean success;
@@ -66,38 +71,7 @@ public class Protector {
             }
 
             File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens/logTest.txt");
-
-            if (!logFile.exists()) {
-                try {
-                    boolean sucess = logFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                //BufferedWriter for performance, true to set append to file flag
-                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
-                buf.append(text);
-                buf.newLine();
-                buf.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public static void appendLogSensor(String text) {
-        if (text != null){
-            text = getCurrentTime() + " " + text;
-            File folder = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens");
-            boolean success;
-            if (!folder.exists()) {
-                success = folder.mkdirs();
-            }
-
-            File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens/LogSensor.txt");
+                    File.separator + "/eBacSens/log.txt");
 
             if (!logFile.exists()) {
                 try {
@@ -122,13 +96,6 @@ public class Protector {
         String t1 = time.substring(0,10);
         String t2 = time.substring(11,19);
         return t1+" "+t2;
-    }
-
-    public static String formatTimeSensor(String value){
-        if (value != null && value.length() > 13){
-            return value.substring(0,4) + "-" + value.substring(4,6) + "-" + value.substring(6,8) + " " + value.substring(8,10) + ":" + value.substring(10,12) + ":" + value.substring(12,14);
-        }
-        return value;
     }
 
     public static int HexToDecDataMeasdet(String value){
