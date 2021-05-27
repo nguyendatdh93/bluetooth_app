@@ -36,7 +36,7 @@ public class Protector {
 
     public static int tryParseHex(String value) {
         try {
-            return Integer.parseInt(value , 16);
+            return Integer.valueOf(value,16).shortValue();
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -131,5 +131,7 @@ public class Protector {
         return value;
     }
 
-
+    public static int HexToDecDataMeasdet(String value){
+        return Integer.valueOf(value,16).shortValue();
+    }
 }

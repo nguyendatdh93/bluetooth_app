@@ -86,7 +86,9 @@ public interface DataClient {
             @Field("measpara[iben]") int measpara_iben_,
             @Field("measpara[ifst]") int measpara_ifst_,
             @Field("measpara[ifen]") int measpara_ifen_,
-            @Field("measpara[bac]") String bac0bacname
+            @Field("measpara[bac]") String bac0bacname,
+
+            @Field("measdet") String measdet
     );
 
     @POST("api/sensor/measure")
@@ -136,13 +138,7 @@ public interface DataClient {
             @Field("measres[0][blpex]") String measres0blpex,
             @Field("measres[0][blpey]") String measres0blpey,
 
-            @Field("measdet[0][no]") String measdet0no,
-            @Field("measdet[0][deltae]") float measdet0deltae,
-            @Field("measdet[0][deltai]") float measdet0deltai,
-            @Field("measdet[0][eb]") float measdet0eb,
-            @Field("measdet[0][ib]") float measdet0ib,
-            @Field("measdet[0][ef]") float measdet0ef,
-            @Field("measdet[0][if]") float measdet0if
+            @Field("measdet") String measdet
     );
 
     @POST("api/sensor/measure")
@@ -201,20 +197,7 @@ public interface DataClient {
             @Field("measres[1][blpex]") String measres1blpex,
             @Field("measres[1][blpey]") String measres1blpey,
 
-            @Field("measdet[0][no]") String measdet0no,
-            @Field("measdet[0][deltae]") float measdet0deltae,
-            @Field("measdet[0][deltai]") float measdet0deltai,
-            @Field("measdet[0][eb]") float measdet0eb,
-            @Field("measdet[0][ib]") float measdet0ib,
-            @Field("measdet[0][ef]") float measdet0ef,
-            @Field("measdet[0][if]") float measdet0if,
-            @Field("measdet[1][no]") String measdet1no,
-            @Field("measdet[1][deltae]") float measdet1deltae,
-            @Field("measdet[1][deltai]") float measdet1deltai,
-            @Field("measdet[1][eb]") float measdet1eb,
-            @Field("measdet[1][ib]") float measdet1ib,
-            @Field("measdet[1][ef]") float measdet1ef,
-            @Field("measdet[1][if]") float measdet1if
+            @Field("measdet") String measdet
     );
 
     @POST("api/sensor/measure")
@@ -282,27 +265,7 @@ public interface DataClient {
             @Field("measres[2][blpex]") String measres2blpex,
             @Field("measres[2][blpey]") String measres2blpey,
 
-            @Field("measdet[0][no]") String measdet0no,
-            @Field("measdet[0][deltae]") float measdet0deltae,
-            @Field("measdet[0][deltai]") float measdet0deltai,
-            @Field("measdet[0][eb]") float measdet0eb,
-            @Field("measdet[0][ib]") float measdet0ib,
-            @Field("measdet[0][ef]") float measdet0ef,
-            @Field("measdet[0][if]") float measdet0if,
-            @Field("measdet[1][no]") String measdet1no,
-            @Field("measdet[1][deltae]") float measdet1deltae,
-            @Field("measdet[1][deltai]") float measdet1deltai,
-            @Field("measdet[1][eb]") float measdet1eb,
-            @Field("measdet[1][ib]") float measdet1ib,
-            @Field("measdet[1][ef]") float measdet1ef,
-            @Field("measdet[1][if]") float measdet1if,
-            @Field("measdet[2][no]") String measdet2no,
-            @Field("measdet[2][deltae]") float measdet2deltae,
-            @Field("measdet[2][deltai]") float measdet2deltai,
-            @Field("measdet[2][eb]") float measdet2eb,
-            @Field("measdet[2][ib]") float measdet2ib,
-            @Field("measdet[2][ef]") float measdet2ef,
-            @Field("measdet[2][if]") float measdet2if
+            @Field("measdet") String measdet
     );
 
     @POST("api/sensor/measure")
@@ -379,34 +342,7 @@ public interface DataClient {
             @Field("measres[3][blpex]") String measres3blpex,
             @Field("measres[3][blpey]") String measres3blpey,
 
-            @Field("measdet[0][no]") String measdet0no,
-            @Field("measdet[0][deltae]") float measdet0deltae,
-            @Field("measdet[0][deltai]") float measdet0deltai,
-            @Field("measdet[0][eb]") float measdet0eb,
-            @Field("measdet[0][ib]") float measdet0ib,
-            @Field("measdet[0][ef]") float measdet0ef,
-            @Field("measdet[0][if]") float measdet0if,
-            @Field("measdet[1][no]") String measdet1no,
-            @Field("measdet[1][deltae]") float measdet1deltae,
-            @Field("measdet[1][deltai]") float measdet1deltai,
-            @Field("measdet[1][eb]") float measdet1eb,
-            @Field("measdet[1][ib]") float measdet1ib,
-            @Field("measdet[1][ef]") float measdet1ef,
-            @Field("measdet[1][if]") float measdet1if,
-            @Field("measdet[2][no]") String measdet2no,
-            @Field("measdet[2][deltae]") float measdet2deltae,
-            @Field("measdet[2][deltai]") float measdet2deltai,
-            @Field("measdet[2][eb]") float measdet2eb,
-            @Field("measdet[2][ib]") float measdet2ib,
-            @Field("measdet[2][ef]") float measdet2ef,
-            @Field("measdet[2][if]") float measdet2if,
-            @Field("measdet[3][no]") String measdet3no,
-            @Field("measdet[3][deltae]") float measdet3deltae,
-            @Field("measdet[3][deltai]") float measdet3deltai,
-            @Field("measdet[3][eb]") float measdet3eb,
-            @Field("measdet[3][ib]") float measdet3ib,
-            @Field("measdet[3][ef]") float measdet3ef,
-            @Field("measdet[3][if]") float measdet3if
+            @Field("measdet") String measdet
     );
 
     @POST("api/sensor/measure")
@@ -492,41 +428,7 @@ public interface DataClient {
             @Field("measres[4][blpex]") String measres4blpex,
             @Field("measres[4][blpey]") String measres4blpey,
 
-            @Field("measdet[0][no]") String measdet0no,
-            @Field("measdet[0][deltae]") float measdet0deltae,
-            @Field("measdet[0][deltai]") float measdet0deltai,
-            @Field("measdet[0][eb]") float measdet0eb,
-            @Field("measdet[0][ib]") float measdet0ib,
-            @Field("measdet[0][ef]") float measdet0ef,
-            @Field("measdet[0][if]") float measdet0if,
-            @Field("measdet[1][no]") String measdet1no,
-            @Field("measdet[1][deltae]") float measdet1deltae,
-            @Field("measdet[1][deltai]") float measdet1deltai,
-            @Field("measdet[1][eb]") float measdet1eb,
-            @Field("measdet[1][ib]") float measdet1ib,
-            @Field("measdet[1][ef]") float measdet1ef,
-            @Field("measdet[1][if]") float measdet1if,
-            @Field("measdet[2][no]") String measdet2no,
-            @Field("measdet[2][deltae]") float measdet2deltae,
-            @Field("measdet[2][deltai]") float measdet2deltai,
-            @Field("measdet[2][eb]") float measdet2eb,
-            @Field("measdet[2][ib]") float measdet2ib,
-            @Field("measdet[2][ef]") float measdet2ef,
-            @Field("measdet[2][if]") float measdet2if,
-            @Field("measdet[3][no]") String measdet3no,
-            @Field("measdet[3][deltae]") float measdet3deltae,
-            @Field("measdet[3][deltai]") float measdet3deltai,
-            @Field("measdet[3][eb]") float measdet3eb,
-            @Field("measdet[3][ib]") float measdet3ib,
-            @Field("measdet[3][ef]") float measdet3ef,
-            @Field("measdet[3][if]") float measdet3if,
-            @Field("measdet[4][no]") String measdet4no,
-            @Field("measdet[4][deltae]") float measdet4deltae,
-            @Field("measdet[4][deltai]") float measdet4deltai,
-            @Field("measdet[4][eb]") float measdet4eb,
-            @Field("measdet[4][ib]") float measdet4ib,
-            @Field("measdet[4][ef]") float measdet4ef,
-            @Field("measdet[4][if]") float measdet4if
+            @Field("measdet") String measdet
     );
 
     @POST("api/setting")

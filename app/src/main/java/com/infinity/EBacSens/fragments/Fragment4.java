@@ -135,6 +135,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<MeasureMeasparas> resultParas = new ArrayList<>();
     private ArrayList<ArrayList<MeasureMeasress>> resultRess = new ArrayList<>();
     private ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
+    private int posReadDet = 0;
 
     private int counterStore = 0;
     @Nullable
@@ -327,7 +328,21 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             data.add(new String[]{"データ番号", sensorMeasure.getNo()});
                             data.add(new String[]{"設定名", String.valueOf(sensorMeasure.getMeasureMeasparas().getSetname())});
                             data.add(new String[]{"測定数", String.valueOf(sensorMeasure.getMeasureMeasparas().getBacs())});
-                            data.add(new String[]{"レンジ", String.valueOf(sensorMeasure.getMeasureMeasparas().getCrng())});
+
+                            switch (sensorMeasure.getMeasureMeasparas().getCrng()){
+                                case 0:
+                                    data.add(new String[]{"レンジ", "3mA"});
+                                    break;
+                                case 1:
+                                    data.add(new String[]{"レンジ", "300uA"});
+                                    break;
+                                case 2:
+                                    data.add(new String[]{"レンジ", "30uA"});
+                                    break;
+                                default:
+                                    data.add(new String[]{"レンジ", "unknown"});
+                            }
+
                             data.add(new String[]{"平衡電位1", String.valueOf(sensorMeasure.getMeasureMeasparas().getEqp1())});
                             data.add(new String[]{"平衡時間1", String.valueOf(sensorMeasure.getMeasureMeasparas().getEqt1())});
                             data.add(new String[]{"平衡電位2", String.valueOf(sensorMeasure.getMeasureMeasparas().getEqp2())});
@@ -412,6 +427,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                             data.add(new String[]{});
                             data.add(new String[]{"No", "E(mV)", "DeltaI(uA)", "Eb", "Ib", "Ef", "If"});
+                            for (int i = 0 ; i < sensorMeasure.getMeasureMeasdets().size() ; i++){
+                                data.add(new String[]{sensorMeasure.getMeasureMeasdets().get(i).getNo() , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltae()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltai()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEb()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getIb()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEf()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).get_if())});
+                            }
 
                             for (int i = 0; i < sensorMeasure.getMeasureMeasdets().size(); i++) {
                                 data.add(new String[]{String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getNo()),
@@ -599,7 +617,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
-
+                tempMsg = tempMsg.trim();
                 // log file
                 Protector.appendLogSensor(tempMsg);
 
@@ -607,18 +625,18 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
                     if (tempMsg.contains("*LISTEND")) {
-                        for (int i = 0; i < arrResults.size() - 1; i++) {
-                            boolean isHave = true;
+                        for (int i = 1; i < arrResults.size() - 1; i++) {
+                            boolean isHave = false;
                             for (int j = 0; j < arrMeasure.size(); j++) {
                                 if (arrResults.get(i).replace("/" , "-").equals(arrMeasure.get(j).getDatetime())) {
-                                    isHave = false;
+                                    isHave = true;
                                     break;
                                 }
                             }
                             if (!isHave) {
+                                // read sensor
                                 String[] result = arrResults.get(i).split(",");
                                 resultListSensors.add(new ResultListSensor(result[0], Protector.tryParseInt(result[1])));
-                                // read sensor
                             }
                         }
 
@@ -656,7 +674,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
 
                         measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0].split(",")[1].replace("/","-"),  1, Protector.tryParseInt(values[1].split(",")[1]),"", "");
+                                values[0].split(",")[1].replace("/","-"),
+                                Protector.tryParseInt(values[1].split(",")[1]),
+                                Protector.tryParseInt(values[2].split(",")[1]),
+                                "",
+                                "");
                         resultBas.add(measureMeasbas);
 
                         connectThread.writeMeasure(rulersBas.get(0));
@@ -910,20 +932,45 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             values = tempMsg.split("\r\n");
                         }
 
-                        int i = 0;
                         ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
 
-                        measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                values[0].split(",")[1],
-                                Protector.tryParseHex(values[1].length() > 4 ? values[1].substring(i, (i + 4)) : ""),
-                                Protector.tryParseHex(values[1].length() > 8 ? values[1].substring((i + 4), (i + 8)) : ""),
-                                Protector.tryParseHex(values[1].length() > 12 ? values[1].substring((i + 8), (i + 12)) : ""),
-                                Protector.tryParseHex(values[1].length() > 16 ? values[1].substring((i + 12), (i + 16)) : ""),
-                                Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
-                                Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
-                                Protector.getCurrentTime(), Protector.getCurrentTime()));
+                        float pixel = 0;
+                        switch (resultParas.get(posReadDet).getCrng()){
+                            case 0:
+                                pixel = 0.1f;
+                                break;
+                            case 1:
+                                pixel = 0.01f;
+                                break;
+                            case 2:
+                                pixel = 0.001f;
+                                break;
+                        }
+                        float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
 
-                        resultDets.add(measureMeasdets);
+                        for (int i = 0 ; i <= values[1].length() - 8 ; i+=8){
+                            float ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i , i + 4));
+                            float _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4 , i + 8));
+                            float deltaI = _if - ib;
+
+                            float eb = resultParas.get(posReadDet).getStp() + deltaE;
+                            float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+
+                            measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                    i+"",
+                                    deltaE,
+                                    deltaI,
+                                    eb,
+                                    ib,
+                                    ef,
+                                    _if,
+                                    Protector.getCurrentTime(),
+                                    Protector.getCurrentTime()));
+                            resultDets.add(measureMeasdets);
+                            deltaE += resultParas.get(posReadDet).getStp();
+                        }
+                        posReadDet++;
+
                         connectThread.writeMeasure(rulersDet.get(0));
                         Protector.appendLog(rulersDet.get(0));
                         rulersDet.remove(0);
@@ -938,27 +985,49 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         } else if (tempMsg.contains("\r\n")) {
                             values = tempMsg.split("\r\n");
                         }
-                        int i = 0;
                         ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
 
-                        measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                values[0].split(",")[1],
-                                Protector.tryParseHex(values[1].length() > 4 ? values[1].substring(i, (i + 4)) : ""),
-                                Protector.tryParseHex(values[1].length() > 8 ? values[1].substring((i + 4), (i + 8)) : ""),
-                                Protector.tryParseHex(values[1].length() > 12 ? values[1].substring((i + 8), (i + 12)) : ""),
-                                Protector.tryParseHex(values[1].length() > 16 ? values[1].substring((i + 12), (i + 16)) : ""),
-                                Protector.tryParseHex(values[1].length() > 20 ? values[1].substring((i + 16), (i + 20)) : ""),
-                                Protector.tryParseHex(values[1].length() > 24 ? values[1].substring((i + 20), (i + 24)) : ""),
-                                Protector.getCurrentTime(), Protector.getCurrentTime()));
+                        float pixel = 0;
+                        switch (resultParas.get(posReadDet).getCrng()){
+                            case 0:
+                                pixel = 0.1f;
+                                break;
+                            case 1:
+                                pixel = 0.01f;
+                                break;
+                            case 2:
+                                pixel = 0.001f;
+                                break;
+                        }
+                        float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
+                        for (int i = 0 ; i <= values[1].length() - 8 ; i+=8){
 
-                        resultDets.add(measureMeasdets);
+                            float ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i , i + 4));
+                            float _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4 , i + 8));
+                            float deltaI = _if - ib;
 
-                        for (int j = 0 ; j < resultListSensors.size() ; j++){
+                            float eb = resultParas.get(posReadDet).getStp() + deltaE;
+                            float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+
+                            measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                    i+"",
+                                    deltaE,
+                                    deltaI,
+                                    eb,
+                                    ib,
+                                    ef,
+                                    _if,
+                                    Protector.getCurrentTime(),
+                                    Protector.getCurrentTime()));
+                            resultDets.add(measureMeasdets);
+                            deltaE += resultParas.get(posReadDet).getStp();
+                        }
+                        posReadDet++;
+                        for (int i = 0 ; i < resultListSensors.size() ; i++){
                             presenterFragment4.receivedStoreMeasure(APIUtils.token,
                                     MainActivity.device.getId(),
-                                    resultListSensors.get(j).getDatetime(),
-                                    String.valueOf(resultListSensors.get(j).getNo()), resultParas.get(i), resultBas.get(i), resultRess.get(i), resultDets.get(i));
-
+                                    resultListSensors.get(i).getDatetime(),
+                                    String.valueOf(resultListSensors.get(i).getNo()), resultParas.get(i), resultBas.get(i), resultRess.get(i), resultDets.get(i));
                         }
                     }
                 }
@@ -973,6 +1042,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                 if (connectThread != null) {
                     counterStore = 0;
+                    posReadDet = 0;
                     resultListSensors.clear();
                     resultDets.clear();
                     rulersDet.clear();

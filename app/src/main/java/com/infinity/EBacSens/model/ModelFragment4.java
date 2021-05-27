@@ -69,9 +69,8 @@ public class ModelFragment4 {
     public void handleStoreMeasure(String token, int idMeasure, String datetime, String no, MeasureMeasparas measureMeasparas, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses , ArrayList<MeasureMeasdets> measureMeasdets) {
         DataClient dataClient = APIUtils.getData();
 
-
         JSONArray jsonArrayBacMeasure = new JSONArray();
-
+        JSONArray jsonArrayMeasureDet = new JSONArray();
 
         for (int i = 0 ; i < measureMeasparas.getArrBac().size() ; i++){
             JSONObject object = new JSONObject();
@@ -89,6 +88,26 @@ public class ModelFragment4 {
                 e.printStackTrace();
             }
         }
+
+        for (int i = 0 ; i < measureMeasdets.size() ; i++){
+            JSONObject object = new JSONObject();
+            try {
+                object.put("id", measureMeasdets.get(i).getId());
+                object.put("no", measureMeasdets.get(i).getNo());
+                object.put("deltae", measureMeasdets.get(i).getDeltae());
+                object.put("deltai", measureMeasdets.get(i).getDeltai());
+                object.put("eb", measureMeasdets.get(i).getEb());
+                object.put("ib", measureMeasdets.get(i).getEb());
+                object.put("ef", measureMeasdets.get(i).getEf());
+                object.put("if", measureMeasdets.get(i).get_if());
+                object.put("created_at", measureMeasdets.get(i).getCreatedAt());
+                object.put("updated_at", measureMeasdets.get(i).getUpdatedAt());
+                jsonArrayMeasureDet.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         Call<SensorMeasure> callback;
 
         if (measureMeasresses.size() == 1){
@@ -134,13 +153,7 @@ public class ModelFragment4 {
                     measureMeasresses.get(0).getBlpex(),
                     measureMeasresses.get(0).getBlpey(),
 
-                    measureMeasdets.get(0).getNo(),
-                    measureMeasdets.get(0).getDeltae(),
-                    measureMeasdets.get(0).getDeltai(),
-                    measureMeasdets.get(0).getEb(),
-                    measureMeasdets.get(0).getIb(),
-                    measureMeasdets.get(0).getEf(),
-                    measureMeasdets.get(0).get_if()
+                    jsonArrayMeasureDet.toString()
             );
         }else if (measureMeasresses.size() == 2){
             callback = dataClient.storeMeasure(token,
@@ -194,20 +207,7 @@ public class ModelFragment4 {
                     measureMeasresses.get(1).getBlpex(),
                     measureMeasresses.get(1).getBlpey(),
 
-                    measureMeasdets.get(0).getNo(),
-                    measureMeasdets.get(0).getDeltae(),
-                    measureMeasdets.get(0).getDeltai(),
-                    measureMeasdets.get(0).getEb(),
-                    measureMeasdets.get(0).getIb(),
-                    measureMeasdets.get(0).getEf(),
-                    measureMeasdets.get(0).get_if(),
-                    measureMeasdets.get(1).getNo(),
-                    measureMeasdets.get(1).getDeltae(),
-                    measureMeasdets.get(1).getDeltai(),
-                    measureMeasdets.get(1).getEb(),
-                    measureMeasdets.get(1).getIb(),
-                    measureMeasdets.get(1).getEf(),
-                    measureMeasdets.get(1).get_if()
+                    jsonArrayMeasureDet.toString()
             );
         }else if (measureMeasresses.size() == 3){
             callback = dataClient.storeMeasure(token,
@@ -270,27 +270,7 @@ public class ModelFragment4 {
                     measureMeasresses.get(2).getBlpex(),
                     measureMeasresses.get(2).getBlpey(),
 
-                    measureMeasdets.get(0).getNo(),
-                    measureMeasdets.get(0).getDeltae(),
-                    measureMeasdets.get(0).getDeltai(),
-                    measureMeasdets.get(0).getEb(),
-                    measureMeasdets.get(0).getIb(),
-                    measureMeasdets.get(0).getEf(),
-                    measureMeasdets.get(0).get_if(),
-                    measureMeasdets.get(1).getNo(),
-                    measureMeasdets.get(1).getDeltae(),
-                    measureMeasdets.get(1).getDeltai(),
-                    measureMeasdets.get(1).getEb(),
-                    measureMeasdets.get(1).getIb(),
-                    measureMeasdets.get(1).getEf(),
-                    measureMeasdets.get(1).get_if(),
-                    measureMeasdets.get(2).getNo(),
-                    measureMeasdets.get(2).getDeltae(),
-                    measureMeasdets.get(2).getDeltai(),
-                    measureMeasdets.get(2).getEb(),
-                    measureMeasdets.get(2).getIb(),
-                    measureMeasdets.get(2).getEf(),
-                    measureMeasdets.get(2).get_if()
+                    jsonArrayMeasureDet.toString()
             );
         }else if (measureMeasresses.size() == 4){
             callback = dataClient.storeMeasure(token,
@@ -362,34 +342,7 @@ public class ModelFragment4 {
                     measureMeasresses.get(3).getBlpex(),
                     measureMeasresses.get(3).getBlpey(),
 
-                    measureMeasdets.get(0).getNo(),
-                    measureMeasdets.get(0).getDeltae(),
-                    measureMeasdets.get(0).getDeltai(),
-                    measureMeasdets.get(0).getEb(),
-                    measureMeasdets.get(0).getIb(),
-                    measureMeasdets.get(0).getEf(),
-                    measureMeasdets.get(0).get_if(),
-                    measureMeasdets.get(1).getNo(),
-                    measureMeasdets.get(1).getDeltae(),
-                    measureMeasdets.get(1).getDeltai(),
-                    measureMeasdets.get(1).getEb(),
-                    measureMeasdets.get(1).getIb(),
-                    measureMeasdets.get(1).getEf(),
-                    measureMeasdets.get(1).get_if(),
-                    measureMeasdets.get(2).getNo(),
-                    measureMeasdets.get(2).getDeltae(),
-                    measureMeasdets.get(2).getDeltai(),
-                    measureMeasdets.get(2).getEb(),
-                    measureMeasdets.get(2).getIb(),
-                    measureMeasdets.get(2).getEf(),
-                    measureMeasdets.get(2).get_if(),
-                    measureMeasdets.get(3).getNo(),
-                    measureMeasdets.get(3).getDeltae(),
-                    measureMeasdets.get(3).getDeltai(),
-                    measureMeasdets.get(3).getEb(),
-                    measureMeasdets.get(3).getIb(),
-                    measureMeasdets.get(3).getEf(),
-                    measureMeasdets.get(3).get_if()
+                    jsonArrayMeasureDet.toString()
             );
         }else if (measureMeasresses.size() == 5){
             callback = dataClient.storeMeasure(token,
@@ -470,41 +423,7 @@ public class ModelFragment4 {
                     measureMeasresses.get(4).getBlpex(),
                     measureMeasresses.get(4).getBlpey(),
 
-                    measureMeasdets.get(0).getNo(),
-                    measureMeasdets.get(0).getDeltae(),
-                    measureMeasdets.get(0).getDeltai(),
-                    measureMeasdets.get(0).getEb(),
-                    measureMeasdets.get(0).getIb(),
-                    measureMeasdets.get(0).getEf(),
-                    measureMeasdets.get(0).get_if(),
-                    measureMeasdets.get(1).getNo(),
-                    measureMeasdets.get(1).getDeltae(),
-                    measureMeasdets.get(1).getDeltai(),
-                    measureMeasdets.get(1).getEb(),
-                    measureMeasdets.get(1).getIb(),
-                    measureMeasdets.get(1).getEf(),
-                    measureMeasdets.get(1).get_if(),
-                    measureMeasdets.get(2).getNo(),
-                    measureMeasdets.get(2).getDeltae(),
-                    measureMeasdets.get(2).getDeltai(),
-                    measureMeasdets.get(2).getEb(),
-                    measureMeasdets.get(2).getIb(),
-                    measureMeasdets.get(2).getEf(),
-                    measureMeasdets.get(2).get_if(),
-                    measureMeasdets.get(3).getNo(),
-                    measureMeasdets.get(3).getDeltae(),
-                    measureMeasdets.get(3).getDeltai(),
-                    measureMeasdets.get(3).getEb(),
-                    measureMeasdets.get(3).getIb(),
-                    measureMeasdets.get(3).getEf(),
-                    measureMeasdets.get(3).get_if(),
-                    measureMeasdets.get(4).getNo(),
-                    measureMeasdets.get(4).getDeltae(),
-                    measureMeasdets.get(4).getDeltai(),
-                    measureMeasdets.get(4).getEb(),
-                    measureMeasdets.get(4).getIb(),
-                    measureMeasdets.get(4).getEf(),
-                    measureMeasdets.get(4).get_if()
+                    jsonArrayMeasureDet.toString()
             );
         }else {
             callback = dataClient.storeMeasure(token,
@@ -534,7 +453,8 @@ public class ModelFragment4 {
                     measureMeasparas.getIben(),
                     measureMeasparas.getIfst(),
                     measureMeasparas.getIfen(),
-                    jsonArrayBacMeasure.toString()
+                    jsonArrayBacMeasure.toString(),
+                    jsonArrayMeasureDet.toString()
             );
         }
 

@@ -63,7 +63,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private Context context;
 
     private Button btnReceiveSettingMeasure, btnSaveSettingMeasure, btnRead, btnWrite;
-    private EditText edtNameMEasure, edtCrng, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
+    private EditText edtNameMEasure, edtEqp1, edtEqt1, edtEqp2, edtEqt2, edtEqp3, edtEqt3, edtEqp4, edtEqt4, edtEqp5, edtEqt5, edtStp, edtEnp, edtPp, edtDlte, edtPwd, edtPtm, edtIbst, edtIben, edtIfst, edtIfen;
 
     private ArrayList<SensorSetting> arrSensorSetting;
 
@@ -76,7 +76,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
 
     private PresenterFragment3 presenterFragment3;
-    private Spinner spnNumber;
+    private Spinner spnNumber , spnCrgn;
 
     // popup
     private LinearLayout containerPopup;
@@ -131,7 +131,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             SensorSetting sensorSetting = new SensorSetting();
             sensorSetting.setSetname(edtNameMEasure.getText().toString());
             sensorSetting.setBacs(Protector.tryParseInt(spnNumber.getSelectedItem().toString()));
-            sensorSetting.setCrng(Protector.tryParseInt(edtCrng.getText().toString()));
+            sensorSetting.setCrng(spnCrgn.getSelectedItemPosition());
             sensorSetting.setEqp1(Protector.tryParseInt(edtEqp1.getText().toString()));
             sensorSetting.setEqp2(Protector.tryParseInt(edtEqp2.getText().toString()));
             sensorSetting.setEqp3(Protector.tryParseInt(edtEqp3.getText().toString()));
@@ -183,20 +183,123 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             if (edtNameMEasure.getText().toString().length() == 0) {
                 edtNameMEasure.setError("Error");
                 edtNameMEasure.requestFocus();
-            } else {
-                for (int i = 0; i < arrBacSetting.size(); i++) {
-                    if (arrBacSetting.get(i).getBacName().length() == 0) {
-                        adapteRCVBacSetting.alertName(i, "Error");
-                        return;
-                    }
-                }
-                statusButton = 1;
-                if (mBluetoothAdapter != null) {
-                    connectSensor();
-                } else {
-                    showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
+                return;
+            }
+
+            if (edtEqp1.getText().toString().length() == 0 || Protector.tryParseInt(edtEqp1.getText().toString()) > 2000 || Protector.tryParseInt(edtEqp1.getText().toString()) < -2000) {
+                edtEqp1.setError("Error");
+                edtEqp1.requestFocus();
+                return;
+            }
+            if (edtEqt1.getText().toString().length() == 0  || Protector.tryParseInt(edtEqt1.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt1.getText().toString()) < 0) {
+                edtEqt1.setError("Error");
+                edtEqt1.requestFocus();
+                return;
+            }
+            if (edtEqp2.getText().toString().length() == 0 || Protector.tryParseInt(edtEqp2.getText().toString()) > 2000 || Protector.tryParseInt(edtEqp2.getText().toString()) < -2000) {
+                edtEqp2.setError("Error");
+                edtEqp2.requestFocus();
+                return;
+            }
+            if (edtEqt2.getText().toString().length() == 0 || Protector.tryParseInt(edtEqt2.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt2.getText().toString()) < 0) {
+                edtEqt2.setError("Error");
+                edtEqt2.requestFocus();
+                return;
+            }
+            if (edtEqp3.getText().toString().length() == 0 || Protector.tryParseInt(edtEqp3.getText().toString()) > 2000 || Protector.tryParseInt(edtEqp3.getText().toString()) < -2000) {
+                edtEqp3.setError("Error");
+                edtEqp3.requestFocus();
+                return;
+            }
+            if (edtEqt3.getText().toString().length() == 0 || Protector.tryParseInt(edtEqt3.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt3.getText().toString()) < 0) {
+                edtEqt3.setError("Error");
+                edtEqt3.requestFocus();
+                return;
+            }
+            if (edtEqp4.getText().toString().length() == 0 || Protector.tryParseInt(edtEqp4.getText().toString()) > 2000 || Protector.tryParseInt(edtEqp4.getText().toString()) < -2000) {
+                edtEqp4.setError("Error");
+                edtEqp4.requestFocus();
+                return;
+            }
+            if (edtEqt4.getText().toString().length() == 0 || Protector.tryParseInt(edtEqt4.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt4.getText().toString()) < 0) {
+                edtEqt4.setError("Error");
+                edtEqt4.requestFocus();
+                return;
+            }
+            if (edtEqp5.getText().toString().length() == 0 || Protector.tryParseInt(edtEqp5.getText().toString()) > 2000 || Protector.tryParseInt(edtEqp5.getText().toString()) < -2000) {
+                edtEqp5.setError("Error");
+                edtEqp5.requestFocus();
+                return;
+            }
+            if (edtEqt5.getText().toString().length() == 0 || Protector.tryParseInt(edtEqt5.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt5.getText().toString()) < 0) {
+                edtEqt5.setError("Error");
+                edtEqt5.requestFocus();
+                return;
+            }
+            if (edtStp.getText().toString().length() == 0 || Protector.tryParseInt(edtStp.getText().toString()) > 2000 || Protector.tryParseInt(edtStp.getText().toString()) < -2000) {
+                edtStp.setError("Error");
+                edtStp.requestFocus();
+                return;
+            }
+            if (edtEnp.getText().toString().length() == 0 || Protector.tryParseInt(edtEnp.getText().toString()) > 60000 || Protector.tryParseInt(edtEnp.getText().toString()) < 0) {
+                edtEnp.setError("Error");
+                edtEnp.requestFocus();
+                return;
+            }
+            if (edtPp.getText().toString().length() == 0 || Protector.tryParseInt(edtPp.getText().toString()) > 2000 || Protector.tryParseInt(edtPp.getText().toString()) < 1) {
+                edtPp.setError("Error");
+                edtPp.requestFocus();
+                return;
+            }
+            if (edtDlte.getText().toString().length() == 0 || Protector.tryParseInt(edtDlte.getText().toString()) > 2000 || Protector.tryParseInt(edtDlte.getText().toString()) < 1) {
+                edtDlte.setError("Error");
+                edtDlte.requestFocus();
+                return;
+            }
+            if (edtPwd.getText().toString().length() == 0 || Protector.tryParseInt(edtPwd.getText().toString()) > 10000 || Protector.tryParseInt(edtPwd.getText().toString()) < 10) {
+                edtPwd.setError("Error");
+                edtPwd.requestFocus();
+                return;
+            }
+            if (edtPtm.getText().toString().length() == 0 || Protector.tryParseInt(edtPtm.getText().toString()) > 10000 || Protector.tryParseInt(edtPtm.getText().toString()) < 10) {
+                edtPtm.setError("Error");
+                edtPtm.requestFocus();
+                return;
+            }
+            if (edtIbst.getText().toString().length() == 0 || Protector.tryParseInt(edtIbst.getText().toString()) > 10000 || Protector.tryParseInt(edtIbst.getText().toString()) < 0) {
+                edtIbst.setError("Error");
+                edtIbst.requestFocus();
+                return;
+            }
+            if (edtIben.getText().toString().length() == 0 || Protector.tryParseInt(edtIben.getText().toString()) > 10000 || Protector.tryParseInt(edtIben.getText().toString()) < 1) {
+                edtIben.setError("Error");
+                edtIben.requestFocus();
+                return;
+            }
+            if (edtIfst.getText().toString().length() == 0  || Protector.tryParseInt(edtIfst.getText().toString()) > 10000 || Protector.tryParseInt(edtIfst.getText().toString()) < 0) {
+                edtIfst.setError("Error");
+                edtIfst.requestFocus();
+                return;
+            }
+            if (edtIfen.getText().toString().length() == 0 || Protector.tryParseInt(edtIfen.getText().toString()) > 10000 || Protector.tryParseInt(edtIfen.getText().toString()) < 1) {
+                edtIfen.setError("Error");
+                edtIfen.requestFocus();
+                return;
+            }
+
+            for (int i = 0; i < arrBacSetting.size(); i++) {
+                if (arrBacSetting.get(i).getBacName().length() == 0) {
+                    adapteRCVBacSetting.alertName(i, "Error");
+                    return;
                 }
             }
+            statusButton = 1;
+            if (mBluetoothAdapter != null) {
+                connectSensor();
+            } else {
+                showPopup(context.getResources().getString(R.string.failure), "Device not support Bluetooth.", false);
+            }
+
         });
 
         btnRead.setOnClickListener(v -> {
@@ -216,6 +319,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         imgExpandMeasure = view.findViewById(R.id.view_left);
         imgExpandSetting = view.findViewById(R.id.view_left_2);
         spnNumber = view.findViewById(R.id.fragment_3_spn_number);
+        spnCrgn = view.findViewById(R.id.fragment_3_spn_crng);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
         btnSaveSettingMeasure = view.findViewById(R.id.fragment_3_btn_save_setting_measure);
         btnRead = view.findViewById(R.id.fragment_3_btn_read);
@@ -225,7 +329,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         rcvBacSetting.setHasFixedSize(true);
         rcvBacSetting.setNestedScrollingEnabled(false);
         rcvBacSetting.setLayoutManager(new LinearLayoutManager(context));
-        edtCrng = view.findViewById(R.id.fragment_3_edt_crng);
         edtEqp1 = view.findViewById(R.id.fragment_3_edt_eqp1);
         edtEqt1 = view.findViewById(R.id.fragment_3_edt_eqt1);
         edtEqp2 = view.findViewById(R.id.fragment_3_edt_eqp2);
@@ -349,7 +452,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private void setContentSensorSetting(int position) {
         if (arrSensorSetting != null && arrSensorSetting.size() > position) {
             edtNameMEasure.setText(arrSensorSetting.get(position).getSetname());
-            edtCrng.setText(String.valueOf(arrSensorSetting.get(position).getCrng()));
+            spnCrgn.setSelection(arrSensorSetting.get(position).getCrng());
             edtEqp1.setText(String.valueOf(arrSensorSetting.get(position).getEqp1()));
             edtEqt1.setText(String.valueOf(arrSensorSetting.get(position).getEqt1()));
             edtEqp2.setText(String.valueOf(arrSensorSetting.get(position).getEqp2()));
@@ -401,12 +504,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             if (errorSensorSetting.getErrors().getSetname() != null && errorSensorSetting.getErrors().getSetname().size() > 0) {
                 edtNameMEasure.setError(errorSensorSetting.getErrors().getSetname().get(0));
                 edtNameMEasure.requestFocus();
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getCrng() != null && errorSensorSetting.getErrors().getCrng().size() > 0) {
-                edtCrng.setError(errorSensorSetting.getErrors().getCrng().get(0));
-                edtCrng.requestFocus();
                 return;
             }
 
@@ -787,7 +884,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
-
+                tempMsg = tempMsg.trim();
                 // log file
                 Protector.appendLogSensor(tempMsg);
 
@@ -933,7 +1030,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         }
 
-                        edtCrng.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
+                        spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
                         edtEqp1.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
                         edtEqt1.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
                         edtEqp2.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
@@ -1028,7 +1125,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     } else if (resultStart == 3 && arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
-                        edtCrng.setText(arrResults.get(pos++));
+                        spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
                         edtEqp1.setText(arrResults.get(pos++));
                         edtEqt1.setText(arrResults.get(pos++));
                         edtEqp2.setText(arrResults.get(pos++));
@@ -1077,7 +1174,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         arrRules.add("*" + (statusButton == 1 ? "W,E4_" + (i + 1) + "," + arrBacSetting.get(i).getE4() : "R,E4_" + (i + 1) + "" + ""));
                         arrRules.add("*" + (statusButton == 1 ? "W,PKP" + (i + 1) + "," + arrBacSetting.get(i).getPkp() : "R,PKP" + (i + 1) + "" + ""));
                     }
-                    arrRules.add("*" + (statusButton == 1 ? "W,CRNG," + edtCrng.getText().toString() : "R,CRNG") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,CRNG," + spnCrgn.getSelectedItemPosition() : "R,CRNG") + "");
                     arrRules.add("*" + (statusButton == 1 ? "W,EQP1," + edtEqp1.getText().toString() : "R,EQP1") + "");
                     arrRules.add("*" + (statusButton == 1 ? "W,EQT1," + edtEqt1.getText().toString() : "R,EQT1") + "");
                     arrRules.add("*" + (statusButton == 1 ? "W,EQP2," + edtEqp2.getText().toString() : "R,EQP2") + "");

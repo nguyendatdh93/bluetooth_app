@@ -148,24 +148,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20ssp"
-                    android:hint="@string/current_range"
-                    android:textSize="@dimen/_10ssp"
-                    app:hintAnimationEnabled="false">
+                    android:layout_marginTop="@dimen/_20ssp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fragment_3_edt_crng"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:text="0"
-                        android:textSize="@dimen/_11ssp" />
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:background="@drawable/square_border_grey"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_10ssp">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/fragment_3_spn_crng"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/arrCrng"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_11ssp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:background="@color/white"
+                        android:paddingStart="@dimen/_3ssp"
+                        android:paddingEnd="@dimen/_3ssp"
+                        android:text="@string/current_range"
+                        android:textSize="@dimen/_10ssp" />
+                </RelativeLayout>
+
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

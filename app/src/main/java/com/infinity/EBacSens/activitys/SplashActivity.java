@@ -2,9 +2,12 @@ package com.infinity.EBacSens.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.infinity.EBacSens.helper.Protector;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -20,6 +20,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:background="@null"
+                android:tint="@color/red"
                 android:src="@drawable/ic_baseline_close_24" />
 
             <TextView

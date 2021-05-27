@@ -412,8 +412,8 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     @Override
     public void onSuccessStoreSensor(SensorInfor sensorInfor) {
         sensorInfor.setStatusConnect(-1);
-        arrDevicePaired.add(sensorInfor);
-        adapteRCVDevicePaired.notifyItemInserted(arrDevicePaired.size() - 1);
+        arrDevicePaired.add(0,sensorInfor);
+        adapteRCVDevicePaired.notifyItemInserted(0);
         cancelDialogProcessing();
         if (dialogListDeviceOnline != null) {
             dialogListDeviceOnline.cancel();
