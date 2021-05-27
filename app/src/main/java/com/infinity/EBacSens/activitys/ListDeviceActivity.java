@@ -24,8 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
@@ -36,6 +34,14 @@ import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.views.ViewListDeviceListener;
 import com.infinity.EBacSens.views.ViewRCVDeviceOnline;
 import com.infinity.EBacSens.views.ViewRCVDevicePaired;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -66,51 +72,28 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_device);
-        addPerMissionLogfile();
+        addPerMissions();
         addController();
     }
 
-    private void addPerMissionLogfile() {
-        PermissionListener permissionListener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-
+    private void addPerMissions() {
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ).withListener(new MultiplePermissionsListener() {
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
+                getOnlineDevice();
             }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-
-            }
-        };
-        TedPermission.with(this).setPermissionListener(permissionListener).setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {/* ... */}
+        }).check();
     }
 
     private void getOnlineDevice() {
-        PermissionListener permissionListener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                PermissionListener permissionListener = new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                        if (mBluetoothAdapter != null) {
-                            mBluetoothAdapter.startDiscovery();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionDenied(List<String> deniedPermissions) {
-
-                    }
-                };
-                TedPermission.with(ListDeviceActivity.this).setPermissionListener(permissionListener).setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION).check();
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-
-            }
-        };
-        TedPermission.with(this).setPermissionListener(permissionListener).setPermissions(Manifest.permission.ACCESS_FINE_LOCATION).check();
+        if (mBluetoothAdapter != null) {
+            mBluetoothAdapter.startDiscovery();
+        }
     }
 
     private void addController() {
