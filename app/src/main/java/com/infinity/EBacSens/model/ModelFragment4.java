@@ -115,7 +115,7 @@ public class ModelFragment4 {
                     idMeasure,
                     datetime,
                     no,
-                    measureMeasparas.getArrBac().get(0).getBacName(),
+                    measureMeasparas.getSetname(),
                     measureMeasparas.getBacs(),
                     measureMeasparas.getCrng(),
                     measureMeasparas.getEqp1(),

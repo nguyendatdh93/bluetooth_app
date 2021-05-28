@@ -124,13 +124,14 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
     private int resultStart = 0;
-    private ArrayList<BacSetting> bacSettings;
     private ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
     private ArrayList<MeasureMeasdets> measureMeasdets;
     private SensorSetting sensorSetting;
     private MeasureMeasbas measureMeasbas = new MeasureMeasbas();
     private MeasureMeasparas measureMeasparas = new MeasureMeasparas();
     private MeasureMeasress measureMeasress = new MeasureMeasress();
+    private BacSetting bacSetting = new BacSetting();
+    private ArrayList<BacSetting> bacSettings = new ArrayList<>();
     private String noDet;
 
     private final ArrayList<ResultListSensor> resultListSensors = new ArrayList<>();
@@ -147,7 +148,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private int posReadDet = 0;
 
     private int timesMeasBas = 0 , timesMeasPara = 0 , timesMeasRes = -1 , timesDet = 0;
-    private int numMeasres = 0;
+    private int numMeasres = 0 , numBacs = 0;
 
     private int counterStore = 0;
 
@@ -645,8 +646,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     for (int i = 0; i < Protector.tryParseInt(tempMsg.split(",")[1]); i++) {
                         arrRules.add(i + "");
                     }
-                    connectThread.writeLine();
                     arrRules.remove(0);
+                    connectThread.writeLine();
 
                 } else if (resultStart == 1) {
                     resultListSensorsTemp.add(new ResultListSensor(tempMsg.trim().split(",")[1] , Protector.tryParseInt(tempMsg.trim().split(",")[2])));
@@ -725,155 +726,308 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 } else if (resultStart == 3) {
                     if (rulersPara.size() != 0) {
                         timesMeasPara++;
-                        if (timesMeasPara %23 == 1){
+                        if (timesMeasPara %23 == 1 && timesMeasPara <= 23){
                             measureMeasparas.setSetname(tempMsg.split(",")[1]);
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 2){
+                        }else if (timesMeasPara %23 == 2 && timesMeasPara <= 23){
                             measureMeasparas.setBacs(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 3){
+                        }else if (timesMeasPara %23 == 3 && timesMeasPara <= 23){
                             measureMeasparas.setCrng(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 4){
+                        }else if (timesMeasPara %23 == 4 && timesMeasPara <= 23){
                             measureMeasparas.setEqp1(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 5){
+                        }else if (timesMeasPara %23 == 5 && timesMeasPara <= 23){
                             measureMeasparas.setEqt1(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 6){
+                        }else if (timesMeasPara %23 == 6 && timesMeasPara <= 23){
                             measureMeasparas.setEqp2(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 7){
+                        }else if (timesMeasPara %23 == 7 && timesMeasPara <= 23){
                             measureMeasparas.setEqt2(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 8){
+                        }else if (timesMeasPara %23 == 8 && timesMeasPara <= 23){
                             measureMeasparas.setEqp3(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 9){
+                        }else if (timesMeasPara %23 == 9 && timesMeasPara <= 23){
                             measureMeasparas.setEqt3(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 10){
+                        }else if (timesMeasPara %23 == 10 && timesMeasPara <= 23){
                             measureMeasparas.setEqp4(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 11){
+                        }else if (timesMeasPara %23 == 11 && timesMeasPara <= 23){
                             measureMeasparas.setEqt4(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 12){
+                        }else if (timesMeasPara %23 == 12 && timesMeasPara <= 23){
                             measureMeasparas.setEqp5(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 13){
+                        }else if (timesMeasPara %23 == 13 && timesMeasPara <= 23){
                             measureMeasparas.setEqt5(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 14){
+                        }else if (timesMeasPara %23 == 14 && timesMeasPara <= 23){
                             measureMeasparas.setStp(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 15){
+                        }else if (timesMeasPara %23 == 15 && timesMeasPara <= 23){
                             measureMeasparas.setEnp(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 16){
+                        }else if (timesMeasPara %23 == 16 && timesMeasPara <= 23){
                             measureMeasparas.setPp(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 17){
+                        }else if (timesMeasPara %23 == 17 && timesMeasPara <= 23){
                             measureMeasparas.setDlte(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 18){
+                        }else if (timesMeasPara %23 == 18 && timesMeasPara <= 23){
                             measureMeasparas.setPwd(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 19){
+                        }else if (timesMeasPara %23 == 19 && timesMeasPara <= 23){
                             measureMeasparas.setPtm(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 20){
+                        }else if (timesMeasPara %23 == 20 && timesMeasPara <= 23){
                             measureMeasparas.setIbst(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 21){
+                        }else if (timesMeasPara %23 == 21 && timesMeasPara <= 23){
                             measureMeasparas.setIben(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 22){
+                        }else if (timesMeasPara %23 == 22 && timesMeasPara <= 23){
                             measureMeasparas.setIfst(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 0){
+                        }else if (timesMeasPara % 23 == 0 && timesMeasPara <= 23){
                             measureMeasparas.setIfen(Protector.tryParseInt(tempMsg.split(",")[1]));
-                            resultParas.add(measureMeasparas);
-                            measureMeasparas = new MeasureMeasparas();
-                            connectThread.writeMeasBas(rulersPara.get(0));
-                            rulersPara.remove(0);
+                            connectThread.writeLine();
+                        }else if (numBacs/6 < measureMeasparas.getBacs()){
+                            switch (numBacs % 6){
+                                case 0:
+                                    bacSetting.setBacName(tempMsg.split(",")[1]);
+                                    break;
+                                case 1:
+                                    bacSetting.setE1(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 2:
+                                    bacSetting.setE2(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 3:
+                                    bacSetting.setE3(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 4:
+                                    bacSetting.setE4(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 5:
+                                    bacSetting.setPkp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    bacSettings.add(new BacSetting(
+                                            bacSetting.getId(),
+                                            MainActivity.device.getId(),
+                                            bacSetting.getBacName(),
+                                            bacSetting.getE1(),
+                                            bacSetting.getE2(),
+                                            bacSetting.getE3(),
+                                            bacSetting.getE4(),
+                                            bacSetting.getPkp(),
+                                            bacSetting.getUpdatedAt(),
+                                            bacSetting.getCreatedAt()
+                                    ));
+                                    bacSetting = new BacSetting();
+                                    break;
+                            }
+                            numBacs++;
+
+                            if (numBacs/6 >= measureMeasparas.getBacs()){
+                                measureMeasparas.setArrBac(bacSettings);
+                                ArrayList<BacSetting> bacSettingsTemp = new ArrayList<>();
+                                bacSettingsTemp.addAll(bacSettings);
+
+                                resultParas.add(new MeasureMeasparas(
+                                        MainActivity.device.getId(),
+                                        measureMeasparas.getSetname(),
+                                        measureMeasparas.getBacs(),
+                                        measureMeasparas.getCrng(),
+                                        measureMeasparas.getEqp1(),
+                                        measureMeasparas.getEqt1(),
+                                        measureMeasparas.getEqp2(),
+                                        measureMeasparas.getEqt2(),
+                                        measureMeasparas.getEqp3(),
+                                        measureMeasparas.getEqt3(),
+                                        measureMeasparas.getEqp4(),
+                                        measureMeasparas.getEqt4(),
+                                        measureMeasparas.getEqp5(),
+                                        measureMeasparas.getEqt5(),
+                                        measureMeasparas.getStp(),
+                                        measureMeasparas.getEnp(),
+                                        measureMeasparas.getPp(),
+                                        measureMeasparas.getDlte(),
+                                        measureMeasparas.getPwd(),
+                                        measureMeasparas.getPtm(),
+                                        measureMeasparas.getIbst(),
+                                        measureMeasparas.getIben(),
+                                        measureMeasparas.getIfst(),
+                                        measureMeasparas.getIfen(),
+                                        measureMeasparas.getUpdatedAt(),
+                                        measureMeasparas.getCreatedAt(),
+                                        bacSettingsTemp
+                                ));
+
+                                measureMeasparas = new MeasureMeasparas();
+                                bacSettings.clear();
+                                timesMeasPara = 0;
+                                connectThread.writeMeasBas(rulersPara.get(0));
+                                Protector.appendLog(false, rulersPara.get(0));
+                                rulersPara.remove(0);
+                            }else {
+                                connectThread.writeLine();
+                            }
                         }
                     } else {
                         timesMeasPara++;
-                        if (timesMeasPara %23 == 1){
+                        if (timesMeasPara %23 == 1 && timesMeasPara <= 23){
                             measureMeasparas.setSetname(tempMsg.split(",")[1]);
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 2){
+                        }else if (timesMeasPara %23 == 2 && timesMeasPara <= 23){
                             measureMeasparas.setBacs(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 3){
+                        }else if (timesMeasPara %23 == 3 && timesMeasPara <= 23){
                             measureMeasparas.setCrng(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 4){
+                        }else if (timesMeasPara %23 == 4 && timesMeasPara <= 23){
                             measureMeasparas.setEqp1(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 5){
+                        }else if (timesMeasPara %23 == 5 && timesMeasPara <= 23){
                             measureMeasparas.setEqt1(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 6){
+                        }else if (timesMeasPara %23 == 6 && timesMeasPara <= 23){
                             measureMeasparas.setEqp2(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 7){
+                        }else if (timesMeasPara %23 == 7 && timesMeasPara <= 23){
                             measureMeasparas.setEqt2(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 8){
+                        }else if (timesMeasPara %23 == 8 && timesMeasPara <= 23){
                             measureMeasparas.setEqp3(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 9){
+                        }else if (timesMeasPara %23 == 9 && timesMeasPara <= 23){
                             measureMeasparas.setEqt3(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 10){
+                        }else if (timesMeasPara %23 == 10 && timesMeasPara <= 23){
                             measureMeasparas.setEqp4(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 11){
+                        }else if (timesMeasPara %23 == 11 && timesMeasPara <= 23){
                             measureMeasparas.setEqt4(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 12){
+                        }else if (timesMeasPara %23 == 12 && timesMeasPara <= 23){
                             measureMeasparas.setEqp5(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 13){
+                        }else if (timesMeasPara %23 == 13 && timesMeasPara <= 23){
                             measureMeasparas.setEqt5(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 14){
+                        }else if (timesMeasPara %23 == 14 && timesMeasPara <= 23){
                             measureMeasparas.setStp(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 15){
+                        }else if (timesMeasPara %23 == 15 && timesMeasPara <= 23){
                             measureMeasparas.setEnp(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 16){
+                        }else if (timesMeasPara %23 == 16 && timesMeasPara <= 23){
                             measureMeasparas.setPp(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 17){
+                        }else if (timesMeasPara %23 == 17 && timesMeasPara <= 23){
                             measureMeasparas.setDlte(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 18){
+                        }else if (timesMeasPara %23 == 18 && timesMeasPara <= 23){
                             measureMeasparas.setPwd(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 19){
+                        }else if (timesMeasPara %23 == 19 && timesMeasPara <= 23){
                             measureMeasparas.setPtm(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 20){
+                        }else if (timesMeasPara %23 == 20 && timesMeasPara <= 23){
                             measureMeasparas.setIbst(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 21){
+                        }else if (timesMeasPara %23 == 21 && timesMeasPara <= 23){
                             measureMeasparas.setIben(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 22){
+                        }else if (timesMeasPara %23 == 22 && timesMeasPara <= 23){
                             measureMeasparas.setIfst(Protector.tryParseInt(tempMsg.split(",")[1]));
                             connectThread.writeLine();
-                        }else if (timesMeasPara %23 == 0){
+                        }else if (timesMeasPara % 23 == 0 && timesMeasPara <= 23){
                             measureMeasparas.setIfen(Protector.tryParseInt(tempMsg.split(",")[1]));
-                            resultParas.add(measureMeasparas);
-                            measureMeasparas = new MeasureMeasparas();
-                            resultStart++;
-                            connectThread.writeMeasBas(rulersRes.get(0));
-                            Protector.appendLog(false, rulersRes.get(0));
-                            rulersRes.remove(0);
+                            connectThread.writeLine();
+                        }else if (numBacs/6 < measureMeasparas.getBacs()){
+                            switch (numBacs % 6){
+                                case 0:
+                                    bacSetting.setBacName(tempMsg.split(",")[1]);
+                                    break;
+                                case 1:
+                                    bacSetting.setE1(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 2:
+                                    bacSetting.setE2(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 3:
+                                    bacSetting.setE3(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 4:
+                                    bacSetting.setE4(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    break;
+                                case 5:
+                                    bacSetting.setPkp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                                    bacSettings.add(new BacSetting(
+                                            bacSetting.getId(),
+                                            MainActivity.device.getId(),
+                                            bacSetting.getBacName(),
+                                            bacSetting.getE1(),
+                                            bacSetting.getE2(),
+                                            bacSetting.getE3(),
+                                            bacSetting.getE4(),
+                                            bacSetting.getPkp(),
+                                            bacSetting.getUpdatedAt(),
+                                            bacSetting.getCreatedAt()
+                                    ));
+                                    bacSetting = new BacSetting();
+                                    break;
+                            }
+                            numBacs++;
+
+                            if (numBacs/6 >= measureMeasparas.getBacs()){
+                                measureMeasparas.setArrBac(bacSettings);
+                                ArrayList<BacSetting> bacSettingsTemp = new ArrayList<>();
+                                bacSettingsTemp.addAll(bacSettings);
+
+                                resultParas.add(new MeasureMeasparas(
+                                        MainActivity.device.getId(),
+                                        measureMeasparas.getSetname(),
+                                        measureMeasparas.getBacs(),
+                                        measureMeasparas.getCrng(),
+                                        measureMeasparas.getEqp1(),
+                                        measureMeasparas.getEqt1(),
+                                        measureMeasparas.getEqp2(),
+                                        measureMeasparas.getEqt2(),
+                                        measureMeasparas.getEqp3(),
+                                        measureMeasparas.getEqt3(),
+                                        measureMeasparas.getEqp4(),
+                                        measureMeasparas.getEqt4(),
+                                        measureMeasparas.getEqp5(),
+                                        measureMeasparas.getEqt5(),
+                                        measureMeasparas.getStp(),
+                                        measureMeasparas.getEnp(),
+                                        measureMeasparas.getPp(),
+                                        measureMeasparas.getDlte(),
+                                        measureMeasparas.getPwd(),
+                                        measureMeasparas.getPtm(),
+                                        measureMeasparas.getIbst(),
+                                        measureMeasparas.getIben(),
+                                        measureMeasparas.getIfst(),
+                                        measureMeasparas.getIfen(),
+                                        measureMeasparas.getUpdatedAt(),
+                                        measureMeasparas.getCreatedAt(),
+                                        bacSettingsTemp
+                                ));
+
+                                measureMeasparas = new MeasureMeasparas();
+                                bacSettings.clear();
+                                resultStart++;
+
+                                connectThread.writeMeasBas(rulersRes.get(0));
+                                Protector.appendLog(false, rulersRes.get(0));
+                                rulersRes.remove(0);
+                            }else {
+                                connectThread.writeLine();
+                            }
                         }
                     }
                 } else if (resultStart == 4) {
@@ -909,8 +1063,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }else if (timesMeasRes %9 == 0){
                             measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
                             measureMeasresses.add(measureMeasress);
-                            measureMeasparas = new MeasureMeasparas();
-                            if (timesMeasPara/9 >= numMeasres){
+                            measureMeasress = new MeasureMeasress();
+                            if (timesMeasRes/9 >= numMeasres){
                                 resultRess.add(measureMeasresses);
                                 connectThread.writeMeasBas(rulersRes.get(0));
                                 rulersRes.remove(0);
@@ -950,8 +1104,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }else if (timesMeasRes %9 == 0){
                             measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
                             measureMeasresses.add(measureMeasress);
-                            measureMeasparas = new MeasureMeasparas();
-                            if (timesMeasPara/9 >= numMeasres){
+                            measureMeasress = new MeasureMeasress();
+                            if (timesMeasRes/9 >= numMeasres){
                                 resultRess.add(measureMeasresses);
                                 resultStart++;
                                 connectThread.writeMeasBas(rulersDet.get(0));
@@ -1061,6 +1215,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 deltaE += resultParas.get(posReadDet).getStp();
                             }
                             posReadDet++;
+
                             for (int i = 0; i < resultListSensors.size(); i++) {
                                 presenterFragment4.receivedStoreMeasure(APIUtils.token,
                                         MainActivity.device.getId(),

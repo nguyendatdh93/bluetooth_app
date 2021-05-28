@@ -144,6 +144,9 @@ public class BacSetting {
 //    @Override
 //    public String toString() {
 //        return '{' +
+
+    public BacSetting() {
+    }
 //                "\"id\":" + id +
 //                ", \"sensor_setting_id\":" + sensor_setting_id +
 //                ", \"bacName\":" + "\"" + bacName + "\""+
