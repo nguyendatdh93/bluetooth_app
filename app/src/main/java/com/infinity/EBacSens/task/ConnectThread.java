@@ -20,7 +20,8 @@ public class ConnectThread extends Thread {
 
     private final Handler handler; // handler that gets info from Bluetooth service
 
-    private boolean isMeasure = false;
+    private boolean isMeasBas = false;
+    private boolean isList = false;
 
     private interface MessageConstants {
         int MESSAGE_READ = 4;
@@ -94,8 +95,19 @@ public class ConnectThread extends Thread {
                     String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
                     result.append(str);
 
-                    if (isMeasure){
-                        if (result.toString().contains("*MEASUREFINSH") || result.toString().contains("*RAWDMPEND")){
+                    if (isList){
+                        if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
+                            Message readMsg = handler.obtainMessage(
+                                    MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                    result.toString().getBytes());
+                            readMsg.sendToTarget();
+                            numBytes = 0;
+
+                            result = new StringBuilder();
+                        }
+                    }else
+                    if (isMeasBas){
+                        if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
                             Message readMsg = handler.obtainMessage(
                                     MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                     result.toString().getBytes());
@@ -105,16 +117,17 @@ public class ConnectThread extends Thread {
                             result = new StringBuilder();
                         }
                     }else {
-                        if (result.toString().contains("*LIST")){
-                            if (result.toString().contains("*LISTEND")){
-                                Message readMsg = handler.obtainMessage(
-                                        MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
-                                        result.toString().getBytes());
-                                readMsg.sendToTarget();
-                                numBytes = 0;
-                                result = new StringBuilder();
-                            }
-                        }else if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
+//                        if (result.toString().contains("*LIST")){
+//                            if (result.toString().contains("*LISTEND")){
+//                                Message readMsg = handler.obtainMessage(
+//                                        MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+//                                        result.toString().getBytes());
+//                                readMsg.sendToTarget();
+//                                numBytes = 0;
+//                                result = new StringBuilder();
+//                            }
+//                        }else
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
                             result = new StringBuilder(result.toString().replace("[CR]", "").replace("\n", "").replace("\r", "").replace("\r\n", ""));
                             String[] values = result.toString().split(",");
                             String data ="";
@@ -140,8 +153,17 @@ public class ConnectThread extends Thread {
         }
     }
 
+    public void writeLine() {
+        try {
+            mmOutStream.write("\r".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void write(String value) {
-        this.isMeasure = false;
+        this.isMeasBas = false;
+        this.isList = false;
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -150,8 +172,19 @@ public class ConnectThread extends Thread {
         }
     }
 
-    public void writeMeasure(String value) {
-        this.isMeasure = true;
+    public void writeMeasBas(String value) {
+        this.isMeasBas = true;
+        try {
+            value += "\r";
+            mmOutStream.write(value.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeList(String value) {
+        this.isList = true;
+        this.isMeasBas = false;
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());

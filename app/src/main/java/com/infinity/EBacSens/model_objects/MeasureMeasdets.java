@@ -119,6 +119,9 @@ public class MeasureMeasdets {
         this.createdAt = createdAt;
     }
 
+    public MeasureMeasdets() {
+    }
+
     public String getUpdatedAt() {
         return updatedAt;
     }

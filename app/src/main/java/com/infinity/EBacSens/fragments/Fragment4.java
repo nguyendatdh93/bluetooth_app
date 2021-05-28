@@ -125,12 +125,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<String> arrResults;
     private int resultStart = 0;
     private ArrayList<BacSetting> bacSettings;
-    private ArrayList<MeasureMeasress> measureMeasresses;
+    private ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
     private ArrayList<MeasureMeasdets> measureMeasdets;
     private SensorSetting sensorSetting;
-    private MeasureMeasbas measureMeasbas;
+    private MeasureMeasbas measureMeasbas = new MeasureMeasbas();
+    private MeasureMeasparas measureMeasparas = new MeasureMeasparas();
+    private MeasureMeasress measureMeasress = new MeasureMeasress();
+    private String noDet;
 
     private final ArrayList<ResultListSensor> resultListSensors = new ArrayList<>();
+    private final ArrayList<ResultListSensor> resultListSensorsTemp = new ArrayList<>();
     private final ArrayList<String> rulersBas = new ArrayList<>();
     private final ArrayList<String> rulersPara = new ArrayList<>();
     private final ArrayList<String> rulersRes = new ArrayList<>();
@@ -142,7 +146,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
     private int posReadDet = 0;
 
+    private int timesMeasBas = 0 , timesMeasPara = 0 , timesMeasRes = 0 , timesDet = 0;
+    private int numMeasres = 0;
+
     private int counterStore = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -336,7 +344,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     data.add(new String[]{"設定名", String.valueOf(sensorMeasure.getMeasureMeasparas().getSetname())});
                                     data.add(new String[]{"測定数", String.valueOf(sensorMeasure.getMeasureMeasparas().getBacs())});
 
-                                    switch (sensorMeasure.getMeasureMeasparas().getCrng()){
+                                    switch (sensorMeasure.getMeasureMeasparas().getCrng()) {
                                         case 0:
                                             data.add(new String[]{"レンジ", "3mA"});
                                             break;
@@ -434,8 +442,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                                     data.add(new String[]{});
                                     data.add(new String[]{"No", "E(mV)", "DeltaI(uA)", "Eb", "Ib", "Ef", "If"});
-                                    for (int i = 0 ; i < sensorMeasure.getMeasureMeasdets().size() ; i++){
-                                        data.add(new String[]{sensorMeasure.getMeasureMeasdets().get(i).getNo() , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltae()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltai()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEb()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getIb()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEf()) , String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).get_if())});
+                                    for (int i = 0; i < sensorMeasure.getMeasureMeasdets().size(); i++) {
+                                        data.add(new String[]{sensorMeasure.getMeasureMeasdets().get(i).getNo(), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltae()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltai()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEb()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getIb()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEf()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).get_if())});
                                     }
 
                                     for (int i = 0; i < sensorMeasure.getMeasureMeasdets().size(); i++) {
@@ -550,7 +558,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
     @Override
     public void onSuccessStoreMeasure(SensorMeasure sensorMeasure) {
-        if (resultListSensors.size() == ++counterStore){
+        if (resultListSensors.size() == ++counterStore) {
             showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
             arrRCVDatetime.clear();
             arrMeasure.clear();
@@ -565,10 +573,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     public void onFailStoreMeasure(String error) {
         cancelDialogProcessing();
         showPopup(context.getResources().getString(R.string.failure), error, false);
-        Protector.appendLog(true ,error);
+        Protector.appendLog(true, error);
     }
 
-    private int level(int val) {
+    private int level(float val) {
         if (val <= 1000) {
             return 1;
         } else if (val <= 2000) {
@@ -628,41 +636,40 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(true ,tempMsg);
+                Protector.appendLog(true, tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
-                    if (tempMsg.contains("*LISTEND")) {
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
-                        }
+                    resultStart++;
+                    for (int i = 0; i < Protector.tryParseInt(tempMsg); i++) {
+                        arrRules.add(i + "");
+                    }
+                    connectThread.writeLine();
+                    arrRules.remove(0);
 
-                        for (int i = 1; i < values.length - 1; i++) {
+                } else if (resultStart == 1) {
+                    resultListSensorsTemp.add(new ResultListSensor(tempMsg.trim().split(",")[1] , Protector.tryParseInt(tempMsg.trim().split(",")[2])));
+                    if (arrRules.size() != 0){
+                        connectThread.write("");
+                        arrRules.remove(0);
+                    }else {
+                        resultStart++;
+
+                        for (int i = 0; i < resultListSensorsTemp.size() - 1; i++) {
                             boolean isHave = false;
                             for (int j = 0; j < arrMeasurePage.size(); j++) {
-                                if (values[i].split(",")[1].replace("/" , "-").equals(arrMeasurePage.get(j).getDatetime().replace("/" , "-"))) {
+                                if (resultListSensorsTemp.get(i).getDatetime().replace("/", "-").equals(arrMeasurePage.get(j).getDatetime().replace("/", "-"))) {
                                     isHave = true;
                                     break;
                                 }
                             }
                             if (!isHave) {
                                 // read sensor
-                                Log.e("AAAA" , values[i].split(",")[1].replace("/" , "-"));
-                                resultListSensors.add(new ResultListSensor(values[i].split(",")[1] , Protector.tryParseInt(values[i].split(",")[2])));
+                                resultListSensors.add(new ResultListSensor(resultListSensorsTemp.get(i).getDatetime().replace("/", "-"), resultListSensorsTemp.get(i).getNo()));
                             }
 
                         }
-
-                        resultStart++;
-                        arrRules.clear();
                         if (resultListSensors.size() > 0) {
                             for (int i = 0; i < resultListSensors.size(); i++) {
                                 rulersBas.add("*R,MEASBAS," + resultListSensors.get(i).getNo());
@@ -670,385 +677,404 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 rulersRes.add("*R,MEASRES," + resultListSensors.get(i).getNo());
                                 rulersDet.add("*R,MEASDET," + resultListSensors.get(i).getNo());
                             }
+                            arrResults.clear();
 
-                            connectThread.writeMeasure(rulersBas.get(0));
-                            Protector.appendLog(false ,rulersBas.get(0));
+                            connectThread.writeMeasBas(rulersBas.get(0));
+                            Protector.appendLog(false, rulersBas.get(0));
                             rulersBas.remove(0);
                         } else {
                             cancelDialogProcessing();
                             showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
                         }
                     }
-
-                } else if (resultStart == 1) {
+                }
+                else if (resultStart == 2) {
                     if (rulersBas.size() != 0) {
-
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        timesMeasBas++;
+                        if (timesMeasBas %3 == 1){
+                            measureMeasbas.setDatetime(tempMsg.split(",")[1].replace("/","-"));
+                            connectThread.writeLine();
+                        }else if (timesMeasBas %3 == 2){
+                            measureMeasbas.setNum(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasBas %3 == 0){
+                            measureMeasbas.setPstaterr(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            resultBas.add(measureMeasbas);
+                            measureMeasbas = new MeasureMeasbas();
+                            connectThread.writeMeasBas(rulersBas.get(0));
+                            rulersBas.remove(0);
                         }
-
-                        measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0].split(",")[1].replace("/","-"),
-                                Protector.tryParseInt(values[1].split(",")[1]),
-                                Protector.tryParseInt(values[2].split(",")[1]),
-                                "",
-                                "");
-                        resultBas.add(measureMeasbas);
-
-                        connectThread.writeMeasure(rulersBas.get(0));
-                        Protector.appendLog(false ,rulersBas.get(0));
-                        rulersBas.remove(0);
-
                     } else {
-                        resultStart++;
-                        resultStart++;
-
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        timesMeasBas++;
+                        if (timesMeasBas %3 == 1){
+                            measureMeasbas.setDatetime(tempMsg.split(",")[1].replace("/","-"));
+                            connectThread.writeLine();
+                        }else if (timesMeasBas %3 == 2){
+                            measureMeasbas.setNum(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasBas %3 == 0){
+                            measureMeasbas.setPstaterr(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            resultBas.add(measureMeasbas);
+                            measureMeasbas = new MeasureMeasbas();
+                            resultStart++;
+                            connectThread.writeMeasBas(rulersPara.get(0));
+                            Protector.appendLog(false, rulersPara.get(0));
+                            rulersPara.remove(0);
                         }
-
-                        measureMeasbas = new MeasureMeasbas(MainActivity.device.getId(),
-                                values[0].split(",")[1].replace("/","-"),  1, Protector.tryParseInt(values[1].split(",")[1]),"", "");
-                        resultBas.add(measureMeasbas);
-
-                        connectThread.writeMeasure(rulersPara.get(0));
-                        Protector.appendLog(false ,rulersPara.get(0));
-                        rulersPara.remove(0);
-
                     }
                 } else if (resultStart == 3) {
                     if (rulersPara.size() != 0) {
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        timesMeasPara++;
+                        if (timesMeasPara %23 == 1){
+                            measureMeasparas.setSetname(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 2){
+                            measureMeasparas.setBacs(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 3){
+                            measureMeasparas.setCrng(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 4){
+                            measureMeasparas.setEqp1(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 5){
+                            measureMeasparas.setEqt1(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 6){
+                            measureMeasparas.setEqp2(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 7){
+                            measureMeasparas.setEqt2(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 8){
+                            measureMeasparas.setEqp3(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 9){
+                            measureMeasparas.setEqt3(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 10){
+                            measureMeasparas.setEqp4(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 11){
+                            measureMeasparas.setEqt4(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 12){
+                            measureMeasparas.setEqp5(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 13){
+                            measureMeasparas.setEqt5(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 14){
+                            measureMeasparas.setStp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 15){
+                            measureMeasparas.setEnp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 16){
+                            measureMeasparas.setPp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 17){
+                            measureMeasparas.setDlte(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 18){
+                            measureMeasparas.setPwd(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 19){
+                            measureMeasparas.setPtm(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 20){
+                            measureMeasparas.setIbst(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 21){
+                            measureMeasparas.setIben(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 22){
+                            measureMeasparas.setIfst(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 0){
+                            measureMeasparas.setIfen(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            resultParas.add(measureMeasparas);
+                            measureMeasparas = new MeasureMeasparas();
+                            connectThread.writeMeasBas(rulersPara.get(0));
+                            rulersBas.remove(0);
                         }
-
-                        int pos = 0;
-
-                        MeasureMeasparas measureMeasparas = new MeasureMeasparas(
-                                MainActivity.device.getId(),
-                                values[pos++],
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                null,
-                                null,
-                                null
-                        );
-
-                        ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length-1; i += 6) {
-                            arrBac.add(new BacSetting(MainActivity.device.getId(),
-                                    MainActivity.device.getId(),
-                                    values[i].split(",")[1],
-                                    Protector.tryParseInt(values[i + 1].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 2].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 3].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 4].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 5].split(",")[1]),
-                                    null, null));
-                        }
-                        measureMeasparas.setArrBac(arrBac);
-
-                        resultParas.add(measureMeasparas);
-
-
-                        connectThread.writeMeasure(rulersPara.get(0));
-                        rulersPara.remove(0);
-
                     } else {
-                        resultStart++;
-
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        timesMeasPara++;
+                        if (timesMeasPara %23 == 1){
+                            measureMeasparas.setSetname(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 2){
+                            measureMeasparas.setBacs(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 3){
+                            measureMeasparas.setCrng(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 4){
+                            measureMeasparas.setEqp1(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 5){
+                            measureMeasparas.setEqt1(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 6){
+                            measureMeasparas.setEqp2(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 7){
+                            measureMeasparas.setEqt2(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 8){
+                            measureMeasparas.setEqp3(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 9){
+                            measureMeasparas.setEqt3(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 10){
+                            measureMeasparas.setEqp4(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 11){
+                            measureMeasparas.setEqt4(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 12){
+                            measureMeasparas.setEqp5(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 13){
+                            measureMeasparas.setEqt5(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 14){
+                            measureMeasparas.setStp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 15){
+                            measureMeasparas.setEnp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 16){
+                            measureMeasparas.setPp(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 17){
+                            measureMeasparas.setDlte(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 18){
+                            measureMeasparas.setPwd(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 19){
+                            measureMeasparas.setPtm(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 20){
+                            measureMeasparas.setIbst(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 21){
+                            measureMeasparas.setIben(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 22){
+                            measureMeasparas.setIfst(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasPara %23 == 0){
+                            measureMeasparas.setIfen(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            resultParas.add(measureMeasparas);
+                            measureMeasparas = new MeasureMeasparas();
+                            resultStart++;
+                            connectThread.writeMeasBas(rulersDet.get(0));
+                            Protector.appendLog(false, rulersDet.get(0));
+                            rulersDet.remove(0);
                         }
-
-                        int pos = 0;
-
-                        MeasureMeasparas measureMeasparas = new MeasureMeasparas(
-                                MainActivity.device.getId(),
-                                values[pos++],
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                Protector.tryParseInt(values[pos++].split(",")[1]),
-                                null,
-                                null,
-                                null
-                        );
-
-                        ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length-1; i += 6) {
-                            arrBac.add(new BacSetting(MainActivity.device.getId(),
-                                    MainActivity.device.getId(),
-                                    values[i].split(",")[1],
-                                    Protector.tryParseInt(values[i + 1].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 2].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 3].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 4].split(",")[1]),
-                                    Protector.tryParseInt(values[i + 5].split(",")[1]),
-                                    null, null));
-                        }
-                        measureMeasparas.setArrBac(arrBac);
-
-                        resultParas.add(measureMeasparas);
-
-                        connectThread.writeMeasure(rulersRes.get(0));
-                        Protector.appendLog(false ,rulersRes.get(0));
-                        rulersRes.remove(0);
                     }
                 } else if (resultStart == 4) {
                     if (rulersRes.size() != 0) {
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        if (timesMeasRes != 0){
+                            timesMeasRes++;
                         }
-
-                        int pos = 0;
-
-                        ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-                        for (int i = 0 ; i < values.length -1; i+=9){
-                            MeasureMeasress measureMeasress = new MeasureMeasress(
-                                    MainActivity.device.getId(),
-                                    values[pos++].split(",")[1],
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    values[pos++].split(",")[1],
-                                    values[pos++].split(",")[1],
-                                    values[pos++].split(",")[1],
-                                    values[pos++].split(",")[1],
-                                    null,
-                                    null
-                            );
+                        if (timesMeasRes == 0){
+                            numMeasres = Protector.tryParseInt(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                            timesMeasRes++;
+                        }else if (timesMeasRes %9 == 1){
+                            measureMeasress.setName(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 2){
+                            measureMeasress.setPkpot(Protector.tryParseFloat(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 3){
+                            measureMeasress.setDltc(Protector.tryParseFloat(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 4){
+                            measureMeasress.setBgc(Protector.tryParseFloat(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 5){
+                            measureMeasress.setBlpsx(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 6){
+                            measureMeasress.setBlpsy(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 7){
+                            measureMeasress.setBlpex(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 8){
+                            measureMeasress.setBlpey(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 0){
+                            measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
                             measureMeasresses.add(measureMeasress);
+                            measureMeasparas = new MeasureMeasparas();
+                            if (timesMeasPara >= numMeasres){
+                                resultRess.add(measureMeasresses);
+                                timesMeasRes = 0;
+                                connectThread.writeMeasBas(rulersRes.get(0));
+                                rulersRes.remove(0);
+                            }else {
+                                connectThread.writeLine();
+                            }
                         }
-
-                        resultRess.add(measureMeasresses);
-
-                        connectThread.writeMeasure(rulersRes.get(0));
-                        rulersRes.remove(0);
                     } else {
-                        resultStart++;
-
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        if (timesMeasRes != 0){
+                            timesMeasRes++;
                         }
-
-                        int pos = 0;
-
-                        ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-                        for (int i = 0 ; i < values.length -1; i+=9){
-                            MeasureMeasress measureMeasress = new MeasureMeasress(
-                                    MainActivity.device.getId(),
-                                    values[pos++].split(",")[1],
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    Protector.tryParseInt(values[pos++].split(",")[1]),
-                                    values[pos++].split(",")[1],
-                                    values[pos++].split(",")[1],
-                                    values[pos++].split(",")[1],
-                                    values[pos++].split(",")[1],
-                                    null,
-                                    null
-                            );
+                        if (timesMeasRes == 0){
+                            numMeasres = Protector.tryParseInt(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                            timesMeasRes++;
+                        }else if (timesMeasRes %9 == 1){
+                            measureMeasress.setName(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 2){
+                            measureMeasress.setPkpot(Protector.tryParseFloat(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 3){
+                            measureMeasress.setDltc(Protector.tryParseFloat(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 4){
+                            measureMeasress.setBgc(Protector.tryParseFloat(tempMsg.split(",")[1]));
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 5){
+                            measureMeasress.setBlpsx(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 6){
+                            measureMeasress.setBlpsy(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 7){
+                            measureMeasress.setBlpex(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 8){
+                            measureMeasress.setBlpey(tempMsg.split(",")[1]);
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %9 == 0){
+                            measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
                             measureMeasresses.add(measureMeasress);
+                            measureMeasparas = new MeasureMeasparas();
+                            if (timesMeasPara >= numMeasres){
+                                resultRess.add(measureMeasresses);
+                                timesMeasRes = 0;
+                                resultStart++;
+                                connectThread.writeMeasBas(rulersDet.get(0));
+                                Protector.appendLog(false, rulersDet.get(0));
+                                rulersDet.remove(0);
+                            }else {
+                                connectThread.writeLine();
+                            }
                         }
-
-                        resultRess.add(measureMeasresses);
-
-                        connectThread.writeMeasure(rulersDet.get(0));
-                        Protector.appendLog(false ,rulersDet.get(0));
-                        rulersDet.remove(0);
                     }
                 } else if (resultStart == 5) {
                     if (rulersDet.size() != 0) {
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
+                        timesDet++;
+                        if (timesDet %3 == 1){
+                            noDet = tempMsg.split(",")[1];
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %3 == 2){
+                            timesDet = 0;
+                            String arrHex = tempMsg;
+
+                            ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
+
+                            float pixel = 0;
+                            switch (resultParas.get(posReadDet).getCrng()) {
+                                case 0:
+                                    pixel = 0.1f;
+                                    break;
+                                case 1:
+                                    pixel = 0.01f;
+                                    break;
+                                case 2:
+                                    pixel = 0.001f;
+                                    break;
+                            }
+                            float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
+
+                            for (int i = 0; i <= arrHex.length() - 8; i += 8) {
+                                float ib = pixel * Protector.HexToDecDataMeasdet(arrHex.substring(i, i + 4));
+                                float _if = pixel * Protector.HexToDecDataMeasdet(arrHex.substring(i + 4, i + 8));
+                                float deltaI = _if - ib;
+
+                                float eb = resultParas.get(posReadDet).getStp() + deltaE;
+                                float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+
+                                measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                        (i / 8) + "",
+                                        deltaE,
+                                        deltaI,
+                                        eb,
+                                        ib,
+                                        ef,
+                                        _if,
+                                        Protector.getCurrentTime(),
+                                        Protector.getCurrentTime()));
+                                resultDets.add(measureMeasdets);
+                                deltaE += resultParas.get(posReadDet).getStp();
+                            }
+                            posReadDet++;
+                            connectThread.writeMeasBas(rulersDet.get(0));
+                            Protector.appendLog(false, rulersDet.get(0));
+                            rulersDet.remove(0);
                         }
-
-                        ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
-
-                        float pixel = 0;
-                        switch (resultParas.get(posReadDet).getCrng()){
-                            case 0:
-                                pixel = 0.1f;
-                                break;
-                            case 1:
-                                pixel = 0.01f;
-                                break;
-                            case 2:
-                                pixel = 0.001f;
-                                break;
-                        }
-                        float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
-
-                        for (int i = 0 ; i <= values[1].length() - 8 ; i+=8){
-                            float ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i , i + 4));
-                            float _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4 , i + 8));
-                            float deltaI = _if - ib;
-
-                            float eb = resultParas.get(posReadDet).getStp() + deltaE;
-                            float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
-
-                            measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                    (i/8)+"",
-                                    deltaE,
-                                    deltaI,
-                                    eb,
-                                    ib,
-                                    ef,
-                                    _if,
-                                    Protector.getCurrentTime(),
-                                    Protector.getCurrentTime()));
-                            resultDets.add(measureMeasdets);
-                            deltaE += resultParas.get(posReadDet).getStp();
-                        }
-                        posReadDet++;
-
-                        connectThread.writeMeasure(rulersDet.get(0));
-                        Protector.appendLog(false ,rulersDet.get(0));
-                        rulersDet.remove(0);
                     } else {
-                        String[] values = new String[0];
-                        if (tempMsg.contains("[CR]")) {
-                            values = tempMsg.split("[CR]");
-                        } else if (tempMsg.contains("\n")) {
-                            values = tempMsg.split("\n");
-                        } else if (tempMsg.contains("\r")) {
-                            values = tempMsg.split("\r");
-                        } else if (tempMsg.contains("\r\n")) {
-                            values = tempMsg.split("\r\n");
-                        }
-                        ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
+                        timesDet++;
+                        if (timesDet %3 == 1){
+                            noDet = tempMsg.split(",")[1];
+                            connectThread.writeLine();
+                        }else if (timesMeasRes %3 == 2){
+                            timesDet = 0;
+                            String arrHex = tempMsg;
 
-                        float pixel = 0;
-                        switch (resultParas.get(posReadDet).getCrng()){
-                            case 0:
-                                pixel = 0.1f;
-                                break;
-                            case 1:
-                                pixel = 0.01f;
-                                break;
-                            case 2:
-                                pixel = 0.001f;
-                                break;
-                        }
-                        float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
-                        for (int i = 0 ; i <= values[1].length() - 8 ; i+=8){
+                            ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
 
-                            float ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i , i + 4));
-                            float _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4 , i + 8));
-                            float deltaI = _if - ib;
+                            float pixel = 0;
+                            switch (resultParas.get(posReadDet).getCrng()) {
+                                case 0:
+                                    pixel = 0.1f;
+                                    break;
+                                case 1:
+                                    pixel = 0.01f;
+                                    break;
+                                case 2:
+                                    pixel = 0.001f;
+                                    break;
+                            }
+                            float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
 
-                            float eb = resultParas.get(posReadDet).getStp() + deltaE;
-                            float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+                            for (int i = 0; i <= arrHex.length() - 8; i += 8) {
+                                float ib = pixel * Protector.HexToDecDataMeasdet(arrHex.substring(i, i + 4));
+                                float _if = pixel * Protector.HexToDecDataMeasdet(arrHex.substring(i + 4, i + 8));
+                                float deltaI = _if - ib;
 
-                            measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
-                                    (i/8)+"",
-                                    deltaE,
-                                    deltaI,
-                                    eb,
-                                    ib,
-                                    ef,
-                                    _if,
-                                    Protector.getCurrentTime(),
-                                    Protector.getCurrentTime()));
-                            resultDets.add(measureMeasdets);
-                            deltaE += resultParas.get(posReadDet).getStp();
-                        }
-                        posReadDet++;
-                        for (int i = 0 ; i < resultListSensors.size() ; i++){
-                            presenterFragment4.receivedStoreMeasure(APIUtils.token,
-                                    MainActivity.device.getId(),
-                                    resultListSensors.get(i).getDatetime(),
-                                    String.valueOf(resultListSensors.get(i).getNo()), resultParas.get(i), resultBas.get(i), resultRess.get(i), resultDets.get(i));
+                                float eb = resultParas.get(posReadDet).getStp() + deltaE;
+                                float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+
+                                measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
+                                        (i / 8) + "",
+                                        deltaE,
+                                        deltaI,
+                                        eb,
+                                        ib,
+                                        ef,
+                                        _if,
+                                        Protector.getCurrentTime(),
+                                        Protector.getCurrentTime()));
+                                resultDets.add(measureMeasdets);
+                                deltaE += resultParas.get(posReadDet).getStp();
+                            }
+                            posReadDet++;
+                            for (int i = 0; i < resultListSensors.size(); i++) {
+                                presenterFragment4.receivedStoreMeasure(APIUtils.token,
+                                        MainActivity.device.getId(),
+                                        resultListSensors.get(i).getDatetime(),
+                                        String.valueOf(resultListSensors.get(i).getNo()), resultParas.get(i), resultBas.get(i), resultRess.get(i), resultDets.get(i));
+                            }
                         }
                     }
                 }
@@ -1062,9 +1088,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 bacSettings.clear();
 
                 if (connectThread != null) {
-                    counterStore = 0;
                     posReadDet = 0;
+                    timesMeasBas = 0 ;
+                    timesMeasPara = 0 ;
+                    timesMeasRes = 0 ;
+                    timesDet = 0;
+                    numMeasres = 0;
+                    counterStore = 0;
+
                     resultListSensors.clear();
+                    resultListSensorsTemp.clear();
                     resultDets.clear();
                     rulersDet.clear();
                     resultRess.clear();
@@ -1076,8 +1109,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                     resultStart = 0;
                     arrRules.add("*LIST");
-                    connectThread.write(arrRules.get(0));
-                    Protector.appendLog(false ,arrRules.get(0));
+                    connectThread.writeList(arrRules.get(0));
+                    Protector.appendLog(false, arrRules.get(0));
                     arrRules.remove(0);
                 }
                 break;

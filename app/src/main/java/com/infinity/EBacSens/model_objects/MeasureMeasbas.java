@@ -77,6 +77,9 @@ public class MeasureMeasbas {
         this.updatedAt = updatedAt;
     }
 
+    public MeasureMeasbas() {
+    }
+
     public MeasureMeasbas(int id, String datetime, int num, int pstaterr, String createdAt, String updatedAt) {
         this.id = id;
         this.datetime = datetime;

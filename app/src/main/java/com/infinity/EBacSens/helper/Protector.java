@@ -34,6 +34,14 @@ public class Protector {
         }
     }
 
+    public static float tryParseFloat(String value) {
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            return tryParseHex(value);
+        }
+    }
+
     public static int tryParseHex(String value) {
         try {
             return Integer.valueOf(value,16).shortValue();
