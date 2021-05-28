@@ -869,6 +869,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 measureMeasparas = new MeasureMeasparas();
                                 bacSettings.clear();
                                 timesMeasPara = 0;
+                                numBacs = 0;
                                 connectThread.writeMeasBas(rulersPara.get(0));
                                 Protector.appendLog(false, rulersPara.get(0));
                                 rulersPara.remove(0);
@@ -1062,10 +1063,30 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             connectThread.writeLine();
                         }else if (timesMeasRes %9 == 0){
                             measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
-                            measureMeasresses.add(measureMeasress);
+
+                            measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
+                            measureMeasresses.add(new MeasureMeasress(
+                                    MainActivity.device.getId(),
+                                    measureMeasress.getName(),
+                                    measureMeasress.getPkpot(),
+                                    measureMeasress.getDltc(),
+                                    measureMeasress.getBgc(),
+                                    measureMeasress.getErr(),
+                                    measureMeasress.getBlpsx(),
+                                    measureMeasress.getBlpsy(),
+                                    measureMeasress.getBlpex(),
+                                    measureMeasress.getBlpey(),
+                                    measureMeasress.getUpdatedAt(),
+                                    measureMeasress.getCreatedAt()
+                            ));
                             measureMeasress = new MeasureMeasress();
+
                             if (timesMeasRes/9 >= numMeasres){
-                                resultRess.add(measureMeasresses);
+                                ArrayList<MeasureMeasress> measureMeasressesTemp = new ArrayList<>();
+                                measureMeasressesTemp.addAll(measureMeasresses);
+                                resultRess.add(measureMeasressesTemp);
+                                measureMeasresses.clear();
+                                timesMeasRes = -1;
                                 connectThread.writeMeasBas(rulersRes.get(0));
                                 rulersRes.remove(0);
                             }else {
@@ -1103,10 +1124,26 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             connectThread.writeLine();
                         }else if (timesMeasRes %9 == 0){
                             measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
-                            measureMeasresses.add(measureMeasress);
+                            measureMeasresses.add(new MeasureMeasress(
+                                    MainActivity.device.getId(),
+                                    measureMeasress.getName(),
+                                    measureMeasress.getPkpot(),
+                                    measureMeasress.getDltc(),
+                                    measureMeasress.getBgc(),
+                                    measureMeasress.getErr(),
+                                    measureMeasress.getBlpsx(),
+                                    measureMeasress.getBlpsy(),
+                                    measureMeasress.getBlpex(),
+                                    measureMeasress.getBlpey(),
+                                    measureMeasress.getUpdatedAt(),
+                                    measureMeasress.getCreatedAt()
+                            ));
                             measureMeasress = new MeasureMeasress();
                             if (timesMeasRes/9 >= numMeasres){
-                                resultRess.add(measureMeasresses);
+                                ArrayList<MeasureMeasress> measureMeasressesTemp = new ArrayList<>();
+                                measureMeasressesTemp.addAll(measureMeasresses);
+                                resultRess.add(measureMeasressesTemp);
+                                measureMeasresses.clear();
                                 resultStart++;
                                 connectThread.writeMeasBas(rulersDet.get(0));
                                 Protector.appendLog(false, rulersDet.get(0));
