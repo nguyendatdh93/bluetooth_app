@@ -146,7 +146,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
     private int posReadDet = 0;
 
-    private int timesMeasBas = 0 , timesMeasPara = 0 , timesMeasRes = 0 , timesDet = 0;
+    private int timesMeasBas = 0 , timesMeasPara = 0 , timesMeasRes = -1 , timesDet = 0;
     private int numMeasres = 0;
 
     private int counterStore = 0;
@@ -642,7 +642,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
                     resultStart++;
-                    for (int i = 0; i < Protector.tryParseInt(tempMsg); i++) {
+                    for (int i = 0; i < Protector.tryParseInt(tempMsg.split(",")[1]); i++) {
                         arrRules.add(i + "");
                     }
                     connectThread.writeLine();
@@ -651,12 +651,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 } else if (resultStart == 1) {
                     resultListSensorsTemp.add(new ResultListSensor(tempMsg.trim().split(",")[1] , Protector.tryParseInt(tempMsg.trim().split(",")[2])));
                     if (arrRules.size() != 0){
-                        connectThread.write("");
+                        connectThread.writeLine();
                         arrRules.remove(0);
                     }else {
                         resultStart++;
 
-                        for (int i = 0; i < resultListSensorsTemp.size() - 1; i++) {
+                        for (int i = 0; i < resultListSensorsTemp.size(); i++) {
                             boolean isHave = false;
                             for (int j = 0; j < arrMeasurePage.size(); j++) {
                                 if (resultListSensorsTemp.get(i).getDatetime().replace("/", "-").equals(arrMeasurePage.get(j).getDatetime().replace("/", "-"))) {
@@ -796,7 +796,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             resultParas.add(measureMeasparas);
                             measureMeasparas = new MeasureMeasparas();
                             connectThread.writeMeasBas(rulersPara.get(0));
-                            rulersBas.remove(0);
+                            rulersPara.remove(0);
                         }
                     } else {
                         timesMeasPara++;
@@ -871,20 +871,17 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             resultParas.add(measureMeasparas);
                             measureMeasparas = new MeasureMeasparas();
                             resultStart++;
-                            connectThread.writeMeasBas(rulersDet.get(0));
-                            Protector.appendLog(false, rulersDet.get(0));
-                            rulersDet.remove(0);
+                            connectThread.writeMeasBas(rulersRes.get(0));
+                            Protector.appendLog(false, rulersRes.get(0));
+                            rulersRes.remove(0);
                         }
                     }
                 } else if (resultStart == 4) {
                     if (rulersRes.size() != 0) {
-                        if (timesMeasRes != 0){
-                            timesMeasRes++;
-                        }
+                        timesMeasRes++;
                         if (timesMeasRes == 0){
                             numMeasres = Protector.tryParseInt(tempMsg.split(",")[1]);
                             connectThread.writeLine();
-                            timesMeasRes++;
                         }else if (timesMeasRes %9 == 1){
                             measureMeasress.setName(tempMsg.split(",")[1]);
                             connectThread.writeLine();
@@ -913,9 +910,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
                             measureMeasresses.add(measureMeasress);
                             measureMeasparas = new MeasureMeasparas();
-                            if (timesMeasPara >= numMeasres){
+                            if (timesMeasPara/9 >= numMeasres){
                                 resultRess.add(measureMeasresses);
-                                timesMeasRes = 0;
                                 connectThread.writeMeasBas(rulersRes.get(0));
                                 rulersRes.remove(0);
                             }else {
@@ -923,13 +919,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             }
                         }
                     } else {
-                        if (timesMeasRes != 0){
-                            timesMeasRes++;
-                        }
+                        timesMeasRes++;
                         if (timesMeasRes == 0){
                             numMeasres = Protector.tryParseInt(tempMsg.split(",")[1]);
                             connectThread.writeLine();
-                            timesMeasRes++;
                         }else if (timesMeasRes %9 == 1){
                             measureMeasress.setName(tempMsg.split(",")[1]);
                             connectThread.writeLine();
@@ -958,9 +951,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             measureMeasress.setErr(Protector.tryParseInt(tempMsg.split(",")[1]));
                             measureMeasresses.add(measureMeasress);
                             measureMeasparas = new MeasureMeasparas();
-                            if (timesMeasPara >= numMeasres){
+                            if (timesMeasPara/9 >= numMeasres){
                                 resultRess.add(measureMeasresses);
-                                timesMeasRes = 0;
                                 resultStart++;
                                 connectThread.writeMeasBas(rulersDet.get(0));
                                 Protector.appendLog(false, rulersDet.get(0));
@@ -976,7 +968,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         if (timesDet %3 == 1){
                             noDet = tempMsg.split(",")[1];
                             connectThread.writeLine();
-                        }else if (timesMeasRes %3 == 2){
+                        }else if (timesDet %3 == 2){
                             timesDet = 0;
                             String arrHex = tempMsg;
 
@@ -1027,7 +1019,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         if (timesDet %3 == 1){
                             noDet = tempMsg.split(",")[1];
                             connectThread.writeLine();
-                        }else if (timesMeasRes %3 == 2){
+                        }else if (timesDet %3 == 2){
                             timesDet = 0;
                             String arrHex = tempMsg;
 
@@ -1091,7 +1083,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     posReadDet = 0;
                     timesMeasBas = 0 ;
                     timesMeasPara = 0 ;
-                    timesMeasRes = 0 ;
+                    timesMeasRes = -1 ;
                     timesDet = 0;
                     numMeasres = 0;
                     counterStore = 0;
