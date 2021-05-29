@@ -37,8 +37,8 @@ public class AdapteRCVGraph extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ViewHodler viewHodler = (ViewHodler) holder;
 
         viewHodler.txtName.setText(arrItem.get(position).getName());
-        viewHodler.txtResult.setText(String.valueOf(arrItem.get(position).getResult()));
-        viewHodler.txtLevel.setText(String.valueOf(arrItem.get(position).getLevel()));
+        viewHodler.txtResult.setText(String.valueOf(Math.round(arrItem.get(position).getResult())));
+        viewHodler.txtLevel.setText(String.valueOf(Math.round(arrItem.get(position).getLevel())));
         viewHodler.txtDescription.setText(arrItem.get(position).getDescription());
     }
 

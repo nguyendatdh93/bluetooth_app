@@ -545,9 +545,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
             for (int i = 0; sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
                 arrResult.add(new Result(sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
-                        String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot()),
-                        String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()),
-                        String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getBgc()),
+                        String.valueOf(Math.round(sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot())),
+                        String.valueOf(Math.round(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc())),
+                        String.valueOf(Math.round(sensorMeasureExport.getMeasureMeasresses().get(i).getBgc())),
                         String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getErr())
                 ));
             }
