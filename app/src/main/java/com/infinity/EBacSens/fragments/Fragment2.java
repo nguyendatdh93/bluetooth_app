@@ -271,8 +271,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 arrResults.add(tempMsg);
                 if (arrRules.size() == 0) {
                     edtNameMeasure.setText(arrResults.get(0));
-                    //edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
-                    edtDatetime.setText(arrResults.get(1).replace("/" , "-"));
+                    edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
                     edtPeakMode.setText(arrResults.get(2));
                     edtPowerOffMin.setText(arrResults.get(3));
                     cancelDialogProcessing();
@@ -291,7 +290,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 arrRules.clear();
                 arrResults.clear();
                 arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString() : "R,IDNAME") + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME," + edtDatetime.getText().toString().replace("-", "/") : "R,DATETIME") + "");
+                arrRules.add("*" + (statusButton == 1 ? "W,DATETIME," + edtDatetime.getText().toString().replace("-", " ").replace(" " , "").replace(":","").replace("/","") : "R,DATETIME") + "");
                 arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE," + edtPeakMode.getText().toString() : "R,PEAKMODE  ") + "");
                 arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN," + edtPowerOffMin.getText().toString() : "R,POWOFFMIN") + "");
                 if (statusButton == 1) {
