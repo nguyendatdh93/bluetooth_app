@@ -447,16 +447,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                         data.add(new String[]{sensorMeasure.getMeasureMeasdets().get(i).getNo(), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltae()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltai()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEb()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getIb()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEf()), String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).get_if())});
                                     }
 
-                                    for (int i = 0; i < sensorMeasure.getMeasureMeasdets().size(); i++) {
-                                        data.add(new String[]{String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getNo()),
-                                                String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltae()),
-                                                String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getDeltai()),
-                                                String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEb()),
-                                                String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getIb()),
-                                                String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).getEf()),
-                                                String.valueOf(sensorMeasure.getMeasureMeasdets().get(i).get_if())});
-                                    }
-
                                     for (int i = 0; i < data.size(); i++) {
                                         writer.writeNext(data.get(i));
                                         int percent = i * 100 / data.size();
