@@ -24,7 +24,7 @@
     <string name="communication_settings" translatable="false">通信設定</string>
     <string name="measuring_instrument_settings" translatable="false">計測器設定</string>
     <string name="measurement_settings" translatable="false">測定設定</string>
-    <string name="result" translatable="false">結果</string>
+    <string name="result" translatable="false">詳細な結果</string>
     <string name="com_port_used" translatable="false">使用Comポート</string>
     <string name="connection_test" translatable="false">接続テスト</string>
     <string name="connection_test_success" translatable="false">「ポートのオープンに成功しました。」</string>
@@ -68,8 +68,8 @@
     <string name="e3_baseline_search_start_potential" translatable="false">E3 ベースライン検索開始電位</string>
     <string name="e4_baseline_search_start_potential" translatable="false">E4 ベースライン検索開始電位</string>
     <string name="location_selectbox_up_down" translatable="false">ピーク位置（selectbox: 上、下）</string>
-    <string name="list" translatable="false">一覧</string>
-    <string name="graph" translatable="false">グラフ</string>
+    <string name="list" translatable="false">結果一覧</string>
+    <string name="graph" translatable="false">結果</string>
     <string name="latest_data_update" translatable="false">最新データ更新</string>
     <string name="baseline_display" translatable="false">ベースライン表示</string>
     <string name="measurement_date_and_time" translatable="false">測定日時:</string>
