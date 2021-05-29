@@ -8,10 +8,16 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+
     <string-array name="arrCrng" translatable="false">
         <item>3mA</item>
         <item>300uA</item>
         <item>30uA</item>
+    </string-array>
+
+    <string-array name="arrPkp" translatable="false">
+        <item>上</item>
+        <item>下</item>
     </string-array>
 
     <string name="list_of_measuring_instruments" translatable="false">計測器一覧</string>

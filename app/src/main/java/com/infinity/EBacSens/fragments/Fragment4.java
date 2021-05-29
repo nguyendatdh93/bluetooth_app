@@ -385,7 +385,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                         data.add(new String[]{"E2ベースライン検索開始電位", String.valueOf(sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getE2())});
                                         data.add(new String[]{"E3ベースライン検索終了電位", String.valueOf(sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getE3())});
                                         data.add(new String[]{"E4ベースライン検索終了電位", String.valueOf(sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getE4())});
-                                        data.add(new String[]{"ピーク位置", String.valueOf(sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getPkp())});
+                                        data.add(new String[]{"ピーク位置", sensorMeasure.getMeasureMeasparas().getArrBac().get(i).getPkp() == 0 ? "上" : "下"});
                                     }
                                     data.add(new String[]{});
 
@@ -643,12 +643,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrResults.add(tempMsg);
                 if (resultStart == 0) {
                     resultStart++;
-                    for (int i = 0; i < Protector.tryParseInt(tempMsg.split(",")[1]); i++) {
+                    for (int i = 0; tempMsg.split(",").length > 1 && i <  Protector.tryParseInt(tempMsg.split(",")[1]); i++) {
                         arrRules.add(i + "");
                     }
-                    arrRules.remove(0);
-                    connectThread.writeLine();
-
+                    if (arrRules.size() > 0){
+                        arrRules.remove(0);
+                        connectThread.writeLine();
+                    }else {
+                        cancelDialogProcessing();
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
+                    }
                 } else if (resultStart == 1) {
                     resultListSensorsTemp.add(new ResultListSensor(tempMsg.trim().split(",")[1] , Protector.tryParseInt(tempMsg.trim().split(",")[2])));
                     if (arrRules.size() != 0){

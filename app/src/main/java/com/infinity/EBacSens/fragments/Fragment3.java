@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,7 +164,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 if (canChangeSpinner) {
                     arrBacSetting.clear();
                     for (int i = 0; i < Protector.tryParseInt(spnNumber.getSelectedItem().toString()); i++) {
-                        arrBacSetting.add(new BacSetting(-1, -1, "", 1, 1, 1, 1, 1, "", ""));
+                        arrBacSetting.add(new BacSetting(-1, MainActivity.device.getId(), null, 1, 1, 1, 1, 0, null, null));
                     }
                     adapteRCVBacSetting.notifyDataSetChanged();
                 } else {
@@ -351,7 +352,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         edtIfen = view.findViewById(R.id.fragment_3_edt_ifen);
 
         arrBacSetting = new ArrayList<>();
-        arrBacSetting.add(new BacSetting(-1, -1, null, 1, 1, 1, 1, 1, null, null));
+        arrBacSetting.add(new BacSetting(-1, MainActivity.device.getId(), null, 1, 1, 1, 1, 0, null, null));
         adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
 
@@ -749,31 +750,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
             if (errorSensorSetting.getErrors().getBac4e4() != null && errorSensorSetting.getErrors().getBac4e4().size() > 0) {
                 adapteRCVBacSetting.alertE4(4, errorSensorSetting.getErrors().getBac4e4().get(0));
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac0pkp() != null && errorSensorSetting.getErrors().getBac0pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(0, errorSensorSetting.getErrors().getBac0pkp().get(0));
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac1pkp() != null && errorSensorSetting.getErrors().getBac1pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(1, errorSensorSetting.getErrors().getBac1pkp().get(0));
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac2pkp() != null && errorSensorSetting.getErrors().getBac2pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(2, errorSensorSetting.getErrors().getBac2pkp().get(0));
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac3pkp() != null && errorSensorSetting.getErrors().getBac3pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(3, errorSensorSetting.getErrors().getBac3pkp().get(0));
-                return;
-            }
-
-            if (errorSensorSetting.getErrors().getBac4pkp() != null && errorSensorSetting.getErrors().getBac4pkp().size() > 0) {
-                adapteRCVBacSetting.alertSelectBox(4, errorSensorSetting.getErrors().getBac4pkp().get(0));
             }
         }
     }
@@ -833,7 +809,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         dialogYesNo.findViewById(R.id.dialog_yes_no_btn_no).setOnClickListener(v -> dialogYesNo.cancel());
         dialogYesNo.findViewById(R.id.dialog_yes_no_btn_yes).setOnClickListener(v -> {
             showDialogProcessing();
-            presenterFragment3.receivedDeleteSettingMeasure(APIUtils.token, MainActivity.device.getId(), position);
+            presenterFragment3.receivedDeleteSettingMeasure(APIUtils.token, arrSensorSetting.get(position).getId(), position);
         });
 
         dialogYesNo.show();

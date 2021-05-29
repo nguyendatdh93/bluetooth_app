@@ -6,7 +6,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,8 +36,6 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     private String errorE3;
     private boolean alertE4 = false;
     private String errorE4;
-    private boolean alertSelectBox = false;
-    private String errorSelectBox;
 
     public AdapteRCVBacSetting(Context context, ArrayList<BacSetting> arrItem) {
         this.arrItem = arrItem;
@@ -58,7 +59,6 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHodler.edtE2.setText(String.valueOf(arrItem.get(position).getE2()));
         viewHodler.edtE3.setText(String.valueOf(arrItem.get(position).getE3()));
         viewHodler.edtE4.setText(String.valueOf(arrItem.get(position).getE4()));
-        viewHodler.edtPkp.setText(String.valueOf(arrItem.get(position).getPkp()));
 
         if (alertName) {
             alertName = false;
@@ -88,12 +88,6 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
             alertE4 = false;
             viewHodler.edtE4.setError(errorE4);
             viewHodler.edtE4.requestFocus();
-        }
-
-        if (alertSelectBox) {
-            alertSelectBox = false;
-            viewHodler.edtPkp.setError(errorSelectBox);
-            viewHodler.edtPkp.requestFocus();
         }
 
         viewHodler.edtBacName.addTextChangedListener(new TextWatcher() {
@@ -191,25 +185,19 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
-        viewHodler.edtPkp.addTextChangedListener(new TextWatcher() {
+        viewHodler.acpPkp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                arrItem.get(position).setPkp(viewHodler.acpPkp.getSelectedItemPosition());
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (position < arrItem.size()) {
-                    arrItem.get(position).setPkp(Protector.tryParseInt(viewHodler.edtPkp.getText().toString()));
-                }
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
+        viewHodler.acpPkp.setSelection(arrItem.get(position).getPkp());
     }
 
     @Override
@@ -219,7 +207,8 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
     static class ViewHodler extends RecyclerView.ViewHolder {
         TextView txtIndex;
-        EditText edtE1, edtE2, edtE3, edtE4, edtPkp, edtBacName;
+        EditText edtE1, edtE2, edtE3, edtE4, edtBacName;
+        Spinner acpPkp;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
@@ -229,7 +218,7 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
             edtE2 = itemView.findViewById(R.id.item_rcv_bac_setting_edt_e2);
             edtE3 = itemView.findViewById(R.id.item_rcv_bac_setting_edt_e3);
             edtE4 = itemView.findViewById(R.id.item_rcv_bac_setting_edt_e4);
-            edtPkp = itemView.findViewById(R.id.item_rcv_bac_setting_edt_pkp);
+            acpPkp = itemView.findViewById(R.id.item_rcv_bac_setting_acp_pkp);
         }
     }
 
@@ -260,12 +249,6 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     public void alertE4(int position, String error) {
         alertE4 = true;
         errorE4 = error;
-        notifyItemChanged(position);
-    }
-
-    public void alertSelectBox(int position, String error) {
-        alertSelectBox = true;
-        errorSelectBox = error;
         notifyItemChanged(position);
     }
 }
