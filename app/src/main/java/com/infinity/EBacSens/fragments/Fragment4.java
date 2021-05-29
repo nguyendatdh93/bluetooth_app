@@ -1296,7 +1296,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                     rulersBas.clear();
 
                     resultStart = 0;
-                    arrRules.add("*LIST");
+                    arrRules.add("*LIST,4");
                     connectThread.writeList(arrRules.get(0));
                     Protector.appendLog(false, arrRules.get(0));
                     arrRules.remove(0);
