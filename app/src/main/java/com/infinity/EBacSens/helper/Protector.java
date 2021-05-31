@@ -44,7 +44,7 @@ public class Protector {
 
     public static int tryParseHex(String value) {
         try {
-            return Integer.valueOf(value,16).shortValue();
+            return Integer.valueOf(value, 16).shortValue();
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -53,7 +53,7 @@ public class Protector {
     public static ErrorSensorSetting parseErrorSensorSetting(Response<?> response) {
         Converter<ResponseBody, ErrorSensorSetting> converter = RetrofitClient.retrofit.responseBodyConverter(ErrorSensorSetting.class, new Annotation[0]);
         ErrorSensorSetting errorResponse = null;
-        if (response.errorBody() != null){
+        if (response.errorBody() != null) {
             try {
                 errorResponse = converter.convert(response.errorBody());
             } catch (IOException e) {
@@ -63,11 +63,11 @@ public class Protector {
         return errorResponse;
     }
 
-    public static void appendLog(boolean isReceive , String text) {
-        if (text != null){
-            if (isReceive){
+    public static void appendLog(boolean isReceive, String text) {
+        if (text != null) {
+            if (isReceive) {
                 text = getCurrentTime() + " Received: " + text;
-            }else {
+            } else {
                 text = getCurrentTime() + " Sent: " + text;
             }
 
@@ -100,20 +100,25 @@ public class Protector {
         }
     }
 
-    public static String formatTimeSensor(String value){
-        if (value != null && value.length() > 13){
-            return value.substring(0,4) + "-" + value.substring(4,6) + "-" + value.substring(6,8) + " " + value.substring(8,10) + ":" + value.substring(10,12) + ":" + value.substring(12,14);
+    public static String formatTimeSensor(String value) {
+        if (value != null && value.length() > 13) {
+            return value.substring(0, 4) + "-" + value.substring(4, 6) + "-" + value.substring(6, 8) + " " + value.substring(8, 10) + ":" + value.substring(10, 12) + ":" + value.substring(12, 14);
         }
         return value;
     }
 
-    public static String convertTimeZone(String time){
-        String t1 = time.substring(0,10);
-        String t2 = time.substring(11,19);
-        return t1+" "+t2;
+    public static String convertTimeZone(String time) {
+        String t1 = time.substring(0, 10);
+        String t2 = time.substring(11, 19);
+        return t1 + " " + t2;
     }
 
-    public static int HexToDecDataMeasdet(String value){
-        return Integer.valueOf(value,16).shortValue();
+    public static int HexToDecDataMeasdet(String value) {
+        return Integer.valueOf(value, 16).shortValue();
+    }
+
+    public static String intToHex(int value) {
+        String SS = String.format("%08X", value);
+        return SS.substring(SS.length() - 4);
     }
 }

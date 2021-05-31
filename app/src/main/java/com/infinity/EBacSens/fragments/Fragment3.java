@@ -77,7 +77,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
 
     private PresenterFragment3 presenterFragment3;
-    private Spinner spnNumber , spnCrgn;
+    private Spinner spnNumber, spnCrgn;
 
     // popup
     private LinearLayout containerPopup;
@@ -192,7 +192,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 edtEqp1.requestFocus();
                 return;
             }
-            if (edtEqt1.getText().toString().length() == 0  || Protector.tryParseInt(edtEqt1.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt1.getText().toString()) < 0) {
+            if (edtEqt1.getText().toString().length() == 0 || Protector.tryParseInt(edtEqt1.getText().toString()) > 60000 || Protector.tryParseInt(edtEqt1.getText().toString()) < 0) {
                 edtEqt1.setError("Error");
                 edtEqt1.requestFocus();
                 return;
@@ -277,7 +277,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 edtIben.requestFocus();
                 return;
             }
-            if (edtIfst.getText().toString().length() == 0  || Protector.tryParseInt(edtIfst.getText().toString()) > 10000 || Protector.tryParseInt(edtIfst.getText().toString()) < 0) {
+            if (edtIfst.getText().toString().length() == 0 || Protector.tryParseInt(edtIfst.getText().toString()) > 10000 || Protector.tryParseInt(edtIfst.getText().toString()) < 0) {
                 edtIfst.setError("Error");
                 edtIfst.requestFocus();
                 return;
@@ -380,10 +380,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         txtContent.setText(content);
 
         if (success) {
-            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_green));
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
         } else {
-            imgTitle.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_red));
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -439,7 +439,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     }
 
     private void showDialogProcessing() {
-        if (dialogProcessing != null){
+        if (dialogProcessing != null) {
             dialogProcessing.show();
         }
     }
@@ -862,7 +862,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(true ,tempMsg);
+                Protector.appendLog(true, tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);
@@ -1006,26 +1006,26 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         }
 
                         spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp1.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt1.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp2.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt2.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp3.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt3.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp4.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt4.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp5.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt5.setText(""+Protector.tryParseInt(arrResults.get(pos++)));
-                        edtStp.setText(arrResults.get(pos++));
-                        edtEnp.setText(arrResults.get(pos++));
-                        edtPp.setText(arrResults.get(pos++));
-                        edtDlte.setText(arrResults.get(pos++));
-                        edtPwd.setText(arrResults.get(pos++));
-                        edtPtm.setText(arrResults.get(pos++));
-                        edtIbst.setText(arrResults.get(pos++));
-                        edtIben.setText(arrResults.get(pos++));
-                        edtIfst.setText(arrResults.get(pos++));
-                        edtIfen.setText(arrResults.get(pos));
+                        edtEqp1.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt1.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp2.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt2.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp3.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt3.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp4.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt4.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqp5.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEqt5.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtStp.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtEnp.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtPp.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtDlte.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtPwd.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtPtm.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtIbst.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtIben.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtIfst.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
+                        edtIfen.setText("" + Protector.tryParseInt(arrResults.get(pos)));
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
@@ -1033,7 +1033,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(false ,arrRules.get(0));
+                        Protector.appendLog(false, arrRules.get(0));
                         arrRules.remove(0);
                     }
                 } else {
@@ -1048,7 +1048,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                             arrRules.add("*" + "R,PKP" + (i + 1) + "" + "");
                         }
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(false ,arrRules.get(0));
+                        Protector.appendLog(false, arrRules.get(0));
                         arrRules.remove(0);
                         arrResults.clear();
                     } else if (resultStart == 2) {
@@ -1090,11 +1090,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                             arrRules.add("*" + "R,IFST" + "");
                             arrRules.add("*" + "R,IFEN" + "");
                             connectThread.write(arrRules.get(0));
-                            Protector.appendLog(false ,arrRules.get(0));
+                            Protector.appendLog(false, arrRules.get(0));
                             arrRules.remove(0);
                         } else {
                             connectThread.write(arrRules.get(0));
-                            Protector.appendLog(false ,arrRules.get(0));
+                            Protector.appendLog(false, arrRules.get(0));
                             arrRules.remove(0);
                         }
                     } else if (resultStart == 3 && arrRules.size() == 0) {
@@ -1125,7 +1125,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(false ,arrRules.get(0));
+                        Protector.appendLog(false, arrRules.get(0));
                         arrRules.remove(0);
                     }
                 }
@@ -1143,43 +1143,43 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     arrRules.add("*" + (statusButton == 1 ? "W,BACS," + spnNumber.getSelectedItem().toString() : "R,BACS") + "");
                     for (int i = 0; i < arrBacSetting.size(); i++) {
                         arrRules.add("*" + (statusButton == 1 ? "W,BACNAME" + (i + 1) + "," + arrBacSetting.get(i).getBacName() : "R,BACNAME" + (i + 1) + "") + "");
-                        arrRules.add("*" + (statusButton == 1 ? "W,E1_" + (i + 1) + "," + arrBacSetting.get(i).getE1() : "R,E1_" + (i + 1) + "" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E2_" + (i + 1) + "," + arrBacSetting.get(i).getE2() : "R,E2_" + (i + 1) + "" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E3_" + (i + 1) + "," + arrBacSetting.get(i).getE3() : "R,E3_" + (i + 1) + "" + ""));
-                        arrRules.add("*" + (statusButton == 1 ? "W,E4_" + (i + 1) + "," + arrBacSetting.get(i).getE4() : "R,E4_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E1_" + (i + 1) + "," + Protector.intToHex(arrBacSetting.get(i).getE1()) : "R,E1_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E2_" + (i + 1) + "," + Protector.intToHex(arrBacSetting.get(i).getE2()) : "R,E2_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E3_" + (i + 1) + "," + Protector.intToHex(arrBacSetting.get(i).getE3()) : "R,E3_" + (i + 1) + "" + ""));
+                        arrRules.add("*" + (statusButton == 1 ? "W,E4_" + (i + 1) + "," + Protector.intToHex(arrBacSetting.get(i).getE4()) : "R,E4_" + (i + 1) + "" + ""));
                         arrRules.add("*" + (statusButton == 1 ? "W,PKP" + (i + 1) + "," + arrBacSetting.get(i).getPkp() : "R,PKP" + (i + 1) + "" + ""));
                     }
                     arrRules.add("*" + (statusButton == 1 ? "W,CRNG," + spnCrgn.getSelectedItemPosition() : "R,CRNG") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP1," + edtEqp1.getText().toString() : "R,EQP1") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT1," + edtEqt1.getText().toString() : "R,EQT1") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP2," + edtEqp2.getText().toString() : "R,EQP2") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT2," + edtEqt2.getText().toString() : "R,EQT2") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP3," + edtEqp3.getText().toString() : "R,EQP3") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT3," + edtEqt3.getText().toString() : "R,EQT3") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP4," + edtEqp4.getText().toString() : "R,EQP4") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT4," + edtEqt4.getText().toString() : "R,EQT4") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQP5," + edtEqp5.getText().toString() : "R,EQP5") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,EQT5," + edtEqt5.getText().toString() : "R,EQT5") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,STP," + edtStp.getText().toString() : "R,STP") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,ENP," + edtEnp.getText().toString() : "R,ENP") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PP," + edtPp.getText().toString() : "R,PP") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,DLTE," + edtDlte.getText().toString() : "R,DLTE") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PWD," + edtPwd.getText().toString() : "R,PWD") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,PTM," + edtPtm.getText().toString() : "R,PTM") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IBST," + edtIbst.getText().toString() : "R,IBST") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IBEN," + edtIben.getText().toString() : "R,IBEN") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IFST," + edtIfst.getText().toString() : "R,IFST") + "");
-                    arrRules.add("*" + (statusButton == 1 ? "W,IFEN," + edtIfen.getText().toString() : "R,IFEN") + "");
-                    if (statusButton == 1){
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP1," + Protector.intToHex(Protector.tryParseInt(edtEqp1.getText().toString())) : "R,EQP1") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT1," + Protector.intToHex(Protector.tryParseInt(edtEqt1.getText().toString())) : "R,EQT1") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP2," + Protector.intToHex(Protector.tryParseInt(edtEqp2.getText().toString())) : "R,EQP2") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT2," + Protector.intToHex(Protector.tryParseInt(edtEqt2.getText().toString())) : "R,EQT2") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP3," + Protector.intToHex(Protector.tryParseInt(edtEqp3.getText().toString())) : "R,EQP3") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT3," + Protector.intToHex(Protector.tryParseInt(edtEqt3.getText().toString())) : "R,EQT3") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP4," + Protector.intToHex(Protector.tryParseInt(edtEqp4.getText().toString())) : "R,EQP4") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT4," + Protector.intToHex(Protector.tryParseInt(edtEqt4.getText().toString())) : "R,EQT4") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQP5," + Protector.intToHex(Protector.tryParseInt(edtEqp5.getText().toString())) : "R,EQP5") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,EQT5," + Protector.intToHex(Protector.tryParseInt(edtEqt5.getText().toString())) : "R,EQT5") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,STP," + Protector.intToHex(Protector.tryParseInt(edtStp.getText().toString())) : "R,STP") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,ENP," + Protector.intToHex(Protector.tryParseInt(edtEnp.getText().toString())) : "R,ENP") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PP," + Protector.intToHex(Protector.tryParseInt(edtPp.getText().toString())) : "R,PP") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,DLTE," + Protector.intToHex(Protector.tryParseInt(edtDlte.getText().toString())) : "R,DLTE") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PWD," + Protector.intToHex(Protector.tryParseInt(edtPwd.getText().toString())) : "R,PWD") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,PTM," + Protector.intToHex(Protector.tryParseInt(edtPtm.getText().toString())) : "R,PTM") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IBST," + Protector.intToHex(Protector.tryParseInt(edtIbst.getText().toString())) : "R,IBST") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IBEN," + Protector.intToHex(Protector.tryParseInt(edtIben.getText().toString())) : "R,IBEN") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IFST," + Protector.intToHex(Protector.tryParseInt(edtIfst.getText().toString())) : "R,IFST") + "");
+                    arrRules.add("*" + (statusButton == 1 ? "W,IFEN," + Protector.intToHex(Protector.tryParseInt(edtIfen.getText().toString())) : "R,IFEN") + "");
+                    if (statusButton == 1) {
                         arrRules.add("*W,SAVE");
                     }
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(false ,arrRules.get(0));
+                    Protector.appendLog(false, arrRules.get(0));
                     arrRules.remove(0);
                 } else {
                     arrRules.add("*R,BACS");
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(false ,arrRules.get(0));
+                    Protector.appendLog(false, arrRules.get(0));
                     arrRules.remove(0);
                 }
 
