@@ -20,6 +20,14 @@ import retrofit2.Converter;
 import retrofit2.Response;
 
 public class Protector {
+
+
+    public static String getCurrentTimeSensor() {
+        DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss", Locale.US);
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
     public static String getCurrentTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         Date date = new Date();
@@ -101,8 +109,8 @@ public class Protector {
     }
 
     public static String formatTimeSensor(String value) {
-        if (value != null && value.length() > 13) {
-            return value.substring(0, 4) + "-" + value.substring(4, 6) + "-" + value.substring(6, 8) + " " + value.substring(8, 10) + ":" + value.substring(10, 12) + ":" + value.substring(12, 14);
+        if (value != null && value.length() >= 12) {
+            return value.substring(0, 2) + "-" + value.substring(2, 4) + "-" + value.substring(4, 6) + " " + value.substring(6, 8) + ":" + value.substring(8, 10) + ":" + value.substring(10, 12);
         }
         return value;
     }

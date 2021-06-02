@@ -870,7 +870,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     if (arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
-                        spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
+                        spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)) - 1);
                         canChangeSpinner = false;
 
                         if (arrBacSetting.size() == 1) {
@@ -878,154 +878,154 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         } else if (arrBacSetting.size() == 2) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         } else if (arrBacSetting.size() == 3) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         } else if (arrBacSetting.size() == 4) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         } else if (arrBacSetting.size() == 5) {
                             arrBacSetting.clear();
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                             arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     arrResults.get(pos++),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
-                                    Protector.tryParseInt(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
+                                    Protector.tryParseHex(arrResults.get(pos++)),
                                     Protector.tryParseInt(arrResults.get(pos++)), "", ""));
                         }
 
                         spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp1.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt1.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp2.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt2.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp3.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt3.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp4.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt4.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp5.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqt5.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtStp.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEnp.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtPp.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtDlte.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtPwd.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtPtm.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtIbst.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtIben.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtIfst.setText("" + Protector.tryParseInt(arrResults.get(pos++)));
-                        edtIfen.setText("" + Protector.tryParseInt(arrResults.get(pos)));
+                        edtEqp1.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt1.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp2.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt2.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp3.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt3.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp4.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt4.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp5.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt5.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtStp.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEnp.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPp.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtDlte.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPwd.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPtm.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIbst.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIben.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIfst.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIfen.setText("" + Protector.tryParseHex(arrResults.get(pos)));
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
@@ -1059,10 +1059,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                 arrBacSetting.add(new BacSetting(MainActivity.device.getId(),
                                         MainActivity.device.getId(),
                                         arrResults.get(i),
-                                        Protector.tryParseInt(arrResults.get(i + 1)),
-                                        Protector.tryParseInt(arrResults.get(i + 2)),
-                                        Protector.tryParseInt(arrResults.get(i + 3)),
-                                        Protector.tryParseInt(arrResults.get(i + 4)),
+                                        Protector.tryParseHex(arrResults.get(i + 1)),
+                                        Protector.tryParseHex(arrResults.get(i + 2)),
+                                        Protector.tryParseHex(arrResults.get(i + 3)),
+                                        Protector.tryParseHex(arrResults.get(i + 4)),
                                         Protector.tryParseInt(arrResults.get(i + 5)), Protector.getCurrentTime(), Protector.getCurrentTime()));
                             }
                             adapteRCVBacSetting.notifyDataSetChanged();
@@ -1100,27 +1100,27 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     } else if (resultStart == 3 && arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
-                        spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
-                        edtEqp1.setText(arrResults.get(pos++));
-                        edtEqt1.setText(arrResults.get(pos++));
-                        edtEqp2.setText(arrResults.get(pos++));
-                        edtEqt2.setText(arrResults.get(pos++));
-                        edtEqp3.setText(arrResults.get(pos++));
-                        edtEqt3.setText(arrResults.get(pos++));
-                        edtEqp4.setText(arrResults.get(pos++));
-                        edtEqt4.setText(arrResults.get(pos++));
-                        edtEqp5.setText(arrResults.get(pos++));
-                        edtEqt5.setText(arrResults.get(pos++));
-                        edtStp.setText(arrResults.get(pos++));
-                        edtEnp.setText(arrResults.get(pos++));
-                        edtPp.setText(arrResults.get(pos++));
-                        edtDlte.setText(arrResults.get(pos++));
-                        edtPwd.setText(arrResults.get(pos++));
-                        edtPtm.setText(arrResults.get(pos++));
-                        edtIbst.setText(arrResults.get(pos++));
-                        edtIben.setText(arrResults.get(pos++));
-                        edtIfst.setText(arrResults.get(pos++));
-                        edtIfen.setText(arrResults.get(pos));
+                        spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)) - 1);
+                        edtEqp1.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt1.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp2.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt2.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp3.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt3.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp4.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt4.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp5.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt5.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtStp.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEnp.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPp.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtDlte.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPwd.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPtm.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIbst.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIben.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIfst.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIfen.setText(""+Protector.tryParseHex(arrResults.get(pos)));
                         cancelDialogProcessing();
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {

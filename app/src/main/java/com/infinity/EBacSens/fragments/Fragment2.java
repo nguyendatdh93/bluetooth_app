@@ -142,7 +142,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
             }
         });
 
-        txtDatetime.setOnClickListener(v -> edtDatetime.setText(Protector.getCurrentTime()));
+        txtDatetime.setOnClickListener(v -> edtDatetime.setText(Protector.getCurrentTimeSensor()));
     }
 
     private void addController() {
@@ -155,7 +155,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
         edtPeakMode = view.findViewById(R.id.fragment_2_edt_peakmode);
         btnWrite = view.findViewById(R.id.fragment_2_btn_write);
         btnRead = view.findViewById(R.id.fragment_2_btn_read);
-        edtDatetime.setText(Protector.getCurrentTime());
+        edtDatetime.setText(Protector.getCurrentTimeSensor());
 
         arrRules = new ArrayList<>();
         arrResults = new ArrayList<>();
@@ -271,9 +271,9 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 arrResults.add(tempMsg);
                 if (arrRules.size() == 0) {
                     edtNameMeasure.setText(arrResults.get(0));
-                    edtDatetime.setText(Protector.formatTimeSensor(arrResults.get(1)));
-                    edtPeakMode.setText(arrResults.get(2));
-                    edtPowerOffMin.setText(arrResults.get(3));
+                    edtDatetime.setText(""+Protector.formatTimeSensor(arrResults.get(1)));
+                    edtPeakMode.setText(""+Protector.tryParseInt(arrResults.get(2)));
+                    edtPowerOffMin.setText(""+Protector.tryParseInt(arrResults.get(3)));
                     cancelDialogProcessing();
                     showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                 } else {
@@ -291,7 +291,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 arrResults.clear();
                 arrRules.add("*" + (statusButton == 1 ? "W,IDNAME," + edtNameMeasure.getText().toString() : "R,IDNAME") + "");
                 arrRules.add("*" + (statusButton == 1 ? "W,DATETIME," + edtDatetime.getText().toString().replace("-", " ").replace(" " , "").replace(":","").replace("/","") : "R,DATETIME") + "");
-                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE," + edtPeakMode.getText().toString() : "R,PEAKMODE  ") + "");
+                arrRules.add("*" + (statusButton == 1 ? "W,PEAKMODE," + edtPeakMode.getText().toString() : "R,PEAKMODE") + "");
                 arrRules.add("*" + (statusButton == 1 ? "W,POWOFFMIN," + edtPowerOffMin.getText().toString() : "R,POWOFFMIN") + "");
                 if (statusButton == 1) {
                     arrRules.add("*W,SAVE");
