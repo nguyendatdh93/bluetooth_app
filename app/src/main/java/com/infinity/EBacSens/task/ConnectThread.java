@@ -96,17 +96,16 @@ public class ConnectThread extends Thread {
                     String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
                     result.append(str);
 
-                    if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
-                        if (result.toString().contains("*ERR")){
-                            Message readMsg = handler.obtainMessage(
-                                    MessageConstants.MESSAGE_ERR, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
-                                    result.toString().getBytes());
-                            readMsg.sendToTarget();
-                            numBytes = 0;
-
-                            result = new StringBuilder();
-                        }
-                    }else if (isList){
+//                    if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") && (result.toString().contains("*ERR"))){
+//                        Message readMsg = handler.obtainMessage(
+//                                MessageConstants.MESSAGE_ERR, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+//                                result.toString().getBytes());
+//                        readMsg.sendToTarget();
+//                        numBytes = 0;
+//
+//                        result = new StringBuilder();
+//                    }else
+                    if (isList){
                         if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
                             Message readMsg = handler.obtainMessage(
                                     MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
