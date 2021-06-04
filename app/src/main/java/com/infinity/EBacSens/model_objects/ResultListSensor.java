@@ -2,12 +2,7 @@ package com.infinity.EBacSens.model_objects;
 
 public class ResultListSensor {
     private String datetime;
-    private int no;
-
-    public ResultListSensor(String datetime, int no) {
-        this.datetime = datetime;
-        this.no = no;
-    }
+    private String no;
 
     public String getDatetime() {
         return datetime;
@@ -17,11 +12,16 @@ public class ResultListSensor {
         this.datetime = datetime;
     }
 
-    public int getNo() {
+    public String getNo() {
         return no;
     }
 
-    public void setNo(int no) {
+    public void setNo(String no) {
+        this.no = no;
+    }
+
+    public ResultListSensor(String datetime, String no) {
+        this.datetime = datetime;
         this.no = no;
     }
 }
