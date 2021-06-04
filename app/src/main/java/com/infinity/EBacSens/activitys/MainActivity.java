@@ -45,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         addController();
         addEvents();
+        //test
+        MainActivity.device= new SensorInfor(
+                3,"98:D3:81:FD:78:2E","HC-05",1,1,null,null,null
+        );
+        device.setStatusConnect(1);
+
+        viewPager.setCurrentItem(4);
     }
 
     private void addEvents() {

@@ -129,4 +129,12 @@ public class Protector {
         String SS = String.format("%08X", value);
         return SS.substring(SS.length() - 4);
     }
+
+    public static String leftTrim(String s){
+        int i = 0;
+        while (i < s.length() && (Character.isWhitespace(s.charAt(i))) || (s.charAt(i)+"").equals("\r") ){
+            i++;
+        }
+        return s.substring(i);
+    }
 }

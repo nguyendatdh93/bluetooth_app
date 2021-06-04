@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.views.ViewConnectThread;
 
 import java.io.IOException;
@@ -20,8 +21,12 @@ public class ConnectThread extends Thread {
 
     private final Handler handler; // handler that gets info from Bluetooth service
 
-    private boolean isMeasBas = false;
     private boolean isList = false;
+    private boolean isMeasBas = false;
+    private boolean isMeasPara = false;
+    private boolean isMeasRes = false;
+    private boolean isMeasDet = false;
+    private int lengthRes = 0;
 
     private interface MessageConstants {
         int MESSAGE_READ = 4;
@@ -95,34 +100,139 @@ public class ConnectThread extends Thread {
 
                     String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
                     result.append(str);
-                    if(result.length() >= 5 && result.substring(result.length() - 4 , result.length()).contains("\r")){
+
+                    if(result.length() >= 5 && (result.substring(result.length() - 1 , result.length()).contains("\r") || result.substring(result.length() - 1 , result.length()).contains("\n"))){
                         if ((result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")) && (result.toString().contains("*ERR"))){
                             Message readMsg = handler.obtainMessage(
                                     MessageConstants.MESSAGE_ERR, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                     result.toString().getBytes());
                             readMsg.sendToTarget();
                             numBytes = 0;
-
+                            Log.e("AAAAERR" , result.toString());
                             result = new StringBuilder();
                         }else if (isList){
                             if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
-                                Message readMsg = handler.obtainMessage(
-                                        MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
-                                        result.toString().getBytes());
-                                readMsg.sendToTarget();
-                                numBytes = 0;
+                                String[] values = new String[0];
+                                String tempMsg = result.toString();
+                                tempMsg = tempMsg.trim();
+                                if (tempMsg.contains("[CR]")) {
+                                    values = tempMsg.split("[CR]");
+                                } else if (tempMsg.contains("\n")) {
+                                    values = tempMsg.split("\n");
+                                } else if (tempMsg.contains("\r")) {
+                                    values = tempMsg.split("\r");
+                                } else if (tempMsg.contains("\r\n")) {
+                                    values = tempMsg.split("\r\n");
+                                }
+                                if (Protector.tryParseInt(values[0].split(",")[1]) == values.length-1){
+                                    Log.e("AAAA" , result.toString());
+                                    Message readMsg = handler.obtainMessage(
+                                            MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                            result.toString().getBytes());
+                                    readMsg.sendToTarget();
+                                    numBytes = 0;
 
-                                result = new StringBuilder();
+                                    result = new StringBuilder();
+                                }
                             }
                         }else if (isMeasBas){
                             if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
-                                Message readMsg = handler.obtainMessage(
-                                        MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
-                                        result.toString().getBytes());
-                                readMsg.sendToTarget();
-                                numBytes = 0;
+                                String[] values = new String[0];
+                                String tempMsg = result.toString();
+                                tempMsg = tempMsg.trim();
+                                if (tempMsg.contains("[CR]")) {
+                                    values = tempMsg.split("[CR]");
+                                } else if (tempMsg.contains("\n")) {
+                                    values = tempMsg.split("\n");
+                                } else if (tempMsg.contains("\r")) {
+                                    values = tempMsg.split("\r");
+                                } else if (tempMsg.contains("\r\n")) {
+                                    values = tempMsg.split("\r\n");
+                                }
+                                if (values.length >= 3){
+                                    Message readMsg = handler.obtainMessage(
+                                            MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                            result.toString().getBytes());
+                                    readMsg.sendToTarget();
+                                    numBytes = 0;
 
-                                result = new StringBuilder();
+                                    result = new StringBuilder();
+                                }
+                            }
+                        }else if (isMeasPara){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                                String[] values = new String[0];
+                                String tempMsg = result.toString();
+                                tempMsg = tempMsg.trim();
+                                if (tempMsg.contains("[CR]")) {
+                                    values = tempMsg.split("[CR]");
+                                } else if (tempMsg.contains("\n")) {
+                                    values = tempMsg.split("\n");
+                                } else if (tempMsg.contains("\r")) {
+                                    values = tempMsg.split("\r");
+                                } else if (tempMsg.contains("\r\n")) {
+                                    values = tempMsg.split("\r\n");
+                                }
+                                if (values.length >= 23 && values.length >= (23 + Protector.tryParseInt(values[1].split(",")[1])*6)){
+                                    Log.e("AAAA" , (23 + Protector.tryParseInt(values[1].split(",")[1])*6)+"");
+                                    Message readMsg = handler.obtainMessage(
+                                            MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                            result.toString().getBytes());
+                                    readMsg.sendToTarget();
+                                    numBytes = 0;
+
+                                    result = new StringBuilder();
+                                }
+                            }
+                        }else if (isMeasRes){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                                String[] values = new String[0];
+                                String tempMsg = result.toString();
+                                tempMsg = tempMsg.trim();
+                                if (tempMsg.contains("[CR]")) {
+                                    values = tempMsg.split("[CR]");
+                                } else if (tempMsg.contains("\n")) {
+                                    values = tempMsg.split("\n");
+                                } else if (tempMsg.contains("\r")) {
+                                    values = tempMsg.split("\r");
+                                } else if (tempMsg.contains("\r\n")) {
+                                    values = tempMsg.split("\r\n");
+                                }
+
+                                if (values.length >= lengthRes*9){
+                                    Message readMsg = handler.obtainMessage(
+                                            MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                            result.toString().getBytes());
+                                    readMsg.sendToTarget();
+                                    numBytes = 0;
+
+                                    result = new StringBuilder();
+                                }
+                            }
+                        }else if (isMeasDet){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                                String[] values = new String[0];
+                                String tempMsg = result.toString();
+                                tempMsg = tempMsg.trim();
+                                if (tempMsg.contains("[CR]")) {
+                                    values = tempMsg.split("[CR]");
+                                } else if (tempMsg.contains("\n")) {
+                                    values = tempMsg.split("\n");
+                                } else if (tempMsg.contains("\r")) {
+                                    values = tempMsg.split("\r");
+                                } else if (tempMsg.contains("\r\n")) {
+                                    values = tempMsg.split("\r\n");
+                                }
+
+                                if (values.length >= 2 ){
+                                    Message readMsg = handler.obtainMessage(
+                                            MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                            result.toString().getBytes());
+                                    readMsg.sendToTarget();
+                                    numBytes = 0;
+
+                                    result = new StringBuilder();
+                                }
                             }
                         }else {
                             if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
@@ -163,6 +273,9 @@ public class ConnectThread extends Thread {
     public void write(String value) {
         this.isMeasBas = false;
         this.isList = false;
+        this.isMeasPara = false;
+        this.isMeasRes = false;
+        this.isMeasDet = false;
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -173,6 +286,10 @@ public class ConnectThread extends Thread {
 
     public void writeMeasBas(String value) {
         this.isMeasBas = true;
+        this.isList = false;
+        this.isMeasPara = false;
+        this.isMeasRes = false;
+        this.isMeasDet = false;
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -184,6 +301,52 @@ public class ConnectThread extends Thread {
     public void writeList(String value) {
         this.isList = true;
         this.isMeasBas = false;
+        this.isMeasRes = false;
+        this.isMeasPara = false;
+        this.isMeasDet = false;
+        try {
+            value += "\r";
+            mmOutStream.write(value.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writePara(String value) {
+        this.isList = false;
+        this.isMeasBas = false;
+        this.isMeasRes = false;
+        this.isMeasDet = false;
+        this.isMeasPara = true;
+        try {
+            value += "\r";
+            mmOutStream.write(value.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeRes(String value , int lengthRes) {
+        this.isList = false;
+        this.isMeasBas = false;
+        this.isMeasPara = false;
+        this.isMeasDet = false;
+        this.isMeasRes = true;
+        this.lengthRes = lengthRes;
+        try {
+            value += "\r";
+            mmOutStream.write(value.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeDet(String value) {
+        this.isList = false;
+        this.isMeasBas = false;
+        this.isMeasPara = false;
+        this.isMeasRes = false;
+        this.isMeasDet = true;
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());

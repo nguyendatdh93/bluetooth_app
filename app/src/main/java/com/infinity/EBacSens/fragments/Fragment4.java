@@ -732,7 +732,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 "",
                                 ""));
 
-                        connectThread.writeMeasBas(rulersPara.get(0));
+                        connectThread.writePara(rulersPara.get(0));
                         Protector.appendLog(false, rulersPara.get(0));
                         rulersPara.remove(0);
 
@@ -799,7 +799,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         resultParas.add(measureMeasparas);
 
 
-                        connectThread.writeMeasBas(rulersPara.get(0));
+                        connectThread.writePara(rulersPara.get(0));
                         rulersPara.remove(0);
 
                     } else {
@@ -864,7 +864,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         resultParas.add(measureMeasparas);
 
-                        connectThread.writeMeasBas(rulersRes.get(0));
+                        connectThread.writeRes(rulersRes.get(0) , resultParas.get(posReadDet).getBacs());
                         Protector.appendLog(false, rulersRes.get(0));
                         rulersRes.remove(0);
                     }
@@ -904,7 +904,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         resultRess.add(measureMeasresses);
 
-                        connectThread.writeMeasBas(rulersRes.get(0));
+                        connectThread.writeRes(rulersRes.get(0) , resultParas.get(posReadDet).getBacs());
                         rulersRes.remove(0);
                     } else {
                         resultStart++;
@@ -943,7 +943,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         resultRess.add(measureMeasresses);
 
-                        connectThread.writeMeasBas(rulersDet.get(0));
+                        connectThread.writeDet(rulersDet.get(0));
                         Protector.appendLog(false, rulersDet.get(0));
                         rulersDet.remove(0);
                     }
@@ -999,7 +999,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         }
                         posReadDet++;
 
-                        connectThread.writeMeasBas(rulersDet.get(0));
+                        connectThread.writeDet(rulersDet.get(0));
                         Protector.appendLog(false, rulersDet.get(0));
                         rulersDet.remove(0);
                     } else {

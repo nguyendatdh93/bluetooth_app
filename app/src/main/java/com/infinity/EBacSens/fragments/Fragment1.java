@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
+import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
 
@@ -42,6 +43,7 @@ import static com.infinity.EBacSens.activitys.MainActivity.STATE_CONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
+import static com.infinity.EBacSens.activitys.MainActivity.device;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
