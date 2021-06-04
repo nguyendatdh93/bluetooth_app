@@ -28,18 +28,16 @@
         <activity android:name=".activitys.ListDeviceActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activitys.MainActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".activitys.SplashActivity"
+            android:theme="@style/SplashscreenTheme"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activitys.SplashActivity"
-            android:theme="@style/SplashscreenTheme"
-            android:configChanges="orientation|screenSize">
-
         </activity>
 
         <provider
