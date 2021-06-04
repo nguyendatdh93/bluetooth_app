@@ -335,7 +335,7 @@ public class MeasureMeasparas {
         this.arrBac = arrBac;
     }
 
-    public MeasureMeasparas(int id, String setname, int bacs, int crng, int eqp1, int eqt1, int eqp2, int eqt2, int eqp3, int eqt3, int eqp4, int eqt4, int eqp5, int eqt5, int stp, int enp, int pp, int dlte, int pwd, int ptm, int ibst, int iben, int ifst, int ifen, String updatedAt, String createdAt, ArrayList<BacSetting> arrBac) {
+    public  MeasureMeasparas(int id, String setname, int bacs, int crng, int eqp1, int eqt1, int eqp2, int eqt2, int eqp3, int eqt3, int eqp4, int eqt4, int eqp5, int eqt5, int stp, int enp, int pp, int dlte, int pwd, int ptm, int ibst, int iben, int ifst, int ifen, String updatedAt, String createdAt, ArrayList<BacSetting> arrBac) {
         this.id = id;
         this.setname = setname;
         this.bacs = bacs;

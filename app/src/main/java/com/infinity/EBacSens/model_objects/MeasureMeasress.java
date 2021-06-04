@@ -15,19 +15,19 @@ public class MeasureMeasress {
 
     @SerializedName("pkpot")
     @Expose
-    private float pkpot;
+    private String pkpot;
 
     @SerializedName("dltc")
     @Expose
-    private float dltc;
+    private String dltc;
 
     @SerializedName("bgc")
     @Expose
-    private float bgc;
+    private String bgc;
 
     @SerializedName("err")
     @Expose
-    private int err;
+    private String err;
 
     @SerializedName("blpsx")
     @Expose
@@ -72,35 +72,35 @@ public class MeasureMeasress {
         this.name = name;
     }
 
-    public float getPkpot() {
+    public String getPkpot() {
         return pkpot;
     }
 
-    public void setPkpot(float pkpot) {
+    public void setPkpot(String pkpot) {
         this.pkpot = pkpot;
     }
 
-    public float getDltc() {
+    public String getDltc() {
         return dltc;
     }
 
-    public void setDltc(float dltc) {
+    public void setDltc(String dltc) {
         this.dltc = dltc;
     }
 
-    public float getBgc() {
+    public String getBgc() {
         return bgc;
     }
 
-    public void setBgc(float bgc) {
+    public void setBgc(String bgc) {
         this.bgc = bgc;
     }
 
-    public int getErr() {
+    public String getErr() {
         return err;
     }
 
-    public void setErr(int err) {
+    public void setErr(String err) {
         this.err = err;
     }
 
@@ -152,7 +152,7 @@ public class MeasureMeasress {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasress(int id, String name, float pkpot, float dltc, float bgc, int err, String blpsx, String blpsy, String blpex, String blpey, String createdAt, String updatedAt) {
+    public MeasureMeasress(int id, String name, String pkpot, String dltc, String bgc, String err, String blpsx, String blpsy, String blpex, String blpey, String createdAt, String updatedAt) {
         this.id = id;
         this.name = name;
         this.pkpot = pkpot;

@@ -374,6 +374,15 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
     @Override
     public boolean handleMessage(@NonNull Message msg) {
         switch (msg.what) {
+            case 10:
+                byte[] readBuffError = (byte[]) msg.obj;
+                String tempMsgError = new String(readBuffError, 0, msg.arg1);
+                tempMsgError = tempMsgError.trim();
+                // log file
+                Protector.appendLog(true, tempMsgError);
+
+                cancelDialogProcessing();
+                showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
@@ -393,7 +402,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                         cancelDialogProcessing();
                     } else {
                         connectThread.write(arrRules.get(0));
-                        Protector.appendLog(false , arrRules.get(0));
                         arrRules.remove(0);
                     }
                 } else {
@@ -411,7 +419,6 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                     arrRules.add("*R,VER");
                     arrRules.add("*R,SER");
                     connectThread.write(arrRules.get(0));
-                    Protector.appendLog(false ,arrRules.get(0));
                     arrRules.remove(0);
                 } else {
                     containerInfor.setVisibility(View.GONE);

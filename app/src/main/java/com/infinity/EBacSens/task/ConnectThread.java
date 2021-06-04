@@ -271,6 +271,7 @@ public class ConnectThread extends Thread {
     }
 
     public void write(String value) {
+        Protector.appendLog(false , value);
         this.isMeasBas = false;
         this.isList = false;
         this.isMeasPara = false;
@@ -285,6 +286,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeMeasBas(String value) {
+        Protector.appendLog(false , value);
         this.isMeasBas = true;
         this.isList = false;
         this.isMeasPara = false;
@@ -299,6 +301,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeList(String value) {
+        Protector.appendLog(false , value);
         this.isList = true;
         this.isMeasBas = false;
         this.isMeasRes = false;
@@ -313,6 +316,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writePara(String value) {
+        Protector.appendLog(false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasRes = false;
@@ -327,6 +331,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeRes(String value , int lengthRes) {
+        Protector.appendLog(false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = false;
@@ -342,6 +347,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeDet(String value) {
+        Protector.appendLog(false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = false;
