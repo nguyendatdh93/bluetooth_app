@@ -876,7 +876,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 // result sensor
                 arrResults.add(tempMsg);
                 if (statusButton == 1) {
-                    if (arrRules.size() == 1) {
+                    if (arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)) - 1);
@@ -1038,13 +1038,18 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
-                        connectThread.writeSaveMeasure(arrRules.get(0));
-                        arrRules.remove(0);
+//                        connectThread.writeSaveMeasure(arrRules.get(0));
+//                        arrRules.remove(0);
 
 //                        cancelDialogProcessing();
 //                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
-                        connectThread.write(arrRules.get(0));
+                        if (arrRules.size() == 1){
+                            connectThread.writeSaveMeasure(arrRules.get(0));
+                        }else{
+                            connectThread.write(arrRules.get(0));
+                        }
+
                         arrRules.remove(0);
                     }
                 } else {
