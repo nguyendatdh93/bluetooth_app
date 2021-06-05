@@ -513,7 +513,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 positionCSV = 0;
                 showDialogProcessing();
                 presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
+            }else {
+                cancelDialogProcessing();
             }
+        }else {
+            cancelDialogProcessing();
         }
     }
 
