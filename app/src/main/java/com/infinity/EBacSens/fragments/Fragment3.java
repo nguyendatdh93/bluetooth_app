@@ -1041,15 +1041,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 //                        connectThread.writeSaveMeasure(arrRules.get(0));
 //                        arrRules.remove(0);
 
-//                        cancelDialogProcessing();
-//                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+                        cancelDialogProcessing();
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
-                        if (arrRules.size() == 1){
-                            connectThread.writeSaveMeasure(arrRules.get(0));
-                        }else{
-                            connectThread.write(arrRules.get(0));
-                        }
-
+                        connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
                     }
                 } else {
