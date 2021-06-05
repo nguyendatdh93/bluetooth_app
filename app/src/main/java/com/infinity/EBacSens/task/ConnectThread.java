@@ -233,7 +233,7 @@ public class ConnectThread extends Thread {
                                 }
                             }
                         }else if (isSaveMeasure){
-                            //if (result.toString().contains("*MEASUREFINISH")){
+                            if (result.toString().contains("*MEASUREFINISH")){
                                 Message readMsg = handler.obtainMessage(
                                         MessageConstants.MESSAGE_DONE_MEASURE, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                         result.toString().getBytes());
@@ -241,7 +241,7 @@ public class ConnectThread extends Thread {
 
                                 numBytes = 0;
                                 result = new StringBuilder();
-                            //}
+                            }
                         }else {
                             if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
                                 result = new StringBuilder(result.toString().replace("[CR]", "").replace("\n", "").replace("\r", "").replace("\r\n", ""));

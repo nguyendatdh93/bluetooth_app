@@ -1076,6 +1076,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                                         Protector.tryParseInt(arrResults.get(i + 5)), Protector.getCurrentTime(), Protector.getCurrentTime()));
                             }
                             adapteRCVBacSetting.notifyDataSetChanged();
+                            spnNumber.setSelection(arrBacSetting.size() - 1);
+                            canChangeSpinner = false;
                             arrResults.clear();
                             arrRules.add("*" + "R,SETNAME" + "");
                             arrRules.add("*" + "R,CRNG" + "");
@@ -1108,7 +1110,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     } else if (resultStart == 3 && arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
-                        spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)) - 1);
+                        spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
                         edtEqp1.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
                         edtEqt1.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
                         edtEqp2.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
