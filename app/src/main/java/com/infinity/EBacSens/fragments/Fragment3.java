@@ -1108,6 +1108,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                             arrRules.remove(0);
                         }
                     } else if (resultStart == 3 && arrRules.size() == 0) {
+                        resultStart++;
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)));
@@ -1134,8 +1135,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         cancelDialogProcessing();
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
-                        connectThread.write(arrRules.get(0));
-                        arrRules.remove(0);
+                        if (arrRules.size() > 0){
+                            connectThread.write(arrRules.get(0));
+                            arrRules.remove(0);
+                        }
                     }
                 }
 
