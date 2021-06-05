@@ -876,7 +876,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 // result sensor
                 arrResults.add(tempMsg);
                 if (statusButton == 1) {
-                    if (arrRules.size() == 0) {
+                    if (arrRules.size() == 1) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         spnNumber.setSelection(Protector.tryParseInt(arrResults.get(pos++)) - 1);
@@ -1038,8 +1038,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
-                        cancelDialogProcessing();
-                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+                        connectThread.writeSaveMeasure(arrRules.get(0));
+                        arrRules.remove(0);
+
+//                        cancelDialogProcessing();
+//                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
@@ -1106,26 +1109,26 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
                         spnCrgn.setSelection(Protector.tryParseInt(arrResults.get(pos++)) - 1);
-                        edtEqp1.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqt1.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqp2.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqt2.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqp3.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqt3.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqp4.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqt4.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqp5.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEqt5.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtStp.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtEnp.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtPp.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtDlte.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtPwd.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtPtm.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtIbst.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtIben.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtIfst.setText(""+Protector.tryParseHex(arrResults.get(pos++)));
-                        edtIfen.setText(""+Protector.tryParseHex(arrResults.get(pos)));
+                        edtEqp1.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt1.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp2.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt2.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp3.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt3.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp4.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt4.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqp5.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEqt5.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtStp.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtEnp.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPp.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtDlte.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPwd.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtPtm.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIbst.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIben.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIfst.setText("" + Protector.tryParseHex(arrResults.get(pos++)));
+                        edtIfen.setText("" + Protector.tryParseHex(arrResults.get(pos)));
                         cancelDialogProcessing();
                         showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                     } else {
@@ -1134,6 +1137,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     }
                 }
 
+                break;
+            case 5:
+                cancelDialogProcessing();
+                showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
                 break;
             case 2:
                 countTryConnect = 1;

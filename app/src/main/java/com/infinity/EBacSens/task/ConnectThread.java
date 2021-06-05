@@ -26,11 +26,12 @@ public class ConnectThread extends Thread {
     private boolean isMeasPara = false;
     private boolean isMeasRes = false;
     private boolean isMeasDet = false;
+    private boolean isSaveMeasure = false;
     private int lengthRes = 0;
 
     private interface MessageConstants {
         int MESSAGE_READ = 4;
-        int MESSAGE_WRITE = 5;
+        int MESSAGE_DONE_MEASURE = 5;
         int MESSAGE_TOAST = 6;
         int MESSAGE_ERR = 10;
 
@@ -108,7 +109,6 @@ public class ConnectThread extends Thread {
                                     result.toString().getBytes());
                             readMsg.sendToTarget();
                             numBytes = 0;
-                            Log.e("AAAAERR" , result.toString());
                             result = new StringBuilder();
                         }else if (isList){
                             if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
@@ -125,7 +125,6 @@ public class ConnectThread extends Thread {
                                     values = tempMsg.split("\r\n");
                                 }
                                 if (Protector.tryParseInt(values[0].split(",")[1]) == values.length-1){
-                                    Log.e("AAAA" , result.toString());
                                     Message readMsg = handler.obtainMessage(
                                             MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                             result.toString().getBytes());
@@ -174,7 +173,6 @@ public class ConnectThread extends Thread {
                                     values = tempMsg.split("\r\n");
                                 }
                                 if (values.length >= 23 && values.length >= (23 + Protector.tryParseInt(values[1].split(",")[1])*6)){
-                                    Log.e("AAAA" , (23 + Protector.tryParseInt(values[1].split(",")[1])*6)+"");
                                     Message readMsg = handler.obtainMessage(
                                             MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                             result.toString().getBytes());
@@ -234,6 +232,16 @@ public class ConnectThread extends Thread {
                                     result = new StringBuilder();
                                 }
                             }
+                        }else if (isSaveMeasure){
+                            //if (result.toString().contains("*MEASUREFINISH")){
+                                Message readMsg = handler.obtainMessage(
+                                        MessageConstants.MESSAGE_DONE_MEASURE, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                        result.toString().getBytes());
+                                readMsg.sendToTarget();
+
+                                numBytes = 0;
+                                result = new StringBuilder();
+                            //}
                         }else {
                             if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
                                 result = new StringBuilder(result.toString().replace("[CR]", "").replace("\n", "").replace("\r", "").replace("\r\n", ""));
@@ -270,6 +278,22 @@ public class ConnectThread extends Thread {
         }
     }
 
+    public void writeSaveMeasure(String value) {
+        Protector.appendLog(false , value);
+        this.isList = false;
+        this.isMeasBas = false;
+        this.isMeasPara = false;
+        this.isMeasRes = false;
+        this.isMeasDet = false;
+        this.isSaveMeasure = true;
+
+        try {
+            mmOutStream.write("\r".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void write(String value) {
         Protector.appendLog(false , value);
         this.isMeasBas = false;
@@ -277,6 +301,8 @@ public class ConnectThread extends Thread {
         this.isMeasPara = false;
         this.isMeasRes = false;
         this.isMeasDet = false;
+        this.isSaveMeasure = false;
+
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -287,11 +313,13 @@ public class ConnectThread extends Thread {
 
     public void writeMeasBas(String value) {
         Protector.appendLog(false , value);
-        this.isMeasBas = true;
         this.isList = false;
+        this.isMeasBas = true;
         this.isMeasPara = false;
         this.isMeasRes = false;
         this.isMeasDet = false;
+        this.isSaveMeasure = false;
+
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -307,6 +335,8 @@ public class ConnectThread extends Thread {
         this.isMeasRes = false;
         this.isMeasPara = false;
         this.isMeasDet = false;
+        this.isSaveMeasure = false;
+
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -319,9 +349,11 @@ public class ConnectThread extends Thread {
         Protector.appendLog(false , value);
         this.isList = false;
         this.isMeasBas = false;
+        this.isMeasPara = true;
         this.isMeasRes = false;
         this.isMeasDet = false;
-        this.isMeasPara = true;
+        this.isSaveMeasure = false;
+
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -335,9 +367,11 @@ public class ConnectThread extends Thread {
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = false;
-        this.isMeasDet = false;
         this.isMeasRes = true;
+        this.isMeasDet = false;
+        this.isSaveMeasure = false;
         this.lengthRes = lengthRes;
+
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());
@@ -353,6 +387,8 @@ public class ConnectThread extends Thread {
         this.isMeasPara = false;
         this.isMeasRes = false;
         this.isMeasDet = true;
+        this.isSaveMeasure = false;
+
         try {
             value += "\r";
             mmOutStream.write(value.getBytes());

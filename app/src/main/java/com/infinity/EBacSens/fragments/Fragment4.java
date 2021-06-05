@@ -525,7 +525,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             sensorMeasureExport = sensorMeasureDetail.getSensorMeasure();
             for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses() != null && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
                 arrGraph.add(new Graph(
-                        sensorMeasureExport.getMeasureMeasparas().getArrBac().get(i).getBacName(),
+                        sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()))),
                         level((Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot())))),
                         "ピーク高さ／ピーク電位"
@@ -534,10 +534,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
             for (int i = 0; sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
                 arrResult.add(new Result(sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
-                        String.valueOf(Math.round(Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot()))),
-                        String.valueOf(Math.round(Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()))),
-                        String.valueOf(Math.round(Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getBgc()))),
-                        String.valueOf(sensorMeasureExport.getMeasureMeasresses().get(i).getErr())
+                        sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot(),
+                        sensorMeasureExport.getMeasureMeasresses().get(i).getDltc(),
+                        sensorMeasureExport.getMeasureMeasresses().get(i).getBgc(),
+                        sensorMeasureExport.getMeasureMeasresses().get(i).getErr()
                 ));
             }
         }
