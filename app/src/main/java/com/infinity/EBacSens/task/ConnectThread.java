@@ -1,6 +1,7 @@
 package com.infinity.EBacSens.task;
 
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ConnectThread extends Thread {
 
+    private final Context context;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
     private final ViewConnectThread callback;
@@ -40,7 +42,8 @@ public class ConnectThread extends Thread {
 
     BluetoothSocket mmSocket;
 
-    public ConnectThread(BluetoothSocket socket , Handler handler , ViewConnectThread callback) {
+    public ConnectThread(Context context , BluetoothSocket socket , Handler handler , ViewConnectThread callback) {
+        this.context = context;
         this.mmSocket = socket;
         this.handler = handler;
         this.callback = callback;
@@ -279,7 +282,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeSaveMeasure(String value) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = false;
@@ -295,7 +298,7 @@ public class ConnectThread extends Thread {
     }
 
     public void write(String value) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isMeasBas = false;
         this.isList = false;
         this.isMeasPara = false;
@@ -312,7 +315,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeMeasBas(String value) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isList = false;
         this.isMeasBas = true;
         this.isMeasPara = false;
@@ -329,7 +332,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeList(String value) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isList = true;
         this.isMeasBas = false;
         this.isMeasRes = false;
@@ -346,7 +349,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writePara(String value) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = true;
@@ -363,7 +366,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeRes(String value , int lengthRes) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = false;
@@ -381,7 +384,7 @@ public class ConnectThread extends Thread {
     }
 
     public void writeDet(String value) {
-        Protector.appendLog(false , value);
+        Protector.appendLog(context,false , value);
         this.isList = false;
         this.isMeasBas = false;
         this.isMeasPara = false;

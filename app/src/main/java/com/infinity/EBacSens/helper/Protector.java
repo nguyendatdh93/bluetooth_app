@@ -1,12 +1,21 @@
 package com.infinity.EBacSens.helper;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.storage.StorageManager;
+import android.provider.MediaStore;
 
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.retrofit2.RetrofitClient;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -14,10 +23,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;
+
+import static android.os.storage.StorageManager.ACTION_MANAGE_STORAGE;
 
 public class Protector {
 
@@ -71,7 +83,44 @@ public class Protector {
         return errorResponse;
     }
 
-    public static void appendLog(boolean isReceive, String text) {
+//    public static void appendLog(boolean isReceive, String text) {
+//        if (text != null) {
+//            if (isReceive) {
+//                text = getCurrentTime() + " Received: " + text;
+//            } else {
+//                text = getCurrentTime() + " Sent: " + text;
+//            }
+//
+//            File folder = new File(Environment.getExternalStorageDirectory() +
+//                    File.separator + "/eBacSens");
+//            boolean success;
+//            if (!folder.exists()) {
+//                success = folder.mkdirs();
+//            }
+//
+//            File logFile = new File(Environment.getExternalStorageDirectory() +
+//                    File.separator + "/eBacSens/log.txt");
+//
+//            if (!logFile.exists()) {
+//                try {
+//                    boolean sucess = logFile.createNewFile();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            try {
+//                //BufferedWriter for performance, true to set append to file flag
+//                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+//                buf.append(text);
+//                buf.newLine();
+//                buf.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    public static void appendLog(Context context, boolean isReceive, String text) {
         if (text != null) {
             if (isReceive) {
                 text = getCurrentTime() + " Received: " + text;
@@ -79,26 +128,25 @@ public class Protector {
                 text = getCurrentTime() + " Sent: " + text;
             }
 
-            File folder = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens");
-            boolean success;
-            if (!folder.exists()) {
-                success = folder.mkdirs();
-            }
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues values = new ContentValues();
 
-            File logFile = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "/eBacSens/log.txt");
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "log.txt");
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/txt");
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens");
+            Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
 
-            if (!logFile.exists()) {
+            File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/log.txt");
+            if (!file.exists()) {
                 try {
-                    boolean sucess = logFile.createNewFile();
-                } catch (IOException e) {
+                    resolver.openOutputStream(uri);
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
             try {
                 //BufferedWriter for performance, true to set append to file flag
-                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+                BufferedWriter buf = new BufferedWriter(new FileWriter(file, true));
                 buf.append(text);
                 buf.newLine();
                 buf.close();
@@ -128,13 +176,5 @@ public class Protector {
     public static String intToHex(int value) {
         String SS = String.format("%08X", value);
         return SS.substring(SS.length() - 4);
-    }
-
-    public static String leftTrim(String s){
-        int i = 0;
-        while (i < s.length() && (Character.isWhitespace(s.charAt(i))) || (s.charAt(i)+"").equals("\r") ){
-            i++;
-        }
-        return s.substring(i);
     }
 }

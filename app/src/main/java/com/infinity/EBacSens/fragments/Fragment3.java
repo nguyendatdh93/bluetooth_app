@@ -413,7 +413,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
+                connectThread = new ConnectThread(context,mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
                 Thread thread = new Thread() {
                     @Override
@@ -862,7 +862,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 String tempMsgError = new String(readBuffError, 0, msg.arg1);
                 tempMsgError = tempMsgError.trim();
                 // log file
-                Protector.appendLog(true, tempMsgError);
+                Protector.appendLog(context,true, tempMsgError);
 
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
@@ -871,7 +871,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(true, tempMsg);
+                Protector.appendLog(context,true, tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);

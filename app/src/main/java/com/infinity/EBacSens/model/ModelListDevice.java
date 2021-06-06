@@ -37,7 +37,7 @@ public class ModelListDevice {
             @Override
             public void onFailure(@NonNull Call<SensorInfor> call, @NonNull Throwable t) {
                 modelListDeviceListener.onFailStoreSensor(t.getMessage());
-                Protector.appendLog(true ,t.getMessage());
+                //Protector.appendLog(true ,t.getMessage());
             }
         });
     }

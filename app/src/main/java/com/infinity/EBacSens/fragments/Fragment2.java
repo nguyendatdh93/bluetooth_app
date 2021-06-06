@@ -79,7 +79,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
+                connectThread = new ConnectThread(context,mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -266,7 +266,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsgError = new String(readBuffError, 0, msg.arg1);
                 tempMsgError = tempMsgError.trim();
                 // log file
-                Protector.appendLog(true, tempMsgError);
+                Protector.appendLog(context,true, tempMsgError);
 
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
@@ -275,7 +275,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(true , tempMsg);
+                Protector.appendLog(context,true , tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
                 if (arrRules.size() == 0) {

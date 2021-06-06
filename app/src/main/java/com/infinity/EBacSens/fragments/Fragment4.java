@@ -2,13 +2,18 @@ package com.infinity.EBacSens.fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.usage.StorageStatsManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +69,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -273,7 +279,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
+                connectThread = new ConnectThread(context,mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -322,7 +328,27 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             txtProcess.setText(context.getResources().getString(R.string.exporting));
                             txtProcess.setTextColor(context.getResources().getColor(R.color.black));
 
+                            btnExportCSV.setEnabled(false);
+                            btnExportCSV.setAlpha(0.5f);
                             Observable.create(emitter -> {
+                                ContentResolver resolver = context.getContentResolver();
+                                ContentValues values = new ContentValues();
+
+                                String time = Protector.getCurrentTime();
+                                values.put(MediaStore.MediaColumns.DISPLAY_NAME, "ExportResult_" + time.replace(":", "-") + ".csv");
+                                values.put(MediaStore.MediaColumns.MIME_TYPE, "application/csv");
+                                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens");
+                                Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
+
+                                File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/"+"ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
+                                if (!file.exists()) {
+                                    try {
+                                        resolver.openOutputStream(uri);
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
                                 File folder = new File(Environment.getExternalStorageDirectory() +
                                         File.separator + "/eBacSens");
                                 boolean success;
@@ -330,8 +356,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     success = folder.mkdirs();
                                 }
 
-                                FileOutputStream os = new FileOutputStream(Environment.getExternalStorageDirectory() +
-                                        File.separator + "/eBacSens/ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
+                                FileOutputStream os = new FileOutputStream(Environment.getExternalStorageDirectory() +"/"+
+                                        Environment.DIRECTORY_DOCUMENTS + "/eBacSens/ExportResult_" + time.replace(":", "-") + ".csv");
                                 os.write(0xef);
                                 os.write(0xbb);
                                 os.write(0xbf);
@@ -468,8 +494,12 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             }, t -> {
                                 // on error
                                 txtProcess.setText(t.getMessage());
+                                btnExportCSV.setEnabled(true);
+                                btnExportCSV.setAlpha(1f);
                             }, () -> {
                                 // progress tamom shod
+                                btnExportCSV.setEnabled(true);
+                                btnExportCSV.setAlpha(1f);
                                 skbProgress.setProgress(100);
                                 txtProcess.setText(context.getResources().getString(R.string.done));
                                 txtProcess.setTextColor(context.getResources().getColor(R.color.green));
@@ -577,7 +607,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         arrMeasure.clear();
         resultListSensors.clear();
 
-        Protector.appendLog(true, error);
+        Protector.appendLog(context,true, error);
     }
 
     private int level(float val) {
@@ -640,7 +670,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 String tempMsgError = new String(readBuffError, 0, msg.arg1);
                 tempMsgError = tempMsgError.trim();
                 // log file
-                Protector.appendLog(true, tempMsgError);
+                Protector.appendLog(context,true, tempMsgError);
 
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
@@ -649,7 +679,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(true, tempMsg);
+                Protector.appendLog(context,true, tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);

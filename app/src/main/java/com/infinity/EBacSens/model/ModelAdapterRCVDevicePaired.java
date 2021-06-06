@@ -39,7 +39,7 @@ public class ModelAdapterRCVDevicePaired {
             @Override
             public void onFailure(@NonNull Call<DataSensorAPI> call, @NonNull Throwable t) {
                 modelAdapterRCVDevicePairedListener.onGetData(null);
-                Protector.appendLog(true ,t.getMessage());
+                //Protector.appendLog(true ,t.getMessage());
             }
         });
     }
@@ -60,7 +60,7 @@ public class ModelAdapterRCVDevicePaired {
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 modelAdapterRCVDevicePairedListener.onFailDeleteSettingSensor(t.getMessage());
-                Protector.appendLog(true ,t.getMessage());
+               // Protector.appendLog(true ,t.getMessage());
             }
         });
     }

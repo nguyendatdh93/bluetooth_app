@@ -1,9 +1,5 @@
 package com.infinity.EBacSens.activitys;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-
 import android.bluetooth.BluetoothAdapter;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +7,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infinity.EBacSens.R;

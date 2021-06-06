@@ -94,7 +94,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
+                connectThread = new ConnectThread(context,mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -361,7 +361,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         Message message = Message.obtain();
         message.what = STATE_DISCONNECTED;
         handler.sendMessage(message);
-        Protector.appendLog(true , error);
+        Protector.appendLog(context,true , error);
     }
 
     @Override
@@ -379,7 +379,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsgError = new String(readBuffError, 0, msg.arg1);
                 tempMsgError = tempMsgError.trim();
                 // log file
-                Protector.appendLog(true, tempMsgError);
+                Protector.appendLog(context,true, tempMsgError);
 
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
@@ -388,7 +388,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(true ,tempMsg);
+                Protector.appendLog(context,true ,tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
 
