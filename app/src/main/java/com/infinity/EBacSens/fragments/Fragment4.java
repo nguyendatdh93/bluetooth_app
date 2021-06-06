@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -279,7 +280,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(context,mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
+                connectThread = new ConnectThread(context, mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createInsecureRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -331,36 +332,54 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             btnExportCSV.setEnabled(false);
                             btnExportCSV.setAlpha(0.5f);
                             Observable.create(emitter -> {
-                                ContentResolver resolver = context.getContentResolver();
-                                ContentValues values = new ContentValues();
-
+                                FileOutputStream os;
                                 String time = Protector.getCurrentTime();
-                                values.put(MediaStore.MediaColumns.DISPLAY_NAME, "ExportResult_" + time.replace(":", "-") + ".csv");
-                                values.put(MediaStore.MediaColumns.MIME_TYPE, "application/csv");
-                                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens");
-                                Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    ContentResolver resolver = context.getContentResolver();
+                                    ContentValues values = new ContentValues();
 
-                                File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/"+"ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
-                                if (!file.exists()) {
-                                    try {
-                                        resolver.openOutputStream(uri);
-                                    } catch (FileNotFoundException e) {
-                                        e.printStackTrace();
+
+                                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, "ExportResult_" + time.replace(":", "-") + ".csv");
+                                    values.put(MediaStore.MediaColumns.MIME_TYPE, "application/csv");
+                                    values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens");
+                                    Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
+
+                                    File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/" + "ExportResult_" + Protector.getCurrentTime().replace(":", "-") + ".csv");
+                                    if (!file.exists()) {
+                                        try {
+                                            resolver.openOutputStream(uri);
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
+
+                                    File folder = new File(Environment.getExternalStorageDirectory() +
+                                            File.separator + "/eBacSens");
+                                    boolean success;
+                                    if (!folder.exists()) {
+                                        success = folder.mkdirs();
+                                    }
+
+                                    os = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" +
+                                            Environment.DIRECTORY_DOCUMENTS + "/eBacSens/ExportResult_" + time.replace(":", "-") + ".csv");
+                                    os.write(0xef);
+                                    os.write(0xbb);
+                                    os.write(0xbf);
+
+                                } else {
+                                    File folder = new File(Environment.getExternalStorageDirectory() +
+                                            File.separator + "/eBacSens");
+                                    boolean success;
+                                    if (!folder.exists()) {
+                                        success = folder.mkdirs();
+                                    }
+
+                                    os = new FileOutputStream(Environment.getExternalStorageDirectory() + "/eBacSens/ExportResult_" + time.replace(":", "-") + ".csv");
+                                    os.write(0xef);
+                                    os.write(0xbb);
+                                    os.write(0xbf);
                                 }
 
-                                File folder = new File(Environment.getExternalStorageDirectory() +
-                                        File.separator + "/eBacSens");
-                                boolean success;
-                                if (!folder.exists()) {
-                                    success = folder.mkdirs();
-                                }
-
-                                FileOutputStream os = new FileOutputStream(Environment.getExternalStorageDirectory() +"/"+
-                                        Environment.DIRECTORY_DOCUMENTS + "/eBacSens/ExportResult_" + time.replace(":", "-") + ".csv");
-                                os.write(0xef);
-                                os.write(0xbb);
-                                os.write(0xbf);
 
                                 CSVWriter writer;
                                 try {
@@ -543,10 +562,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 positionCSV = 0;
                 showDialogProcessing();
                 presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
-            }else {
+            } else {
                 cancelDialogProcessing();
             }
-        }else {
+        } else {
             cancelDialogProcessing();
         }
     }
@@ -590,7 +609,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             skbProgress.setProgress(100);
             txtProcess.setText(context.getResources().getString(R.string.success_stored));
             txtProcess.setTextColor(context.getResources().getColor(R.color.black));
-        }else {
+        } else {
             presenterFragment4.receivedStoreMeasure(APIUtils.token,
                     MainActivity.device.getId(),
                     resultListSensors.get(0).getDatetime(),
@@ -607,7 +626,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         arrMeasure.clear();
         resultListSensors.clear();
 
-        Protector.appendLog(context,true, error);
+        Protector.appendLog(context, true, error);
     }
 
     private int level(float val) {
@@ -670,7 +689,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 String tempMsgError = new String(readBuffError, 0, msg.arg1);
                 tempMsgError = tempMsgError.trim();
                 // log file
-                Protector.appendLog(context,true, tempMsgError);
+                Protector.appendLog(context, true, tempMsgError);
 
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
@@ -679,7 +698,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(context,true, tempMsg);
+                Protector.appendLog(context, true, tempMsg);
 
                 // result sensor
                 arrResults.add(tempMsg);

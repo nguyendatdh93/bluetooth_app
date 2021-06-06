@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.retrofit2.RetrofitClient;
@@ -127,31 +128,59 @@ public class Protector {
             } else {
                 text = getCurrentTime() + " Sent: " + text;
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                ContentResolver resolver = context.getContentResolver();
+                ContentValues values = new ContentValues();
 
-            ContentResolver resolver = context.getContentResolver();
-            ContentValues values = new ContentValues();
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, "log.txt");
+                values.put(MediaStore.MediaColumns.MIME_TYPE, "text/txt");
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/eBacSens");
+                Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
 
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "log.txt");
-            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/txt");
-            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens");
-            Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
-
-            File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/log.txt");
-            if (!file.exists()) {
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/log.txt");
+                if (!file.exists()) {
+                    try {
+                        resolver.openOutputStream(uri);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
                 try {
-                    resolver.openOutputStream(uri);
-                } catch (FileNotFoundException e) {
+                    //BufferedWriter for performance, true to set append to file flag
+                    BufferedWriter buf = new BufferedWriter(new FileWriter(file, true));
+                    buf.append(text);
+                    buf.newLine();
+                    buf.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            try {
-                //BufferedWriter for performance, true to set append to file flag
-                BufferedWriter buf = new BufferedWriter(new FileWriter(file, true));
-                buf.append(text);
-                buf.newLine();
-                buf.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else {
+                File folder = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "/eBacSens");
+                boolean success;
+                if (!folder.exists()) {
+                    success = folder.mkdirs();
+                }
+
+                File logFile = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "/eBacSens/log.txt");
+
+                if (!logFile.exists()) {
+                    try {
+                        boolean sucess = logFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    //BufferedWriter for performance, true to set append to file flag
+                    BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+                    buf.append(text);
+                    buf.newLine();
+                    buf.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
