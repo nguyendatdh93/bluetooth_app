@@ -135,6 +135,8 @@ public class ConnectThread extends Thread {
                                     numBytes = 0;
 
                                     result = new StringBuilder();
+                                }else {
+                                    //
                                 }
                             }
                         }else if (isMeasBas){
@@ -175,7 +177,7 @@ public class ConnectThread extends Thread {
                                 } else if (tempMsg.contains("\r\n")) {
                                     values = tempMsg.split("\r\n");
                                 }
-                                if (values.length >= 23 && values.length >= (23 + Protector.tryParseInt(values[1].split(",")[1])*6)){
+                                if (values.length >= (23 + 5*6)){
                                     Message readMsg = handler.obtainMessage(
                                             MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                             result.toString().getBytes());
@@ -200,7 +202,7 @@ public class ConnectThread extends Thread {
                                     values = tempMsg.split("\r\n");
                                 }
 
-                                if (values.length >= lengthRes*9){
+                                if (values.length > 0 && values.length-1 >= 9*Protector.tryParseInt(values[0].split(",")[1])){
                                     Message readMsg = handler.obtainMessage(
                                             MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                             result.toString().getBytes());
@@ -225,7 +227,7 @@ public class ConnectThread extends Thread {
                                     values = tempMsg.split("\r\n");
                                 }
 
-                                if (values.length >= 2 ){
+                                if (values.length >= 3 && result.toString().contains("*RAWDMPEND")){
                                     Message readMsg = handler.obtainMessage(
                                             MessageConstants.MESSAGE_READ, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                             result.toString().getBytes());

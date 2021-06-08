@@ -196,7 +196,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         txtProcess = view.findViewById(R.id.fragment_4_txt_progress);
 
         rcvResult = view.findViewById(R.id.fragment_4_rcv_result);
-        rcvResult.setHasFixedSize(true);
+        //rcvResult.setHasFixedSize(true);
         rcvResult.setNestedScrollingEnabled(false);
         rcvResult.setLayoutManager(new LinearLayoutManager(context));
         arrResult = new ArrayList<>();
@@ -205,7 +205,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         rcvResult.setAdapter(adapteRCVResult);
 
         rcvGraph = view.findViewById(R.id.fragment_4_rcv_graph);
-        rcvGraph.setHasFixedSize(true);
+        //rcvGraph.setHasFixedSize(true);
         rcvGraph.setNestedScrollingEnabled(false);
         rcvGraph.setLayoutManager(new LinearLayoutManager(context));
         arrGraph = new ArrayList<>();
@@ -585,7 +585,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 ));
             }
 
-            for (int i = 0; sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
+            for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() &&sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
                 arrResult.add(new Result(sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getDltc(),
@@ -841,7 +841,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         );
 
                         ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length - 1; i += 6) {
+                        for (int i = pos; i < values.length - 1 && arrBac.size() < Protector.tryParseInt(values[1].split(",")[1]) ; i += 6 ) {
                             arrBac.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     values[i].split(",")[1],
@@ -907,7 +907,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                         );
 
                         ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length - 1; i += 6) {
+                        for (int i = pos; i < values.length - 1 && arrBac.size() < Protector.tryParseInt(values[1].split(",")[1])  ; i += 6) {
                             arrBac.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     values[i].split(",")[1],
@@ -938,10 +938,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             values = tempMsg.split("\r\n");
                         }
 
-                        int pos = 0;
+                        int pos = 1;
 
                         ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-                        for (int i = 0; i < values.length - 1; i += 9) {
+                        for (int i = 1; i < values.length - 1; i += 9) {
                             MeasureMeasress measureMeasress = new MeasureMeasress(
                                     MainActivity.device.getId(),
                                     values[pos++].split(",")[1],
@@ -977,10 +977,10 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             values = tempMsg.split("\r\n");
                         }
 
-                        int pos = 0;
+                        int pos = 1;
 
                         ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-                        for (int i = 0; i < values.length - 1; i += 9) {
+                        for (int i = 1; i < values.length - 1; i += 9) {
                             MeasureMeasress measureMeasress = new MeasureMeasress(
                                     MainActivity.device.getId(),
                                     values[pos++].split(",")[1],
