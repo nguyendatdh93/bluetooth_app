@@ -131,15 +131,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
     private int resultStart = 0;
-    private ArrayList<MeasureMeasress> measureMeasresses = new ArrayList<>();
-    private ArrayList<MeasureMeasdets> measureMeasdets;
-    private SensorSetting sensorSetting;
-    private MeasureMeasbas measureMeasbas = new MeasureMeasbas();
-    private MeasureMeasparas measureMeasparas = new MeasureMeasparas();
-    private MeasureMeasress measureMeasress = new MeasureMeasress();
-    private BacSetting bacSetting = new BacSetting();
     private ArrayList<BacSetting> bacSettings = new ArrayList<>();
-    private String noDet;
 
     private final ArrayList<ResultListSensor> resultListSensors = new ArrayList<>();
     private final ArrayList<ResultListSensor> resultListSensorsTemp = new ArrayList<>();
@@ -148,16 +140,11 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private final ArrayList<String> rulersRes = new ArrayList<>();
     private final ArrayList<String> rulersDet = new ArrayList<>();
 
-    private ArrayList<MeasureMeasbas> resultBas = new ArrayList<>();
-    private ArrayList<MeasureMeasparas> resultParas = new ArrayList<>();
-    private ArrayList<ArrayList<MeasureMeasress>> resultRess = new ArrayList<>();
-    private ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
+    private final ArrayList<MeasureMeasbas> resultBas = new ArrayList<>();
+    private final ArrayList<MeasureMeasparas> resultParas = new ArrayList<>();
+    private final ArrayList<ArrayList<MeasureMeasress>> resultRess = new ArrayList<>();
+    private final ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
     private int posReadDet = 0;
-
-    private int timesMeasBas = 0, timesMeasPara = 0, timesMeasRes = -1, timesDet = 0;
-    private int numMeasres = 0, numBacs = 0;
-
-    private int counterStore = 0;
 
     @Nullable
     @Override
@@ -1124,12 +1111,6 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                 if (connectThread != null) {
                     posReadDet = 0;
-                    timesMeasBas = 0;
-                    timesMeasPara = 0;
-                    timesMeasRes = -1;
-                    timesDet = 0;
-                    numMeasres = 0;
-                    counterStore = 0;
 
                     resultListSensors.clear();
                     resultListSensorsTemp.clear();
