@@ -464,8 +464,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             edtEqt4.setText(String.valueOf(arrSensorSetting.get(position).getEqt4()));
             edtEqp5.setText(String.valueOf(arrSensorSetting.get(position).getEqp5()));
             edtEqt5.setText(String.valueOf(arrSensorSetting.get(position).getEqt5()));
-            edtStp.setText(String.valueOf(arrSensorSetting.get(position).getEqt5()));
-            edtEnp.setText(String.valueOf(arrSensorSetting.get(position).getEqt5()));
+            edtStp.setText(String.valueOf(arrSensorSetting.get(position).getStp()));
+            edtEnp.setText(String.valueOf(arrSensorSetting.get(position).getEnp()));
             edtPp.setText(String.valueOf(arrSensorSetting.get(position).getPp()));
             edtDlte.setText(String.valueOf(arrSensorSetting.get(position).getDlte()));
             edtPwd.setText(String.valueOf(arrSensorSetting.get(position).getPwd()));
