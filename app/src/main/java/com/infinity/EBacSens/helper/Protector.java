@@ -135,23 +135,27 @@ public class Protector {
                 values.put(MediaStore.MediaColumns.DISPLAY_NAME, "log.txt");
                 values.put(MediaStore.MediaColumns.MIME_TYPE, "text/txt");
                 values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/eBacSens");
-                Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
+                try {
+                    Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
 
-                File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/log.txt");
-                if (!file.exists()) {
+                    File file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + "eBacSens/log.txt");
+                    if (!file.exists()) {
+                        try {
+                            resolver.openOutputStream(uri);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     try {
-                        resolver.openOutputStream(uri);
-                    } catch (FileNotFoundException e) {
+                        //BufferedWriter for performance, true to set append to file flag
+                        BufferedWriter buf = new BufferedWriter(new FileWriter(file, true));
+                        buf.append(text);
+                        buf.newLine();
+                        buf.close();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                try {
-                    //BufferedWriter for performance, true to set append to file flag
-                    BufferedWriter buf = new BufferedWriter(new FileWriter(file, true));
-                    buf.append(text);
-                    buf.newLine();
-                    buf.close();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
