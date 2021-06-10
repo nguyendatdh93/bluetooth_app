@@ -75,7 +75,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
     private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
-    private TextView txtTitleDialogProcessing;
 
     private PresenterFragment3 presenterFragment3;
     private Spinner spnNumber, spnCrgn;
@@ -437,8 +436,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         dialogProcessing = new Dialog(context);
         dialogProcessing.setContentView(R.layout.dialog_processing);
         dialogProcessing.setCancelable(false);
-
-        txtTitleDialogProcessing = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
     }
 
     private void showDialogProcessing() {
@@ -1041,7 +1038,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
-                        txtTitleDialogProcessing.setText("Processing measure ...");
+                        cancelDialogProcessing();
+                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+
                     } else {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
@@ -1149,7 +1148,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             case 2:
                 countTryConnect = 1;
                 MainActivity.device.setStatusConnect(1);
-
                 arrRules.clear();
                 arrResults.clear();
                 resultStart = 1;
