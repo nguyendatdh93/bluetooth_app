@@ -1005,27 +1005,29 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                         ArrayList<MeasureMeasdets> measureMeasdets = new ArrayList<>();
 
-                        float pixel = 0;
+                        double pixel = 0;
                         switch (resultParas.get(posReadDet).getCrng()) {
                             case 0:
-                                pixel = 0.1f;
+                                pixel = 0.1;
                                 break;
                             case 1:
-                                pixel = 0.01f;
+                                pixel = 0.01;
                                 break;
                             case 2:
-                                pixel = 0.001f;
+                                pixel = 0.001;
                                 break;
                         }
-                        float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
 
+                        int a = 0;
                         for (int i = 0; i <= values[1].length() - 8; i += 8) {
-                            float ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i, i + 4));
-                            float _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4, i + 8));
-                            float deltaI = _if - ib;
+                            double deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte() * a;
 
-                            float eb = resultParas.get(posReadDet).getStp() + deltaE;
-                            float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+                            double ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i, i + 4));
+                            double _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4, i + 8));
+                            double deltaI = _if - ib;
+
+                            double eb = deltaE;
+                            double ef = deltaE + resultParas.get(posReadDet).getPp();
 
                             measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
                                     (i / 8) + "",
@@ -1038,7 +1040,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     Protector.getCurrentTime(),
                                     Protector.getCurrentTime()));
                             resultDets.add(measureMeasdets);
-                            deltaE += resultParas.get(posReadDet).getStp();
+                            a++;
                         }
                         posReadDet++;
 
@@ -1069,15 +1071,16 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 pixel = 0.001f;
                                 break;
                         }
-                        float deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte();
+                        int a = 0;
                         for (int i = 0; i <= values[1].length() - 8; i += 8) {
+                            double deltaE = resultParas.get(posReadDet).getStp() + resultParas.get(posReadDet).getDlte() * a;
 
-                            float ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i, i + 4));
-                            float _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4, i + 8));
-                            float deltaI = _if - ib;
+                            double ib = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i, i + 4));
+                            double _if = pixel * Protector.HexToDecDataMeasdet(values[1].substring(i + 4, i + 8));
+                            double deltaI = _if - ib;
 
-                            float eb = resultParas.get(posReadDet).getStp() + deltaE;
-                            float ef = resultParas.get(posReadDet).getStp() + deltaE + resultParas.get(posReadDet).getPp();
+                            double eb = deltaE;
+                            double ef = deltaE + resultParas.get(posReadDet).getPp();
 
                             measureMeasdets.add(new MeasureMeasdets(MainActivity.device.getId(),
                                     (i / 8) + "",
@@ -1090,7 +1093,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     Protector.getCurrentTime(),
                                     Protector.getCurrentTime()));
                             resultDets.add(measureMeasdets);
-                            deltaE += resultParas.get(posReadDet).getStp();
+                            a++;
                         }
                         posReadDet++;
                         presenterFragment4.receivedStoreMeasure(APIUtils.token,
