@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ViewPager viewPager;
+    private AdapterPagerMain adapterPagerMain;
     private TabLayout tabLayout;
 
     public static ConnectThread connectThread;
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Tab3"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab4"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        AdapterPagerMain adapterPagerMain = new AdapterPagerMain(getSupportFragmentManager(), tabLayout.getTabCount());
+         adapterPagerMain = new AdapterPagerMain(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapterPagerMain);
         tabLayout.setupWithViewPager(viewPager);
         Objects.requireNonNull(tabLayout.getTabAt(0)).setCustomView(R.layout.custom_icon_tab_1_main);

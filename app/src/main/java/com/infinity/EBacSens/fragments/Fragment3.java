@@ -75,6 +75,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
     private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
+    private TextView txtTitleDialogProcessing;
 
     private PresenterFragment3 presenterFragment3;
     private Spinner spnNumber, spnCrgn;
@@ -436,6 +437,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         dialogProcessing = new Dialog(context);
         dialogProcessing.setContentView(R.layout.dialog_processing);
         dialogProcessing.setCancelable(false);
+
+        txtTitleDialogProcessing = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
     }
 
     private void showDialogProcessing() {
@@ -865,7 +868,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 Protector.appendLog(context,true, tempMsgError);
 
                 cancelDialogProcessing();
-                showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
+                showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
@@ -1038,11 +1041,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
-//                        connectThread.writeSaveMeasure(arrRules.get(0));
-//                        arrRules.remove(0);
-
-                        cancelDialogProcessing();
-                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+                        txtTitleDialogProcessing.setText("Processing measure ...");
                     } else {
                         connectThread.write(arrRules.get(0));
                         arrRules.remove(0);
