@@ -55,6 +55,7 @@ import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
+import static com.infinity.EBacSens.activitys.MainActivity.viewPager;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
 public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure, ViewConnectThread, Handler.Callback {
@@ -865,7 +866,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 Protector.appendLog(context,true, tempMsgError);
 
                 cancelDialogProcessing();
-                showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+                showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
+
             case 4:
                 byte[] readBuff = (byte[]) msg.obj;
                 String tempMsg = new String(readBuff, 0, msg.arg1);
@@ -1038,8 +1040,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
                         adapteRCVBacSetting.notifyDataSetChanged();
 
-                        cancelDialogProcessing();
-                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+//                        cancelDialogProcessing();
+//                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
 
                     } else {
                         connectThread.write(arrRules.get(0));
@@ -1144,6 +1146,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             case 5:
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
+
+                MainActivity.isResult = true;
+                viewPager.setCurrentItem(3);
+
                 break;
             case 2:
                 countTryConnect = 1;

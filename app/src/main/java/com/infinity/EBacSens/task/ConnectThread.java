@@ -104,9 +104,15 @@ public class ConnectThread extends Thread {
 
                     String str = new String(mmBufferTemp, StandardCharsets.UTF_8);
                     result.append(str);
-
                     if(result.length() >= 5 && (result.substring(result.length() - 1 , result.length()).contains("\r") || result.substring(result.length() - 1 , result.length()).contains("\n"))){
-                        if ((result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")) && (result.toString().contains("*ERR"))){
+                        if (result.toString().contains("*MEASUREFINISH")){
+                            Message readMsg = handler.obtainMessage(
+                                    MessageConstants.MESSAGE_DONE_MEASURE, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
+                                    result.toString().getBytes());
+                            readMsg.sendToTarget();
+                            numBytes = 0;
+                            result = new StringBuilder();
+                        }else if ((result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")) && (result.toString().contains("*ERR"))){
                             Message readMsg = handler.obtainMessage(
                                     MessageConstants.MESSAGE_ERR, result.toString().getBytes(StandardCharsets.UTF_8).length, -1,
                                     result.toString().getBytes());
@@ -114,7 +120,7 @@ public class ConnectThread extends Thread {
                             numBytes = 0;
                             result = new StringBuilder();
                         }else if (isList){
-                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")){
                                 String[] values = new String[0];
                                 String tempMsg = result.toString();
                                 tempMsg = tempMsg.trim();
@@ -140,7 +146,7 @@ public class ConnectThread extends Thread {
                                 }
                             }
                         }else if (isMeasBas){
-                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")){
                                 String[] values = new String[0];
                                 String tempMsg = result.toString();
                                 tempMsg = tempMsg.trim();
@@ -164,7 +170,7 @@ public class ConnectThread extends Thread {
                                 }
                             }
                         }else if (isMeasPara){
-                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") ){
                                 String[] values = new String[0];
                                 String tempMsg = result.toString();
                                 tempMsg = tempMsg.trim();
@@ -188,7 +194,7 @@ public class ConnectThread extends Thread {
                                 }
                             }
                         }else if (isMeasRes){
-                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")){
                                 String[] values = new String[0];
                                 String tempMsg = result.toString();
                                 tempMsg = tempMsg.trim();
@@ -213,7 +219,7 @@ public class ConnectThread extends Thread {
                                 }
                             }
                         }else if (isMeasDet){
-                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n") || result.toString().contains("*MEASUREFINISH")  ){
+                            if (result.toString().contains("[CR]") || result.toString().contains("\n") || result.toString().contains("\r") || result.toString().contains("\r\n")){
                                 String[] values = new String[0];
                                 String tempMsg = result.toString();
                                 tempMsg = tempMsg.trim();

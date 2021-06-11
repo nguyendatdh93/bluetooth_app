@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     public static int STATE_LISTENING = 2;
     public static int STATE_CONNECTED = 1;
     public static int STATE_DISCONNECTED = 0;
+    public static boolean isResult = false;
 
-
-    private ViewPager viewPager;
+    public static ViewPager viewPager;
     private AdapterPagerMain adapterPagerMain;
     private TabLayout tabLayout;
 

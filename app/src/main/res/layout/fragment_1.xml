@@ -89,7 +89,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/fragment_1_btn_test_connect"
+                android:id="@+id/fragment_1_btn_connect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20ssp"
@@ -99,7 +99,7 @@
                 android:textSize="@dimen/_11ssp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/fragment_1_btn_connect"
+                android:id="@+id/fragment_1_btn_test_connect"
                 android:layout_marginTop="@dimen/_20ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

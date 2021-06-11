@@ -1145,5 +1145,19 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         }
         return false;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // do something when visible.
+            if (MainActivity.isResult){
+                MainActivity.isResult = false;
+                if (mBluetoothAdapter != null) {
+                    connectSensor();
+                }
+            }
+        }
+    }
 }
 
