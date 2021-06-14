@@ -294,7 +294,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 // result sensor
                 arrResults.add(tempMsg);
 
-                txtDialogProcessingTitle.setText(((arrResults.size() * 100 / counterRuler) ) + " %");
+                //txtDialogProcessingTitle.setText(((arrResults.size() * 100 / counterRuler) ) + " %");
 
                 if (arrRules.size() == 0) {
                     edtNameMeasure.setText(arrResults.get(0));

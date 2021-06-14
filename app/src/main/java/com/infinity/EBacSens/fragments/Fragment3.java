@@ -883,7 +883,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 // result sensor
                 arrResults.add(tempMsg);
                 if (statusButton == 1) {
-                    txtDialogProcessingTitle.setText(((arrResults.size() * 100 / counterRuler) ) + " %");
+                    //txtDialogProcessingTitle.setText(((arrResults.size() * 100 / counterRuler) ) + " %");
                     if (arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
