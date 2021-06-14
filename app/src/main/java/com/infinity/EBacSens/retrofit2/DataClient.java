@@ -9,6 +9,7 @@ import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
 import com.infinity.EBacSens.model_objects.SensorSetting;
+import com.infinity.EBacSens.model_objects.TimeZone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,10 @@ public interface DataClient {
 
     @GET("api/sensor/measure/{idMeasure}")
     Call<SensorMeasureDetail> getDetailMeasure(@Header("token") String token , @Path("idMeasure") int idMeasure);
+
+    @GET("a/macros/st.vimaru.edu.vn/echo")
+    Call<TimeZone> getTimeZone(@Query("user_content_key") String user_content_key,
+                               @Query("lib") String lib);
 
     @DELETE("api/setting/{idSensor}")
     Call<String> deleteSettingSensor(@Header("token") String token , @Path("idSensor") int idSensor);

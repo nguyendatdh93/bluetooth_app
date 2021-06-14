@@ -31,8 +31,11 @@ import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorInfor;
+import com.infinity.EBacSens.model_objects.TimeZone;
+import com.infinity.EBacSens.presenter.PresenterFragment2;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
+import com.infinity.EBacSens.views.ViewFragment2Listener;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -47,7 +50,7 @@ import static com.infinity.EBacSens.activitys.MainActivity.device;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Callback {
+public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Callback, ViewFragment2Listener {
 
     private View view;
     private Activity activity;
@@ -78,6 +81,10 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
 
+    private PresenterFragment2 presenterFragment2;
+
+    String timezone;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,7 +101,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 if (connectThread != null) {
                     connectThread.cancel();
                 }
-                connectThread = new ConnectThread(context,mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
+                connectThread = new ConnectThread(context, mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice()).createRfcommSocketToServiceRecord(ParcelUuid.fromString(PBAP_UUID).getUuid()), handler, this);
                 showDialogProcessing();
 
                 Thread thread = new Thread() {
@@ -116,57 +123,15 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         handler = new Handler(this);
 
         btnTestConnect.setOnClickListener(v -> {
-            if (MainActivity.device.getMacDevice() != null) {
-                boolean connection = false;
-                for (int i = 0; i < arrDevicePaired.size(); i++) {
-                    if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
-                        connection = true;
-                    }
-                }
-                if (connection && mBluetoothAdapter != null) {
-                    showDialogProcessing();
-                    statusConnect = 0;
-                    connectSensor();
-                } else {
-                    if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
-                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                        txtDialogProcessingTitle.setText(context.getResources().getString(R.string.pairing));
-                        showDialogProcessing();
-                        pairDevice(device);
-                    } else {
-                        showPopup("Failed", "Device not have mac address.", false);
-                    }
-                }
-            } else {
-                showPopup("Failed", "Device not have mac address.", false);
-            }
+            statusConnect = 0;
+            showDialogProcessing();
+            presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw", "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
         });
 
         btnConnect.setOnClickListener(v -> {
-            if (MainActivity.device.getMacDevice() != null) {
-                boolean connection = false;
-                for (int i = 0; i < arrDevicePaired.size(); i++) {
-                    if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
-                        connection = true;
-                    }
-                }
-                if (connection && mBluetoothAdapter != null) {
-                    statusConnect = 1;
-                    connectSensor();
-                    showDialogProcessing();
-                } else {
-                    if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
-                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
-                        txtDialogProcessingTitle.setText(context.getResources().getString(R.string.pairing));
-                        showDialogProcessing();
-                        pairDevice(device);
-                    } else {
-                        showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
-                    }
-                }
-            } else {
-                showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
-            }
+            statusConnect = 1;
+            showDialogProcessing();
+            presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw", "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
         });
 
         btnDisconnect.setOnClickListener(v -> {
@@ -199,6 +164,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
     }
 
     private void addController() {
+        presenterFragment2 = new PresenterFragment2(this);
         intentFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
 
         containerPopup = view.findViewById(R.id.container_popup);
@@ -267,10 +233,10 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         txtContent.setText(content);
 
         if (success) {
-            imgTitle.setBackground(ContextCompat.getDrawable(context , R.drawable.circle_green));
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             imgTitle.setImageResource(R.drawable.ic_baseline_check_24);
         } else {
-            imgTitle.setBackground(ContextCompat.getDrawable(context , R.drawable.circle_red));
+            imgTitle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
             imgTitle.setImageResource(R.drawable.ic_baseline_close_24);
         }
 
@@ -361,7 +327,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         Message message = Message.obtain();
         message.what = STATE_DISCONNECTED;
         handler.sendMessage(message);
-        Protector.appendLog(context,true , error);
+        Protector.appendLog(context, true, error);
     }
 
     @Override
@@ -379,7 +345,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsgError = new String(readBuffError, 0, msg.arg1);
                 tempMsgError = tempMsgError.trim();
                 // log file
-                Protector.appendLog(context,true, tempMsgError);
+                Protector.appendLog(context, true, tempMsgError);
 
                 cancelDialogProcessing();
                 showPopup(context.getResources().getString(R.string.failure), context.getResources().getString(R.string.processing_failed), false);
@@ -388,7 +354,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 String tempMsg = new String(readBuff, 0, msg.arg1);
                 tempMsg = tempMsg.trim();
                 // log file
-                Protector.appendLog(context,true ,tempMsg);
+                Protector.appendLog(context, true, tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
 
@@ -405,7 +371,17 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                         arrRules.remove(0);
                     }
                 } else {
-                    cancelDialogProcessing();
+                    if (arrRules.size() == 0) {
+                        cancelDialogProcessing();
+                    } else {
+                        connectThread.write(arrRules.get(0));
+                        arrRules.remove(0);
+                        containerInfor.setVisibility(View.GONE);
+                        containerStatus.setVisibility(View.VISIBLE);
+                        txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
+                        txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
+                        cancelDialogProcessing();
+                    }
                 }
 
                 break;
@@ -418,14 +394,15 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                     arrRules.add("*R,IDNAME");
                     arrRules.add("*R,VER");
                     arrRules.add("*R,SER");
+                    arrRules.add("*W,DATETIME," + timezone.replace("-", " ").replace(" ", "").replace(":", "").replace("/", ""));
+                    arrRules.add("*W,SAVE");
                     connectThread.write(arrRules.get(0));
                     arrRules.remove(0);
                 } else {
-                    containerInfor.setVisibility(View.GONE);
-                    containerStatus.setVisibility(View.VISIBLE);
-                    txtStatusConnection.setText(context.getResources().getString(R.string.connection_test_success));
-                    txtStatusConnection.setTextColor(context.getResources().getColor(R.color.green));
-                    cancelDialogProcessing();
+                    arrRules.add("*W,DATETIME," + timezone.replace("-", " ").replace(" ", "").replace(":", "").replace("/", ""));
+                    arrRules.add("*W,SAVE");
+                    connectThread.write(arrRules.get(0));
+                    arrRules.remove(0);
                 }
                 break;
             case 0:
@@ -448,5 +425,71 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 }
         }
         return false;
+    }
+
+    @Override
+    public void onGetTime(TimeZone timeZone) {
+        if (timeZone != null) {
+            String year = (timeZone.getYear() + "").substring(0, 2);
+            String month;
+            if (timeZone.getMonth() < 10) {
+                month = "0" + timeZone.getMonth();
+            } else {
+                month = String.valueOf(timeZone.getMonth());
+            }
+            String day;
+            if (timeZone.getDay() < 10) {
+                day = "0" + timeZone.getDay();
+            } else {
+                day = String.valueOf(timeZone.getDay());
+            }
+            String hours;
+            if (timeZone.getHours() < 10) {
+                hours = "0" + timeZone.getHours();
+            } else {
+                hours = String.valueOf(timeZone.getHours());
+            }
+            String minutes;
+            if (timeZone.getMinutes() < 10) {
+                minutes = "0" + timeZone.getMinutes();
+            } else {
+                minutes = String.valueOf(timeZone.getMinutes());
+            }
+            String seconds;
+            if (timeZone.getSeconds() < 10) {
+                seconds = "0" + timeZone.getSeconds();
+            } else {
+                seconds = String.valueOf(timeZone.getSeconds());
+            }
+            timezone = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+        } else {
+            timezone = Protector.getCurrentTimeSensor();
+        }
+
+        cancelDialogProcessing();
+
+        if (MainActivity.device.getMacDevice() != null) {
+            boolean connection = false;
+            for (int i = 0; i < arrDevicePaired.size(); i++) {
+                if (MainActivity.device.getMacDevice().equals(arrDevicePaired.get(i).getAddress())) {
+                    connection = true;
+                }
+            }
+            if (connection && mBluetoothAdapter != null) {
+                showDialogProcessing();
+                connectSensor();
+            } else {
+                if (mBluetoothAdapter != null && MainActivity.device.getMacDevice() != null) {
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(MainActivity.device.getMacDevice());
+                    txtDialogProcessingTitle.setText(context.getResources().getString(R.string.pairing));
+                    showDialogProcessing();
+                    pairDevice(device);
+                } else {
+                    showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
+                }
+            }
+        } else {
+            showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
+        }
     }
 }

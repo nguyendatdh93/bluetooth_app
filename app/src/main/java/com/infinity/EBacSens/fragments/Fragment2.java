@@ -26,8 +26,11 @@ import androidx.fragment.app.Fragment;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
+import com.infinity.EBacSens.model_objects.TimeZone;
+import com.infinity.EBacSens.presenter.PresenterFragment2;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
+import com.infinity.EBacSens.views.ViewFragment2Listener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
-public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Callback {
+public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Callback , ViewFragment2Listener {
 
     private View view;
     private Context context;
@@ -63,6 +66,8 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
 
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
+
+    private PresenterFragment2 presenterFragment2;
 
     @Nullable
     @Override
@@ -142,10 +147,15 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
             }
         });
 
-        txtDatetime.setOnClickListener(v -> edtDatetime.setText(Protector.getCurrentTimeSensor()));
+        txtDatetime.setOnClickListener(v -> {
+            showDialogProcessing();
+            presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw" , "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
+        });
     }
 
     private void addController() {
+        presenterFragment2 = new PresenterFragment2(this);
+
         handler = new Handler(this);
 
         txtDatetime = view.findViewById(R.id.fragment_2_txt_time);
@@ -323,6 +333,47 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onGetTime(TimeZone timeZone) {
+        if (timeZone!= null){
+            String year = (timeZone.getYear()+"").substring(0,2);
+            String month;
+            if (timeZone.getMonth() < 10){
+                month = "0" + timeZone.getMonth();
+            }else {
+                month = String.valueOf(timeZone.getMonth());
+            }
+            String day;
+            if (timeZone.getDay() < 10){
+                day = "0" + timeZone.getDay();
+            }else {
+                day = String.valueOf(timeZone.getDay());
+            }
+            String hours;
+            if (timeZone.getHours() < 10){
+                hours = "0" + timeZone.getHours();
+            }else {
+                hours = String.valueOf(timeZone.getHours());
+            }
+            String minutes;
+            if (timeZone.getMinutes() < 10){
+                minutes = "0" + timeZone.getMinutes();
+            }else {
+                minutes = String.valueOf(timeZone.getMinutes());
+            }
+            String seconds;
+            if (timeZone.getSeconds() < 10){
+                seconds = "0" + timeZone.getSeconds();
+            }else {
+                seconds = String.valueOf(timeZone.getSeconds());
+            }
+            edtDatetime.setText(year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
+        }else {
+            edtDatetime.setText(Protector.getCurrentTimeSensor());
+        }
+        cancelDialogProcessing();
     }
 }
 
