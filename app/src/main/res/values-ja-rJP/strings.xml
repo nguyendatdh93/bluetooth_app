@@ -121,4 +121,6 @@
     <string name="turning_bluetooth_on" translatable="false">Bluetoothをオンにする</string>
     <string name="turn_on_bluetooth" translatable="false">Bluetoothをオンにします</string>
     <string name="off" translatable="false">Off</string>
+    <string name="loading" translatable="false">Loading ...</string>
+    <string name="get_time_zone" translatable="false">Taking time from cloud</string>
 </resources>

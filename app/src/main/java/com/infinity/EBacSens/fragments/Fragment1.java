@@ -123,12 +123,14 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         handler = new Handler(this);
 
         btnTestConnect.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.get_time_zone));
             statusConnect = 0;
             showDialogProcessing();
             presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw", "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
         });
 
         btnConnect.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.get_time_zone));
             statusConnect = 1;
             showDialogProcessing();
             presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw", "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
@@ -465,9 +467,7 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
         } else {
             timezone = Protector.getCurrentTimeSensor();
         }
-
-        cancelDialogProcessing();
-
+        txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
         if (MainActivity.device.getMacDevice() != null) {
             boolean connection = false;
             for (int i = 0; i < arrDevicePaired.size(); i++) {
@@ -486,10 +486,12 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                     pairDevice(device);
                 } else {
                     showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
+                    cancelDialogProcessing();
                 }
             }
         } else {
             showPopup(context.getResources().getString(R.string.failure), "Device not have mac address.", false);
+            cancelDialogProcessing();
         }
     }
 }

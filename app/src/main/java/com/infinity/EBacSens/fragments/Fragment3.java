@@ -76,7 +76,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
     private Dialog dialogProcessing, dialogHistoryMeasure, dialogYesNo;
-
+    private TextView txtDialogProcessingTitle;
     private PresenterFragment3 presenterFragment3;
     private Spinner spnNumber, spnCrgn;
 
@@ -89,7 +89,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private int resultStart = 0;
     private Handler handler;
     private boolean canChangeSpinner = true;
-    private int countTryConnect = 0;
+    private int countTryConnect = 0 , counterRuler = 0;
     private final int maxTryConnect = 2;
 
     private ArrayList<String> arrRules;
@@ -125,11 +125,13 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         });
 
         btnReceiveSettingMeasure.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
             showDialogProcessing();
             presenterFragment3.receivedReceiveSettingMeasure(APIUtils.token);
         });
 
         btnSaveSettingMeasure.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
             SensorSetting sensorSetting = new SensorSetting();
             sensorSetting.setSetname(edtNameMEasure.getText().toString());
             sensorSetting.setBacs(Protector.tryParseInt(spnNumber.getSelectedItem().toString()));
@@ -182,6 +184,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         });
 
         btnWrite.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
             if (edtNameMEasure.getText().toString().length() == 0) {
                 edtNameMEasure.setError("Error");
                 edtNameMEasure.requestFocus();
@@ -305,6 +308,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         });
 
         btnRead.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
             statusButton = 0;
             if (mBluetoothAdapter != null) {
                 connectSensor();
@@ -437,6 +441,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         dialogProcessing = new Dialog(context);
         dialogProcessing.setContentView(R.layout.dialog_processing);
         dialogProcessing.setCancelable(false);
+        txtDialogProcessingTitle = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
     }
 
     private void showDialogProcessing() {
@@ -878,6 +883,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                 // result sensor
                 arrResults.add(tempMsg);
                 if (statusButton == 1) {
+                    txtDialogProcessingTitle.setText(((arrResults.size() * 100 / counterRuler) ) + " %");
                     if (arrRules.size() == 0) {
                         int pos = 0;
                         edtNameMEasure.setText(arrResults.get(pos++));
@@ -1039,7 +1045,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                         edtIfen.setText(String.valueOf(Protector.tryParseHex(arrResults.get(pos))));
 
                         adapteRCVBacSetting.notifyDataSetChanged();
-
+                        txtDialogProcessingTitle.setText("Waiting result !");
 //                        cancelDialogProcessing();
 //                        showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.the_process_is_complete), true);
 
@@ -1192,6 +1198,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
                     if (statusButton == 1) {
                         arrRules.add("*W,SAVE");
                     }
+                    counterRuler = arrRules.size();
                     connectThread.write(arrRules.get(0));
                     arrRules.remove(0);
                 } else {

@@ -51,6 +51,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
     private Button btnRead, btnWrite;
 
     private Dialog dialogProcessing;
+    private TextView txtDialogProcessingTitle;
     private TextView txtDatetime;
 
     // popup
@@ -61,7 +62,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
     // 1 = write , 0 = read
     private int statusButton = 0;
     private Handler handler;
-    private int countTryConnect = 0;
+    private int countTryConnect = 0 , counterRuler;
     private final int maxTryConnect = 2;
 
     private ArrayList<String> arrRules;
@@ -106,6 +107,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
 
     private void addEvents() {
         btnWrite.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
             if (edtNameMeasure.getText().toString().length() == 0) {
                 edtNameMeasure.setError("error");
                 edtNameMeasure.requestFocus();
@@ -129,6 +131,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
             }
         });
         btnRead.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.loading));
             if (edtPeakMode.getText().toString().length() == 0 || Protector.tryParseInt(edtPeakMode.getText().toString()) > 2 || Protector.tryParseInt(edtPeakMode.getText().toString()) < 0) {
                 edtPeakMode.setError("error");
                 edtPeakMode.requestFocus();
@@ -148,6 +151,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
         });
 
         txtDatetime.setOnClickListener(v -> {
+            txtDialogProcessingTitle.setText(context.getResources().getString(R.string.get_time_zone));
             showDialogProcessing();
             presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw" , "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
         });
@@ -177,6 +181,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
         dialogProcessing = new Dialog(context);
         dialogProcessing.setContentView(R.layout.dialog_processing);
         dialogProcessing.setCancelable(false);
+        txtDialogProcessingTitle = dialogProcessing.findViewById(R.id.dialog_processing_txt_title);
     }
 
     private void showDialogProcessing() {
@@ -288,6 +293,9 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 Protector.appendLog(context,true , tempMsg);
                 // result sensor
                 arrResults.add(tempMsg);
+
+                txtDialogProcessingTitle.setText(((arrResults.size() * 100 / counterRuler) ) + " %");
+
                 if (arrRules.size() == 0) {
                     edtNameMeasure.setText(arrResults.get(0));
                     edtDatetime.setText(""+Protector.formatTimeSensor(arrResults.get(1)));
@@ -314,7 +322,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
                 if (statusButton == 1) {
                     arrRules.add("*W,SAVE");
                 }
-
+                counterRuler = arrRules.size();
                 if (connectThread != null) {
                     connectThread.write(arrRules.get(0));
                     arrRules.remove(0);
