@@ -22,8 +22,8 @@ public class PresenterFragment2 implements ModelFragmeant2Listener {
         this.callback = callback;
     }
 
-    public void receivedGetTimezone(String user_content_key , String lib){
-        modelFragment2.handleGetTimezone(user_content_key , lib);
+    public void receivedGetTimezone(String token){
+        modelFragment2.handleGetTimezone(token);
     }
 
     @Override

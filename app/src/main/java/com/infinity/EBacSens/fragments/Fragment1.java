@@ -33,6 +33,7 @@ import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.TimeZone;
 import com.infinity.EBacSens.presenter.PresenterFragment2;
+import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
 import com.infinity.EBacSens.views.ViewConnectThread;
 import com.infinity.EBacSens.views.ViewFragment2Listener;
@@ -126,14 +127,14 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
             txtDialogProcessingTitle.setText(context.getResources().getString(R.string.get_time_zone));
             statusConnect = 0;
             showDialogProcessing();
-            presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw", "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
+            presenterFragment2.receivedGetTimezone(APIUtils.token);
         });
 
         btnConnect.setOnClickListener(v -> {
             txtDialogProcessingTitle.setText(context.getResources().getString(R.string.get_time_zone));
             statusConnect = 1;
             showDialogProcessing();
-            presenterFragment2.receivedGetTimezone("aFPo3lR0Zz8AnK7ngttxZNv7cfIILSdNZtuq43q-rfulJKg5sZ-vh1c4Ymb-PXg5MmuR-mfvR-44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw", "44BXXtVwfQ7F5cCeerX9AJm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_nRPgeZU6HP9chrVt_7vAh9SpFDN6xYpdGG5RFzrzEq_aK3LiQpDz1Yq4OHReOTuTPy7kGWxj4isIazi4H4vefKSQGe7rCpOzPdHFFlBbjlEoF03_9gXuSm0uHw19_wEoIQ426QlX6Gw");
+            presenterFragment2.receivedGetTimezone(APIUtils.token);
         });
 
         btnDisconnect.setOnClickListener(v -> {
@@ -446,22 +447,22 @@ public class Fragment1 extends Fragment implements ViewConnectThread, Handler.Ca
                 day = String.valueOf(timeZone.getDay());
             }
             String hours;
-            if (timeZone.getHours() < 10) {
-                hours = "0" + timeZone.getHours();
+            if (timeZone.getHour() < 10) {
+                hours = "0" + timeZone.getHour();
             } else {
-                hours = String.valueOf(timeZone.getHours());
+                hours = String.valueOf(timeZone.getHour());
             }
             String minutes;
-            if (timeZone.getMinutes() < 10) {
-                minutes = "0" + timeZone.getMinutes();
+            if (timeZone.getMinute() < 10) {
+                minutes = "0" + timeZone.getMinute();
             } else {
-                minutes = String.valueOf(timeZone.getMinutes());
+                minutes = String.valueOf(timeZone.getMinute());
             }
             String seconds;
-            if (timeZone.getSeconds() < 10) {
-                seconds = "0" + timeZone.getSeconds();
+            if (timeZone.getSecond() < 10) {
+                seconds = "0" + timeZone.getSecond();
             } else {
-                seconds = String.valueOf(timeZone.getSeconds());
+                seconds = String.valueOf(timeZone.getSecond());
             }
             timezone = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
         } else {

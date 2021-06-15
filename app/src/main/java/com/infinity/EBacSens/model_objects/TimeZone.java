@@ -5,80 +5,36 @@ import com.google.gson.annotations.SerializedName;
 
 public class TimeZone {
 
-    @SerializedName("dayofweek")
+    @SerializedName("year")
     @Expose
-    private int dayofweek;
-
-    @SerializedName("dayofweekName")
-    @Expose
-    private String dayofweekName;
-
-    @SerializedName("day")
-    @Expose
-    private int day;
+    private int year;
 
     @SerializedName("month")
     @Expose
     private int month;
 
-    @SerializedName("monthName")
+    @SerializedName("day")
     @Expose
-    private String monthName;
+    private int day;
 
-    @SerializedName("year")
+    @SerializedName("hour")
     @Expose
-    private int year;
+    private int hour;
 
-    @SerializedName("hours")
+    @SerializedName("minute")
     @Expose
-    private int hours;
+    private int minute;
 
-    @SerializedName("minutes")
+    @SerializedName("second")
     @Expose
-    private int minutes;
+    private int second;
 
-    @SerializedName("seconds")
-    @Expose
-    private int seconds;
-
-    @SerializedName("millis")
-    @Expose
-    private int millis;
-
-    @SerializedName("fulldate")
-    @Expose
-    private String fulldate;
-
-    @SerializedName("timezone")
-    @Expose
-    private String timezone;
-
-    @SerializedName("status")
-    @Expose
-    private String status;
-
-    public int getDayofweek() {
-        return dayofweek;
+    public int getYear() {
+        return year;
     }
 
-    public void setDayofweek(int dayofweek) {
-        this.dayofweek = dayofweek;
-    }
-
-    public String getDayofweekName() {
-        return dayofweekName;
-    }
-
-    public void setDayofweekName(String dayofweekName) {
-        this.dayofweekName = dayofweekName;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public int getMonth() {
@@ -89,91 +45,44 @@ public class TimeZone {
         this.month = month;
     }
 
-    public String getMonthName() {
-        return monthName;
+    public int getDay() {
+        return day;
     }
 
-    public void setMonthName(String monthName) {
-        this.monthName = monthName;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public int getMillis() {
-        return millis;
-    }
-
-    public void setMillis(int millis) {
-        this.millis = millis;
-    }
-
-    public String getFulldate() {
-        return fulldate;
-    }
-
-    public void setFulldate(String fulldate) {
-        this.fulldate = fulldate;
-    }
-
-    public String getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(String timezone) {
-        this.timezone = timezone;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public TimeZone(int dayofweek, String dayofweekName, int day, int month, String monthName, int year, int hours, int minutes, int seconds, int millis, String fulldate, String timezone, String status) {
-        this.dayofweek = dayofweek;
-        this.dayofweekName = dayofweekName;
+    public void setDay(int day) {
         this.day = day;
-        this.month = month;
-        this.monthName = monthName;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
+    }
+
+    public TimeZone(int year, int month, int day, int hour, int minute, int second) {
         this.year = year;
-        this.hours = hours;
-        this.minutes = minutes;
-        this.seconds = seconds;
-        this.millis = millis;
-        this.fulldate = fulldate;
-        this.timezone = timezone;
-        this.status = status;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
     }
 }

@@ -22,9 +22,9 @@ public class ModelFragment2 {
         this.modelFragmeant2Listener = modelFragmeant2Listener;
     }
 
-    public void handleGetTimezone(String user_content_key , String lib){
-        DataClient dataClient = APIUtils.getDataTimezone();
-        final Call<TimeZone> callback = dataClient.getTimeZone(user_content_key , lib);
+    public void handleGetTimezone(String token){
+        DataClient dataClient = APIUtils.getData();
+        final Call<TimeZone> callback = dataClient.getTimeZone(token);
         callback.enqueue(new Callback<TimeZone>() {
             @Override
             public void onResponse(@NonNull Call<TimeZone> call, @NonNull Response<TimeZone> response) {

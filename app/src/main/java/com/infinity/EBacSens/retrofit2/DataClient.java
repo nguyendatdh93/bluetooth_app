@@ -44,9 +44,8 @@ public interface DataClient {
     @GET("api/sensor/measure/{idMeasure}")
     Call<SensorMeasureDetail> getDetailMeasure(@Header("token") String token , @Path("idMeasure") int idMeasure);
 
-    @GET("a/macros/st.vimaru.edu.vn/echo")
-    Call<TimeZone> getTimeZone(@Query("user_content_key") String user_content_key,
-                               @Query("lib") String lib);
+    @GET("api/time-cloud")
+    Call<TimeZone> getTimeZone(@Header("token") String token);
 
     @DELETE("api/setting/{idSensor}")
     Call<String> deleteSettingSensor(@Header("token") String token , @Path("idSensor") int idSensor);
