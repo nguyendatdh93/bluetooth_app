@@ -152,7 +152,7 @@ public class MeasureMeasress {
         this.updatedAt = updatedAt;
     }
 
-    public MeasureMeasress(int id, String name, String pkpot, String dltc, String bgc, String err, String blpsx, String blpsy, String blpex, String blpey, String createdAt, String updatedAt) {
+    public MeasureMeasress(int id, String name, String pkpot, String dltc, String bgc, String blpsx, String blpsy, String blpex, String blpey, String err, String createdAt, String updatedAt) {
         this.id = id;
         this.name = name;
         this.pkpot = pkpot;

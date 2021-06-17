@@ -423,54 +423,54 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
 
                                     if (sensorMeasure.getMeasureMeasresses().size() == 1) {
                                         data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName()});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr())});
+                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()) , "-", "-", "-", "-"});
+                                        data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), "-", "-", "-", "-"});
+                                        data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), "-", "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント1 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), "-", "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント1 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), "-", "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント2 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), "-", "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント2 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), "-", "-", "-", "-"});
+                                        data.add(new String[]{"エラー番号", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), "-", "-", "-", "-"});
                                     } else if (sensorMeasure.getMeasureMeasresses().size() == 2) {
-                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName()});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr())});
+                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), "-", "-", "-"});
+                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), "-", "-", "-"});
+                                        data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), "-", "-", "-"});
+                                        data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント1 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント1 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント2 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), "-", "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント2 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), "-", "-", "-"});
+                                        data.add(new String[]{"エラー番号", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), "-", "-", "-"});
                                     } else if (sensorMeasure.getMeasureMeasresses().size() == 3) {
-                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName()});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr())});
+                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), "-", "-", "-"});
+                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), "-", "-"});
+                                        data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), "-", "-"});
+                                        data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント1 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント1 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント2 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), "-", "-"});
+                                        data.add(new String[]{"ベースラインポイント2 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), "-", "-"});
+                                        data.add(new String[]{"エラー番号", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), "-", "-"});
                                     } else if (sensorMeasure.getMeasureMeasresses().size() == 4) {
-                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), sensorMeasure.getMeasureMeasresses().get(3).getName()});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getPkpot())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getDltc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBgc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsx())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsy())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpex())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpey())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getErr())});
+                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), sensorMeasure.getMeasureMeasresses().get(3).getName(), "-"});
+                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getPkpot()), "-"});
+                                        data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getDltc()), "-"});
+                                        data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBgc()), "-"});
+                                        data.add(new String[]{"ベースラインポイント1 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsx()), "-"});
+                                        data.add(new String[]{"ベースラインポイント1 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsy()), "-"});
+                                        data.add(new String[]{"ベースラインポイント2 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpex()), "-"});
+                                        data.add(new String[]{"ベースラインポイント2 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpey()), "-"});
+                                        data.add(new String[]{"エラー番号", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getErr()), "-"});
                                     } else if (sensorMeasure.getMeasureMeasresses().size() == 5) {
                                         data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), sensorMeasure.getMeasureMeasresses().get(3).getName(), sensorMeasure.getMeasureMeasresses().get(4).getName()});
                                         data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getPkpot())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getDltc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBgc())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpsx())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpsy())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpex())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpey())});
-                                        data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getErr())});
+                                        data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getDltc())});
+                                        data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBgc())});
+                                        data.add(new String[]{"ベースラインポイント1 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsx()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpsx())});
+                                        data.add(new String[]{"ベースラインポイント1 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpsy()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpsy())});
+                                        data.add(new String[]{"ベースラインポイント2 X", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpex()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpex())});
+                                        data.add(new String[]{"ベースラインポイント2 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getBlpey())});
+                                        data.add(new String[]{"エラー番号", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(3).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(4).getErr())});
                                     }
 
                                     data.add(new String[]{});
@@ -563,7 +563,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         arrResult.clear();
         if (sensorMeasureDetail != null && sensorMeasureDetail.getSensorMeasure().getMeasureMeasresses() != null) {
             sensorMeasureExport = sensorMeasureDetail.getSensorMeasure();
-            for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses() != null && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
+            for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && i < sensorMeasureExport.getMeasureMeasparas().getBacs() && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses() != null && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
                 arrGraph.add(new Graph(
                         sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()))),
@@ -572,7 +572,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 ));
             }
 
-            for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() &&sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
+            for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && i < sensorMeasureExport.getMeasureMeasparas().getBacs() && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() &&sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
                 arrResult.add(new Result(sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getDltc(),
@@ -581,6 +581,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 ));
             }
         }
+
         adapteRCVGraph.notifyDataSetChanged();
         adapteRCVResult.notifyDataSetChanged();
         cancelDialogProcessing();
@@ -826,9 +827,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 null,
                                 null
                         );
-
+                        //&& arrBac.size() < Protector.tryParseInt(values[1].split(",")[1])
                         ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length - 1 && arrBac.size() < Protector.tryParseInt(values[1].split(",")[1]) ; i += 6 ) {
+                        for (int i = pos; i < values.length - 1  ; i += 6 ) {
                             arrBac.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     values[i].split(",")[1],
@@ -836,7 +837,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     Protector.tryParseHex(values[i + 2].split(",")[1]),
                                     Protector.tryParseHex(values[i + 3].split(",")[1]),
                                     Protector.tryParseHex(values[i + 4].split(",")[1]),
-                                    Protector.tryParseHex(values[i + 5].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 5].split(",")[1]),
                                     null, null));
                         }
                         measureMeasparas.setArrBac(arrBac);
@@ -892,9 +893,9 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                 null,
                                 null
                         );
-
+                        //&& arrBac.size() < Protector.tryParseInt(values[1].split(",")[1])
                         ArrayList<BacSetting> arrBac = new ArrayList<>();
-                        for (int i = pos; i < values.length - 1 && arrBac.size() < Protector.tryParseInt(values[1].split(",")[1])  ; i += 6) {
+                        for (int i = pos; i < values.length - 1  ; i += 6) {
                             arrBac.add(new BacSetting(MainActivity.device.getId(),
                                     MainActivity.device.getId(),
                                     values[i].split(",")[1],
@@ -902,7 +903,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     Protector.tryParseHex(values[i + 2].split(",")[1]),
                                     Protector.tryParseHex(values[i + 3].split(",")[1]),
                                     Protector.tryParseHex(values[i + 4].split(",")[1]),
-                                    Protector.tryParseHex(values[i + 5].split(",")[1]),
+                                    Protector.tryParseInt(values[i + 5].split(",")[1]),
                                     null, null));
                         }
                         measureMeasparas.setArrBac(arrBac);
