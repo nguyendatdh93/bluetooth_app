@@ -97,7 +97,7 @@ public class ModelFragment4 {
                 object.put("deltae", measureMeasdets.get(i).getDeltae());
                 object.put("deltai", measureMeasdets.get(i).getDeltai());
                 object.put("eb", measureMeasdets.get(i).getEb());
-                object.put("ib", measureMeasdets.get(i).getEb());
+                object.put("ib", measureMeasdets.get(i).getIb());
                 object.put("ef", measureMeasdets.get(i).getEf());
                 object.put("if", measureMeasdets.get(i).get_if());
                 object.put("created_at", measureMeasdets.get(i).getCreatedAt());
