@@ -422,7 +422,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                     data.add(new String[]{});
 
                                     if (sensorMeasure.getMeasureMeasresses().size() == 1) {
-                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName()});
+                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), "-", "-", "-", "-"});
                                         data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()) , "-", "-", "-", "-"});
                                         data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), "-", "-", "-", "-"});
                                         data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), "-", "-", "-", "-"});
@@ -442,7 +442,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                                         data.add(new String[]{"ベースラインポイント2 Y", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBlpey()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBlpey()), "-", "-", "-"});
                                         data.add(new String[]{"エラー番号", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getErr()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getErr()), "-", "-", "-"});
                                     } else if (sensorMeasure.getMeasureMeasresses().size() == 3) {
-                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), "-", "-", "-"});
+                                        data.add(new String[]{"測定対象物名", sensorMeasure.getMeasureMeasresses().get(0).getName(), sensorMeasure.getMeasureMeasresses().get(1).getName(), sensorMeasure.getMeasureMeasresses().get(2).getName(), "-", "-"});
                                         data.add(new String[]{"ピーク電位", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getPkpot()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getPkpot()), "-", "-"});
                                         data.add(new String[]{"ピーク高さ", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getDltc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getDltc()), "-", "-"});
                                         data.add(new String[]{"バックグランド", String.valueOf(sensorMeasure.getMeasureMeasresses().get(0).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(1).getBgc()), String.valueOf(sensorMeasure.getMeasureMeasresses().get(2).getBgc()), "-", "-"});
@@ -567,7 +567,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                 arrGraph.add(new Graph(
                         sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()))),
-                        level((Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot())))),
+                        level(Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) ),
                         "ピーク高さ／ピーク電位"
                 ));
             }
@@ -617,17 +617,20 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
         Protector.appendLog(context, true, error);
     }
 
-    private int level(float val) {
-        if (val <= 1000) {
-            return 1;
-        } else if (val <= 2000) {
-            return 2;
-        } else if (val <= 3000) {
-            return 3;
-        } else if (val <= 4000) {
-            return 4;
-        } else {
+    private int level(double val) {
+        val = Math.rint(val);
+        if (val >= 10001){
             return 5;
+        }else if (val >= 1001){
+            return 4;
+        }else if (val >= 101){
+            return 3;
+        }else if (val >= 11){
+            return 2;
+        }else if (val >= 1){
+            return 1;
+        }else {
+            return 0;
         }
     }
 

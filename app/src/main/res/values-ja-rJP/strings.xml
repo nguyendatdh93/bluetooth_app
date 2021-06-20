@@ -85,7 +85,7 @@
     <string name="do_you_want_to_delete_this_measurement_setting" translatable="false">この測定設定を削除しますか？</string>
     <string name="no" translatable="false">いいえ</string>
     <string name="yes" translatable="false">はい</string>
-    <string name="measurement_result_quantity" translatable="false">測定結果（数量）</string>
+    <string name="measurement_result_quantity" translatable="false">volume V</string>
     <string name="level" translatable="false">レベル</string>
     <string name="description" translatable="false">説明</string>
     <string name="cloud" translatable="false">クラウド</string>

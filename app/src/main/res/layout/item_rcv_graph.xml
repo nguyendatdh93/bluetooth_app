@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="horizontal"
-    android:weightSum="5">
+    android:weightSum="4">
 
     <TextView
         android:id="@+id/item_rcv_graph_txt_name"
@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_1ssp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:background="@color/grey"
         android:gravity="center|top"
         android:padding="@dimen/_5ssp"
