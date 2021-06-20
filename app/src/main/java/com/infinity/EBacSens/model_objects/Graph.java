@@ -3,8 +3,8 @@ package com.infinity.EBacSens.model_objects;
 public class Graph {
 
     private String name;
-    private float result;
-    private int level;
+    private String result;
+    private String level;
     private String description;
 
     public String getName() {
@@ -15,19 +15,19 @@ public class Graph {
         this.name = name;
     }
 
-    public float getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(float result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 
@@ -39,7 +39,7 @@ public class Graph {
         this.description = description;
     }
 
-    public Graph(String name, float result, int level, String description) {
+    public Graph(String name, String result, String level, String description) {
         this.name = name;
         this.result = result;
         this.level = level;

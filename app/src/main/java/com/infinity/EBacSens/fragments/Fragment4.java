@@ -566,8 +566,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && i < sensorMeasureExport.getMeasureMeasparas().getBacs() && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() && sensorMeasureExport.getMeasureMeasresses() != null && sensorMeasureExport.getMeasureMeasresses().size() > i; i++) {
                 arrGraph.add(new Graph(
                         sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
-                        (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()))),
-                        level(Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) ),
+                        (!sensorMeasureExport.getMeasureMeasresses().get(i).getErr().equals("0") || Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getDltc()) <= 0) ? "----" : Math.rint((Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()))))+"",
+                        (!sensorMeasureExport.getMeasureMeasresses().get(i).getErr().equals("0") || Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getDltc()) <= 0) ? "----" : level((Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(i).getDltc()) / (Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()) == 0 ? 1 : Protector.tryParseFloat(sensorMeasureExport.getMeasureMeasresses().get(0).getPkpot()))))+"",
                         "ピーク高さ／ピーク電位"
                 ));
             }
