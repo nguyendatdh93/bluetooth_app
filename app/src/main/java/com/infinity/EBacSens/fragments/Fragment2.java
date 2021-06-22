@@ -347,7 +347,7 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
     @Override
     public void onGetTime(TimeZone timeZone) {
         if (timeZone!= null){
-            String year = (timeZone.getYear()+"").substring(0,2);
+            String year = (timeZone.getYear()+"").substring(2,4);
             String month;
             if (timeZone.getMonth() < 10){
                 month = "0" + timeZone.getMonth();
