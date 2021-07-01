@@ -21,6 +21,18 @@ public class MeasureMeasress {
     @Expose
     private String dltc;
 
+    @SerializedName("level")
+    @Expose
+    private String level;
+
+    @SerializedName("number_organism")
+    @Expose
+    private String number_organism;
+
+    @SerializedName("explain")
+    @Expose
+    private String explain;
+
     @SerializedName("bgc")
     @Expose
     private String bgc;
@@ -86,6 +98,30 @@ public class MeasureMeasress {
 
     public void setDltc(String dltc) {
         this.dltc = dltc;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getNumber_organism() {
+        return number_organism;
+    }
+
+    public void setNumber_organism(String number_organism) {
+        this.number_organism = number_organism;
+    }
+
+    public String getExplain() {
+        return explain;
+    }
+
+    public void setExplain(String explain) {
+        this.explain = explain;
     }
 
     public String getBgc() {
