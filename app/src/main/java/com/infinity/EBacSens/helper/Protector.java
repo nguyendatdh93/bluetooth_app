@@ -34,6 +34,7 @@ import static android.os.storage.StorageManager.ACTION_MANAGE_STORAGE;
 
 public class Protector {
 
+    public static boolean STATUS_NETWORK = false;
 
     public static String getCurrentTimeSensor() {
         DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss", Locale.US);

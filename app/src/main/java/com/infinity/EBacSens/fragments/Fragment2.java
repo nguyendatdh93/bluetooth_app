@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.activitys.ListDeviceActivity;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.TimeZone;
@@ -380,6 +383,8 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
             }
             edtDatetime.setText(year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
         }else {
+
+            Toast.makeText(context , Protector.getCurrentTimeSensor() , Toast.LENGTH_SHORT).show();
             edtDatetime.setText(Protector.getCurrentTimeSensor());
         }
         cancelDialogProcessing();

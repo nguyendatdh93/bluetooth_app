@@ -104,8 +104,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_3, container, false);
-        addController();
-        addEvents();
+//        addController();
+//        addEvents();
         return view;
     }
 

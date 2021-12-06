@@ -1,5 +1,7 @@
 package com.infinity.EBacSens.activitys;
 
+import static com.infinity.EBacSens.helper.Protector.STATUS_NETWORK;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +37,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.adapters.AdapteRCVDeviceOnline;
 import com.infinity.EBacSens.adapters.AdapteRCVDevicePaired;
+import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
 import com.infinity.EBacSens.model_objects.SensorInfor;
@@ -69,21 +74,27 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     private BluetoothAdapter mBluetoothAdapter;
 
     private RelativeLayout container;
-    private TextView txtStatusBluetooth;
+    private TextView txtStatusBluetooth, txtStatusNetwork;
     private TextView txtDialogProcessingTitle;
     private Dialog dialogProcessing, dialogListDeviceOnline;
     private IntentFilter intentFilter;
     private IntentFilter intentFilter2;
     private IntentFilter intentFilter3;
-
+    private DBManager dbManager;
     private PresenterListDevice presenterListDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_device);
-        addPerMissions();
         addController();
+        addPerMissions();
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void addPerMissions() {
@@ -94,7 +105,26 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 ).withListener(new MultiplePermissionsListener() {
             @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
-                getOnlineDevice();
+                if(isOnline()){
+                    STATUS_NETWORK = true;
+                    getOnlineDevice();
+                    adapteRCVDevicePaired.onLoadMore();
+                    rcvDevicePaired.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+                            if (!recyclerView.canScrollVertically(1)) {
+                                adapteRCVDevicePaired.onLoadMore();
+                            }
+                        }
+                    });
+                }else {
+                    txtStatusNetwork.setText("Mode offline is running, plese click add button to connect");
+                    txtStatusNetwork.setVisibility(View.VISIBLE);
+                    arrDevicePaired.addAll(dbManager.getDevice());
+                    adapteRCVDevicePaired.notifyDataSetChanged();
+                }
+
             }
             @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {/* ... */}
         }).check();
@@ -107,6 +137,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     }
 
     private void addController() {
+        dbManager = new DBManager(this);
         presenterListDevice = new PresenterListDevice(this);
         intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         intentFilter2 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
@@ -115,21 +146,13 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         container = findViewById(R.id.container);
         rcvDevicePaired = findViewById(R.id.rcv_device_paired);
         txtStatusBluetooth = findViewById(R.id.txt_status_bluetooth);
+        txtStatusNetwork = findViewById(R.id.txt_status_network);
         rcvDevicePaired.setHasFixedSize(true);
         rcvDevicePaired.setLayoutManager(new LinearLayoutManager(this));
         arrDevicePaired = new ArrayList<>();
         adapteRCVDevicePaired = new AdapteRCVDevicePaired(this, arrDevicePaired, this);
         rcvDevicePaired.setAdapter(adapteRCVDevicePaired);
-        adapteRCVDevicePaired.onLoadMore();
-        rcvDevicePaired.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1)) {
-                    adapteRCVDevicePaired.onLoadMore();
-                }
-            }
-        });
+
 
         arrDeviceOnline = new ArrayList<>();
         arrDeviceOnline.add(null);
@@ -208,7 +231,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                 .make(container, message, Snackbar.LENGTH_LONG);
         View view = snackbar.getView();
         view.setBackgroundColor(Color.GREEN);
-        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
+        TextView textView = view.findViewById(R.id.snackbar_text);
         textView.setTextColor(Color.BLACK);
         snackbar.show();
     }
@@ -217,7 +240,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            if (BluetoothDevice.ACTION_FOUND.equals(action) || !STATUS_NETWORK) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 arrDeviceOnline.add(arrDeviceOnline.size() - 1, device);
                 if (adapteRCVDeviceOnline != null) {
@@ -252,7 +275,11 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     showSuccessMessage(context.getResources().getString(R.string.paired));
                     txtDialogProcessingTitle.setText(context.getResources().getString(R.string.storing_to_cloud));
-                    presenterListDevice.receivedStoreSensor(APIUtils.token, device.getName(), Protector.getCurrentTime(), device.getAddress());
+                    if(STATUS_NETWORK){
+                        presenterListDevice.receivedStoreSensor(APIUtils.token, device.getName(), Protector.getCurrentTime(), device.getAddress());
+                    }else {
+                        storeDeviceConnectToSQLlite(new SensorInfor(0 , device.getAddress() , device.getName() , 0 , 0 , Protector.getCurrentTime() , "" , ""));
+                    }
                 } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
                     showSuccessMessage(context.getResources().getString(R.string.unpaired));
                 } else if (state == BluetoothDevice.BOND_NONE) {
@@ -399,6 +426,17 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
             }
 
             adapteRCVDevicePaired.notifyDataSetChanged();
+        }
+    }
+
+    private void storeDeviceConnectToSQLlite(SensorInfor sensorInfor){
+        dbManager.insertDevice(sensorInfor.getMacDevice(), sensorInfor.getName());
+        sensorInfor.setStatusConnect(-1);
+        arrDevicePaired.add(0,sensorInfor);
+        adapteRCVDevicePaired.notifyItemInserted(0);
+        cancelDialogProcessing();
+        if (dialogListDeviceOnline != null) {
+            dialogListDeviceOnline.cancel();
         }
     }
 
