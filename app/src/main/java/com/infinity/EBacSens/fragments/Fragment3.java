@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.infinity.EBacSens.R;
 import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVBacSetting;
+import com.infinity.EBacSens.adapters.AdapteRCVSettingOffline;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
@@ -72,6 +73,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private RecyclerView rcvBacSetting;
     private ArrayList<BacSetting> arrBacSetting;
     private AdapteRCVBacSetting adapteRCVBacSetting;
+
+    private RecyclerView rcvSettingOffline;
+    private ArrayList<String> arrSettingOffline;
+    private AdapteRCVSettingOffline adapteRCVSettingOffline;
 
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
@@ -331,10 +336,15 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         btnRead = view.findViewById(R.id.fragment_3_btn_read);
         btnWrite = view.findViewById(R.id.fragment_3_btn_write);
         edtNameMEasure = view.findViewById(R.id.fragment_3_edt_name_measure);
+
         rcvBacSetting = view.findViewById(R.id.fragment_3_rcv_bac_setting);
-        //rcvBacSetting.setHasFixedSize(true);
         rcvBacSetting.setNestedScrollingEnabled(false);
         rcvBacSetting.setLayoutManager(new LinearLayoutManager(context));
+
+        rcvSettingOffline = view.findViewById(R.id.fragment_3_rcv_setting_offline);
+        rcvSettingOffline.setNestedScrollingEnabled(false);
+        rcvSettingOffline.setLayoutManager(new LinearLayoutManager(context));
+
         edtEqp1 = view.findViewById(R.id.fragment_3_edt_eqp1);
         edtEqt1 = view.findViewById(R.id.fragment_3_edt_eqt1);
         edtEqp2 = view.findViewById(R.id.fragment_3_edt_eqp2);
@@ -360,6 +370,11 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         arrBacSetting.add(new BacSetting(-1, MainActivity.device.getId(), null, 1, 1, 1, 1, 0, null, null));
         adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
+
+        arrSettingOffline = new ArrayList<>();
+        arrSettingOffline.add("");
+        adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
+        rcvSettingOffline.setAdapter(adapteRCVSettingOffline);
 
         arrSensorSetting = new ArrayList<>();
         arrRules = new ArrayList<>();

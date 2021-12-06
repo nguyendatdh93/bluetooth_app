@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:text="微生物１"
+        android:id="@+id/item_rcv_bac_setting_txt_index"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20ssp"
+        android:textColor="@color/primary_color"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_rcv_sub_setting_offline_btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/item_rcv_setting_offline_btn_add"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_bg_button_not_active"
+        android:text="(+) add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
