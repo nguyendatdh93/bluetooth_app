@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,7 @@ import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVDatetime;
 import com.infinity.EBacSens.adapters.AdapteRCVGraph;
 import com.infinity.EBacSens.adapters.AdapteRCVResult;
+import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.Graph;
@@ -86,6 +88,7 @@ import static com.infinity.EBacSens.activitys.MainActivity.STATE_DISCONNECTED;
 import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
+import static com.infinity.EBacSens.helper.Protector.STATUS_NETWORK;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
 public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewConnectThread, ViewAdapterRCVDatetimeListener, Handler.Callback {
@@ -145,6 +148,7 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
     private final ArrayList<ArrayList<MeasureMeasress>> resultRess = new ArrayList<>();
     private final ArrayList<ArrayList<MeasureMeasdets>> resultDets = new ArrayList<>();
     private int posReadDet = 0;
+    private DBManager dbManager;
 
     @Nullable
     @Override
@@ -168,13 +172,36 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             }
         });
 
-        showDialogProcessing();
-        presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
+
+        if(STATUS_NETWORK){
+            showDialogProcessing();
+            presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
+        }else{
+            if (dbManager.getMeasures() != null) {
+                arrMeasurePage.clear();
+                arrRCVDatetime.clear();
+                arrMeasurePage.addAll(dbManager.getMeasures());
+                for (int i = 0; i < dbManager.getMeasures().size(); i++) {
+                    arrRCVDatetime.add(new ModelRCVDatetime(dbManager.getMeasures().get(i).getDatetime(), false));
+                }
+                adapteRCVDatetime.notifyDataSetChanged();
+                if (arrRCVDatetime.size() > 0) {
+                    arrRCVDatetime.get(0).setSelected(true);
+                    adapteRCVDatetime.notifyItemChanged(0);
+                    skbProgress.setProgress(0);
+                    positionCSV = 0;
+                    presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
+                }
+            }
+
+        }
+
     }
 
     private void addController() {
+        dbManager = new DBManager(context);
         handler = new Handler(this);
-        presenterFragment4 = new PresenterFragment4(this);
+        presenterFragment4 = new PresenterFragment4(this, context);
         btnExportCSV = view.findViewById(R.id.fragment_4_btn_csv);
         btnHistoryMeasure = view.findViewById(R.id.fragment_4_btn_history_measure);
         skbProgress = view.findViewById(R.id.fragment_4_skb_progress);
@@ -573,7 +600,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             }
 
             for (int i = 0; sensorMeasureExport.getMeasureMeasparas() != null && i < sensorMeasureExport.getMeasureMeasparas().getBacs() && sensorMeasureExport.getMeasureMeasparas().getArrBac() != null && i < sensorMeasureExport.getMeasureMeasparas().getArrBac().size() &&sensorMeasureExport.getMeasureMeasresses() != null && i < sensorMeasureExport.getMeasureMeasresses().size(); i++) {
-                arrResult.add(new Result(sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
+                arrResult.add(new Result(
+                        sensorMeasureExport.getMeasureMeasresses().get(i).getName(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getPkpot(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getDltc(),
                         sensorMeasureExport.getMeasureMeasresses().get(i).getBgc(),
@@ -1100,11 +1128,30 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             a++;
                         }
                         posReadDet++;
-                        presenterFragment4.receivedStoreMeasure(APIUtils.token,
-                                MainActivity.device.getId(),
-                                resultListSensors.get(0).getDatetime(),
-                                String.valueOf(resultListSensors.get(0).getNo()), resultParas.get(0), resultBas.get(0), resultRess.get(0), resultDets.get(0));
-                        resultListSensors.remove(0);
+                        if(!STATUS_NETWORK){
+                            while (resultListSensors.size() != 0){
+                                dbManager.insertMeasures(
+                                        MainActivity.device.getMacDevice(),
+                                        resultListSensors.get(0).getDatetime(),
+                                        String.valueOf(resultListSensors.get(0).getNo()), resultParas.get(0), resultBas.get(0), resultRess.get(0), resultDets.get(0));
+                                resultListSensors.remove(0);
+                            }
+
+                            showPopup(context.getResources().getString(R.string.done), context.getResources().getString(R.string.success_stored), true);
+                            arrRCVDatetime.clear();
+                            arrMeasure.clear();
+                            presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
+                            skbProgress.setProgress(100);
+                            txtProcess.setText(context.getResources().getString(R.string.success_stored));
+                            txtProcess.setTextColor(context.getResources().getColor(R.color.black));
+                            cancelDialogProcessing();
+                        }else{
+                            presenterFragment4.receivedStoreMeasure(APIUtils.token,
+                                    MainActivity.device.getId(),
+                                    resultListSensors.get(0).getDatetime(),
+                                    String.valueOf(resultListSensors.get(0).getNo()), resultParas.get(0), resultBas.get(0), resultRess.get(0), resultDets.get(0));
+                            resultListSensors.remove(0);
+                        }
                     }
                 }
                 break;

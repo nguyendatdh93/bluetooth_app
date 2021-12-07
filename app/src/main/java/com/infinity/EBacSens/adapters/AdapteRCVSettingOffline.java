@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,9 +45,8 @@ public class AdapteRCVSettingOffline extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
-        viewHodler.btnAdd.setOnClickListener(v -> {
+        viewHodler.txtIndex.setText("微生物" + (position+1));
 
-        });
 
         ArrayList<String> arrSettingOffline = new ArrayList<>();
         arrSettingOffline.add("a");
@@ -55,9 +55,13 @@ public class AdapteRCVSettingOffline extends RecyclerView.Adapter<RecyclerView.V
         viewHodler.rcvSubSetting.setNestedScrollingEnabled(false);
         viewHodler.rcvSubSetting.setLayoutManager(new LinearLayoutManager(context));
 
-        AdapteRCVSettingOffline adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
-        viewHodler.rcvSubSetting.setAdapter(adapteRCVSettingOffline);
+        AdapteRCVSettingOfflineItem adapteRCVSettingOfflineItem = new AdapteRCVSettingOfflineItem(context, arrSettingOffline);
+        viewHodler.rcvSubSetting.setAdapter(adapteRCVSettingOfflineItem);
 
+        viewHodler.btnAdd.setOnClickListener(v -> {
+            arrSettingOffline.add("a");
+            adapteRCVSettingOfflineItem.notifyItemInserted(arrSettingOffline.size()-1);
+        });
     }
 
     @Override
@@ -68,11 +72,13 @@ public class AdapteRCVSettingOffline extends RecyclerView.Adapter<RecyclerView.V
     static class ViewHodler extends RecyclerView.ViewHolder {
         RecyclerView rcvSubSetting;
         Button btnAdd;
+        TextView txtIndex;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
             btnAdd = itemView.findViewById(R.id.item_rcv_setting_offline_btn_add);
             rcvSubSetting = itemView.findViewById(R.id.item_rcv_sub_setting_offline_btn_add);
+            txtIndex = itemView.findViewById(R.id.item_rcv_setting_offline_txt_index);
         }
     }
 

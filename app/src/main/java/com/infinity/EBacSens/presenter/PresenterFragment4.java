@@ -1,5 +1,7 @@
 package com.infinity.EBacSens.presenter;
 
+import android.content.Context;
+
 import com.infinity.EBacSens.model.ModelFragmeant4Listener;
 import com.infinity.EBacSens.model.ModelFragment4;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
@@ -20,8 +22,8 @@ public class PresenterFragment4 implements ModelFragmeant4Listener {
     private ModelFragment4 modelFragment4;
     private ViewFragment4Listener callback;
 
-    public PresenterFragment4(ViewFragment4Listener callback) {
-        modelFragment4 = new ModelFragment4(this);
+    public PresenterFragment4(ViewFragment4Listener callback , Context context) {
+        modelFragment4 = new ModelFragment4(this , context);
         this.callback = callback;
     }
 

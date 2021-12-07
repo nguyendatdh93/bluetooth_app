@@ -37,6 +37,7 @@ import com.infinity.EBacSens.activitys.MainActivity;
 import com.infinity.EBacSens.adapters.AdapteRCVBacSetting;
 import com.infinity.EBacSens.adapters.AdapteRCVSettingOffline;
 import com.infinity.EBacSens.adapters.AdapterRCVHistoryMeasure;
+import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
@@ -57,6 +58,7 @@ import static com.infinity.EBacSens.activitys.MainActivity.STATE_LISTENING;
 import static com.infinity.EBacSens.activitys.MainActivity.connectThread;
 import static com.infinity.EBacSens.activitys.MainActivity.mBluetoothAdapter;
 import static com.infinity.EBacSens.activitys.MainActivity.viewPager;
+import static com.infinity.EBacSens.helper.Protector.STATUS_NETWORK;
 import static com.infinity.EBacSens.retrofit2.APIUtils.PBAP_UUID;
 
 public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRCVHistoryMeasure, ViewConnectThread, Handler.Callback {
@@ -87,7 +89,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     // popup
     private LinearLayout containerPopup;
-    private ImageView imgTitle, imgExpandMeasure, imgExpandSetting;
+    private ImageView imgTitle, imgExpandMeasure, imgExpandSetting, imgExpandOfflineSetting;
     private TextView txtTitle, txtContent;
 
     private int statusButton;
@@ -99,13 +101,14 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
+    private DBManager dbManager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_3, container, false);
-//        addController();
-//        addEvents();
+        addController();
+        addEvents();
         return view;
     }
 
@@ -126,6 +129,15 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             } else {
                 view.findViewById(R.id.container_setting).setVisibility(View.VISIBLE);
                 imgExpandSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
+            }
+        });
+        imgExpandOfflineSetting.setOnClickListener(v -> {
+            if (view.findViewById(R.id.container_setting_offline).getVisibility() == View.VISIBLE) {
+                view.findViewById(R.id.container_setting_offline).setVisibility(View.GONE);
+                imgExpandOfflineSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
+            } else {
+                view.findViewById(R.id.container_setting_offline).setVisibility(View.VISIBLE);
+                imgExpandOfflineSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
             }
         });
 
@@ -324,11 +336,13 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     }
 
     private void addController() {
+        dbManager = new DBManager(context);
         handler = new Handler(this);
         presenterFragment3 = new PresenterFragment3(this);
 
         imgExpandMeasure = view.findViewById(R.id.view_left);
         imgExpandSetting = view.findViewById(R.id.view_left_2);
+        imgExpandOfflineSetting = view.findViewById(R.id.view_left_3);
         spnNumber = view.findViewById(R.id.fragment_3_spn_number);
         spnCrgn = view.findViewById(R.id.fragment_3_spn_crng);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
@@ -371,10 +385,13 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
 
-        arrSettingOffline = new ArrayList<>();
-        arrSettingOffline.add("");
-        adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
-        rcvSettingOffline.setAdapter(adapteRCVSettingOffline);
+        if(!STATUS_NETWORK){
+            arrSettingOffline = new ArrayList<>();
+            adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
+            rcvSettingOffline.setAdapter(adapteRCVSettingOffline);
+        }else{
+            view.findViewById(R.id.parent_container_setting_offline).setVisibility(View.GONE);
+        }
 
         arrSensorSetting = new ArrayList<>();
         arrRules = new ArrayList<>();

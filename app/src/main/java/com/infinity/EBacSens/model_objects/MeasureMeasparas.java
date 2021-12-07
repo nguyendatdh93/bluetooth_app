@@ -100,7 +100,7 @@ public class MeasureMeasparas {
     @Expose
     private int ifst;
 
-    @SerializedName("ifnb vven")
+    @SerializedName("ifen")
     @Expose
     private int ifen;
 

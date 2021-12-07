@@ -6,8 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:text="微生物１"
-        android:id="@+id/item_rcv_bac_setting_txt_index"
+        android:id="@+id/item_rcv_setting_offline_txt_index"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20ssp"

@@ -19,6 +19,9 @@ public class SensorMeasureDetail {
         this.sensorMeasure = sensorMeasure;
     }
 
+    public SensorMeasureDetail() {
+    }
+
     public SensorMeasureDetail(SensorMeasure sensorMeasure) {
         this.sensorMeasure = sensorMeasure;
     }

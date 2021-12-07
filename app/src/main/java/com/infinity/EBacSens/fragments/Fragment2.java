@@ -383,8 +383,6 @@ public class Fragment2 extends Fragment implements ViewConnectThread, Handler.Ca
             }
             edtDatetime.setText(year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
         }else {
-
-            Toast.makeText(context , Protector.getCurrentTimeSensor() , Toast.LENGTH_SHORT).show();
             edtDatetime.setText(Protector.getCurrentTimeSensor());
         }
         cancelDialogProcessing();

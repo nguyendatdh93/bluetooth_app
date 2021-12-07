@@ -1,7 +1,12 @@
 package com.infinity.EBacSens.model;
 
+import static com.infinity.EBacSens.helper.Protector.STATUS_NETWORK;
+
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
+import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
@@ -27,9 +32,11 @@ import retrofit2.Response;
 public class ModelFragment4 {
 
     private ModelFragmeant4Listener modelFragmeant4Listener;
+    private Context context;
 
-    public ModelFragment4(ModelFragmeant4Listener modelFragmeant4Listener) {
+    public ModelFragment4(ModelFragmeant4Listener modelFragmeant4Listener, Context context) {
         this.modelFragmeant4Listener = modelFragmeant4Listener;
+        this.context = context;
     }
 
     public void handleGetMeasurePage(String token, int idSensor, int page, int ful) {
@@ -50,20 +57,26 @@ public class ModelFragment4 {
     }
 
     public void handleGetDetailMeasure(String token, int idMeasure) {
-        DataClient dataClient = APIUtils.getData();
-        final Call<SensorMeasureDetail> callback = dataClient.getDetailMeasure(token, idMeasure);
-        callback.enqueue(new Callback<SensorMeasureDetail>() {
-            @Override
-            public void onResponse(@NonNull Call<SensorMeasureDetail> call, @NonNull Response<SensorMeasureDetail> response) {
-                modelFragmeant4Listener.onGetDataMeasureDetail(response.body());
-            }
+        if(!STATUS_NETWORK){
+            DBManager dbManager = new DBManager(context);
+            modelFragmeant4Listener.onGetDataMeasureDetail(dbManager.getMeasureDetail(idMeasure));
+        }else{
+            DataClient dataClient = APIUtils.getData();
+            final Call<SensorMeasureDetail> callback = dataClient.getDetailMeasure(token, idMeasure);
+            callback.enqueue(new Callback<SensorMeasureDetail>() {
+                @Override
+                public void onResponse(@NonNull Call<SensorMeasureDetail> call, @NonNull Response<SensorMeasureDetail> response) {
+                    modelFragmeant4Listener.onGetDataMeasureDetail(response.body());
+                }
 
-            @Override
-            public void onFailure(@NonNull Call<SensorMeasureDetail> call, @NonNull Throwable t) {
-                modelFragmeant4Listener.onGetDataMeasureDetail(null);
-                //Protector.appendLog(true ,t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<SensorMeasureDetail> call, @NonNull Throwable t) {
+                    modelFragmeant4Listener.onGetDataMeasureDetail(null);
+                    //Protector.appendLog(true ,t.getMessage());
+                }
+            });
+        }
+
     }
 
     public void handleStoreMeasure(String token, int idMeasure, String datetime, String no, MeasureMeasparas measureMeasparas, MeasureMeasbas measureMeasbas, ArrayList<MeasureMeasress> measureMeasresses , ArrayList<MeasureMeasdets> measureMeasdets) {
