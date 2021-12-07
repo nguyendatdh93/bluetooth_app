@@ -12,7 +12,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
+import com.infinity.EBacSens.model_objects.ItemSettingOffline;
 import com.infinity.EBacSens.model_objects.MeasureMeasbas;
 import com.infinity.EBacSens.model_objects.MeasureMeasdets;
 import com.infinity.EBacSens.model_objects.MeasureMeasparas;
@@ -21,6 +23,7 @@ import com.infinity.EBacSens.model_objects.SensorInfor;
 import com.infinity.EBacSens.model_objects.SensorMeasure;
 import com.infinity.EBacSens.model_objects.SensorMeasureDetail;
 import com.infinity.EBacSens.model_objects.SensorMeasurePage;
+import com.infinity.EBacSens.model_objects.SettingOffline;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +56,12 @@ public class DBManager extends SQLiteOpenHelper {
                 "mac_address" + " TEXT, " +
                 "name" + " TEXT " +
                 ")");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + "setting_offlines" + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "object" + " TEXT " +
+                ")");
+
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + "measures" + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -94,6 +103,194 @@ public class DBManager extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    public void insertSettingOffline() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        JSONArray jsonArrayMeasureRes = new JSONArray();
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put("dltc_from", 0);
+            object.put("dltc_to", 0.1);
+            object.put("quantity", 0);
+            object.put("level", 0);
+            jsonArrayMeasureRes.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        object = new JSONObject();
+        try {
+            object.put("dltc_from", 0.1);
+            object.put("dltc_to", 0.2);
+            object.put("quantity", 10);
+            object.put("level", 1);
+            jsonArrayMeasureRes.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        object = new JSONObject();
+        try {
+            object.put("dltc_from", 0.2);
+            object.put("dltc_to", 0.3);
+            object.put("quantity", 10);
+            object.put("level", 2);
+            jsonArrayMeasureRes.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        object = new JSONObject();
+        try {
+            object.put("dltc_from", 0.3);
+            object.put("dltc_to", 0.4);
+            object.put("quantity", 100);
+            object.put("level", 3);
+            jsonArrayMeasureRes.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        object = new JSONObject();
+        try {
+            object.put("dltc_from", 0.4);
+            object.put("dltc_to", 0.5);
+            object.put("quantity", 1000);
+            object.put("level", 4);
+            jsonArrayMeasureRes.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        object = new JSONObject();
+        try {
+            object.put("dltc_from", 0.5);
+            object.put("dltc_to", 0.5);
+            object.put("quantity", 10000);
+            object.put("level", 5);
+            jsonArrayMeasureRes.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        values.put("object",jsonArrayMeasureRes.toString());
+        db.insert("setting_offlines", null, values);
+
+        for(int i = 1 ; i < 5 ; i++){
+            jsonArrayMeasureRes = new JSONArray();
+
+            object = new JSONObject();
+            try {
+                object.put("dltc_from", 0);
+                object.put("dltc_to", 1);
+                object.put("quantity", 0);
+                object.put("level", 0);
+                jsonArrayMeasureRes.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            object = new JSONObject();
+            try {
+                object.put("dltc_from", 1);
+                object.put("dltc_to", 2);
+                object.put("quantity", 10);
+                object.put("level", 1);
+                jsonArrayMeasureRes.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            object = new JSONObject();
+            try {
+                object.put("dltc_from", 2);
+                object.put("dltc_to", 3);
+                object.put("quantity", 10);
+                object.put("level", 2);
+                jsonArrayMeasureRes.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            object = new JSONObject();
+            try {
+                object.put("dltc_from", 3);
+                object.put("dltc_to", 4);
+                object.put("quantity", 100);
+                object.put("level", 3);
+                jsonArrayMeasureRes.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            object = new JSONObject();
+            try {
+                object.put("dltc_from", 4);
+                object.put("dltc_to", 5);
+                object.put("quantity", 1000);
+                object.put("level", 4);
+                jsonArrayMeasureRes.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            object = new JSONObject();
+            try {
+                object.put("dltc_from", 5);
+                object.put("dltc_to", 5);
+                object.put("quantity", 10000);
+                object.put("level", 5);
+                jsonArrayMeasureRes.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            values.put("object",jsonArrayMeasureRes.toString());
+            db.insert("setting_offlines", null, values);
+        }
+    }
+
+    public void updateSettingOffline(ArrayList<SettingOffline> settingOfflines){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete("setting_offlines" , "id!=?", new String[]{"-1"});
+        for(int i = 0 ; i < settingOfflines.size() ; i++){
+            ContentValues values = new ContentValues();
+            JSONArray jsonArrayMeasureRes = new JSONArray();
+            for(int j = 0 ; j < settingOfflines.get(i).getObject().size();j++){
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("dltc_from", settingOfflines.get(i).getObject().get(j).getDltc_from());
+                    object.put("dltc_to", settingOfflines.get(i).getObject().get(j).getDltc_to());
+                    object.put("quantity", settingOfflines.get(i).getObject().get(j).getQuantity());
+                    object.put("level", settingOfflines.get(i).getObject().get(j).getLevel());
+                    jsonArrayMeasureRes.put(object);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            values.put("object",jsonArrayMeasureRes.toString());
+            db.insert("setting_offlines", null, values);
+        }
+
+    }
+
+    public boolean isCreatedSettingOffline() {
+        int counter = 0;
+        String query = "SELECT * FROM setting_offlines";
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                counter++;
+            } while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
+        return counter > 0;
     }
 
     public void insertDevice(String macAddress, String name) {
@@ -138,6 +335,12 @@ public class DBManager extends SQLiteOpenHelper {
                 object.put("blpsy", measureMeasresses.get(i).getBlpsy());
                 object.put("blpex", measureMeasresses.get(i).getBlpex());
                 object.put("blpey", measureMeasresses.get(i).getBlpey());
+
+                ArrayList<SettingOffline> settingOfflines = getSettingsOffline();
+                object.put("number_organism", settingOfflines.get(i).getQuantity(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
+                object.put("level", settingOfflines.get(i).calculateLevel(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
+                object.put("explain", "ピーク高さ／ピーク電位");
+
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -277,6 +480,28 @@ public class DBManager extends SQLiteOpenHelper {
         return sensorMeasureDetail;
     }
 
+    public ArrayList<SettingOffline> getSettingsOffline() {
+        if(!isCreatedSettingOffline()){
+            insertSettingOffline();
+        }
+        ArrayList<SettingOffline> settingOfflines = new ArrayList<>();
+
+        String query = "SELECT * FROM setting_offlines";
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Type typeMyType = new TypeToken<ArrayList<ItemSettingOffline>>(){}.getType();
+                ArrayList<ItemSettingOffline> item = new Gson().fromJson(cursor.getString(1), typeMyType);
+
+                SettingOffline settingOffline = new SettingOffline(cursor.getInt(0), item);
+                settingOfflines.add(settingOffline);
+            } while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
+        return settingOfflines;
+    }
+
     public ArrayList<SensorMeasurePage.MeasurePage> getMeasures() {
         ArrayList<SensorMeasurePage.MeasurePage> measures = new ArrayList<>();
 
@@ -321,84 +546,5 @@ public class DBManager extends SQLiteOpenHelper {
         }
         sqLiteDatabase.close();
         return campaigns;
-    }
-
-    public void insertCampaign(int id, String name, String created_at, String time_send, int repeat, String content, int active) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("id", id);
-        values.put("name", name);
-        values.put("created_at", created_at);
-        values.put("time_send", time_send);
-        values.put("repeat", repeat);
-        values.put("content", content);
-        values.put("active", active);
-        db.insert("Campaign", null, values);
-    }
-
-    public void insertContactCampaign(int id_campaign, String number_phone) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("id_campaign", id_campaign);
-        values.put("number_phone", number_phone);
-
-        db.insert("ContactCampaign", null, values);
-    }
-
-    public int getNumberCampaign() {
-        int counter = 0;
-        String query = "SELECT * FROM Campaign";
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                counter++;
-            } while (cursor.moveToNext());
-        }
-        sqLiteDatabase.close();
-        return counter;
-    }
-
-//    public ArrayList<Campaign> getListCampaign() {
-//        ArrayList<Campaign> campaigns = new ArrayList<>();
-//
-//        String query = "SELECT * FROM Campaign";
-//        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-//        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                campaigns.add(new Campaign(cursor.getInt(0),
-//                        cursor.getString(1),
-//                        cursor.getString(2),
-//                        cursor.getString(3),
-//                        cursor.getInt(4),
-//                        cursor.getString(5),
-//                        cursor.getInt(6)
-//                        )
-//                );
-//            } while (cursor.moveToNext());
-//        }
-//        sqLiteDatabase.close();
-//        return campaigns;
-//    }
-
-    public boolean removeCampaign(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("Campaign", "id=" + id, null) > 0;
-    }
-
-    public ArrayList<String> getListContactCampaign(int idCampaign) {
-        ArrayList<String> contactCampaigns = new ArrayList<>();
-
-        String query = "SELECT ContactCampaign.number_phone FROM (Campaign INNER JOIN ContactCampaign ON Campaign.id = ContactCampaign.id_campaign) WHERE Campaign.id = " + idCampaign;
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                contactCampaigns.add(cursor.getString(0));
-            } while (cursor.moveToNext());
-        }
-        sqLiteDatabase.close();
-        return contactCampaigns;
     }
 }

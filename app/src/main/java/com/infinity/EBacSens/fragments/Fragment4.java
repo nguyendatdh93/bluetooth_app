@@ -177,25 +177,28 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
             showDialogProcessing();
             presenterFragment4.receivedGetMeasurePage(APIUtils.token, MainActivity.device.getId(), 1, 0);
         }else{
-            if (dbManager.getMeasures() != null) {
-                arrMeasurePage.clear();
-                arrRCVDatetime.clear();
-                arrMeasurePage.addAll(dbManager.getMeasures());
-                for (int i = 0; i < dbManager.getMeasures().size(); i++) {
-                    arrRCVDatetime.add(new ModelRCVDatetime(dbManager.getMeasures().get(i).getDatetime(), false));
-                }
-                adapteRCVDatetime.notifyDataSetChanged();
-                if (arrRCVDatetime.size() > 0) {
-                    arrRCVDatetime.get(0).setSelected(true);
-                    adapteRCVDatetime.notifyItemChanged(0);
-                    skbProgress.setProgress(0);
-                    positionCSV = 0;
-                    presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
-                }
-            }
-
+            getDataOffline();
         }
 
+    }
+
+    private void getDataOffline(){
+        if (dbManager.getMeasures() != null) {
+            arrMeasurePage.clear();
+            arrRCVDatetime.clear();
+            arrMeasurePage.addAll(dbManager.getMeasures());
+            for (int i = 0; i < dbManager.getMeasures().size(); i++) {
+                arrRCVDatetime.add(new ModelRCVDatetime(dbManager.getMeasures().get(i).getDatetime(), false));
+            }
+            adapteRCVDatetime.notifyDataSetChanged();
+            if (arrRCVDatetime.size() > 0) {
+                arrRCVDatetime.get(0).setSelected(true);
+                adapteRCVDatetime.notifyItemChanged(0);
+                skbProgress.setProgress(0);
+                positionCSV = 0;
+                presenterFragment4.receivedGetDetailMeasure(APIUtils.token, arrMeasurePage.get(0).getId());
+            }
+        }
     }
 
     private void addController() {
@@ -1145,6 +1148,8 @@ public class Fragment4 extends Fragment implements ViewFragment4Listener, ViewCo
                             txtProcess.setText(context.getResources().getString(R.string.success_stored));
                             txtProcess.setTextColor(context.getResources().getColor(R.color.black));
                             cancelDialogProcessing();
+
+                            getDataOffline();
                         }else{
                             presenterFragment4.receivedStoreMeasure(APIUtils.token,
                                     MainActivity.device.getId(),

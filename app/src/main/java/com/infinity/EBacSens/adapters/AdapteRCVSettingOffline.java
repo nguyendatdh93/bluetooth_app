@@ -19,19 +19,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
+import com.infinity.EBacSens.model_objects.ItemSettingOffline;
+import com.infinity.EBacSens.model_objects.SettingOffline;
 
 import java.util.ArrayList;
 
 public class AdapteRCVSettingOffline extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<String> arrItem;
+    private ArrayList<SettingOffline> arrItem;
     private Context context;
+    private DBManager dbManager;
 
-    public AdapteRCVSettingOffline(Context context, ArrayList<String> arrItem) {
+    public AdapteRCVSettingOffline(Context context, ArrayList<SettingOffline> arrItem) {
         this.arrItem = arrItem;
         this.context = context;
+        dbManager = new DBManager(context);
     }
 
     @NonNull
@@ -47,21 +52,21 @@ public class AdapteRCVSettingOffline extends RecyclerView.Adapter<RecyclerView.V
         ViewHodler viewHodler = (ViewHodler) holder;
         viewHodler.txtIndex.setText("微生物" + (position+1));
 
-
-        ArrayList<String> arrSettingOffline = new ArrayList<>();
-        arrSettingOffline.add("a");
-        arrSettingOffline.add("a");
-
         viewHodler.rcvSubSetting.setNestedScrollingEnabled(false);
         viewHodler.rcvSubSetting.setLayoutManager(new LinearLayoutManager(context));
 
-        AdapteRCVSettingOfflineItem adapteRCVSettingOfflineItem = new AdapteRCVSettingOfflineItem(context, arrSettingOffline);
+        AdapteRCVSettingOfflineItem adapteRCVSettingOfflineItem = new AdapteRCVSettingOfflineItem(context, arrItem, arrItem.get(position).getObject() , dbManager);
         viewHodler.rcvSubSetting.setAdapter(adapteRCVSettingOfflineItem);
 
         viewHodler.btnAdd.setOnClickListener(v -> {
-            arrSettingOffline.add("a");
-            adapteRCVSettingOfflineItem.notifyItemInserted(arrSettingOffline.size()-1);
+            arrItem.get(position).getObject().add(new ItemSettingOffline(0,0,0,0));
+            adapteRCVSettingOfflineItem.notifyItemInserted(arrItem.get(position).getObject().size()-1);
+            saveSettingOffline();
         });
+    }
+
+    private void saveSettingOffline(){
+        dbManager.updateSettingOffline(arrItem);
     }
 
     @Override

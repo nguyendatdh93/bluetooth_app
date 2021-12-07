@@ -42,6 +42,7 @@ import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
 import com.infinity.EBacSens.model_objects.ErrorSensorSetting;
 import com.infinity.EBacSens.model_objects.SensorSetting;
+import com.infinity.EBacSens.model_objects.SettingOffline;
 import com.infinity.EBacSens.presenter.PresenterFragment3;
 import com.infinity.EBacSens.retrofit2.APIUtils;
 import com.infinity.EBacSens.task.ConnectThread;
@@ -77,7 +78,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private AdapteRCVBacSetting adapteRCVBacSetting;
 
     private RecyclerView rcvSettingOffline;
-    private ArrayList<String> arrSettingOffline;
+    private ArrayList<SettingOffline> arrSettingOffline;
     private AdapteRCVSettingOffline adapteRCVSettingOffline;
 
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
@@ -387,6 +388,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
         if(!STATUS_NETWORK){
             arrSettingOffline = new ArrayList<>();
+            arrSettingOffline.addAll(dbManager.getSettingsOffline());
+
             adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
             rcvSettingOffline.setAdapter(adapteRCVSettingOffline);
         }else{

@@ -240,7 +240,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action) || !STATUS_NETWORK) {
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 arrDeviceOnline.add(arrDeviceOnline.size() - 1, device);
                 if (adapteRCVDeviceOnline != null) {
