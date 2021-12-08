@@ -27,16 +27,71 @@ public class SettingOffline {
         return object.get(index).getLevel();
     }
 
-    public int getQuantity(double dltc){
+//    public int getQuantity(double dltc){
+//        int index = object.size()-1;
+//        for(int i = 0 ; i < object.size()-2 ; i++){
+//            if(dltc >= object.get(i).getDltc_from() && dltc <= object.get(i).getDltc_to()){
+//                index = i;
+//                break;
+//            }
+//        }
+//
+//        return object.get(index).getQuantity_from();
+//    }
+
+    public String getMeasresNumberOrganism(double dltc){
+        String numberOrganism = "---";
         int index = object.size()-1;
         for(int i = 0 ; i < object.size()-2 ; i++){
             if(dltc >= object.get(i).getDltc_from() && dltc <= object.get(i).getDltc_to()){
                 index = i;
                 break;
             }
+
+//            switch (dltc) {
+//                case i == 0 && dltc >= 0 && dltc < 0.1 :
+//                    return  "～10";
+//                    break;
+//                case i == 0 && dltc >= 0.1 && dltc < 0.2 :
+//                    return "10～10¹";
+//                    break;
+//                case i == 0 && dltc >= 0.2 && dltc < 0.3 :
+//                    return "10¹～10²";
+//                    break;
+//                case i == 0 && dltc >= 0.3 && dltc < 0.4 :
+//                    return "10²～10³";
+//                    break;
+//                case i == 0 && dltc >= 0.4 && dltc < 0.5 :
+//                    return "10³～10⁴";
+//                    break;
+//                case i == 0 && dltc >= 0.5 :
+//                    return ">=10⁴";
+//                    break;
+//                case i > 0 && dltc >= 0 && dltc < 1 :
+//                    return "0～10";
+//                    break;
+//                case i > 0 && dltc >= 1 && dltc < 2 :
+//                    return "10～10¹";
+//                    break;
+//                case i > 0 && dltc >= 2 && dltc < 3 :
+//                    return "10¹～10²";
+//                    break;
+//                case i > 0 && dltc >= 3 && dltc < 4 :
+//                    return "10²～10³";
+//                    break;
+//                case i > 0 && dltc >= 4 && dltc < 5 :
+//                    return "10³～10⁴";
+//                    break;
+//                case i > 0 && dltc >= 5 :
+//                    return ">=10⁴";
+//                    break;
+//            }
+
         }
 
-        return object.get(index).getQuantity();
+        return object.get(index).getQuantity_from() + "~" + object.get(index).getQuantity_to();
+
+
     }
 
     public int getId() {

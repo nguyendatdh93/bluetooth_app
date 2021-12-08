@@ -30,7 +30,7 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
     private Context context;
     private DBManager dbManager;
 
-    public AdapteRCVSettingOfflineItem(Context context,ArrayList<SettingOffline> arrParentItem, ArrayList<ItemSettingOffline> arrItem, DBManager dbManager) {
+    public AdapteRCVSettingOfflineItem(Context context, ArrayList<SettingOffline> arrParentItem, ArrayList<ItemSettingOffline> arrItem, DBManager dbManager) {
         this.arrParentItem = arrParentItem;
         this.arrItem = arrItem;
         this.context = context;
@@ -51,89 +51,118 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
         viewHodler.imgDelete.setOnClickListener(v -> {
             arrItem.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position , arrItem.size());
+            notifyItemRangeChanged(position, arrItem.size());
             saveSettingOffline();
         });
 
         viewHodler.edtDLTCfrom.setText(String.valueOf(arrItem.get(position).getDltc_from()));
         viewHodler.edtDLTCto.setText(String.valueOf(arrItem.get(position).getDltc_to()));
-        viewHodler.edtQuantity.setText(String.valueOf(arrItem.get(position).getQuantity()));
+        viewHodler.edtQuantityFrom.setText(String.valueOf(arrItem.get(position).getQuantity_from()));
+        viewHodler.edtQuantityTo.setText(String.valueOf(arrItem.get(position).getQuantity_to()));
         viewHodler.edtLevel.setText(String.valueOf(arrItem.get(position).getLevel()));
 
-        viewHodler.edtDLTCfrom.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                arrItem.get(holder.getAdapterPosition()).setDltc_from(Protector.tryParseFloat(viewHodler.edtDLTCfrom.getText().toString()));
-                saveSettingOffline();
-            }
+        viewHodler.btnSave.setOnClickListener(v -> {
+            arrItem.get(holder.getAdapterPosition()).setDltc_from(Protector.tryParseFloat(viewHodler.edtDLTCfrom.getText().toString()));
+            arrItem.get(holder.getAdapterPosition()).setDltc_to(Protector.tryParseFloat(viewHodler.edtDLTCto.getText().toString()));
+            arrItem.get(holder.getAdapterPosition()).setQuantity_from(Protector.tryParseInt(viewHodler.edtQuantityFrom.getText().toString()));
+            arrItem.get(holder.getAdapterPosition()).setQuantity_to(Protector.tryParseInt(viewHodler.edtQuantityTo.getText().toString()));
+            arrItem.get(holder.getAdapterPosition()).setLevel(Protector.tryParseInt(viewHodler.edtLevel.getText().toString()));
+            saveSettingOffline();
+            Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
         });
 
-        viewHodler.edtDLTCto.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                arrItem.get(holder.getAdapterPosition()).setDltc_to(Protector.tryParseFloat(viewHodler.edtDLTCto.getText().toString()));
-                saveSettingOffline();
-            }
-        });
-
-        viewHodler.edtQuantity.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                arrItem.get(holder.getAdapterPosition()).setQuantity(Protector.tryParseInt(viewHodler.edtQuantity.getText().toString()));
-                saveSettingOffline();
-            }
-        });
-
-        viewHodler.edtLevel.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                arrItem.get(holder.getAdapterPosition()).setLevel(Protector.tryParseInt(viewHodler.edtLevel.getText().toString()));
-                saveSettingOffline();
-            }
-        });
+//        viewHodler.edtDLTCfrom.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                arrItem.get(holder.getAdapterPosition()).setDltc_from(Protector.tryParseFloat(viewHodler.edtDLTCfrom.getText().toString()));
+//                saveSettingOffline();
+//            }
+//        });
+//
+//        viewHodler.edtDLTCto.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                arrItem.get(holder.getAdapterPosition()).setDltc_to(Protector.tryParseFloat(viewHodler.edtDLTCto.getText().toString()));
+//                saveSettingOffline();
+//            }
+//        });
+//
+//        viewHodler.edtQuantityFrom.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                arrItem.get(holder.getAdapterPosition()).setQuantity_from(Protector.tryParseInt(viewHodler.edtQuantityFrom.getText().toString()));
+//                saveSettingOffline();
+//            }
+//        });
+//
+//        viewHodler.edtQuantityTo.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                arrItem.get(holder.getAdapterPosition()).setQuantity_to(Protector.tryParseInt(viewHodler.edtQuantityTo.getText().toString()));
+//                saveSettingOffline();
+//            }
+//        });
+//
+//        viewHodler.edtLevel.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                arrItem.get(holder.getAdapterPosition()).setLevel(Protector.tryParseInt(viewHodler.edtLevel.getText().toString()));
+//                saveSettingOffline();
+//            }
+//        });
     }
 
-    private void saveSettingOffline(){
+    private void saveSettingOffline() {
         dbManager.updateSettingOffline(arrParentItem);
     }
 
@@ -143,16 +172,19 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
     }
 
     static class ViewHodler extends RecyclerView.ViewHolder {
+        Button btnSave;
         ImageView imgDelete;
-        EditText edtLevel, edtDLTCfrom, edtDLTCto, edtQuantity;
+        EditText edtLevel, edtDLTCfrom, edtDLTCto, edtQuantityFrom, edtQuantityTo;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
+            btnSave = itemView.findViewById(R.id.item_rcv_sub_setting_offline_btn_save);
             imgDelete = itemView.findViewById(R.id.item_rcv_sub_setting_offline_btn_delete);
             edtLevel = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_level);
             edtDLTCfrom = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_dltc_from);
             edtDLTCto = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_dltc_to);
-            edtQuantity = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity);
+            edtQuantityFrom = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity_from);
+            edtQuantityTo = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity_to);
         }
     }
 

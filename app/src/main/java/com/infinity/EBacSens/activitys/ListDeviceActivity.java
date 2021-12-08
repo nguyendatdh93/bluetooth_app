@@ -106,7 +106,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                 ).withListener(new MultiplePermissionsListener() {
             @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if(isOnline()){
-                    STATUS_NETWORK = true;
                     getOnlineDevice();
                     adapteRCVDevicePaired.onLoadMore();
                     rcvDevicePaired.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -119,10 +118,35 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
                         }
                     });
                 }else {
-                    txtStatusNetwork.setText("Mode offline is running, plese click add button to connect");
-                    txtStatusNetwork.setVisibility(View.VISIBLE);
-                    arrDevicePaired.addAll(dbManager.getDevice());
-                    adapteRCVDevicePaired.notifyDataSetChanged();
+                    Dialog dialog = new Dialog(ListDeviceActivity.this);
+                    dialog.setContentView(R.layout.dialog_network);
+                    dialog.setCancelable(false);
+                    Button btnYes = dialog.findViewById(R.id.dialog_network_btn_yes);
+                    Button btnNo = dialog.findViewById(R.id.dialog_network_btn_no);
+                    dialog.show();
+
+                    btnYes.setOnClickListener(v -> {
+                        STATUS_NETWORK = false;
+                        txtStatusNetwork.setText("Mode offline is running, plese click add button to connect");
+                        txtStatusNetwork.setVisibility(View.VISIBLE);
+                        arrDevicePaired.addAll(dbManager.getDevice());
+                        adapteRCVDevicePaired.notifyDataSetChanged();
+                        dialog.cancel();
+                    });
+                    btnNo.setOnClickListener(v -> {
+                        getOnlineDevice();
+                        adapteRCVDevicePaired.onLoadMore();
+                        rcvDevicePaired.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                            @Override
+                            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                super.onScrollStateChanged(recyclerView, newState);
+                                if (!recyclerView.canScrollVertically(1)) {
+                                    adapteRCVDevicePaired.onLoadMore();
+                                }
+                            }
+                        });
+                        dialog.cancel();
+                    });
                 }
 
             }

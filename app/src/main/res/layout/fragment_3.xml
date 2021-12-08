@@ -132,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@id/view_left_3"
-                        android:text="Setting"
+                        android:text="測定設定画面"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         android:textStyle="bold" />

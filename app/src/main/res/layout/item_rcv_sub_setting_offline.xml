@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/_5ssp">
 
     <LinearLayout
-        android:padding="@dimen/_10ssp"
+        android:paddingTop="@dimen/_30ssp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -119,13 +119,35 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/item_rcv_sub_setting_offline_edt_quantity"
-                    android:layout_width="match_parent"
+                    android:id="@+id/item_rcv_sub_setting_offline_edt_quantity_from"
+                    android:layout_weight="47"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:gravity="center"
                     android:padding="@dimen/_10ssp"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/square_border_grey"
+                    android:maxLength="12"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="~"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/item_rcv_sub_setting_offline_edt_quantity_to"
+                    android:layout_weight="47"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:gravity="center"
+                    android:padding="@dimen/_10ssp"
+                    android:inputType="numberDecimal"
                     android:background="@drawable/square_border_grey"
                     android:maxLength="12"
                     android:textSize="@dimen/_11ssp" />
@@ -184,13 +206,23 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/item_rcv_sub_setting_offline_btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:background="#ACB8CA"
+            android:text="保存する"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11ssp" />
+
     </LinearLayout>
 
     <ImageView
         android:id="@+id/item_rcv_sub_setting_offline_btn_delete"
-        android:src="@drawable/ic_baseline_clear_24"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_width="@dimen/_20ssp"
-        android:layout_height="@dimen/_20ssp"/>
+        android:layout_height="@dimen/_20ssp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/minus_512px" />
 </RelativeLayout>

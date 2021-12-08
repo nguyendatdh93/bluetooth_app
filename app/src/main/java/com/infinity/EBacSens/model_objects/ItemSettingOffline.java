@@ -15,20 +15,17 @@ public class ItemSettingOffline {
     @Expose
     private double dltc_to;
 
-    @SerializedName("quantity")
+    @SerializedName("quantity_from")
     @Expose
-    private int quantity;
+    private int quantity_from;
+
+    @SerializedName("quantity_to")
+    @Expose
+    private int quantity_to;
 
     @SerializedName("level")
     @Expose
     private int level;
-
-    public ItemSettingOffline(double dltc_from, double dltc_to, int quantity, int level) {
-        this.dltc_from = dltc_from;
-        this.dltc_to = dltc_to;
-        this.quantity = quantity;
-        this.level = level;
-    }
 
     public double getDltc_from() {
         return dltc_from;
@@ -46,12 +43,20 @@ public class ItemSettingOffline {
         this.dltc_to = dltc_to;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantity_from() {
+        return quantity_from;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity_from(int quantity_from) {
+        this.quantity_from = quantity_from;
+    }
+
+    public int getQuantity_to() {
+        return quantity_to;
+    }
+
+    public void setQuantity_to(int quantity_to) {
+        this.quantity_to = quantity_to;
     }
 
     public int getLevel() {
@@ -59,6 +64,14 @@ public class ItemSettingOffline {
     }
 
     public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public ItemSettingOffline(double dltc_from, double dltc_to, int quantity_from, int quantity_to, int level) {
+        this.dltc_from = dltc_from;
+        this.dltc_to = dltc_to;
+        this.quantity_from = quantity_from;
+        this.quantity_to = quantity_to;
         this.level = level;
     }
 }

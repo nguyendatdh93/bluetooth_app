@@ -115,7 +115,8 @@ public class DBManager extends SQLiteOpenHelper {
         try {
             object.put("dltc_from", 0);
             object.put("dltc_to", 0.1);
-            object.put("quantity", 0);
+            object.put("quantity_from", 0);
+            object.put("quantity_to", 10);
             object.put("level", 0);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -126,7 +127,8 @@ public class DBManager extends SQLiteOpenHelper {
         try {
             object.put("dltc_from", 0.1);
             object.put("dltc_to", 0.2);
-            object.put("quantity", 10);
+            object.put("quantity_from", 10);
+            object.put("quantity_to", 10);
             object.put("level", 1);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -137,7 +139,8 @@ public class DBManager extends SQLiteOpenHelper {
         try {
             object.put("dltc_from", 0.2);
             object.put("dltc_to", 0.3);
-            object.put("quantity", 10);
+            object.put("quantity_from", 10);
+            object.put("quantity_to", 100);
             object.put("level", 2);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -148,7 +151,8 @@ public class DBManager extends SQLiteOpenHelper {
         try {
             object.put("dltc_from", 0.3);
             object.put("dltc_to", 0.4);
-            object.put("quantity", 100);
+            object.put("quantity_from", 100);
+            object.put("quantity_to", 1000);
             object.put("level", 3);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -159,7 +163,8 @@ public class DBManager extends SQLiteOpenHelper {
         try {
             object.put("dltc_from", 0.4);
             object.put("dltc_to", 0.5);
-            object.put("quantity", 1000);
+            object.put("quantity_from", 1000);
+            object.put("quantity_to", 10000);
             object.put("level", 4);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -170,7 +175,8 @@ public class DBManager extends SQLiteOpenHelper {
         try {
             object.put("dltc_from", 0.5);
             object.put("dltc_to", 0.5);
-            object.put("quantity", 10000);
+            object.put("quantity_from", 10000);
+            object.put("quantity_to", 100000);
             object.put("level", 5);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -187,7 +193,8 @@ public class DBManager extends SQLiteOpenHelper {
             try {
                 object.put("dltc_from", 0);
                 object.put("dltc_to", 1);
-                object.put("quantity", 0);
+                object.put("quantity_from", 0);
+                object.put("quantity_to", 10);
                 object.put("level", 0);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -198,7 +205,8 @@ public class DBManager extends SQLiteOpenHelper {
             try {
                 object.put("dltc_from", 1);
                 object.put("dltc_to", 2);
-                object.put("quantity", 10);
+                object.put("quantity_from", 10);
+                object.put("quantity_to", 10);
                 object.put("level", 1);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -209,7 +217,8 @@ public class DBManager extends SQLiteOpenHelper {
             try {
                 object.put("dltc_from", 2);
                 object.put("dltc_to", 3);
-                object.put("quantity", 10);
+                object.put("quantity_from", 10);
+                object.put("quantity_to", 100);
                 object.put("level", 2);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -220,7 +229,8 @@ public class DBManager extends SQLiteOpenHelper {
             try {
                 object.put("dltc_from", 3);
                 object.put("dltc_to", 4);
-                object.put("quantity", 100);
+                object.put("quantity_from", 100);
+                object.put("quantity_to", 1000);
                 object.put("level", 3);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -231,7 +241,8 @@ public class DBManager extends SQLiteOpenHelper {
             try {
                 object.put("dltc_from", 4);
                 object.put("dltc_to", 5);
-                object.put("quantity", 1000);
+                object.put("quantity_from", 1000);
+                object.put("quantity_to", 10000);
                 object.put("level", 4);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -242,7 +253,8 @@ public class DBManager extends SQLiteOpenHelper {
             try {
                 object.put("dltc_from", 5);
                 object.put("dltc_to", 5);
-                object.put("quantity", 10000);
+                object.put("quantity_from", 10000);
+                object.put("quantity_to", 100000);
                 object.put("level", 5);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -266,7 +278,8 @@ public class DBManager extends SQLiteOpenHelper {
                 try {
                     object.put("dltc_from", settingOfflines.get(i).getObject().get(j).getDltc_from());
                     object.put("dltc_to", settingOfflines.get(i).getObject().get(j).getDltc_to());
-                    object.put("quantity", settingOfflines.get(i).getObject().get(j).getQuantity());
+                    object.put("quantity_from", settingOfflines.get(i).getObject().get(j).getQuantity_from());
+                    object.put("quantity_to", settingOfflines.get(i).getObject().get(j).getQuantity_to());
                     object.put("level", settingOfflines.get(i).getObject().get(j).getLevel());
                     jsonArrayMeasureRes.put(object);
                 } catch (JSONException e) {
@@ -337,7 +350,7 @@ public class DBManager extends SQLiteOpenHelper {
                 object.put("blpey", measureMeasresses.get(i).getBlpey());
 
                 ArrayList<SettingOffline> settingOfflines = getSettingsOffline();
-                object.put("number_organism", settingOfflines.get(i).getQuantity(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
+                object.put("number_organism", settingOfflines.get(i).getMeasresNumberOrganism(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
                 object.put("level", settingOfflines.get(i).calculateLevel(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
                 object.put("explain", "ピーク高さ／ピーク電位");
 

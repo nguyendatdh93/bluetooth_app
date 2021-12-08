@@ -348,6 +348,10 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         spnCrgn = view.findViewById(R.id.fragment_3_spn_crng);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
         btnSaveSettingMeasure = view.findViewById(R.id.fragment_3_btn_save_setting_measure);
+        if(!STATUS_NETWORK){
+            btnReceiveSettingMeasure.setEnabled(false);
+            btnSaveSettingMeasure.setEnabled(false);
+        }
         btnRead = view.findViewById(R.id.fragment_3_btn_read);
         btnWrite = view.findViewById(R.id.fragment_3_btn_write);
         edtNameMEasure = view.findViewById(R.id.fragment_3_edt_name_measure);
