@@ -351,7 +351,7 @@ public class DBManager extends SQLiteOpenHelper {
 
                 ArrayList<SettingOffline> settingOfflines = getSettingsOffline();
                 object.put("number_organism", settingOfflines.get(i).getMeasresNumberOrganism(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
-                object.put("level", settingOfflines.get(i).calculateLevel(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
+                object.put("level", settingOfflines.get(i).getMeasresLevel(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
                 object.put("explain", "ピーク高さ／ピーク電位");
 
                 jsonArrayMeasureRes.put(object);
