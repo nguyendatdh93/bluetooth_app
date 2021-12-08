@@ -62,13 +62,13 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
         viewHodler.edtLevel.setText(String.valueOf(arrItem.get(position).getLevel()));
 
         viewHodler.btnSave.setOnClickListener(v -> {
-            arrItem.get(holder.getAdapterPosition()).setDltc_from(Protector.tryParseFloat(viewHodler.edtDLTCfrom.getText().toString()));
-            arrItem.get(holder.getAdapterPosition()).setDltc_to(Protector.tryParseFloat(viewHodler.edtDLTCto.getText().toString()));
+            arrItem.get(holder.getAdapterPosition()).setDltc_from(viewHodler.edtDLTCfrom.getText().toString());
+            arrItem.get(holder.getAdapterPosition()).setDltc_to(viewHodler.edtDLTCto.getText().toString());
             arrItem.get(holder.getAdapterPosition()).setQuantity_from(Protector.tryParseInt(viewHodler.edtQuantityFrom.getText().toString()));
             arrItem.get(holder.getAdapterPosition()).setQuantity_to(Protector.tryParseInt(viewHodler.edtQuantityTo.getText().toString()));
             arrItem.get(holder.getAdapterPosition()).setLevel(Protector.tryParseInt(viewHodler.edtLevel.getText().toString()));
             saveSettingOffline();
-            Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
         });
 
 //        viewHodler.edtDLTCfrom.addTextChangedListener(new TextWatcher() {

@@ -2,6 +2,7 @@ package com.infinity.EBacSens.model_objects;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.infinity.EBacSens.helper.Protector;
 
 import java.util.ArrayList;
 
@@ -39,14 +40,14 @@ public class SettingOffline {
 //        return object.get(index).getQuantity_from();
 //    }
 
-    public String getMeasresLevel(double dltc){
-        if(object.size() == 0){
+    public String getMeasresLevel(double dltc) {
+        if (object.size() == 0) {
             return "---";
         }
 
-        int index = object.size()-1;
-        for(int i = 0 ; i < object.size()-2 ; i++) {
-            if (dltc >= object.get(i).getDltc_from() && dltc <= object.get(i).getDltc_to()) {
+        int index = object.size() - 1;
+        for (int i = 0; i < object.size() - 2; i++) {
+            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) && dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())) {
                 index = i;
                 break;
             }
@@ -55,19 +56,20 @@ public class SettingOffline {
         return object.get(index).getLevel() + "";
     }
 
-    public String getMeasresNumberOrganism(double dltc){
-        if(object.size() == 0){
+    public String getMeasresNumberOrganism(double dltc) {
+        if (object.size() == 0) {
             return "---";
         }
 
-        int index = object.size()-1;
-        for(int i = 0 ; i < object.size()-2 ; i++){
-            if(dltc >= object.get(i).getDltc_from() && dltc <= object.get(i).getDltc_to()){
+        int index = object.size() - 1;
+        for (int i = 0; i < object.size() - 2; i++) {
+            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) && dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())){
                 index = i;
                 break;
             }
+        }
 
-//            switch (dltc) {
+        //            switch (dltc) {
 //                case i == 0 && dltc >= 0 && dltc < 0.1 :
 //                    return  "～10";
 //                    break;
@@ -105,8 +107,6 @@ public class SettingOffline {
 //                    return ">=10⁴";
 //                    break;
 //            }
-
-        }
 
         return object.get(index).getQuantity_from() + "~" + object.get(index).getQuantity_to();
 

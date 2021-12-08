@@ -9,11 +9,11 @@ public class ItemSettingOffline {
 
     @SerializedName("dltc_from")
     @Expose
-    private double dltc_from;
+    private String dltc_from;
 
     @SerializedName("dltc_to")
     @Expose
-    private double dltc_to;
+    private String dltc_to;
 
     @SerializedName("quantity_from")
     @Expose
@@ -27,19 +27,19 @@ public class ItemSettingOffline {
     @Expose
     private int level;
 
-    public double getDltc_from() {
+    public String getDltc_from() {
         return dltc_from;
     }
 
-    public void setDltc_from(double dltc_from) {
+    public void setDltc_from(String dltc_from) {
         this.dltc_from = dltc_from;
     }
 
-    public double getDltc_to() {
+    public String getDltc_to() {
         return dltc_to;
     }
 
-    public void setDltc_to(double dltc_to) {
+    public void setDltc_to(String dltc_to) {
         this.dltc_to = dltc_to;
     }
 
@@ -67,7 +67,7 @@ public class ItemSettingOffline {
         this.level = level;
     }
 
-    public ItemSettingOffline(double dltc_from, double dltc_to, int quantity_from, int quantity_to, int level) {
+    public ItemSettingOffline(String dltc_from, String dltc_to, int quantity_from, int quantity_to, int level) {
         this.dltc_from = dltc_from;
         this.dltc_to = dltc_to;
         this.quantity_from = quantity_from;
