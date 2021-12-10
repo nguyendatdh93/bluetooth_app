@@ -1,5 +1,7 @@
 package com.infinity.EBacSens.adapters;
 
+import static com.infinity.EBacSens.helper.Protector.STATUS_NETWORK;
+
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,16 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infinity.EBacSens.R;
+import com.infinity.EBacSens.data_sqllite.DBManager;
 import com.infinity.EBacSens.helper.Protector;
 import com.infinity.EBacSens.model_objects.BacSetting;
+import com.infinity.EBacSens.model_objects.ItemSettingOffline;
+import com.infinity.EBacSens.model_objects.SettingOffline;
 
 import java.util.ArrayList;
 
@@ -25,7 +33,7 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private ArrayList<BacSetting> arrItem;
     private Context context;
-
+    private DBManager dbManager;
     private boolean alertName = false;
     private String errorName;
     private boolean alertE1 = false;
@@ -37,9 +45,13 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     private boolean alertE4 = false;
     private String errorE4;
 
-    public AdapteRCVBacSetting(Context context, ArrayList<BacSetting> arrItem) {
+    private ArrayList<SettingOffline> settingOfflines;
+
+    public AdapteRCVBacSetting(Context context, ArrayList<BacSetting> arrItem , ArrayList<SettingOffline> settingOfflines) {
         this.arrItem = arrItem;
         this.context = context;
+        this.settingOfflines = settingOfflines;
+        dbManager = new DBManager(context);
     }
 
     @NonNull
@@ -53,12 +65,12 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHodler viewHodler = (ViewHodler) holder;
-        viewHodler.txtIndex.setText(context.getResources().getString(R.string.microorganism) + " " + (position + 1));
-        viewHodler.edtBacName.setText(arrItem.get(position).getBacName());
-        viewHodler.edtE1.setText(String.valueOf(arrItem.get(position).getE1()));
-        viewHodler.edtE2.setText(String.valueOf(arrItem.get(position).getE2()));
-        viewHodler.edtE3.setText(String.valueOf(arrItem.get(position).getE3()));
-        viewHodler.edtE4.setText(String.valueOf(arrItem.get(position).getE4()));
+        viewHodler.txtIndex.setText(context.getResources().getString(R.string.microorganism) + " " + (holder.getAdapterPosition() + 1));
+        viewHodler.edtBacName.setText(arrItem.get(holder.getAdapterPosition()).getBacName());
+        viewHodler.edtE1.setText(String.valueOf(arrItem.get(holder.getAdapterPosition()).getE1()));
+        viewHodler.edtE2.setText(String.valueOf(arrItem.get(holder.getAdapterPosition()).getE2()));
+        viewHodler.edtE3.setText(String.valueOf(arrItem.get(holder.getAdapterPosition()).getE3()));
+        viewHodler.edtE4.setText(String.valueOf(arrItem.get(holder.getAdapterPosition()).getE4()));
 
         if (alertName) {
             alertName = false;
@@ -103,8 +115,8 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (position < arrItem.size()) {
-                    arrItem.get(position).setBacName(viewHodler.edtBacName.getText().toString());
+                if (holder.getAdapterPosition() < arrItem.size()) {
+                    arrItem.get(holder.getAdapterPosition()).setBacName(viewHodler.edtBacName.getText().toString());
                 }
             }
         });
@@ -122,8 +134,8 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (position < arrItem.size()) {
-                    arrItem.get(position).setE1(Protector.tryParseInt(viewHodler.edtE1.getText().toString()));
+                if (holder.getAdapterPosition() < arrItem.size()) {
+                    arrItem.get(holder.getAdapterPosition()).setE1(Protector.tryParseInt(viewHodler.edtE1.getText().toString()));
                 }
             }
         });
@@ -141,8 +153,8 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (position < arrItem.size()) {
-                    arrItem.get(position).setE2(Protector.tryParseInt(viewHodler.edtE2.getText().toString()));
+                if (holder.getAdapterPosition() < arrItem.size()) {
+                    arrItem.get(holder.getAdapterPosition()).setE2(Protector.tryParseInt(viewHodler.edtE2.getText().toString()));
                 }
             }
         });
@@ -160,8 +172,8 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (position < arrItem.size()) {
-                    arrItem.get(position).setE3(Protector.tryParseInt(viewHodler.edtE3.getText().toString()));
+                if (holder.getAdapterPosition() < arrItem.size()) {
+                    arrItem.get(holder.getAdapterPosition()).setE3(Protector.tryParseInt(viewHodler.edtE3.getText().toString()));
                 }
             }
         });
@@ -179,8 +191,8 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (position < arrItem.size()) {
-                    arrItem.get(position).setE4(Protector.tryParseInt(viewHodler.edtE4.getText().toString()));
+                if (holder.getAdapterPosition() < arrItem.size()) {
+                    arrItem.get(holder.getAdapterPosition()).setE4(Protector.tryParseInt(viewHodler.edtE4.getText().toString()));
                 }
             }
         });
@@ -188,7 +200,7 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
         viewHodler.acpPkp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                arrItem.get(position).setPkp(viewHodler.acpPkp.getSelectedItemPosition());
+                arrItem.get(holder.getAdapterPosition()).setPkp(viewHodler.acpPkp.getSelectedItemPosition());
             }
 
             @Override
@@ -198,6 +210,29 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
         });
 
         viewHodler.acpPkp.setSelection(arrItem.get(position).getPkp());
+
+        if(!STATUS_NETWORK){
+            viewHodler.containerSettingOffline.setVisibility(View.VISIBLE);
+
+            viewHodler.txtIndexSettingOffline.setText("※微生物" + (position+1) + "のレベル表示設定");
+
+            viewHodler.rcvSubSettingOffline.setNestedScrollingEnabled(false);
+            viewHodler.rcvSubSettingOffline.setLayoutManager(new LinearLayoutManager(context));
+
+            AdapteRCVSettingOfflineItem adapteRCVSettingOfflineItem = new AdapteRCVSettingOfflineItem(context,settingOfflines, settingOfflines.get(position).getObject() , dbManager);
+            viewHodler.rcvSubSettingOffline.setAdapter(adapteRCVSettingOfflineItem);
+
+            viewHodler.btnAddSettingOffline.setOnClickListener(v -> {
+                settingOfflines.get(position).getObject().add(new ItemSettingOffline("0","0",0,0,0));
+                adapteRCVSettingOfflineItem.notifyItemInserted(settingOfflines.get(position).getObject().size()-1);
+                saveSettingOffline();
+            });
+
+        }
+    }
+
+    private void saveSettingOffline(){
+        dbManager.updateSettingOffline(settingOfflines);
     }
 
     @Override
@@ -209,6 +244,10 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView txtIndex;
         EditText edtE1, edtE2, edtE3, edtE4, edtBacName;
         Spinner acpPkp;
+        LinearLayout containerSettingOffline;
+        TextView txtIndexSettingOffline;
+        RecyclerView rcvSubSettingOffline;
+        Button btnAddSettingOffline;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
@@ -219,6 +258,10 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
             edtE3 = itemView.findViewById(R.id.item_rcv_bac_setting_edt_e3);
             edtE4 = itemView.findViewById(R.id.item_rcv_bac_setting_edt_e4);
             acpPkp = itemView.findViewById(R.id.item_rcv_bac_setting_acp_pkp);
+            containerSettingOffline = itemView.findViewById(R.id.item_rcv_bac_setting_container_setting_offline);
+            txtIndexSettingOffline = itemView.findViewById(R.id.item_rcv_bac_setting_txt_index_setting_offline);
+            rcvSubSettingOffline = itemView.findViewById(R.id.item_rcv_bac_setting_rcv_setting_offline);
+            btnAddSettingOffline = itemView.findViewById(R.id.item_rcv_bac_setting_btn_add);
         }
     }
 

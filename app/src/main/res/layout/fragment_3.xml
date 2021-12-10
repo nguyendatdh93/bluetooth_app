@@ -118,48 +118,48 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/parent_container_setting_offline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20ssp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/parent_container_setting_offline"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/_20ssp">-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/view_left_3"
-                        android:text="測定設定画面"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_toStartOf="@id/view_left_3"-->
+<!--                        android:text="測定設定画面"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/_15ssp"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <ImageView
-                        android:id="@+id/view_left_3"
-                        android:layout_width="@dimen/_25ssp"
-                        android:layout_height="@dimen/_25ssp"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/circle_grey"
-                        android:padding="@dimen/_5ssp"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/view_left_3"-->
+<!--                        android:layout_width="@dimen/_25ssp"-->
+<!--                        android:layout_height="@dimen/_25ssp"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:background="@drawable/circle_grey"-->
+<!--                        android:padding="@dimen/_5ssp"-->
+<!--                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />-->
 
-                </RelativeLayout>
+<!--                </RelativeLayout>-->
 
-                <LinearLayout
-                    android:id="@+id/container_setting_offline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/container_setting_offline"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical">-->
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fragment_3_rcv_setting_offline"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/fragment_3_rcv_setting_offline"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content" />-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
 
 
             <RelativeLayout

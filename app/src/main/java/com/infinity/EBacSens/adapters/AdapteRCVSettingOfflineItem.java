@@ -68,7 +68,7 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
             arrItem.get(holder.getAdapterPosition()).setQuantity_to(Protector.tryParseInt(viewHodler.edtQuantityTo.getText().toString()));
             arrItem.get(holder.getAdapterPosition()).setLevel(Protector.tryParseInt(viewHodler.edtLevel.getText().toString()));
             saveSettingOffline();
-            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "保存しました。", Toast.LENGTH_SHORT).show();
         });
 
 //        viewHodler.edtDLTCfrom.addTextChangedListener(new TextWatcher() {

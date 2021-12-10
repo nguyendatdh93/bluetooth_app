@@ -74,7 +74,7 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
     private BluetoothAdapter mBluetoothAdapter;
 
     private RelativeLayout container;
-    private TextView txtStatusBluetooth, txtStatusNetwork;
+    private TextView txtStatusBluetooth;
     private TextView txtDialogProcessingTitle;
     private Dialog dialogProcessing, dialogListDeviceOnline;
     private IntentFilter intentFilter;
@@ -127,8 +127,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
 
                     btnYes.setOnClickListener(v -> {
                         STATUS_NETWORK = false;
-                        txtStatusNetwork.setText("Mode offline is running, plese click add button to connect");
-                        txtStatusNetwork.setVisibility(View.VISIBLE);
                         arrDevicePaired.addAll(dbManager.getDevice());
                         adapteRCVDevicePaired.notifyDataSetChanged();
                         dialog.cancel();
@@ -170,7 +168,6 @@ public class ListDeviceActivity extends AppCompatActivity implements ViewRCVDevi
         container = findViewById(R.id.container);
         rcvDevicePaired = findViewById(R.id.rcv_device_paired);
         txtStatusBluetooth = findViewById(R.id.txt_status_bluetooth);
-        txtStatusNetwork = findViewById(R.id.txt_status_network);
         rcvDevicePaired.setHasFixedSize(true);
         rcvDevicePaired.setLayoutManager(new LinearLayoutManager(this));
         arrDevicePaired = new ArrayList<>();

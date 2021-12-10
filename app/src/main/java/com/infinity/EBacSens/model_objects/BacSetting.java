@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class BacSetting {
 
     @SerializedName("id")
@@ -46,6 +48,16 @@ public class BacSetting {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+
+    private ArrayList<SettingOffline> settingOfflines;
+
+    public ArrayList<SettingOffline> getSettingOfflines() {
+        return settingOfflines;
+    }
+
+    public void setSettingOfflines(ArrayList<SettingOffline> settingOfflines) {
+        this.settingOfflines = settingOfflines;
+    }
 
     public int getId() {
         return id;

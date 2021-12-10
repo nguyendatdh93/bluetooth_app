@@ -77,9 +77,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private ArrayList<BacSetting> arrBacSetting;
     private AdapteRCVBacSetting adapteRCVBacSetting;
 
-    private RecyclerView rcvSettingOffline;
-    private ArrayList<SettingOffline> arrSettingOffline;
-    private AdapteRCVSettingOffline adapteRCVSettingOffline;
+//    private RecyclerView rcvSettingOffline;
+//    private ArrayList<SettingOffline> arrSettingOffline;
+//    private AdapteRCVSettingOffline adapteRCVSettingOffline;
 
     private AdapterRCVHistoryMeasure adapterRCVHistoryMeasure;
 
@@ -90,7 +90,7 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
     // popup
     private LinearLayout containerPopup;
-    private ImageView imgTitle, imgExpandMeasure, imgExpandSetting, imgExpandOfflineSetting;
+    private ImageView imgTitle, imgExpandMeasure, imgExpandSetting;
     private TextView txtTitle, txtContent;
 
     private int statusButton;
@@ -103,6 +103,8 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
     private ArrayList<String> arrRules;
     private ArrayList<String> arrResults;
     private DBManager dbManager;
+
+    private ArrayList<SettingOffline> settingOfflines;
 
     @Nullable
     @Override
@@ -130,15 +132,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
             } else {
                 view.findViewById(R.id.container_setting).setVisibility(View.VISIBLE);
                 imgExpandSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
-            }
-        });
-        imgExpandOfflineSetting.setOnClickListener(v -> {
-            if (view.findViewById(R.id.container_setting_offline).getVisibility() == View.VISIBLE) {
-                view.findViewById(R.id.container_setting_offline).setVisibility(View.GONE);
-                imgExpandOfflineSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
-            } else {
-                view.findViewById(R.id.container_setting_offline).setVisibility(View.VISIBLE);
-                imgExpandOfflineSetting.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
             }
         });
 
@@ -343,7 +336,6 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
 
         imgExpandMeasure = view.findViewById(R.id.view_left);
         imgExpandSetting = view.findViewById(R.id.view_left_2);
-        imgExpandOfflineSetting = view.findViewById(R.id.view_left_3);
         spnNumber = view.findViewById(R.id.fragment_3_spn_number);
         spnCrgn = view.findViewById(R.id.fragment_3_spn_crng);
         btnReceiveSettingMeasure = view.findViewById(R.id.fragment_3_btn_receive_setting_measure);
@@ -360,9 +352,9 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         rcvBacSetting.setNestedScrollingEnabled(false);
         rcvBacSetting.setLayoutManager(new LinearLayoutManager(context));
 
-        rcvSettingOffline = view.findViewById(R.id.fragment_3_rcv_setting_offline);
-        rcvSettingOffline.setNestedScrollingEnabled(false);
-        rcvSettingOffline.setLayoutManager(new LinearLayoutManager(context));
+//        rcvSettingOffline = view.findViewById(R.id.fragment_3_rcv_setting_offline);
+//        rcvSettingOffline.setNestedScrollingEnabled(false);
+//        rcvSettingOffline.setLayoutManager(new LinearLayoutManager(context));
 
         edtEqp1 = view.findViewById(R.id.fragment_3_edt_eqp1);
         edtEqt1 = view.findViewById(R.id.fragment_3_edt_eqt1);
@@ -385,20 +377,23 @@ public class Fragment3 extends Fragment implements ViewFragment3Listener, ViewRC
         edtIfst = view.findViewById(R.id.fragment_3_edt_ifst);
         edtIfen = view.findViewById(R.id.fragment_3_edt_ifen);
 
+        settingOfflines = new ArrayList<>();
+        settingOfflines.addAll(dbManager.getSettingsOffline());
+
         arrBacSetting = new ArrayList<>();
         arrBacSetting.add(new BacSetting(-1, MainActivity.device.getId(), null, 1, 1, 1, 1, 0, null, null));
-        adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting);
+        adapteRCVBacSetting = new AdapteRCVBacSetting(context, arrBacSetting , settingOfflines);
         rcvBacSetting.setAdapter(adapteRCVBacSetting);
 
-        if(!STATUS_NETWORK){
-            arrSettingOffline = new ArrayList<>();
-            arrSettingOffline.addAll(dbManager.getSettingsOffline());
+//        if(!STATUS_NETWORK){
+//            arrSettingOffline = new ArrayList<>();
+//            arrSettingOffline.addAll(dbManager.getSettingsOffline());
+//
+//            adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
+//            rcvSettingOffline.setAdapter(adapteRCVSettingOffline);
+//        }
 
-            adapteRCVSettingOffline = new AdapteRCVSettingOffline(context, arrSettingOffline);
-            rcvSettingOffline.setAdapter(adapteRCVSettingOffline);
-        }else{
-            view.findViewById(R.id.parent_container_setting_offline).setVisibility(View.GONE);
-        }
+
 
         arrSensorSetting = new ArrayList<>();
         arrRules = new ArrayList<>();

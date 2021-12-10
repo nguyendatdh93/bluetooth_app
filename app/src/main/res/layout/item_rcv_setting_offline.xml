@@ -7,6 +7,7 @@
 
     <TextView
         android:id="@+id/item_rcv_setting_offline_txt_index"
+        android:text="※微生物１のレベル表示設定"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20ssp"
@@ -26,8 +27,10 @@
         android:id="@+id/item_rcv_setting_offline_btn_add"
         android:layout_marginTop="@dimen/_10ssp"
         android:layout_gravity="center"
+        android:paddingEnd="@dimen/_10ssp"
+        android:paddingStart="@dimen/_5ssp"
         android:background="@drawable/circle_bg_button_not_active"
-        android:text="(+) add"
+        android:text="（＋）設定の追加"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

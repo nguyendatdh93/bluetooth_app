@@ -108,7 +108,7 @@ public class SettingOffline {
 //                    break;
 //            }
 
-        return object.get(index).getQuantity_from() + "~" + object.get(index).getQuantity_to();
+        return object.get(index).getQuantity_from() + "〜" + object.get(index).getQuantity_to();
 
 
     }
