@@ -173,6 +173,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/item_rcv_bac_setting_container_setting_offline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
