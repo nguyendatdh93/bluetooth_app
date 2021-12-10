@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,8 +51,9 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
         ViewHodler viewHodler = (ViewHodler) holder;
         viewHodler.imgDelete.setOnClickListener(v -> {
             arrItem.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, arrItem.size());
+            //notifyItemRemoved(position);
+            //notifyItemRangeChanged( Math.max(position -1 , 0), arrItem.size() - 1);
+            notifyDataSetChanged();
             saveSettingOffline();
         });
 
@@ -70,6 +72,18 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
             saveSettingOffline();
             Toast.makeText(context, "保存しました。", Toast.LENGTH_SHORT).show();
         });
+
+        if(arrItem.size() -1 == position){
+            viewHodler.edtDLTCfrom.setVisibility(View.INVISIBLE);
+            viewHodler.edtQuantityFrom.setVisibility(View.INVISIBLE);
+            viewHodler.txtDltc.setText("≥");
+            viewHodler.txtQuantity.setText("≥");
+        }else{
+            viewHodler.edtDLTCfrom.setVisibility(View.VISIBLE);
+            viewHodler.edtQuantityFrom.setVisibility(View.VISIBLE);
+            viewHodler.txtDltc.setText("〜");
+            viewHodler.txtQuantity.setText("〜");
+        }
 
 //        viewHodler.edtDLTCfrom.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -175,6 +189,7 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
         Button btnSave;
         ImageView imgDelete;
         EditText edtLevel, edtDLTCfrom, edtDLTCto, edtQuantityFrom, edtQuantityTo;
+        TextView txtDltc , txtQuantity;
 
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
@@ -185,6 +200,8 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
             edtDLTCto = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_dltc_to);
             edtQuantityFrom = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity_from);
             edtQuantityTo = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity_to);
+            txtDltc = itemView.findViewById(R.id.item_rcv_sub_setting_offline_txt_dltc);
+            txtQuantity = itemView.findViewById(R.id.item_rcv_sub_setting_offline_txt_quantity);
         }
     }
 

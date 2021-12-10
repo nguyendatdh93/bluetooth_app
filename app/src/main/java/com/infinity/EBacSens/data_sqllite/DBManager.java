@@ -349,6 +349,7 @@ public class DBManager extends SQLiteOpenHelper {
                 object.put("blpex", measureMeasresses.get(i).getBlpex());
                 object.put("blpey", measureMeasresses.get(i).getBlpey());
 
+                Toast.makeText(context, "" + Protector.tryParseFloat(measureMeasresses.get(i).getDltc()), Toast.LENGTH_SHORT).show();
                 ArrayList<SettingOffline> settingOfflines = getSettingsOffline();
                 object.put("number_organism", settingOfflines.get(i).getMeasresNumberOrganism(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
                 object.put("level", settingOfflines.get(i).getMeasresLevel(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));

@@ -108,6 +108,9 @@ public class SettingOffline {
 //                    break;
 //            }
 
+        if (object.size() == 1 || index == object.size()-1) {
+            return "≥" + object.get(index).getQuantity_to();
+        }
         return object.get(index).getQuantity_from() + "〜" + object.get(index).getQuantity_to();
 
 
