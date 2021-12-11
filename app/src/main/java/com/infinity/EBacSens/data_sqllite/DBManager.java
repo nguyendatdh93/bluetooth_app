@@ -419,7 +419,7 @@ public class DBManager extends SQLiteOpenHelper {
     public SensorMeasureDetail getMeasureDetail(int id) {
         SensorMeasureDetail sensorMeasureDetail = new SensorMeasureDetail();
 
-        String query = "SELECT * FROM measures WHERE id = " + id + " ORDER BY id DESC";
+        String query = "SELECT * FROM measures WHERE id = " + id;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -518,7 +518,7 @@ public class DBManager extends SQLiteOpenHelper {
     public ArrayList<SensorMeasurePage.MeasurePage> getMeasures() {
         ArrayList<SensorMeasurePage.MeasurePage> measures = new ArrayList<>();
 
-        String query = "SELECT * FROM measures";
+        String query = "SELECT * FROM measures" + " ORDER BY id DESC";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         if (cursor.moveToFirst()) {
