@@ -419,7 +419,7 @@ public class DBManager extends SQLiteOpenHelper {
     public SensorMeasureDetail getMeasureDetail(int id) {
         SensorMeasureDetail sensorMeasureDetail = new SensorMeasureDetail();
 
-        String query = "SELECT * FROM measures WHERE id = " + id;
+        String query = "SELECT * FROM measures WHERE id = " + id + " ORDER BY id DESC";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         if (cursor.moveToFirst()) {
