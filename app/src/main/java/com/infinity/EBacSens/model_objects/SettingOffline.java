@@ -41,78 +41,74 @@ public class SettingOffline {
 //    }
 
     public String getMeasresLevel(double dltc) {
-        if (object.size() == 0) {
-            return "---";
+
+        int index = -1;
+
+        for (int i = 0; i < object.size(); i++) {
+            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) ) {
+                if(object.get(i).getDltc_to().length() != 0 ){
+                    if(dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())){
+                        index = i;
+                        break;
+                    }
+                }else {
+                    index = i;
+                    break;
+                }
+            }
         }
 
-        int index = object.size() - 1;
-        for (int i = 0; i < object.size() - 2; i++) {
-            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) && dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())) {
-                index = i;
-                break;
-            }
+        if (index == -1) {
+            return "---";
         }
 
         return object.get(index).getLevel() + "";
     }
 
     public String getMeasresNumberOrganism(double dltc) {
-        if (object.size() == 0) {
-            return "---";
-        }
+//        if (object.size() == 0) {
+//            return "---";
+//        }
+//
+//        int index = object.size() - 1;
+//        for (int i = 0; i < object.size() - 2; i++) {
+//            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) && dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())){
+//                index = i;
+//                break;
+//            }
+//        }
+//
+//        if (object.size() == 1 || index == object.size()-1) {
+//            return "≥" + object.get(index).getQuantity_to();
+//        }
+//        return object.get(index).getQuantity_from() + "〜" + object.get(index).getQuantity_to();
 
-        int index = object.size() - 1;
-        for (int i = 0; i < object.size() - 2; i++) {
-            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) && dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())){
-                index = i;
-                break;
+
+        int index = -1;
+
+        for (int i = 0; i < object.size(); i++) {
+            if (dltc >= Protector.tryParseFloat(object.get(i).getDltc_from()) ) {
+                if(object.get(i).getDltc_to().length() != 0 ){
+                    if(dltc <= Protector.tryParseFloat(object.get(i).getDltc_to())){
+                        index = i;
+                        break;
+                    }
+                }else {
+                    index = i;
+                    break;
+                }
             }
         }
 
-        //            switch (dltc) {
-//                case i == 0 && dltc >= 0 && dltc < 0.1 :
-//                    return  "～10";
-//                    break;
-//                case i == 0 && dltc >= 0.1 && dltc < 0.2 :
-//                    return "10～10¹";
-//                    break;
-//                case i == 0 && dltc >= 0.2 && dltc < 0.3 :
-//                    return "10¹～10²";
-//                    break;
-//                case i == 0 && dltc >= 0.3 && dltc < 0.4 :
-//                    return "10²～10³";
-//                    break;
-//                case i == 0 && dltc >= 0.4 && dltc < 0.5 :
-//                    return "10³～10⁴";
-//                    break;
-//                case i == 0 && dltc >= 0.5 :
-//                    return ">=10⁴";
-//                    break;
-//                case i > 0 && dltc >= 0 && dltc < 1 :
-//                    return "0～10";
-//                    break;
-//                case i > 0 && dltc >= 1 && dltc < 2 :
-//                    return "10～10¹";
-//                    break;
-//                case i > 0 && dltc >= 2 && dltc < 3 :
-//                    return "10¹～10²";
-//                    break;
-//                case i > 0 && dltc >= 3 && dltc < 4 :
-//                    return "10²～10³";
-//                    break;
-//                case i > 0 && dltc >= 4 && dltc < 5 :
-//                    return "10³～10⁴";
-//                    break;
-//                case i > 0 && dltc >= 5 :
-//                    return ">=10⁴";
-//                    break;
-//            }
-
-        if (object.size() == 1 || index == object.size()-1) {
-            return "≥" + object.get(index).getQuantity_to();
+        if (index == -1) {
+            return "---";
         }
-        return object.get(index).getQuantity_from() + "〜" + object.get(index).getQuantity_to();
 
+        if(object.get(index).getQuantity_to().length() == 0){
+            return "≥" + object.get(index).getQuantity_from();
+        }else {
+            return object.get(index).getQuantity_from() + "〜" + object.get(index).getQuantity_to();
+        }
 
     }
 

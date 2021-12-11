@@ -223,10 +223,10 @@ public class AdapteRCVBacSetting extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHodler.rcvSubSettingOffline.setAdapter(adapteRCVSettingOfflineItem);
 
             viewHodler.btnAddSettingOffline.setOnClickListener(v -> {
-                settingOfflines.get(position).getObject().add(new ItemSettingOffline("0","0",0,0,0));
+                settingOfflines.get(position).getObject().add(new ItemSettingOffline("0","0","0","0",0));
                 //notifyItemRangeChanged(position, arrItem.size());
-                //adapteRCVSettingOfflineItem.notifyDataSetChanged();
-                adapteRCVSettingOfflineItem.notifyItemRangeChanged(0 , settingOfflines.get(position).getObject().size()-1);
+                adapteRCVSettingOfflineItem.notifyDataSetChanged();
+                //adapteRCVSettingOfflineItem.notifyItemRangeChanged(0 , settingOfflines.get(position).getObject().size()-1);
                 saveSettingOffline();
             });
 

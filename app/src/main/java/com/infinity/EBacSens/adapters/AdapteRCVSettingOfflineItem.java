@@ -66,24 +66,12 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
         viewHodler.btnSave.setOnClickListener(v -> {
             arrItem.get(holder.getAdapterPosition()).setDltc_from(viewHodler.edtDLTCfrom.getText().toString());
             arrItem.get(holder.getAdapterPosition()).setDltc_to(viewHodler.edtDLTCto.getText().toString());
-            arrItem.get(holder.getAdapterPosition()).setQuantity_from(Protector.tryParseInt(viewHodler.edtQuantityFrom.getText().toString()));
-            arrItem.get(holder.getAdapterPosition()).setQuantity_to(Protector.tryParseInt(viewHodler.edtQuantityTo.getText().toString()));
+            arrItem.get(holder.getAdapterPosition()).setQuantity_from(viewHodler.edtQuantityFrom.getText().toString());
+            arrItem.get(holder.getAdapterPosition()).setQuantity_to(viewHodler.edtQuantityTo.getText().toString());
             arrItem.get(holder.getAdapterPosition()).setLevel(Protector.tryParseInt(viewHodler.edtLevel.getText().toString()));
             saveSettingOffline();
             Toast.makeText(context, "保存しました。", Toast.LENGTH_SHORT).show();
         });
-
-        if(arrItem.size() -1 == position){
-            viewHodler.edtDLTCfrom.setVisibility(View.INVISIBLE);
-            viewHodler.edtQuantityFrom.setVisibility(View.INVISIBLE);
-            viewHodler.txtDltc.setText("≥");
-            viewHodler.txtQuantity.setText("≥");
-        }else{
-            viewHodler.edtDLTCfrom.setVisibility(View.VISIBLE);
-            viewHodler.edtQuantityFrom.setVisibility(View.VISIBLE);
-            viewHodler.txtDltc.setText("〜");
-            viewHodler.txtQuantity.setText("〜");
-        }
 
 //        viewHodler.edtDLTCfrom.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -200,8 +188,6 @@ public class AdapteRCVSettingOfflineItem extends RecyclerView.Adapter<RecyclerVi
             edtDLTCto = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_dltc_to);
             edtQuantityFrom = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity_from);
             edtQuantityTo = itemView.findViewById(R.id.item_rcv_sub_setting_offline_edt_quantity_to);
-            txtDltc = itemView.findViewById(R.id.item_rcv_sub_setting_offline_txt_dltc);
-            txtQuantity = itemView.findViewById(R.id.item_rcv_sub_setting_offline_txt_quantity);
         }
     }
 

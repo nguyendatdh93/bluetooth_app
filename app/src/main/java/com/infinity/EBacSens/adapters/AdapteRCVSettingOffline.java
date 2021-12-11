@@ -59,8 +59,9 @@ public class AdapteRCVSettingOffline extends RecyclerView.Adapter<RecyclerView.V
         viewHodler.rcvSubSetting.setAdapter(adapteRCVSettingOfflineItem);
 
         viewHodler.btnAdd.setOnClickListener(v -> {
-            arrItem.get(position).getObject().add(new ItemSettingOffline("0","0",0,0,0));
-            adapteRCVSettingOfflineItem.notifyItemInserted(arrItem.get(position).getObject().size()-1);
+            arrItem.get(position).getObject().add(new ItemSettingOffline("0","0","0","0",0));
+            //adapteRCVSettingOfflineItem.notifyItemInserted(arrItem.get(position).getObject().size()-1);
+            //adapteRCVSettingOfflineItem.notifyDataSetChanged();
             saveSettingOffline();
         });
     }

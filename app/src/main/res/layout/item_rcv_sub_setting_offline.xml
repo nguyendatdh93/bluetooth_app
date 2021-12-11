@@ -48,7 +48,6 @@
                     android:textSize="@dimen/_11ssp" />
 
                 <TextView
-                    android:id="@+id/item_rcv_sub_setting_offline_txt_dltc"
                     android:layout_margin="@dimen/_5ssp"
                     android:gravity="center"
                     android:layout_gravity="center"
@@ -134,7 +133,6 @@
                     android:textSize="@dimen/_11ssp" />
 
                 <TextView
-                    android:id="@+id/item_rcv_sub_setting_offline_txt_quantity"
                     android:layout_margin="@dimen/_5ssp"
                     android:gravity="center"
                     android:layout_gravity="center"

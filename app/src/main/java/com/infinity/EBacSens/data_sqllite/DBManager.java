@@ -174,9 +174,9 @@ public class DBManager extends SQLiteOpenHelper {
         object = new JSONObject();
         try {
             object.put("dltc_from", 0.5);
-            object.put("dltc_to", 0.5);
+            object.put("dltc_to", "");
             object.put("quantity_from", 10000);
-            object.put("quantity_to", 100000);
+            object.put("quantity_to", "");
             object.put("level", 5);
             jsonArrayMeasureRes.put(object);
         } catch (JSONException e) {
@@ -252,9 +252,9 @@ public class DBManager extends SQLiteOpenHelper {
             object = new JSONObject();
             try {
                 object.put("dltc_from", 5);
-                object.put("dltc_to", 5);
+                object.put("dltc_to", "");
                 object.put("quantity_from", 10000);
-                object.put("quantity_to", 100000);
+                object.put("quantity_to", "");
                 object.put("level", 5);
                 jsonArrayMeasureRes.put(object);
             } catch (JSONException e) {
@@ -349,7 +349,6 @@ public class DBManager extends SQLiteOpenHelper {
                 object.put("blpex", measureMeasresses.get(i).getBlpex());
                 object.put("blpey", measureMeasresses.get(i).getBlpey());
 
-                Toast.makeText(context, "" + Protector.tryParseFloat(measureMeasresses.get(i).getDltc()), Toast.LENGTH_SHORT).show();
                 ArrayList<SettingOffline> settingOfflines = getSettingsOffline();
                 object.put("number_organism", settingOfflines.get(i).getMeasresNumberOrganism(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
                 object.put("level", settingOfflines.get(i).getMeasresLevel(Protector.tryParseFloat(measureMeasresses.get(i).getDltc())));
